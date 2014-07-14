@@ -68,8 +68,7 @@ var setDemographicsObjects = function (parseObject)
                 break;
             case "dState":
                 DemographicsObject.dStateParseObject = parseObject[i];
-                console.log(parseObject[i])
-
+               
                 break;
             case "dVehicle":
                 DemographicsObject.dVehicleParseObject = parseObject[i];
@@ -78,16 +77,16 @@ var setDemographicsObjects = function (parseObject)
                "UNDEFINED";
         }
     };
-    //setdAgency(DemographicsObject.dAgencyParseObject);
-    //setdConfiguration(DemographicsObject.dConfigurationParseObject);
-    //setdContact(DemographicsObject.dContactParseObject);
-    //setdDevice(DemographicsObject.dDeviceParseObject);
+    setdAgency(DemographicsObject.dAgencyParseObject);
+    setdConfiguration(DemographicsObject.dConfigurationParseObject);
+    setdContact(DemographicsObject.dContactParseObject);
+    setdDevice(DemographicsObject.dDeviceParseObject);
     //setdFacility(DemographicsObject.dFacilityParseObject);
-    //setdLocation(DemographicsObject.dLocationParseObject);
-    //setdPersonnel(DemographicsObject.dPersonnelParseObject);
+    setdLocation(DemographicsObject.dLocationParseObject);
+    setdPersonnel(DemographicsObject.dPersonnelParseObject);
     setdState(DemographicsObject.dStateParseObject);
 
-    //setdVehicle(DemographicsObject.dVehicleParseObject);
+    setdVehicle(DemographicsObject.dVehicleParseObject);
     return DemographicsObject;
 };
 
@@ -99,13 +98,8 @@ var getSectionIndex = function (sectionObject, sectionName)
     // if sectionName does not exist within the sectionObject, return -1
 {
 
-    console.log(sectionName)
-    console.log(sectionObject)
-    console.log(sectionObject.sections)
-
     var _retValue = [];
     for (var d = 0; d <= sectionObject.sections.length - 1; d++) {
-        console.log(sectionObject.sections[d].attributes.name)
         if (sectionObject.sections[d].attributes.name == sectionName) {
             _retValue.push(d);
         }
@@ -216,9 +210,7 @@ var setdAgency = function (agencyObject) {
         _retArray.push('\t' + "<dAgency.AgencyServiceGroup>" + '\n');
         _OLAPArray.push('\t' + "<dAgency.AgencyServiceGroup>" + '\n');
         var AG = new Object;
-       // console.log(agencyObject.attributes)
 
-       // console.log(agencyObject.attributes.sections[_sectionIndex[x]].attributes.elements)
         _elementList = agencyObject.attributes.sections[_sectionIndex[x]].attributes.elements;
 
         //Parent Object.  If no value, cannot process Group
@@ -302,9 +294,7 @@ var setdAgency = function (agencyObject) {
         _OLAPArray.push('\t' + "</dAgency.AgencyServiceGroup>" + '\n');
         AgencyServiceGroupArray.push(AG);
     };
-    // console.log(AgencyServiceGroupArray);
-
-
+ 
     //dAgency.09///////
     _val = getValue(agencyObject.attributes.elements, "dAgency.09");
     if (_val == null) {
@@ -347,7 +337,6 @@ var setdAgency = function (agencyObject) {
             _arr.push(_val[i]);
             _v3Array.push({ section: "dAgency", element: "dAgency.10", val: _val[i] });
             _arrV2.push(setV2("dAgency.10", _val[i]))
-            console.log(i + " " + setCodeText("dAgency.10", _val[i]));
             _retArray.push('\t' + "<dAgency.10>" + _val[i] + "</dAgency.10>" + '\n');
             _OLAPArray.push('\t' + "<OtherTypesofService>" + setCodeText("dAgency.10", _val[i]) + "</OtherTypesofService>" + '\n');
         }
@@ -671,7 +660,6 @@ var setdAgency = function (agencyObject) {
         dAgency["dAgency.26"] = _arr.slice(0);
     };
 
-    console.log(dAgency)
 
     _OLAPArray.push("</dAgency>");
     _retArray.push("</dAgency>");
@@ -725,7 +713,6 @@ var setdAgency = function (agencyObject) {
     }
 
 
-    console.log( dAgency);
 
 };
 
@@ -738,7 +725,6 @@ var setdConfiguration = function (configurationObject) {
     var _arrV2 = []
     var dConfiguration = new Object();
     var ConfigurationGroup = new Object();
-    console.log(configurationObject)
     _retArray.push("<dConfiguration>" + '\n');
     _OLAPArray.push("<dConfiguration>" + '\n');
 
@@ -1118,7 +1104,6 @@ var setdContact = function (contactObject) {
     var _v2Array = [];
     var ContactInfoGroup = new Object()
     var dContact = new Object()
-    console.log(contactObject);
     _retArray.push("<dContact>" + '\n');
     _OLAPArray.push("<dContact>" + '\n');
 
@@ -1560,7 +1545,6 @@ var setdContact = function (contactObject) {
     }
 
     dContact.ContactInfoGroup = ContactInfoGroup;
-    console.log(dContact)
     return dContact;
 
 };    //end of function
@@ -1573,13 +1557,11 @@ var setdDevice = function (deviceObject) {
     _retArray.push("<dDevice>" + '\n');
     _OLAPArray.push("<dDevice>" + '\n');
 
-    console.log(deviceObject);
     //    console.log(businessObject.sections.length);
     for (var xx = 0; xx < deviceObject.attributes.sections.length; xx++) {
         _retArray.push('\t' + "<dDeviceInfoGroup>" + '\n');
         _OLAPArray.push('\t' + "<dDeviceInfoGroup>" + '\n');
         var elementList = deviceObject.attributes.sections[xx].attributes.elements;
-        console.log(elementList);
 
         ///dDevice.01 
         _val = getValue(elementList, "dDevice.01");
@@ -1684,13 +1666,11 @@ var setdDevice = function (deviceObject) {
         XMLString = XMLString + _OLAPArray[i];
 
     }
-    console.log(XMLString)
     XMLString = ""
     for (var i = 0; i < _retArray.length ; i++) {
         XMLString = XMLString + _retArray[i];
 
     }
-    console.log(XMLString)
 };
 
 var setdFacility = function (facilityObject) {
@@ -1701,7 +1681,6 @@ var setdFacility = function (facilityObject) {
     var dFacility = new Object()
     _retArray.push("<dFacility>" + '\n');
     _OLAPArray.push("<dFacility>" + '\n');
-    console.log(facilityObject);
     //  console.log(businessObject.sections.length);
 
     for (var a = 0; a < facilityObject.attributes.sections.length; a++) {
@@ -1710,8 +1689,7 @@ var setdFacility = function (facilityObject) {
         _OLAPArray.push('\t' + "<dFacilityGroup>" + '\n');
         // console.log(businessObject.sections[a].attributes.name);
         var _elementList = facilityObject.attributes.sections[a].attributes.sections[0].attributes.elements;
-        console.log(facilityObject.attributes.sections[a].attributes.sections[0].attributes.elements);
-        console.log(_elementList)
+    
         //dFacility.01/////////
         _val = getValue(_elementList, "dFacility.01");
         if (_val == null) {
@@ -1926,7 +1904,6 @@ var setdFacility = function (facilityObject) {
     for (var i = 0; i < _retArray.length ; i++) {
         XMLString = XMLString + _retArray[i];
     }
-    console.log(XMLString)
 
     var XMLString = ""
     for (var i = 0; i < _OLAPArray.length ; i++) {
@@ -1937,14 +1914,10 @@ var setdFacility = function (facilityObject) {
     dFacilityGroup.FacilityGroup = FacilityGroup;
     dFacility.dFacilityGroup = dFacilityGroup
      
-    console.log(dFacility)
 
 };    //end of function   
 
 var setdLocation = function (locationObject) {
-    console.log(locationObject)
-
-
     var _v2Array = [];
     var _retArray = [];
     var XMLString = "";
@@ -1955,8 +1928,6 @@ var setdLocation = function (locationObject) {
     _OLAPArray.push("<dLocation>" + '\n');
 
     _sectionIndex = getSectionIndex(locationObject.attributes, "dLocation.LocationGroup");
-
-    console.log(_sectionIndex)
 
     for (var xx = 0; xx < _sectionIndex.length; xx++) {
 
@@ -2138,7 +2109,6 @@ var setdLocation = function (locationObject) {
         XMLString = XMLString + _retArray[i];
 
     }
-    console.log(XMLString)
     return LocationGroup;
 
 };    //end of function   
@@ -2252,7 +2222,6 @@ var setdPersonnel = function (personnelObject) {
         //   console.log(_sectionIndex)
 
         //////////dPersonnel.04
-        console.log(personnelObject.attributes.sections[xx].attributes.sections[_sectionIndex[0]].attributes.elements)
         _val = getValue(personnelObject.attributes.sections[xx].attributes.sections[_sectionIndex[0]].attributes.elements, "dPersonnel.04");
         if (_val == null) {
             AddressGroup["dPersonnel.04"] = null;
@@ -2336,7 +2305,6 @@ var setdPersonnel = function (personnelObject) {
         else {
             var arr = [];
             var arr2 = [];
-            console.log(_val.length)
             for (var t = 0; t < _val.length; t++) {
                 arr.push(_val[t]);
                 arr2.push(setV2("dPersonnel.09", _val[t]));
@@ -2872,8 +2840,6 @@ var setdPersonnel = function (personnelObject) {
 
         ////////////////////////////CertificationLevelGroup
         _sectionIndex = getSectionIndex(personnelObject.attributes.sections[xx].attributes, "dPersonnel.CertificationLevelGroup");
-        console.log(_sectionIndex)
-        console.log(_sectionIndex.length)
 
         if (_sectionIndex > 0) {
             for (var x = 0; x < _sectionIndex.length; x++) {
@@ -2930,7 +2896,6 @@ var setdPersonnel = function (personnelObject) {
         XMLString = XMLString + _retArray[i];
 
     }
-    console.log(XMLString)
     return _retArray;
 };
 
@@ -2946,12 +2911,10 @@ var setdState = function (stateObject) {
     // console.log(businessObject);
     _retArray.push("<dState>" + '\n');
     _OLAPArray.push("<dState>" + '\n');
-    console.log(stateObject)
 
     var _elementList = stateObject.attributes.elements;
 
     _val = getValue(_elementList, "dState.01");
-    console.log(_val.length)
         if (_val == null) {
             dState["dState.01"] = null;
             _OLAPArray.push('\t' + "<StateRequiredElement>" + null + "</StateRequiredElement>" + '\n');
@@ -2960,7 +2923,6 @@ var setdState = function (stateObject) {
         else
         {
             var arr = [];
-            console.log(_val.length)
             for (var t = 0; t < _val.length; t++) {
            
                 arr.push(_val[t]);
@@ -2980,11 +2942,9 @@ var setdState = function (stateObject) {
         XMLString = XMLString + _retArray[i];
 
     }
-    console.log(XMLString)
     return _retArray;
 };
 var setdVehicle = function (dVehicleObject) {
-    console.log(dVehicleObject)
 
     var dVehicle = new Object;
     var VehicleGroup = new Object;
@@ -3073,13 +3033,11 @@ var setdVehicle = function (dVehicleObject) {
 
         ///////////////        
         _sectionIndex = getSectionIndex(dVehicleObject.attributes.sections[xx].attributes, "dVehicle.VehicleCertificationLevelsGroup");
-        console.log(_sectionIndex)
 
 
         for (var x = 0; x < _sectionIndex.length; x++) {
             _retArray.push('\t\t' + "<dVehicle.VehicleCertificationLevelsGroup>" + '\n');
             _OLAPArray.push('\t\t' + "<dVehicle.VehicleCertificationLevelsGroup>" + '\n');
-            console.log(dVehicleObject.attributes.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements)
             //////////////////dVehicle.05
             _val = getValue(dVehicleObject.attributes.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements, "dVehicle.05");
             if (_val == null) {
@@ -3244,9 +3202,7 @@ var setdVehicle = function (dVehicleObject) {
         XMLString = XMLString + _retArray[i];
 
     }
-    console.log(XMLString)
 
-    console.log(_v2Array)
 
     var OLAPArrayString = "";
     for (var i = 0; i < _OLAPArray.length ; i++) {
@@ -3259,7 +3215,6 @@ var isRequiredStateElement = function (elementID) {
     return true;
 };
 var getValue = function (elementList, valueObject) {
-    console.log(elementList)
     var _arr = [];
     for (var i = 0; i < elementList.length; i++) {
         if (elementList[i].attributes.title == valueObject) {
@@ -3455,16 +3410,14 @@ function setCodeText(NEMSISElementNumber, codeVal) {
             }
             break;
         case "dAgency.10":
-            //            console.log("codeVal " + codeVal)
-            //            console.log("codeVal " + dAgency334_10[codeVal])
-            for (i = 0; i < codeVal.length; i++) {
-                if (dAgency334_10[codeVal] == undefined) {
-                    _return = codeVal + " UNDEFINED";
-                }
-                else {
-                    _return = dAgency334_10[codeVal];
-                }
+      
+            if (dAgency334_10[codeVal] == undefined) {
+                _return = codeVal + " UNDEFINED";
             }
+            else {
+                _return = dAgency334_10[codeVal];
+            }
+     
             break;
         case "dAgency.11":
             if (dAgency334_11[codeVal] == undefined) {
