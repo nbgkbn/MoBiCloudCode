@@ -27,6 +27,10 @@ var DemographicsObject = Object();
 var _v3Array = [];
 
 //////////////////////////////////
+var dAgency334 = Parse.Object.extend("dAgency334");
+var AgencyYearGroup334 = Parse.Object.extend("dAgencyYearGroup");
+var AgencyServiceGroup334 = Parse.Object.extend("dAgencyServiceGroup");
+
 
 var setDemographicsObjects = function (parseObject)
     //Loops through raw Parse Object
@@ -112,13 +116,6 @@ var getSectionIndex = function (sectionObject, sectionName)
 
 var setdAgency = function (agencyObject) {
 
-//console.log(agencyObject)
-    //businessObject = All of the dAgencys Sections/Elements.
-    //objects required to satisfy NEMSIS and DIM
-    //Get Original Objects from OLTP, validate against section/domain rules
-    //Collect each Error and push to ErrorList
-    //On complete, if ErrorList.Length==0, 
-    //  else commit to OLAP
 
     var _arr = [];
     var _arrV2 = [];
@@ -674,6 +671,8 @@ var setdAgency = function (agencyObject) {
         Errors.push(ErrorList[i]);
     };
     dAgency.Errors = Errors;;
+
+    
 
     //XMLString to dAgency
     for (var i = 0; i < _retArray.length ; i++) {
