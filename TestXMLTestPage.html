@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script>
+        var APOS = "'"; QUOTE = '"'
+        var ESCAPED_QUOTE = {}
+        ESCAPED_QUOTE[QUOTE] = '&quot;'
+        ESCAPED_QUOTE[APOS] = '&apos;'
+        var FAX = "PhoneNumberType=\"9913001>";
+        var NIL_V3NOT_RECORDED = " NV=\"7701003\" xsi:nil=\"true\"/>";
+        var XML = new XMLWriter;
+        var eAirway= new Object();
+        eAirway["eAirway.01"] = ["4001001", "4001003", "4001005"];
+        console.log(eAirway["eAirway.01"])
+
+        XML.BeginNode("eAirway")
+        for (var a = 0; a < eAirway["eAirway.01"].length; a++) {
+            XML.Node("eAirway.01", eAirway["eAirway.01"][a])
+        };
+        
+
+        XML.EndNode()
+        
+   
+        XML.Close(); // Takes care of unended tags.
+        // The replace in the following line are only for making the XML look prettier in the textarea.
+        // document.getElementById("ExampleOutput").value = XML.ToString().replace(/</g, "\n<");
+        console.log(XML.ToString());
+       
+        function JSettings() {
+            this.IE = document.all ? true : false;
+            this.MouseX = _JSettings_MouseX;
+            this.MouseY = _JSettings_MouseY;
+            this.SrcElement = _JSettings_SrcElement;
+            this.Parent = _JSettings_Parent;
+            this.RunOnLoad = _JSettings_RunOnLoad;
+            this.FindParent = _JSettings_FindParent;
+            this.FindChild = _JSettings_FindChild;
+            this.FindSibling = _JSettings_FindSibling;
+            this.FindParentTag = _JSettings_FindParentTag;
+        }
+        function _JSettings_MouseX(e)
+        { return this.IE ? event.clientX : e.clientX; }
+        function _JSettings_MouseY(e)
+        { return this.IE ? event.clientY : e.clientY; }
+        function _JSettings_SrcElement(e)
+        { return this.IE ? event.srcElement : e.target; }
+        function _JSettings_Parent(Node)
+        { return this.IE ? Node.parentNode : Node.parentElement; }
+        function _JSettings_RunOnLoad(Meth) { var Prev = (window.onload) ? window.onload : function () { }; window.onload = function () { Prev(); Meth(); }; }
+        function _JSettings_FindParent(Node, Attrib, Value) {
+            var Root = document.getElementsByTagName("BODY")[0];
+            Node = Node.parentNode; while (Node != Root && Node.getAttribute(Attrib) != Value) { Node = Node.parentNode; }
+            if (Node.getAttribute(Attrib) == Value) { return Node; } else { return null; }
+        }
+        function _JSettings_FindParentTag(Node, TagName) {
+            var Root = document.getElementsByTagName("BODY")[0];
+            TagName = TagName.toLowerCase();
+            Node = Node.parentNode; while (Node != Root && Node.tagName.toLowerCase() != TagName) { Node = Node.parentNode; }
+            if (Node.tagName.toLowerCase() == TagName) { return Node; } else { return null; }
+        }
+        function _JSettings_FindChild(Node, Attrib, Value) {
+            if (Node.getAttribute)
+                if (Node.getAttribute(Attrib) == Value) return Node;
+
+            var I = 0;
+            var Ret = null;
+            for (I = 0; I < Node.childNodes.length; I++) {
+                Ret = FindChildByAttrib(Node.childNodes[I]);
+                if (Ret) return Ret;
+            }
+            return null;
+        }
+        function _JSettings_FindSibling(Node, Attrib, Value) {
+            var Nodes = Node.parentNode.childNodes;
+            var I = 0;
+            for (I = 0; I < Nodes.length; I++) {
+                if (Nodes[I].getAttribute) {
+                    if (Nodes[I].getAttribute(Attrib) == Value)
+                    { return Nodes[I]; }
+                }
+            }
+            return null;
+        }
+
+        var Settings = new JSettings();
+
+        function XMLWriter() {
+
+            this.XML = [];
+            this.Nodes = [];
+            this.State = "";
+            this.FormatXML = function (Str) {
+                if (Str)
+                    return Str.replace(/&/g, "&amp;").replace(/\"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                return ""
+            }
+            this.BeginNode = function (Name) {
+                if (!Name) return;
+                if (this.State == "beg") this.XML.push(">");
+                this.State = "beg";
+                this.Nodes.push(Name);
+                this.XML.push("<" + Name);
+            }
+            this.EndNode = function () {
+                if (this.State == "beg") {
+                    this.XML.push("/>");                    
+                    this.Nodes.pop();
+                }
+                else if (this.Nodes.length > 0)
+                    this.XML.push("</" + this.Nodes.pop() + ">");
+                this.State = "";
+            }
+            this.Attrib = function (Name, Value) {
+                if (this.State != "beg" || !Name) return;
+                this.XML.push(" " + Name + "=\"" + this.FormatXML(Value) + "\"");
+            }
+            this.Attrib2 = function (NodeName, Name, Value) {
+                console.log(Name)
+                console.log(Value)
+                console.log(NodeName)
+                if (this.State != "beg" || !Name) return;
+                console.log(" " + Name + this.FormatXML(Value) + "</" + NodeName)
+                //this.XML.push(" " + Name + this.FormatXML(Value) + "</" + NodeName);
+                this.XML.push(" " + Name + Value + "</" + NodeName);
+                console.log(" " + Name + this.FormatXML(Value) + "</" + NodeName)
+            }
+            this.WriteString = function (Value) {
+                if (this.State == "beg") this.XML.push(">");
+                this.XML.push(this.FormatXML(Value));
+                this.State = "";
+            }
+            this.Node = function (Name, Value) {
+                if (!Name) return;
+                if (this.State == "beg") this.XML.push(">");
+                this.XML.push((Value == "" || !Value) ? "<" + Name + ">" : "<" + Name + ">" + this.FormatXML(Value) + "</" + Name + ">");
+                this.State = "";                
+            }
+            this.Close = function () {
+                while (this.Nodes.length > 0)
+                    this.EndNode();
+                this.State = "closed";
+            }
+            this.ToString = function () { return this.XML.join(""); }
+        }
+        
+   
+        /*
+           Format a dictionary of attributes into a string suitable
+           for inserting into the start tag of an element.  Be smart
+           about escaping embedded quotes in the attribute values.
+        */
+        function formatAttributes(attributes) {
+            var att_value
+            var apos_pos, quot_pos
+            var use_quote, escape, quote_to_escape
+            var att_str
+            var re
+            var result = ''
+   
+            for (var att in attributes) {
+                att_value = attributes[att]
+        
+                // Find first quote marks if any
+                apos_pos = att_value.indexOf(APOS)
+                quot_pos = att_value.indexOf(QUOTE)
+       
+                // Determine which quote type to use around 
+                // the attribute value
+                if (apos_pos == -1 && quot_pos == -1) {
+                    att_str = ' ' + att + "='" + att_value +  "'"
+                    result += att_str
+                    continue
+                }
+        
+                // Prefer the single quote unless forced to use double
+                if (quot_pos != -1 && quot_pos < apos_pos) {
+                    use_quote = APOS
+                }
+                else {
+                    use_quote = QUOTE
+                }
+   
+                // Figure out which kind of quote to escape
+                // Use nice dictionary instead of yucky if-else nests
+                escape = ESCAPED_QUOTE[use_quote]
+        
+                // Escape only the right kind of quote
+                re = new RegExp(use_quote,'g')
+                att_str = ' ' + att + '=' + use_quote + 
+                    att_value.replace(re, escape) + use_quote
+                result += att_str
+            }
+            return result
+        }
+
+    </script>
+</body>
+</html>

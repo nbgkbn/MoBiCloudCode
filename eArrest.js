@@ -18,22 +18,8 @@ var E11 = new Object;
 var _retArray = [];
 var XMLString = ""
 var seteArrest = function (businessObject) {
-    if (businessObject.name != "eArrest") {
-        return null
-    };
 
-    var _retArray = [];
-    if (businessObject == undefined) {
-        _retArray = setNotApplicableAll();
-        console.log(_retArray)
-        for (var i = 0; i < _retArray.length ; i++) {
-            XMLString = XMLString + _retArray[i];
-
-        }
-        console.log(XMLString)
-        return _retArray;
-    }
-
+    var isNotApplicableFlag = true;  //once I have real data, set to False
     //Value Rules
     //////////////////////////////////////////////
     if (getValue(businessObject.elements, "eArrest.05") == null) {
@@ -53,31 +39,32 @@ var seteArrest = function (businessObject) {
     _val = getValue(businessObject.elements, "eArrest.01");
     if (_val == null)
     {    
-        _retArray.push('\t\t' + "<eArrest.01" + NIL_V3NOT_RECORDED + '\n');
+        eArrest["eArrest.01"] = V3NOT_RECORDED
+        eArrest["CardiacArrest"] = "NOT RECORDED";
         v2Array.push({ section: "E11", element: "E11_01", val: v2NOT_RECORDED });
-        OLAPArray.push('\t' + "<CardiacArrest>" + v3NOT_RECORDED + "</CardiacArrest>" + '\n');
     }
     else
     {
+        isNotApplicableFlag= true;
         eArrest["eArrest.01"] = _val[0];
-        _retArray.push('\t' + "<eArrest.01>" + _val[0] + "</eArrest.01>" + '\n');
-        OLAPArray.push('\t' + "<CardiacArrest>" + setCodeText("eArrest.01", _val[0]) + "</CardiacArrest>" + '\n');
+        eArrest["CardiacArrest"] = setCodeText("eArrest.01", _val);
         v2Array.push({ section: "E11", element: "E11_01", val: setV2("eArrest.01", _val) });
     };
 
     /////////////eArrest.02
     _val = getValue(businessObject.elements, "eArrest.02");
-    if (_val == null) {
-        ErrorList.push("eArrest.02 Required");
-        v2Array.push({ section: "E11", element: "E11_02", val: v2NOT_RECORDED });
-        OLAPArray.push('\t' + "<CardiacArrestEtiology>" + v3NOT_RECORDED + "</CardiacArrestEtiology>" + '\n');
+    if (_val == null) 
+    {
+        eArrest["eArrest.01"] = V3NOT_RECORDED
+        eArrest["CardiacArrest"] = "NOT RECORDED";   
     }
     else 
     {
+        isNotApplicableFlag= true;
         eArrest["eArrest.02"] = _val[0];
-        _retArray.push('\t' + "<eArrest.02>" + _val[0] + "</eArrest.02>" + '\n');
+        eArrest["CardiacArrestEtiology"] = setCodeText("eArrest.02", _val[0]);
         v2Array.push({ section: "E11", element: "E11_02", val: setV2("eArrest.02", _val) });
-        OLAPArray.push('\t' + "<CardiacArrestEtiology>" + setCodeText("eArrest.02", _val[0]) + "</CardiacArrestEtiology>" + '\n');
+        
     };
 
 
@@ -85,68 +72,71 @@ var seteArrest = function (businessObject) {
     _val = getValue(businessObject.elements, "eArrest.03");
     if (_val == null) 
     {
-        ErrorList.push("eArrest.03 required");
-        _retArray.push('\t' + "<eArrest.03" + NIL_V3NOT_RECORDED + '\n');
-        OLAPArray.push('\t' + "<ResuscitationAttemptedByEMS>" + v3NOT_RECORDED + "</ResuscitationAttemptedByEMS>" + '\n');
+        eArrest["eArrest.03"] = V3NOT_RECORDED;
+        eArrest["ResuscitationAttemptedByEMS"] = "NOT RECORDED";
         v2Array.push({ section: "E11", element: "E11_02", val: v2NOT_RECORDED });
     }
     else
     {
+        isNotApplicableFlag= true;
         var arr1 = [];
         var arr2 = [];
-        arr1 = _val;
-        arr2 = setV2("eArrest.03", _val);
-
-        for (var i = 0; i < _val.length; i++) {
-            _retArray.push('\t' + "<eArrest.03>" + _val[i] + "</eArrest.03>" + '\n');
-            OLAPArray.push('\t' + "<ResuscitationAttemptedByEMS>" + setCodeText("eArrest.03", _val[0]) + "</ResuscitationAttemptedByEMS>" + '\n');
+        var arr3 = [];        
+        for (var i = 0; i < _val.length; i++) 
+        {
+            arr1.push(_val[i]);
             arr2.push(setV2("eArrest.03", _val[i]));
+            arr3.push(setCodeText("eArrest.03", _val[i]));            
         }
         eArrest["eArrest.03"] = arr1.slice(0);
-        v2Array.push({ section: "E11", element: "E11_03", val: arr2.slice(0) });
+        eArrest["ResuscitationAttemptedByEMS"] = arr3.slice(0);
+        v2Array.push({ section: "E11", element: "E11_03", val:arr3.slice(0) });        
     };
 
     /////////////eArrest.04
     _val = getValue(businessObject.elements, "eArrest.04");
-    if (_val == null) {
-        ErrorList.push("eArrest.04 required");
-        _retArray.push('\t' + "<eArrest.04" + NIL_V3NOT_RECORDED + '\n');
-        OLAPArray.push('\t' + "<ArrestWitnessedBy>" + v3NOT_RECORDED + "</ArrestWitnessedBy>" + '\n');
+    if (_val == null) 
+    {
+        eArrest["eArrest.04"] = V3NOT_RECORDED;
+        eArrest["ArrestWitnessedBy"] = "NOT RECORDED";
         v2Array.push({ section: "E11", element: "E11_04", val: v2NOT_RECORDED });        
     }
     else
     {
+        isNotApplicableFlag= true;
         var arr1 = [];
         var arr2 = [];
-        arr1 = _val;
-        arr2 = setV2("eArrest.04", _val);
-
-        for (var i = 0; i < _val.length; i++) {
-            _retArray.push('\t' + "<eArrest.04>" + _val[i] + "</eArrest.04>" + '\n');
-            OLAPArray.push('\t' + "<ArrestWitnessedBy>" + setCodeText("eArrest.04", _val[0]) + "</ArrestWitnessedBy>" + '\n');
+        var arr3 = [];        
+        for (var i = 0; i < _val.length; i++) 
+        {
+            arr1.push(_val[i]);
             arr2.push(setV2("eArrest.04", _val[i]));
-        }
-        eArrest["eArrest.04"] = arr1.slice(0);        
-        v2Array.push({ section: "E11", element: "E11_04", val: arr2.slice(0) });
+            arr3.push(setCodeText("eArrest.04", _val[i]));            
+        };
+    eArrest["eArrest.04"] = arr1.slice(0);        
+    eArrest["ArrestWitnessedBy"] = arr3.slice(0);        
+    v2Array.push({ section: "E11", element: "E11_04", val: arr2.slice(0) });
     };
 
     /////////////eArrest.05
     _val = getValue(businessObject.elements, "eArrest.05");
     if (_val == null)
     {        
-        ErrorList.push("eArrest.05 required");
-        _retArray.push('\t' + "<eArrest.05" + NIL_V3NOT_RECORDED + '\n');
-        OLAPArray.push('\t' + "<CPRCareProvidedPriortoEMSArrival>" + v3NOT_RECORDED + "</CPRCareProvidedPriortoEMSArrival>" + '\n');
+        eArrest["eArrest.05"] = V3NOT_RECORDED;
+        eArrest["CPRCareProvidedPriortoEMSArrival"] = "NOT RECORDED";
     }
-    else {
-        var arr1 = [];
-        arr1 = _val;
-        for (var i = 0; i < _val.length; i++)
+    else 
+    {
+        isNotApplicableFlag= true;
+        var arr1 = [];       
+        var arr3 = [];        
+        for (var i = 0; i < _val.length; i++) 
         {
-            _retArray.push('\t' + "<eArrest.05>" + _val[i] + "</eArrest.05>" + '\n');
-            OLAPArray.push('\t' + "<CPRCareProvidedPriortoEMSArrival>" + setCodeText("eArrest.05", _val[0]) + "</CPRCareProvidedPriortoEMSArrival>" + '\n');
-        }
+            arr1.push(_val[i]);            
+            arr3.push(setCodeText("eArrest.04", _val[i]));            
+        };
         eArrest["eArrest.05"] = arr1.slice(0);
+        eArrest["CPRCareProvidedPriortoEMSArrival"]  = arr3.slice(0);
     };
 
     /////////////eArrest.06
@@ -154,24 +144,21 @@ var seteArrest = function (businessObject) {
     
     if (_val == null)
     {
-        
-        ErrorList.push("eArrest.06 required");        
-        OLAPArray.push('\t' + "<WhoProvidedCPRPriortoEMSArrival>" + null + "</WhoProvidedCPRPriortoEMSArrival>" + '\n');
-        
+        eArrest["eArrest.06"] = null;
+        eArrest["WhoProvidedCPRPriortoEMSArrival"] = "NOT RECORDED";        
     }
     else
     {
-        var arr1 = [];
-        var arr2 = [];
-        arr1 = _val;
-        arr2 = setV2("eArrest.06", _val);
-
-        for (var i = 0; i < _val.length; i++)
+        isNotApplicableFlag= true;
+        var arr1 = [];       
+        var arr3 = [];        
+        for (var i = 0; i < _val.length; i++) 
         {
-            _retArray.push('\t' + '\t' + "<eArrest.06>" + _val[i] + "</eArrest.06>" + '\n');
-            OLAPArray.push('\t' + "<WhoProvidedCPRPriortoEMSArrival>" + setCodeText("eArrest.06", _val[0]) + "</WhoProvidedCPRPriortoEMSArrival>" + '\n');
-        }
+            arr1.push(_val[i]);            
+            arr3.push(setCodeText("eArrest.06", _val[i]));            
+        };
         dAgency["eArrest.06"] = arr1.slice(0);
+        eArrest["WhoProvidedCPRPriortoEMSArrival"] =arr3.slice(0)    
     };
 
 
@@ -180,60 +167,48 @@ var seteArrest = function (businessObject) {
     if (_val == null)
     {
         eArrest["eArrest.07"] = V3NOT_RECORDED;
-        OLAPArray.push('\t' + "<WhoProvidedCPRPriortoEMSArrival>" + V3NOT_RECORDED + "</WhoProvidedCPRPriortoEMSArrival>" + '\n');
-        _retArray.push('\t' + "<eArrest.07" + NIL_V3NOT_RECORDED + '\n');
+        eArrest["WhoProvidedCPRPriortoEMSArrival"] = V3NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<WhoProvidedCPRPriortoEMSArrival>" + setCodeText("eArrest.07", _val[0]) + "</WhoProvidedCPRPriortoEMSArrival>" + '\n');
+        isNotApplicableFlag= true;
         eArrest["eArrest.07"] = _val[0];
-        _retArray.push('\t' + "<eArrest.07>" + _val[0] + "</eArrest.07>" + '\n');
+        eArrest["WhoProvidedCPRPriortoEMSArrival"] = setCodeText("eArrest.07", _val[0]);
     };
 
     /////////////eArrest.08
     _val = getValue(businessObject.elements, "eArrest.08");
     if (_val == null)
     {
-        eArrest["eArrest.08"] = _val[0];
-        _retArray.push('\t' + "<eArrest.08>" + null + "</eArrest.08>" + '\n');
-        OLAPArray.push('\t' + "<WhoUsedAEDPriortoEMSArrival>" + null + "</WhoUsedAEDPriortoEMSArrival>" + '\n');
-
+        eArrest["eArrest.08"] = null;
+        eArrest["WhoUsedAEDPriortoEMSArrival"] = null;
     }
     else
     {
+        isNotApplicableFlag= true;
         eArrest["eArrest.08"] = _val[0];
-        _retArray.push('\t' + "<eArrest.08>" + _val[0] + "</eArrest.08>" + '\n');
-        OLAPArray.push('\t' + "<WhoUsedAEDPriortoEMSArrival>" + setCodeText("eArrest.08", _val[0]) + "</WhoUsedAEDPriortoEMSArrival>" + '\n');
+        eArrest["WhoUsedAEDPriortoEMSArrival"] = setCodeText("eArrest.08", _val[0]);
     };
 
     /////////////eArrest.09
     _val = getValue(businessObject.elements, "eArrest.09");
     if (_val == null)
     {
-        TherapeuticHypothermiaInitiated
+        eArrest["eArrest.09"] = null;
+        eArrest["TypeofCPRProvided"] = null;
     }
     else
-    {
-        //If CPR Not provided, set to NotApplicable
-        if (getValue(businessObject.elements, "eArrest.05") == "9923001" && getValue(businessObject.elements, "eArrest.05") == null) //if CPR not provided
+    {        
+        isNotApplicableFlag= true;
+        var arr1 = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++)
         {
-            _retArray.push('\t' + "<eArrest.09" + NIL_V3NOT_APPLICABLE + '\n');
-            OLAPArray.push('\t' + "<TypeofCPRProvided>" + V3NOT_APPLICABLE + "</TypeofCPRProvided>" + '\n');
+            arr1.push(_val[i]);
+            arr3.push(setCodeText("eArrest.09", _val[i]));
         }
-        else
-        {
-            var arr1 = [];
-            var arr2 = [];
-            arr1 = _val;
-            arr2 = setV2("eArrest.09", _val);
-            for (var i = 0; i < _val.length; i++)
-            {
-                _retArray.push('\t' + '\t' + "<eArrest.09>" + _val[i] + "</eArrest.09>" + '\n');
-                OLAPArray.push('\t' + "<TypeofCPRProvided>" + setCodeText("eArrest.09", _val[0]) + "</TypeofCPRProvided>" + '\n');
-            }
-            dAgency["eArrest.09"] = arr1.slice(0);
-            _retArray.push('\t' + "<eArrest.09" + NIL_V3NOT_RECORDED + '\n');
-        }
+        dAgency["eArrest.09"] = arr1.slice(0);
+        dAgency["TypeofCPRProvided"] = arr1.slice(0);   
     };
 
     /////////////eArrest.10
@@ -242,20 +217,20 @@ var seteArrest = function (businessObject) {
     {
         if (isRequiredStateElement("eArrest.10") == true) 
         {
-            OLAPArray.push('\t' + "<TherapeuticHypothermiaInitiated>" + V3NOT_RECORDED+ "</TherapeuticHypothermiaInitiated>" + '\n');
-            _retArray.push('\t' + "<eArrest.10" + NIL_V3NOT_RECORDED + '\n');
+            eArrest["eArrest.10"] = V3NOT_RECORDED;
+            eArrest["TherapeuticHypothermiaInitiated"] = "NOT RECORDED";
         }
         else 
         {
-            _retArray.push('\t' + "<eArrest.10" + NIL_V3NOT_REPORTING + '\n');
-            OLAPArray.push('\t' + "<TherapeuticHypothermiaInitiated>" + V3NOT_REPORTING + "</TherapeuticHypothermiaInitiated>" + '\n');
+            eArrest["eArrest.10"] = v3NOT_REPORTING;            
+            eArrest["TherapeuticHypothermiaInitiated"] = "NOT REPORTING";
         }
     }
     else        
     {
+        isNotApplicableFlag= true;
         eArrest["eArrest.10"] = _val[0];
-        OLAPArray.push('\t' + "<TherapeuticHypothermiaInitiated>" + setCodeText("eArrest.10", _val[0]) + "</TherapeuticHypothermiaInitiated>" + '\n');
-        _retArray.push('\t' + "<eArrest.10>" + _val[0] + "</eArrest.10>" + '\n');
+        eArrest["TherapeuticHypothermiaInitiated"] = setCodeText("eArrest.10", _val[0]);
     };
 
 
@@ -263,17 +238,16 @@ var seteArrest = function (businessObject) {
     _val = getValue(businessObject.elements, "eArrest.11");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<FirstMonitoredArrestRhythmofthePatient>" + V3NOT_RECORDED + "</FirstMonitoredArrestRhythmofthePatient>" + '\n');
+        eArrest["eArrest.11"] = V3NOT_RECORDED;
+        eArrest["FirstMonitoredArrestRhythmofthePatient"] = "NOT RECORDED";
         v2Array.push({ section: "E11", element: "E11_05", val: v2NOT_RECORDED });
-        ErrorList.push("eArrest.11 Required  National Element");
-        _retArray.push('\t' + "<eArrest.11" + NIL_V3NOT_RECORDED + '\n');
     }
     else
     {
-        OLAPArray.push('\t' + "<FirstMonitoredArrestRhythmofthePatient>" + setCodeText("eArrest.11", _val[0]) + "</FirstMonitoredArrestRhythmofthePatient>" + '\n');
-        eArrest["eArrest.11"] = _val;
-        _retArray.push('\t' + "<eArrest.11>" + _val + "</eArrest.11>" + '\n');
-        v2Array.push({ section: "E11", element: "E11_05", val: _val });      
+        isNotApplicableFlag= true;
+        eArrest["eArrest.11"] = _val[0];
+        eArrest["FirstMonitoredArrestRhythmofthePatient"] = setCodeText("eArrest.11", _val[0]);
+        v2Array.push({ section: "E11", element: "E11_05", val: _val[0] });
     };
 
 
@@ -283,24 +257,26 @@ var seteArrest = function (businessObject) {
     {
         if (isRequiredStateElement("eArrest.12") == true)
         {
-            OLAPArray.push('\t' + "<AnyReturnofSpontaneousCirculation>" + v3NOT_RECORDED + "</AnyReturnofSpontaneousCirculation>" + '\n');
-            v2Array.push({ section: "E11", element: "E11_06", val: v2NOT_RECORDED });
-            _retArray.push('\t' + "<eArrest.12" + NIL_V3NOT_RECORDED + '\n');
+            eArrest["eArrest.12"] = V3NOT_RECORDED;
+            eArrest["AnyReturnofSpontaneousCirculation"] = "NOT RECORDED";
+            v2Array.push({ section: "E11", element: "E11_06", val: v2NOT_RECORDED });            
         }                
     }
     else
     {
+        isNotApplicableFlag= true;
         var arr1 = [];
         var arr2 = [];
-        arr1 = _val;
-        arr2 = setV2("eArrest.12", _val);
-        for (var i = 0; i < _val.length; i++) {
-            arr2.push(setV2("eArrest.12", _val[i]))
-            _retArray.push('\t' + '\t' + "<eArrest.12>" + _val[i] + "</eArrest.12>" + '\n');            
-            OLAPArray.push('\t' + "<AnyReturnofSpontaneousCirculation>" + setCodeText("eArrest.12", _val[i]) + "</AnyReturnofSpontaneousCirculation>" + '\n');
-        }
+        var arr3 = [];        
+        for (var i = 0; i < _val.length; i++) 
+        {            
+            arr1.push(_val[i]);
+            arr2.push(setV2("eArrest.12", _val[i]));
+            arr2.push(setCodeText("eArrest.12", _val[i]))
+        };
+        v2Array.push({ section: "E11", element: "E11_06", val: arr2.slice(0)     });
         dAgency["eArrest.12"] = arr1.slice(0);
-        v2Array.push({ section: "E11", element: "E11_06", val: arr2.slice(0) });
+        dAgency["AnyReturnofSpontaneousCirculation"] = arr3.slice(0);
     };
 
     /////////////eArrest.13
@@ -308,13 +284,13 @@ var seteArrest = function (businessObject) {
     if (_val == null)
     {
         eArrest["eArrest.13"] = null;
-        OLAPArray.push('\t' + "<NeurologicalOutcomeatHospitalDischarge>" + null + "</NeurologicalOutcomeatHospitalDischarge>" + '\n');
-        _retArray.push('\t' + "<eArrest.13>" + null + "</eArrest.13>" + '\n');
+        eArrest["NeurologicalOutcomeatHospitalDischarge"] = null;
     }
-    else {
-        eArrest["eArrest.13"] = _val;
-        OLAPArray.push('\t' + "<NeurologicalOutcomeatHospitalDischarge>" + setCodeText("eArrest.13", _val) + "</NeurologicalOutcomeatHospitalDischarge>" + '\n');
-        _retArray.push('\t' + "<eArrest.13>" + _val + "</eArrest.13>" + '\n');        
+    else 
+    {
+        isNotApplicableFlag= true;
+        eArrest["eArrest.13"] = _val[0];
+        eArrest["NeurologicalOutcomeatHospitalDischarge"] = setCodeText("eArrest.13", _val[0]);
     };
 
     /////////////eArrest.14
@@ -323,13 +299,14 @@ var seteArrest = function (businessObject) {
     {
         if (isRequiredStateElement("eArrest.14") == true)
         {
-            OLAPArray.push('\t' + "<DateTimeofCardiacArrest>" + v3NOT_RECORDED + "</DateTimeofCardiacArrest>" + '\n');
+            eArrest["eArrest.14"] = v3NOT_RECORDED;
+            eArrest["DateTimeofCardiacArrest"] = "NOT RECORDED";
             v2Array.push({ section: "E11", element: "E11_08", val: v2NOT_RECORDED });
-            _retArray.push('\t' + "<eArrest.14" + NIL_V3NOT_RECORDED + '\n');
         }
     }
     else
     {
+        isNotApplicableFlag= true;
         if (getValue(businessObject.elements, "eArrest.01" == "3001001"))
         {
             OLAPArray.push('\t' + "<DateTimeofCardiacArrest>" + v3NOT_APPLICABLE + "</DateTimeofCardiacArrest>" + '\n');
@@ -338,10 +315,9 @@ var seteArrest = function (businessObject) {
         }
         else
         {
-            eArrest["eArrest.14"] = _val;
-            _retArray.push('\t' + "<eArrest.14>" + _val + "</eArrest.14>" + '\n');
-            OLAPArray.push('\t' + "<DateTimeofCardiacArrest>" + _val + "</DateTimeofCardiacArrest>" + '\n');
-            v2Array.push({ section: "E11", element: "E11_08", val: _val });
+            eArrest["eArrest.14"] = _val[0];
+            eArrest["DateTimeofCardiacArrest"] = _val[0];
+            v2Array.push({ section: "E11", element: "E11_08", val: _val[0] });
         }
     };
 
@@ -352,36 +328,35 @@ var seteArrest = function (businessObject) {
     if (_val == null)
     {
         if (isRequiredStateElement("eArrest.15") == true) {
-            _retArray.push('\t' + "<eArrest.15" + v3NOT_RECORDED + '\n');
-            OLAPArray.push('\t' + "<ResuscitationAttemptedByEMS>" + v3NOT_RECORDED + "</ResuscitationAttemptedByEMS>" + '\n');
+           
             eArrest["eArrest.15"] = v3NOT_RECORDED;
+            eArrest["DateTimeResuscitationDiscontinued"] = "NOT RECORDED";
             v2Array.push({ section: "E11", element: "E11_09", val: v2NOT_RECORDED });
         }
         else
         {
-            OLAPArray.push('\t' + "<ResuscitationAttemptedByEMS>" + v3NOT_REPORTING + "</ResuscitationAttemptedByEMS>" + '\n');
             eArrest["eArrest.15"] = v3NOT_REPORTING;
-            _retArray.push('\t' + "<eArrest.15" + NIL_V3NOT_REPORTING + '\n');
-            v2Array.push({ section: "E11", element: "E11_09", val: v2NOT_REPORTING });
+            eArrest["DateTimeResuscitationDiscontinued"] = "NOT REPORTING";
+            v2Array.push({ section: "E11", element: "E11_09", val: v2NOT_REPORTING });            
         }       
     }
     else
-    {
-        if (getValue(businessObject.elements, "eArrest.03") in eArrest03Values)  //If there is no resuscitation attempt
+    {        isNotApplicableFlag= true;
+        /*if (getValue(businessObject.elements, "eArrest.03") in eArrest03Values)  //If there is no resuscitation attempt
         {
             _retArray.push('\t' + "<eArrest.15" + v3NOT_APPLICABLE + '\n');
             OLAPArray.push('\t' + "<ResuscitationAttemptedByEMS>" + v3NOT_APPLICABLE + "</ResuscitationAttemptedByEMS>" + '\n');
             eArrest["eArrest.15"] = v3NOT_APPLICABLE;
             v2Array.push({ section: "E11", element: "E11_09", val: v2NOT_APPLICABLE });
-
         }
+
         else
         {
-            v2Array.push({ section: "E11", element: "E11_09", val: (setV2("eArrest.15", _val[i] });
-            OLAPArray.push('\t' + "<ResuscitationAttemptedByEMS>" + _val + "</ResuscitationAttemptedByEMS>" + '\n');
-            eArrest["eArrest.15"] = _val[0];
-            _retArray.push('\t' + "<eArrest.15>" + _val[0] + "</eArrest.15>" + '\n');
-        }
+            */
+
+        eArrest["eArrest.15"] = _val[0];
+        eArrest["DateTimeResuscitationDiscontinued"] = _val[0];
+        v2Array.push({ section: "E11", element: "E11_08", val: _val[0] });
     };
 
 
@@ -391,35 +366,23 @@ var seteArrest = function (businessObject) {
     {
         if (isRequiredStateElement("eArrest.15") == true)
         {
-            _retArray.push('\t' + "<eArrest.16" + v3NOT_RECORDED + '\n');
-            OLAPArray.push('\t' + "<ReasonCPRResuscitationDiscontinued>" + v3NOT_RECORDED + "</ReasonCPRResuscitationDiscontinued>" + '\n');
             eArrest["eArrest.16"] = v3NOT_RECORDED;
+            eArrest["ReasonCPRResuscitationDiscontinued"] = "NOT RECORDED";
             v2Array.push({ section: "E11", element: "E11_10", val: v2NOT_RECORDED });
         }
-        else {
-            OLAPArray.push('\t' + "<ReasonCPRResuscitationDiscontinued>" + v3NOT_REPORTING + "</ReasonCPRResuscitationDiscontinued>" + '\n');
+        else 
+        {            
             eArrest["eArrest.16"] = v3NOT_REPORTING;
-            _retArray.push('\t' + "<eArrest.16" + NIL_V3NOT_REPORTING + '\n');
+            eArrest["ReasonCPRResuscitationDiscontinued"] = "NOT REPORTING";
             v2Array.push({ section: "E11", element: "E11_10", val: v2NOT_REPORTING });
         }
     }
     else
     {
-        if (getValue(businessObject.elements, "eArrest.03") in eArrest03Values)  //If there is no resuscitation attempt
-        {
-            _retArray.push('\t' + "<eArrest.16" + v3NOT_APPLICABLE + '\n');
-            OLAPArray.push('\t' + "<ReasonCPRResuscitationDiscontinued>" + v3NOT_APPLICABLE + "</ReasonCPRResuscitationDiscontinued>" + '\n');
-            eArrest["eArrest.16"] = v3NOT_APPLICABLE;
-            v2Array.push({ section: "E11", element: "E11_10", val: v2NOT_APPLICABLE });
-
-        }
-        else {
-            eArrest["eArrest.16"] = _val[0];
-            OLAPArray.push('\t' + "<ReasonCPRResuscitationDiscontinued>" + setCodeText("eArrest.16", _val[0]) + "</ReasonCPRResuscitationDiscontinued>" + '\n');
-            _retArray.push('\t' + "<eArrest.16>" + _val[0] + "</eArrest.16>" + '\n');
-            v2Array.push({ section: "E11", element: "E11_10", val: setV2("eArrest.16", _val)});
-            E11.E11_10 = setV2("eArrest.16", _val);
-        }
+        isNotApplicableFlag= true;
+        eArrest["eArrest.16"] = _val[0];
+        eArrest["ReasonCPRResuscitationDiscontinued"] =  setCodeText("eArrest.16", _val[0]);
+        v2Array.push({ section: "E11", element: "E11_10", val: setV2("eArrest.16", _val)});
     };
 
 
@@ -427,33 +390,25 @@ var seteArrest = function (businessObject) {
     _val = getValue(businessObject.elements, "eArrest.17");
     if (_val == null) 
     {
-        ErrorList.push("eArrest.17 required");
-        _retArray.push('\t' + "<eArrest.17" + NIL_V3NOT_RECORDED + '\n');       
+        dAgency["eArrest.17"] = V3NOT_RECORDED;                        
+        dAgency["CardiacRhythmonArrivalatDestination"] = "NOT RECORDED";"     
         v2Array.push({ section: "E11", element: "E11_11", val: V2NOT_RECORDED});
-        OLAPArray.push('\t' + "<CardiacRhythmonArrivalatDestination>" + V3NOT_RECORDED + "</CardiacRhythmonArrivalatDestination>" + '\n');
     }
     else
     {
-        if(getValue(businessObject.elements, "eArrest.02") != null)  //if no Cardiac Arrest Etiology, eArrest.17 cannot have value
+        isNotApplicableFlag= true;
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++) 
         {
-            _retArray.push('\t' + "<eArrest.17" + v3NOT_APPLICABLE + '\n');
-            OLAPArray.push('\t' + "<CardiacRhythmonArrivalatDestination>" + v3NOT_APPLICABLE + "</CardiacRhythmonArrivalatDestination>" + '\n');
-            eArrest["eArrest.17"] = v3NOT_APPLICABLE;
-            v2Array.push({ section: "E11", element: "E11_11", val: v2NOT_APPLICABLE });
-
+            arr1.push(_val[i]);
+            arr2.push(setV2("eArrest.17", _val[i]));
+            arr3.push(setCodeText("eArrest.17", _val[i]));            
         }
-        else{
-            var arr1 = [];
-            var arr2 = [];
-            arr1 = _val;
-            arr2 = setV2("eArrest.17", _val);
-            for (var i = 0; i < _val.length; i++) {
-                _retArray.push('\t'  + "<eArrest.17>" + _val[i] + "</eArrest.17>" + '\n');
-                OLAPArray.push('\t' + "<CardiacRhythmonArrivalatDestination>" + setCodeText("eArrest.17", _val[i]) + "</CardiacRhythmonArrivalatDestination>" + '\n');
-            }
-            dAgency["eArrest.17"] = arr1.slice(0);            
-            v2Array.push({ section: "E11", element: "E11_11", val: arr2.slice(0)});
-        }
+        dAgency["eArrest.17"] = arr1.slice(0);
+        dAgency["CardiacRhythmonArrivalatDestination"] = arr3.slice(0);
+        v2Array.push({ section: "E11", element: "E11_11", val:arr2.slice(0) });   
     };
 
 
@@ -461,22 +416,16 @@ var seteArrest = function (businessObject) {
     _val = getValue(businessObject.elements, "eArrest.18");
     if (_val == null) {
         ErrorList.push("eArrest.18 Required");
-        OLAPArray.push('\t' + "<EndofEMSCardiacArrestEvent>" + V3NOT_RECORDED + "</EndofEMSCardiacArrestEvent>" + '\n');
-        eArrest["eArrest.18"] = null;
+        OLAPArray.push('\t' + "<>" + V3NOT_RECORDED + "</EndofEMSCardiacArrestEvent>" + '\n');
+        eArrest["eArrest.18"] = V3NOT_RECORDED;
+        eArrest["EndofEMSCardiacArrestEvent"] = "NOT RECORDED";
     }
     else 
     {
-        if (getValue(businessObject.elements, "eArrest.01") != "3001001" ) //if Cardiac Arrest != No
-        {
-            _retArray.push('\t' + "<eArrest.18" + NIL_V3NOT_APPLICABLE + '\n');
-            OLAPArray.push('\t' + "<EndofEMSCardiacArrestEvent>" + V3NOT_APPLICABLE + "</EndofEMSCardiacArrestEvent>" + '\n');
-        }
-
-        eArrest["eArrest.18"] = _val;
-        _retArray.push('\t' + "<eArrest.18>" + _val + "</eArrest.18>" + '\n');
-        OLAPArray.push('\t' + "<EndofEMSCardiacArrestEvent>" + _val+ "</EndofEMSCardiacArrestEvent>" + '\n');
+        isNotApplicableFlag= true;
+        eArrest["eArrest.18"] = _val[0];
+        eArrest["EndofEMSCardiacArrestEvent"] = setCodeText("eArrest.17", _val[0]);
     };
-};
 
     var setNotApplicableAll = function (businessObject) 
     {
@@ -722,7 +671,7 @@ var eArrest12 = {
     "3012001": "0",
     "3012003": "2370",
     "3012005": "2370",
-    "3012007": "2375"
+    "3012005": "2375"
 };
 
 var eArrest13 = {
@@ -812,316 +761,338 @@ var eArrest17 = {
     "9901071": "2595"
 };
 
-function setCodeText(NEMSISElementNumber, codeVal) {
+var eArrest334_01 = {
+"3001001" : "No", 
+ "3001003" : "Yes; Prior to EMS Arrival", 
+ "3001005" : "Yes; After EMS Arrival"
+};
+var eArrest334_02 = {
+ "3002001" : "Cardiac (Presumed)", 
+ "3002003" : "Drowning/Submersion", 
+ "3002005" : "Drug Overdose", 
+ "3002007" : "Electrocution", 
+ "3002009" : "Exsanguination", 
+ "3002011" : "Other (Not Listed)", 
+ "3002013" : "Respiratory/Asphyxia", 
+ "3002015" : "Trauma"
+};
+
+var eArrest334_03 = {
+ "3003001" : "Attempted Defibrillation", 
+ "3003003" : "Attempted Ventilation", 
+ "3003005" : "Initiated Chest Compressions", 
+ "3003007" : "Not Attempted-Considered Futile", 
+ "3003009" : "Not Attempted-DNR Orders", 
+ "3003011" : "Not Attempted-Signs of Circulation"
+};
+
+var eArrest334_04 = {
+ "3004001" : "Not Witnessed", 
+ "3004003" : "Witnessed by Family Member", 
+ "3004005" : "Witnessed by Healthcare Provider", 
+ "3004007" : "Witnessed by Lay Person"
+};
+
+var eArrest334_05 = {
+ "9923001" : "No", 
+ "9923003" : "Yes"
+};
+
+var eArrest334_06 = {
+ "3006001" : "Family Member", 
+ "3006003" : "First Responder (Fire; Law; EMS)", 
+ "3006005" : "Healthcare Professional (Non-EMS)", 
+ "3006007" : "Lay Person (Non-Family)", 
+ "3006009" : "Other EMS Professional (not part of dispatched response)"
+};
+
+var eArrest334_07 = {
+ "3007001" : "No", 
+ "3007003" : "Yes; Applied without Defibrillation", 
+ "3007005" : "Yes; With Defibrillation"
+};
+
+
+var eArrest334_08 = {
+     "3008001" : "Family Member", 
+ "3008003" : "First Responder (Fire; Law; EMS)", 
+ "3008005" : "Healthcare Professional (Non-EMS)", 
+ "3008007" : "Lay Person (Non-Family)", 
+ "3008009" : "Other EMS Professional (not part of dispatched response)"
+};
+
+var eArrest334_09 = {
+ "3009001" : "Compressions-Continuous", 
+ "3009003" : "Compressions-External Band Type Device", 
+ "3009005" : "Compressions-External Plunger Type Device", 
+ "3009007" : "Compressions-External Thumper Type Device", 
+ "3009009" : "Compressions-Intermittent with Ventilation", 
+ "3009011" : "Compressions-Other Device (Not Listed)", 
+ "3009013" : "Ventilation-Bag Valve Mask", 
+ "3009015" : "Ventilation-Impedance Threshold Device", 
+ "3009017" : "Ventilation-Mouth to Mouth", 
+ "3009019" : "Ventilation-Pocket Mask"
+};
+
+var eArrest334_10 = {
+ "9923001" : "No", 
+ "9923003" : "Yes"
+};
+
+var eArrest334_11 = {
+ "3011001" : "Asystole", 
+ "3011003" : "Bradycardia", 
+ "3011005" : "PEA", 
+ "3011007" : "Unknown AED Non-Shockable Rhythm", 
+ "3011009" : "Unknown AED Shockable Rhythm", 
+ "3011011" : "Ventricular Fibrillation", 
+ "3011013" : "Ventricular Tachycardia-Pulseless"
+};
+
+var eArrest334_12 = {
+ "3012001" : "No", 
+ "3012003" : "Yes; At Arrival at the ED", 
+ "3012005" : "Yes; Prior to Arrival at the ED", 
+ "3012007" : "Yes; Sustained for 20 consecutive minutes"
+};
+
+var eArrest334_13 = {
+ "3013001" : "CPC 1 Good Cerebral Performance", 
+ "3013003" : "CPC 2 Moderate Cerebral Disability", 
+ "3013005" : "CPC 3 Severe Cerebral Disability", 
+ "3013007" : "CPC 4 Coma or Vegetative State"
+};
+
+var eArrest334_16 = {
+ "3016001" : "DNR", 
+ "3016003" : "Medical Control Order", 
+ "3016005" : "Obvious Signs of Death", 
+ "3016007" : "Physically Unable to Perform", 
+ "3016009" : "Protocol/Policy Requirements Completed", 
+ "3016011" : "Return of Spontaneous Circulation (pulse or BP noted)"
+};
+
+var eArrest334_17 = {
+ "9901001" : "Agonal/Idioventricular", 
+ "9901003" : "Asystole", 
+ "9901005" : "Artifact", 
+ "9901007" : "Atrial Fibrillation", 
+ "9901009" : "Atrial Flutter", 
+ "9901011" : "AV Block-1st Degree", 
+ "9901013" : "AV Block-2nd Degree-Type 1", 
+ "9901015" : "AV Block-2nd Degree-Type 2", 
+ "9901017" : "AV Block-3rd Degree", 
+ "9901019" : "Junctional", 
+ "9901021" : "Left Bundle Branch Block", 
+ "9901023" : "Non-STEMI Anterior Ischemia", 
+ "9901025" : "Non-STEMI Inferior Ischemia", 
+ "9901027" : "Non-STEMI Lateral Ischemia", 
+ "9901029" : "Non-STEMI Posterior Ischemia", 
+ "9901031" : "Other (Not Listed)", 
+ "9901033" : "Paced Rhythm", 
+ "9901035" : "PEA", 
+ "9901037" : "Premature Atrial Contractions", 
+ "9901039" : "Premature Ventricular Contractions", 
+ "9901041" : "Right Bundle Branch Block", 
+ "9901043" : "Sinus Arrhythmia", 
+ "9901045" : "Sinus Bradycardia", 
+ "9901047" : "Sinus Rhythm", 
+ "9901049" : "Sinus Tachycardia", 
+ "9901051" : "STEMI Anterior Ischemia", 
+ "9901053" : "STEMI Inferior Ischemia", 
+ "9901055" : "STEMI Lateral Ischemia", 
+ "9901057" : "STEMI Posterior Ischemia", 
+ "9901059" : "Supraventricular Tachycardia", 
+ "9901061" : "Torsades De Points"
+};
+
+
+
+var eArrest334_18 = {
+    "3018001" : "Expired in ED", 
+    "3018003" : "Expired in the Field", 
+    "3018005" : "Ongoing Resuscitation in ED", 
+    "3018007" : "ROSC in the Field", 
+    "3018009" : "ROSC in the ED", 
+    "3018011" : "Ongoing Resuscitation by Other EMS"
+};
+
+function setCodeText(NEMSISElementNumber, valueArray) 
+{
     var _return = [];
-
-
-    switch (NEMSISElementNumber) {
-        case "eArrest.01":
-            if (eArrest334_01[codeVal] == undefined) {
-                _return = codeVal;
+    switch (NEMSISElementNumber) 
+    {
+        case "eArrest.09":
+            if (eArrest334_01[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_01[codeVal];
+            else 
+            {
+                _return = eArrest334_01[valueArray];
             }
             break;
         case "eArrest.02":
-            if (eArrest334_02[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_02[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_02[codeVal];
+            else 
+            {
+                _return = eArrest334_02[valueArray];
             }
             break;
-
         case "eArrest.03":
-            if (eArrest334_03[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_03[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_03[codeVal];
+            else 
+            {
+                _return = eArrest334_03[valueArray];
             }
             break;
         case "eArrest.04":
-            if (eArrest334_04[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_04[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_04[codeVal];
+            else 
+            {
+                _return = eArrest334_04[valueArray];
             }
             break;
         case "eArrest.05":
-            if (eArrest334_05[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_05[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_05[codeVal];
+            else 
+            {
+                _return = eArrest334_05[valueArray];
             }
             break;
+
         case "eArrest.06":
-            if (eArrest334_06[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_06[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_06[codeVal];
+            else 
+            {
+                _return = eArrest334_06[valueArray];
             }
             break;
 
         case "eArrest.07":
-            if (eArrest334_7[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_07[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_07[codeVal];
+            else 
+            {
+                _return = eArrest334_07[valueArray];
             }
             break;
+
         case "eArrest.08":
-            if (eArrest334_08[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_08[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_08[codeVal];
+            else 
+            {
+                _return = eArrest334_08[valueArray];
             }
-            break;
+            b
         case "eArrest.09":
-            if (eArrest334_09[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_09[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_09[codeVal];
+            else 
+            {
+                _return = eArrest334_09[valueArray];
             }
             break;
 
         case "eArrest.10":
-            if (eArrest334_10[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_10[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_10[codeVal];
+            else 
+            {
+                _return = eArrest334_10[valueArray];
             }
             break;
+
         case "eArrest.11":
-            if (eArrest334_11[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_11[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_11[codeVal];
+            else 
+            {
+                _return = eArrest334_11[valueArray];
             }
             break;
 
         case "eArrest.12":
-            if (eArrest334_12[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_12[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_12[codeVal];
+            else 
+            {
+                _return = eArrest334_12[valueArray];
             }
             break;
         case "eArrest.13":
-            if (eArrest334_13[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_13[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_13[codeVal];
+            else 
+            {
+                _return = eArrest334_13[valueArray];
             }
             break;
         case "eArrest.16":
-            if (eArrest334_16[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_16[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_16[codeVal];
+            else 
+            {
+                _return = eArrest334_16[valueArray];
             }
             break;
-
         case "eArrest.17":
-            if (eArrest334_17[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_17[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_17[codeVal];
+            else 
+            {
+                _return = eArrest334_17[valueArray];
             }
             break;
 
         case "eArrest.18":
-            if (eArrest334_18[codeVal] == undefined) {
-                _return = codeVal;
+            if (eArrest334_18[valueArray] == undefined) 
+            {
+                _return = valueArray + " UNDEFINED";
             }
-            else {
-                _return = eArrest334_18[codeVal];
+            else 
+            {
+                _return = eArrest334_18[valueArray];
             }
             break;
+
         default:
             _return = " UNDEFINED";
     }
     return _return;
 
-};
-
-var eArrest334_01 = {
-    "3001001" : "No", 
-    "3001003" : "Yes; Prior to EMS Arrival", 
-    "3001005" : "Yes; After EMS Arrival"
-   };
-
-var eArrest334_02 = {
-    "3002001" : "Cardiac (Presumed)", 
-    "3002003" : "Drowning/Submersion", 
-    "3002005" : "Drug Overdose", 
-    "3002007" : "Electrocution", 
-    "3002009" : "Exsanguination", 
-    "3002011" : "Other (Not Listed)", 
-    "3002013" : "Respiratory/Asphyxia", 
-    "3002015" : "Trauma"
-  
-};
-
-var eArrest334_03 = {
-    "3003001" : "Attempted Defibrillation", 
-    "3003003" : "Attempted Ventilation", 
-    "3003005" : "Initiated Chest Compressions", 
-    "3003007" : "Not Attempted-Considered Futile", 
-    "3003009" : "Not Attempted-DNR Orders", 
-    "3003011" : "Not Attempted-Signs of Circulation"
-
-};
-var eArrest334_04 = {
-    "3004001" : "Not Witnessed", 
-    "3004003" : "Witnessed by Family Member", 
-    "3004005" : "Witnessed by Healthcare Provider", 
-    "3004007" : "Witnessed by Lay Person"
-  
-};
-
-var eArrest334_05 = {
-    "9923001" : "No", 
-    "9923003" : "Yes"
-};
-
-var eArrest334_06 = {
-    "3006001" : "Family Member", 
-"3006003" : "First Responder (Fire; Law; EMS)", 
-    "3006005" : "Healthcare Professional (Non-EMS)", 
-    "3006007" : "Lay Person (Non-Family)", 
-    "3006009" : "Other EMS Professional (not part of dispatched response)"
- 
-};
-
-var eArrest334_07 = {
-    "3007001" : "No", 
-"3007003" : "Yes; Applied without Defibrillation", 
-    "3007005" : "Yes; With Defibrillation"
-
-};
-
-var eArrest334_08 = {
-    "3008001" : "Family Member", 
-"3008003" : "First Responder (Fire; Law; EMS)", 
-    "3008005" : "Healthcare Professional (Non-EMS)", 
-    "3008007" : "Lay Person (Non-Family)", 
-    "3008009" : "Other EMS Professional (not part of dispatched response)" 
-  
-};
-
-var eArrest334_09 = {
-    "3009001" : "Compressions-Continuous", 
-"3009003" : "Compressions-External Band Type Device", 
-    "3009005" : "Compressions-External Plunger Type Device", 
-    "3009007" : "Compressions-External Thumper Type Device", 
-    "3009009" : "Compressions-Intermittent with Ventilation", 
-    "3009011" : "Compressions-Other Device (Not Listed)", 
-    "3009013" : "Ventilation-Bag Valve Mask", 
-    "3009015" : "Ventilation-Impedance Threshold Device", 
-    "3009017" : "Ventilation-Mouth to Mouth", 
-    "3009019" : "Ventilation-Pocket Mask" 
- 
-};
-
-var eArrest334_10 = {
-    "9923001" : "No", 
-"9923003" : "Yes"
- 
-};
-
-var eArrest334_11 = {
-    "3011001" : "Asystole", 
-"3011003" : "Bradycardia", 
-"3011005" : "PEA", 
-"3011007" : "Unknown AED Non-Shockable Rhythm", 
-"3011009" : "Unknown AED Shockable Rhythm", 
-"3011011" : "Ventricular Fibrillation", 
-"3011013" : "Ventricular Tachycardia-Pulseless" 
-   
-};
-
-var eArrest334_12 = {
-    "3012001" : "No", 
-"3012003" : "Yes; At Arrival at the ED", 
-"3012005" : "Yes; Prior to Arrival at the ED", 
-"3012007" : "Yes; Sustained for 20 consecutive minutes" 
-  
-};
-
-var eArrest334_13 = {
-    "3013001" : "CPC 1 Good Cerebral Performance", 
-"3013003" : "CPC 2 Moderate Cerebral Disability", 
-"3013005" : "CPC 3 Severe Cerebral Disability", 
-"3013007" : "CPC 4 Coma or Vegetative State" 
-   
-};
-var eArrest334_16 = {
-    "3016001" : "DNR", 
-"3016003" : "Medical Control Order", 
-"3016005" : "Obvious Signs of Death", 
-"3016007" : "Physically Unable to Perform", 
-"3016009" : "Protocol/Policy Requirements Completed", 
-"3016011" : "Return of Spontaneous Circulation (pulse or BP noted)"
-   
-};
-
-var eArrest334_17 = {
-    "9901001" : "Agonal/Idioventricular", 
-"9901003" : "Asystole", 
-"9901005" : "Artifact", 
-"9901007" : "Atrial Fibrillation", 
-"9901009" : "Atrial Flutter", 
-"9901011" : "AV Block-1st Degree", 
-"9901013" : "AV Block-2nd Degree-Type 1", 
-"9901015" : "AV Block-2nd Degree-Type 2", 
-"9901017" : "AV Block-3rd Degree", 
-"9901019" : "Junctional", 
-"9901021" : "Left Bundle Branch Block", 
-"9901023" : "Non-STEMI Anterior Ischemia", 
-"9901025" : "Non-STEMI Inferior Ischemia", 
-"9901027" : "Non-STEMI Lateral Ischemia", 
-"9901029" : "Non-STEMI Posterior Ischemia", 
-"9901031" : "Other (Not Listed)", 
-"9901033" : "Paced Rhythm", 
-"9901035" : "PEA", 
-"9901037" : "Premature Atrial Contractions", 
-"9901039" : "Premature Ventricular Contractions", 
-"9901041" : "Right Bundle Branch Block", 
-"9901043" : "Sinus Arrhythmia", 
-"9901045" : "Sinus Bradycardia", 
-"9901047" : "Sinus Rhythm", 
-"9901049" : "Sinus Tachycardia", 
-"9901051" : "STEMI Anterior Ischemia", 
-"9901053" : "STEMI Inferior Ischemia", 
-"9901055" : "STEMI Lateral Ischemia", 
-"9901057" : "STEMI Posterior Ischemia", 
-"9901059" : "Supraventricular Tachycardia", 
-"9901061" : "Torsades De Points", 
-"9901063" : "Unknown AED Non-Shockable Rhythm", 
-"9901065" : "Unknown AED Shockable Rhythm", 
-"9901067" : "Ventricular Fibrillation", 
-"9901069" : "Ventricular Tachycardia (With Pulse)", 
-"9901071" : "Ventricular Tachycardia (Pulseless)" 
- 
-};
-
-var eArrest334_18 = {
-    "3018001" : "Expired in ED", 
-"3018003" : "Expired in the Field", 
-"3018005" : "Ongoing Resuscitation in ED"
-  
 };
