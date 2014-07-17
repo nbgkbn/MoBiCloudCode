@@ -1,4 +1,4 @@
-﻿var ErrorList = [];
+﻿ErrorList = [];
 var v3NOT_REPORTING = " NV=\"7701005\"";
 var v3NOT_RECORDED = " NV=\"7701003\"";
 
@@ -13,6 +13,13 @@ var NIL_V3NOT_APPLICABLE = " NV=\"7701001\" xsi:nil=\"true\"/>";
 var PN_REFUSED_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801019\"/>";
 var PN_UNABLE_TO_COMPLETE_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801023\"/>";
 var PN_FINDING_NOT_PRESENT_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801005\"/>";
+var FAX = "PhoneNumberType=\"9913001\"";
+var HOME = "PhoneNumberType=\"9913003\"";
+var MOBILE = "PhoneNumberType=\"9913005\"";
+var PAGER = "PhoneNumberType=\"9913007\"";
+var WORKPHONE = "PhoneNumberType=\"9913009\"";
+var PERSONALEMAIL = "EmailAddressType=\"9904001\"";
+var WORKEMAIL = "EmailAddressType=\"9904003\"";
 
 var dAgency = new Object;
 var AgencyServiceGroup = [];
@@ -21,11 +28,13 @@ var AgencyServiceGroupArray = [];
 var AgencyYearGroupArray = [];
 var _retArray = [];
 var _OLAPArray = [];
+var OLAPXML = new XMLWriter();
+var V3XML = new XMLWriter();
 var XMLString = "";
 var _v2Array = [];
 var DemographicsObject = Object();
-var _v3Array = [];
 
+var dTotalYearArray = [];
 //////////////////////////////////
 var dAgency334 = Parse.Object.extend("dAgency334");
 var AgencyYearGroup334 = Parse.Object.extend("dAgencyYearGroup");
@@ -45,52 +54,52 @@ var setDemographicsObjects = function (parseObject)
     var dPersonnelParseObject = new Object();
     var dStateParseObject = new Object();
     var dVehicleParseObject = new Object();
-    for (var i = 0; i < parseObject.length; i++)
-    {
-        switch (parseObject[i].attributes.name)
-        {
-            case "dAgency":                
-                DemographicsObject.dAgencyParseObject = parseObject[i];
-                break;
-            case "dConfiguration":
-                DemographicsObject.dConfigurationParseObject = parseObject[i];
-                break;
-            case "dContact":
-                DemographicsObject.dContactParseObject = parseObject[i];
-                break;
-            case "dDevice":
-                DemographicsObject.dDeviceParseObject = parseObject[i];
-                break;
-            case "dFacility":
-                DemographicsObject.dFacilityParseObject = parseObject[i];
-                break;
-            case "dLocation":
-                DemographicsObject.dLocationParseObject = parseObject[i];
-                break;
-            case "dPersonnel":
-                DemographicsObject.dPersonnelParseObject = parseObject[i];
-                break;
-            case "dState":
-                DemographicsObject.dStateParseObject = parseObject[i];
-               
-                break;
-            case "dVehicle":
-                DemographicsObject.dVehicleParseObject = parseObject[i];
-                break;
-            default:
-               "UNDEFINED";
-        }
-    };
-    setdAgency(DemographicsObject.dAgencyParseObject);
-    setdConfiguration(DemographicsObject.dConfigurationParseObject);
-    setdContact(DemographicsObject.dContactParseObject);
-    setdDevice(DemographicsObject.dDeviceParseObject);
-    //setdFacility(DemographicsObject.dFacilityParseObject);
-    setdLocation(DemographicsObject.dLocationParseObject);
-    setdPersonnel(DemographicsObject.dPersonnelParseObject);
-    setdState(DemographicsObject.dStateParseObject);
+    for (var i = 0; i < parseObject.length; i++) {
+        switch (parseObject[i].attributes.name) {
+            //case "dAgency":
+               // DemographicsObject.dAgencyParseObject = parseObject[i];
+               // break;
+                //case "dConfiguration":
+                //    DemographicsObject.dConfigurationParseObject = parseObject[i];
+                //    break;
+              //  case "dContact":
+               //     DemographicsObject.dContactParseObject = parseObject[i];
+                //    break;
+                case "dDevice":
+                    DemographicsObject.dDeviceParseObject = parseObject[i];
+                    break;
+                //case "dFacility":
+                //    DemographicsObject.dFacilityParseObject = parseObject[i];
+                //    break;
+                //case "dLocation":
+                //    DemographicsObject.dLocationParseObject = parseObject[i];
+                //    break;
+                //case "dPersonnel":
+                //    DemographicsObject.dPersonnelParseObject = parseObject[i];
+                //    break;
+                //case "dState":
+                //    DemographicsObject.dStateParseObject = parseObject[i];
 
-    setdVehicle(DemographicsObject.dVehicleParseObject);
+                //    break;
+                //case "dVehicle":
+                //    DemographicsObject.dVehicleParseObject = parseObject[i];
+                //    break;
+            default:
+                "UNDEFINED";
+        }
+        console.log(":")
+    };
+    //var dAgencyObject = setdAgency(DemographicsObject.dAgencyParseObject);
+    // setdConfiguration(DemographicsObject.dConfigurationParseObject);
+    //setdContact(DemographicsObject.dContactParseObject);
+    setdDevice(DemographicsObject.dDeviceParseObject);
+    ////setdFacility(DemographicsObject.dFacilityParseObject);
+    //setdLocation(DemographicsObject.dLocationParseObject);
+    //setdPersonnel(DemographicsObject.dPersonnelParseObject);
+    //setdState(DemographicsObject.dStateParseObject);
+
+    //setdVehicle(DemographicsObject.dVehicleParseObject);
+   // createV2XML(dAgency.V221XMLArray);
     return DemographicsObject;
 };
 
@@ -114,98 +123,107 @@ var getSectionIndex = function (sectionObject, sectionName)
     return _retValue;
 };
 
-var setdAgency = function (agencyObject) {
+var setdAgency = function (agencyObject) 
+{
 
+    
+    V3XML.BeginNode("dAgency");
+    OLAPXML.BeginNode("dAgency");
 
     var _arr = [];
     var _arrV2 = [];
-    dAgency["OLTPObjectId"] = agencyObject["agencyId"];
+    //dAgency["OLTPObjectId"] = agencyObject["agencyId"];
 
-    _retArray.push("<dAgency>" + '\n');
-    _OLAPArray.push("<dAgency>" + '\n');
 
     //dAgency.01/////////
     _val = getValue(agencyObject.attributes.elements, "dAgency.01");
-    if (_val == null) {
-        ErrorList.push("dAgency.01 MANDATORY National Element");
-        _v3Array.push({ section: "dAgency", element: "dAgency.01", val: null });
+    if (_val == null) 
+    {
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.01", Description: "Agency ID Mandatory" })
     }
-    else
+    else 
     {
         dAgency["dAgency.01"] = _val[0];
-        _retArray.push('\t' + "<dAgency.01>" + _val[0] + "</dAgency.01>" + '\n');
-        _OLAPArray.push('\t' + "<AgencyStateID>" + _val[0] + "</AgencyStateID>" + '\n');
-        _v3Array.push({ section: "dAgency", element: "dAgency.01", val: _val[0] });
+        V3XML.Node("dAgency.01", _val[0]);
+        OLAPXML.Node("AgencyUniqueStateID", _val[0]);
     };
 
     //dAgency.02/////////
+
     _val = getValue(agencyObject.attributes.elements, "dAgency.02");
-    if (_val == null)
+    if (_val == null) 
     {
-        ErrorList.push("AgencyNumber: MANDATORY V2 and V3 ");
-        _v3Array.push({ section: "dAgency", element: "dAgency.02", val: null });
-
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.02", Description: "Agency Number Mandatory" })
     }
-    else {
-        dAgency["dAgency.02"] = _val[0];
-        _retArray.push('\t' + "<dAgency.02>" + _val[0] + "</dAgency.02>" + '\n');
+    else 
+    {
         _v2Array.push({ section: "D01", element: "D01_01", val: _val[0] });
-        _OLAPArray.push('\t' + "<AgencyNumber>" + _val[0] + "</AgencyNumber>" + '\n');
-        _v3Array.push({ section: "dAgency", element: "dAgency.02", val: _val[0] });
-
+        dAgency["dAgency.02"] = _val[0];
+        dAgency["AgencyNumber"] = _val[0];
+        V3XML.Node("dAgency.02", _val[0]);
+        OLAPXML.Node("AgencyNumber", _val[0]);
     };
+    
 
     //dAgency.03///////
     _val = getValue(agencyObject.attributes.elements, "dAgency.03");
-    if (_val == null) {
-        ErrorList.push("dAgency.03 MANDATORY DIM Element");
-
-        if (isRequiredStateElement("dAgency.03") == true) {
-            _retArray.push('\t' + "<dAgency.03" + v3NOT_RECORDED + '\n');
-            _OLAPArray.push('\t' + "<AgencyName>" + "NOT RECORDED" + "</AgencyName>" + '\n');
-            _v3Array.push({ section: "dAgency", element: "dAgency.03", val: "NOT RECORDED" });
-
-            dAgency["dAgency.03"] = v3NOT_RECORDED;
-        }
-        else {
-            _v3Array.push({ section: "dAgency", element: "dAgency.03", val: "NOT REPORTING" });
-            dAgency["dAgency.03"] = v3NOT_REPORTING;
-            _retArray.push('\t' + "<dAgency.03" + NIL_V3NOT_REPORTING + '\n');
-            _OLAPArray.push('\t' + "<AgencyName>" + "NOT REPORTING" + "</AgencyName>" + '\n');
-        }
-    }
-    else
+    if (_val == null) 
     {
+        V3XML.BeginNode("dAgency.03")
+        OLAPXML.BeginNode("dAgency.03")
+
+        if (isRequiredStateElement("dAgency.03") == true) 
+        {
+            V3XML.Attrib("dAgency.03", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("AgencyName", "NOT RECORDED");
+            dAgency["dAgency.03"] = v3NOT_RECORDED;
+            dAgency["AgencyName"] = v3NOT_RECORDED;
+        }
+        else 
+        {
+            V3XML.Attrib("dAgency.03", NIL_V3NOT_REPORTING);
+            OLAPXML.Node("AgencyName", "NOT REPORTING");
+            dAgency["AgencyName"] = v3NOT_REPORTING;
+            dAgency["dAgency.03"] = v3NOT_REPORTING;
+        }
+        V3XML.EndNode()
+        OLAPXML.EndNode()
+    }
+    else 
+    {
+        V3XML.Node("dAgency.03", _val[0]);
+        OLAPXML.Node("AgencyName", _val[0]);
         dAgency["dAgency.03"] = _val[0];
-        _retArray.push('\t' + "<dAgency.03>" + _val[0] + "</dAgency.03>" + '\n');
+        dAgency["AgencyName"] = _val[0];
         _v2Array.push({ section: "D01", element: "D01_02", val: _val[0] });
     };
 
     //dAgency.04/////////
     _val = getValue(agencyObject.attributes.elements, "dAgency.04");
-    if (_val == null) {
-        ErrorList.push("dAgency.04 Mandatory Element");
-        _v3Array.push({ section: "dAgency", element: "dAgency.04", val: "null" });
-
-    }
-    else
+    if (_val == null) 
     {
-        _v3Array.push({ section: "dAgency", element: "dAgency.04", val: _val[0] });
-        dAgency["dAgency.04"] = _val;
-        _retArray.push('\t' + "<dAgency.04>" + _val[0] + "</dAgency.04>" + '\n');
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.02", Description: "Agency State Mandatory" })
+    }
+    else 
+    {
         _v2Array.push({ section: "D01", element: "D01_03", val: _val[0] });
-        _OLAPArray.push('\t' + "<EMSAgencyState>" + _val[0] + "</EMSAgencyState>" + '\n');
+        dAgency["dAgency.04"] = _val[0];
+        V3XML.Node("dAgency.04", _val[0]);
+        OLAPXML.Node("AgencyState", _val[0]);
+        dAgency["AgencyState"] = _val[0];
     };
+
 
     ///////////////////////AgencyServiceGroup
 
     _sectionIndex = getSectionIndex(agencyObject.attributes, "dAgency.AgencyServiceGroup");
+    var d1_10 = [];
 
+    for (var x = 0; x < _sectionIndex.length; x++) 
+    {
+        V3XML.BeginNode("AgencyServiceGroup")
+        OLAPXML.BeginNode("AgencyServiceGroup")
 
-    for (var x = 0; x < _sectionIndex.length; x++) {
-
-        _retArray.push('\t' + "<dAgency.AgencyServiceGroup>" + '\n');
-        _OLAPArray.push('\t' + "<dAgency.AgencyServiceGroup>" + '\n');
         var AG = new Object;
 
         _elementList = agencyObject.attributes.sections[_sectionIndex[x]].attributes.elements;
@@ -213,100 +231,132 @@ var setdAgency = function (agencyObject) {
         //Parent Object.  If no value, cannot process Group
 
         _val = getValue(_elementList, "dAgency.05");
-        if (_val == null)
+        if (_val == null) 
         {
-            _v3Array.push({ section: "dAgency", element: "dAgency.05", val: null });
-            ErrorList.push("dAgency.05 MANDATORY National Element");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.05", Description: "Agency Service Area States Mandatory" })
         }
-        else
+        else 
         {
-            _v3Array.push({ section: "dAgency", element: "dAgency.05", val: _val[0] });
             AG["dAgency.05"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.05>" + _val[0] + "</dAgency.05>" + '\n');
-            _OLAPArray.push('\t\t' + "<EMSAgencyServiceAreaStates>" + _val[0] + "</EMSAgencyServiceAreaStates>" + '\n');
+            AG["ServiceAreaStates"] = _val[0];
+            V3XML.Node("dAgency.05", _val[0]);
+            OLAPXML.Node("ServiceAreaStates", _val[0]);
         };
 
         _val = getValue(_elementList, "dAgency.06");
-        if (_val == null) {
-            ErrorList.push("dAgency.06 MANDATORY National Element");
-            _v3Array.push({ section: "dAgency", element: "dAgency.05", val:null });
+        if (_val == null) 
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.06", Description: "Agency Service Area County(s) Mandatory" })
         }
-        else {
+        else 
+        {
             _arr = [];
-            for (var i = 0; i < _val.length; i++)
-            {
-                _v3Array.push({ section: "dAgency", element: "dAgency.05", val: _val[i] });
+            for (var i = 0; i < _val.length; i++) 
+            {         
                 _arr.push(_val[i]);
-                _retArray.push('\t\t' + "<dAgency.06>" + _val[i] + "</dAgency.06>" + '\n');
-                _OLAPArray.push('\t\t' + "<EMSAgencyServiceAreaCounties>" + _val[i] + "</EMSAgencyServiceAreaCounties>" + '\n');
+                V3XML.Node("dAgency.06", _val[i]);
+                OLAPXML.Node("ServiceAreaStates", _val[i]);            
             }
+        
             AG["dAgency.06"] = _arr.slice(0);
-            _v2Array.push({ section: "D01", element: "D01_04", val: _arr });
+            AG["ServiceAreaStates"] = _arr.slice(0);
+            _v2Array.push({ section: "D01", element: "D01_04", val: _arr.slice(0) });
+            d1_10.push({ element: "D01_04", val: _arr.slice(0) })
         };
 
         //dAgency.07/////////
         _val = getValue(_elementList, "dAgency.07");
-        if (_val == null)
+        if (_val == null) 
         {
-            _v3Array.push({ section: "dAgency", element: "dAgency.07", val: "NOT RECORDED" });
+        
+            V3XML.BeginNode("dAgency.07")
+            OLAPXML.BeginNode("dAgency.07")
 
-            AG["dAgency.07"] = v3NOT_RECORDED;
-            _OLAPArray.push('\t\t' + "<EMSAgencyCensusTracts>" + "NOT_RECORDED" + "</EMSAgencyCensusTracts>" + '\n');
-            _retArray.push('\t\t' + "<dAgency.07" + NIL_V3NOT_RECORDED + '\n');
+            if (isRequiredStateElement("dAgency.07") == true) 
+            {
+                V3XML.Attrib("dAgency.07", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("CensusTracts", "NOT RECORDED");
+                AG["dAgency.07"] = v3NOT_RECORDED;
+                AG["CensusTracts"] = v3NOT_RECORDED;
+            }
+            else 
+            {
+                V3XML.Attrib("dAgency.07", null);
+                OLAPXML.Node("CensusTracts", null);
+                AG["dAgency.07"] = null;
+                AG["CensusTracts"] = null;
+            }
+            V3XML.EndNode()
+            OLAPXML.EndNode()        
         }
-        else
+        else 
         {
             _arr = [];
-            for (var i = 0; i < _val.length; i++) {
-                _v3Array.push({ section: "dAgency", element: "dAgency.07", val: _val[i] });
+            for (var i = 0; i < _val.length; i++) 
+            {
+                V3XML.Node("dAgency.0", _val[i]);
+                OLAPXML.Node("CensusTracts", _val[i]);
                 _arr.push(_val[i]);
-                _retArray.push('\t\t' + "<dAgency.07>" + _val[i] + "</dAgency.07>" + '\n');
-                _OLAPArray.push('\t\t' + "<EMSAgencyCensusTracts>" + _val[i] + "</EMSAgencyCensusTracts>" + '\n');
             }
             AG["dAgency.07"] = _arr.slice(0);
+            AG["CensusTracts"] = _arr.slice(0);
         };
 
         //dAgency.08//////
         _val = getValue(_elementList, "dAgency.08");
-        if (_val == null) {
-            AG["dAgency.08"] = v3NOT_RECORDED;
-            _v3Array.push({ section: "dAgency", element: "dAgency.08", val: "NOT RECORDED" });
+        if (_val == null) 
+        {
+            V3XML.BeginNode("dAgency.08")
+            OLAPXML.BeginNode("dAgency.08")
 
-            _retArray.push('\t\t' + "<dAgency.08" + NIL_V3NOT_RECORDED + '\n');
-            _OLAPArray.push('\t\t' + "<EMSAgencyServiceAreaZIPCodes>" + "NOT_RECORDED" + "</EMSAgencyServiceAreaZIPCodes>" + '\n');
-        }
-        else {
-            _arr = [];
-            for (var i = 0; i < _val.length; i++)
+            if (isRequiredStateElement("dAgency.08") == true) 
             {
-                _v3Array.push({ section: "dAgency", element: "dAgency.08", val: _val[i] });
-
-                _arr.push(_val[i]);
-                _retArray.push('\t\t' + "<dAgency.08>" + _val[i] + "</dAgency.08>" + '\n');
-                _OLAPArray.push('\t\t' + "<EMSAgencyServiceAreaZIPCodes>" + _val[i] + "</EMSAgencyServiceAreaZIPCodes>" + '\n');
+                V3XML.Attrib("dAgency.08", NIL_V3NOT_RECORDED);                
+                OLAPXML.Node("ServiceAreaZIPCodes", "NOT RECORDED");
+                AG["ServiceAreaZIPCodes"] = v3NOT_RECORDED;
             }
-            AG["dAgency.08"] = _arr.slice(0);
+            else 
+            {
+                V3XML.Attrib("dAgency.08", null);
+                OLAPXML.Node("ServiceAreaZIPCodes", null);
+                AG["ServiceAreaZIPCodes"] = null;
+                AG["dAgency.08"] = null;
+            }
+            V3XML.EndNode()
+            OLAPXML.EndNode()        
         }
-        _retArray.push('\t' + "</dAgency.AgencyServiceGroup>" + '\n');
-        _OLAPArray.push('\t' + "</dAgency.AgencyServiceGroup>" + '\n');
+        else 
+        {
+            _arr = [];
+            for (var i = 0; i < _val.length; i++) 
+            {
+                V3XML.Node("dAgency.08", _val[i]);
+                OLAPXML.Node("ServiceAreaZIPCodes", _val[i]);
+                _arr.push(_val[i]);
+            };
+            AG["dAgency.08"] = _arr.slice(0);
+            AG["ServiceAreaZIPCodes"] = _arr.slice(0);
+        };
+        V3XML.EndNode();
+        OLAPXML.EndNode();
+
         AgencyServiceGroupArray.push(AG);
     };
- 
+    
     //dAgency.09///////
     _val = getValue(agencyObject.attributes.elements, "dAgency.09");
-    if (_val == null) {
-        ErrorList.push("dAgency.09 MANDATORY National Element");
-        _v3Array.push({ section: "dAgency", element: "dAgency.09", val: null });
-
-    }
-    else
+    if (_val == null) 
     {
-        _v3Array.push({ section: "dAgency", element: "dAgency.09", val: _val[0] });
-
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.09", Description: "Primary Type of Service MANDATORY" });
+    }
+    else 
+    {
         dAgency["dAgency.09"] = _val[0];
+        dAgency["PrimaryTypeofService"] = _val[0];
         _v2Array.push({ section: "D01", element: "D01_05", val: setV2("dAgency.09", _val[0]) });
-        _retArray.push('\t' + "<dAgency.09>" + _val[0] + "</dAgency.09>" + '\n');
-        _OLAPArray.push('\t' + "<PrimaryTypeofService>" + setCodeText("dAgency.09", _val[0]) + "</PrimaryTypeofService>" + '\n');
+        V3XML.Node("dAgency.09", _val[0]);
+        OLAPXML.Node("PrimaryTypeofService", _val[0]);
+
     };
 
     //dAgency.10//////
@@ -314,572 +364,611 @@ var setdAgency = function (agencyObject) {
 
     if (_val == null) {
 
-        if (isRequiredStateElement("dAgency.10") == true) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.10", val: "NOT RECORDED" });
-            _retArray.push('\t' + "<dAgency.10" + NIL_V3NOT_RECORDED + '\n');
-            _v2Array.push({ section: "D01", element: "D01_05", val: v2NOT_RECORDED });
-            _OLAPArray.push('\t\t' + "<OtherTypesofService>" + "NOT_RECORDED" + "</OtherTypesofService>" + '\n');
-        }
-        else
-        {
-            _v3Array.push({ section: "dAgency", element: "dAgency.10", val: "NOT REPORTING" });
+        V3XML.BeginNode("dAgency.10")
+        OLAPXML.BeginNode("dAgency.10")
 
-            _retArray.push('\t' + "<dAgency.10" + NIL_V3NOT_REPORTING + '\n');
-            _OLAPArray.push('\t\t' + "<OtherTypesofService>" + "NOT_REPORTING" + "</OtherTypesofService>" + '\n');
-            _v2Array.push({ section: "D01", element: "D01_05", val: v2NOT_REPORTING });
+        if (isRequiredStateElement("dAgency.10") == true) 
+        {
+            V3XML.Attrib("dAgency.10", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("OtherTypesofService", "NOT RECORDED");
+            dAgency["OtherTypesofService"] = v3NOT_RECORDED;
+            dAgency["dAgency.10"] = v3NOT_RECORDED;
+            _v2Array.push({ section: "D01", element: "D01_05", val: v2NOT_RECORDED });
         }
+        else 
+        {
+            _v2Array.push({ section: "D01", element: "D01_05", val: v2NOT_REPORTING });
+            V3XML.Attrib("dAgency.10", NIL_V3NOT_REPORTING);
+            OLAPXML.Node("OtherTypesofService", "NOT REPORTING");
+            dAgency["OtherTypesofService"] = v3NOT_REPORTING;
+            dAgency["dAgency.10"] = v3NOT_REPORTING;
+        }
+        V3XML.EndNode()
+        OLAPXML.EndNode()
     }
-    else {
-        for (var i = 0; i < _val.length; i++) {
-            _arr.push(_val[i]);
-            _v3Array.push({ section: "dAgency", element: "dAgency.10", val: _val[i] });
+    else 
+    {
+        for (var i = 0; i < _val.length; i++) 
+        {
+            _arr.push(_val[i]);            
             _arrV2.push(setV2("dAgency.10", _val[i]))
-            _retArray.push('\t' + "<dAgency.10>" + _val[i] + "</dAgency.10>" + '\n');
-            _OLAPArray.push('\t' + "<OtherTypesofService>" + setCodeText("dAgency.10", _val[i]) + "</OtherTypesofService>" + '\n');
+            V3XML.Node("dAgency.10", _val[i]);
+            OLAPXML.Node("OtherTypesofService", setCodeText("dAgency.10", _val[i]));  
         }
         dAgency["dAgency.10"] = _arr.slice(0);
+        dAgency["OtherTypesofService"] = _arr.slice(0);
         _v2Array.push({ section: "D01", element: "D01_05", val: _arrV2 });
     };
 
 
     //dAgency.11////////
     _val = getValue(agencyObject.attributes.elements, "dAgency.11");
-    if (_val == null) {
-        ErrorList.push("dAgency.11 MANDATORY Element");
-        _v3Array.push({ section: "dAgency", element: "dAgency.11", val:null });
-
+    if (_val == null) 
+    {
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.11", Description: " Level of Service MANDATORY" })
     }
-    else {
+    else 
+    {
         dAgency["dAgency.11"] = _val[0];
-        _v3Array.push({ section: "dAgency", element: "dAgency.11", val: _val[0] });
+        dAgency["LevelofService"] = _val[0];
+        V3XML.Node("dAgency.11", _val[0]);
+        OLAPXML.Node("LevelofService", setCodeText("dAgency.11", _val[0]));  
         _v2Array.push({ section: "D01", element: "D01_07", val: setV2("dAgency.11", _val[0]) });
-        _retArray.push('\t' + "<dAgency.11>" + _val[0] + "</dAgency.11>" + '\n');
-        _OLAPArray.push('\t' + "<LevelofService>" + _val[0] + "</LevelofService>" + '\n');
     };
 
     //dAgency.12
     _val = getValue(agencyObject.attributes.elements, "dAgency.12");
-    if (_val == null) {
-        ErrorList.push("dAgency.12 MANDATORY Element");
-        _v3Array.push({ section: "dAgency", element: "dAgency.12", val: null });
-
+    if (_val == null) 
+    {
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.12", Description: "Organization Status MANDATORY" })
     }
-    else {
-        _v3Array.push({ section: "dAgency", element: "dAgency.12", val: _val[0] });
+    else 
+    {
         dAgency["dAgency.12"] = _val[0];
+        dAgency["OrganizationStatus"] = _val[0];
+        V3XML.Node("dAgency.12", _val[0]);
+        OLAPXML.Node("OrganizationStatus", setCodeText("dAgency.12", _val[0]));  
         _v2Array.push({ section: "D01", element: "D01_09", val: setV2("dAgency.12", _val[0]) });
-        _retArray.push('\t' + "<dAgency.12>" + _val[0] + "</dAgency.12>" + '\n');
-        _OLAPArray.push('\t' + "<OrganizationStatus>" + _val[0] + "</OrganizationStatus>" + '\n');
     };
 
     //dAgency.13////////
     _val = getValue(agencyObject.attributes.elements, "dAgency.13");
-    if (_val == null) {
-        ErrorList.push("dAgency.13 MANDATORY Element");
-        _v3Array.push({ section: "dAgency", element: "dAgency.13", val: null });
-
+    if (_val == null) 
+    {
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.13", Description: "Organization Type MANDATORY" })
     }
-    else {
-        _v3Array.push({ section: "dAgency", element: "dAgency.13", val: _val[0] });
+    else 
+    {
+        V3XML.Node("dAgency.14", _val[0]);
+        OLAPXML.Node("OrganizationalType", _val[0]);       
         _v2Array.push({ section: "D01", element: "D01_08", val: setV2("dAgency.13", _val[0]) });
         dAgency["dAgency.13"] = _val[0];
-        _retArray.push('\t' + "<dAgency.13>" + _val[0] + "</dAgency.13>" + '\n');
-        _OLAPArray.push('\t' + "<OrganizationalType>" + _val[0] + "</OrganizationalType>" + '\n');
+        dAgency["dAgency.13"] = _val[0];
     };
 
     //dAgency.14////////
     _val = getValue(agencyObject.attributes.elements, "dAgency.14");
-    if (_val == null)
+    if (_val == null) 
     {
-        ErrorList.push("dAgency.14  MANDATORY Element");
-        _v3Array.push({ section: "dAgency", element: "dAgency.14", val: null });
-
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dAgency.14", Description: "EMS Agency Organizational Tax Status MANDATORY" })
     }
-    else
+    else 
     {
-        _v3Array.push({ section: "dAgency", element: "dAgency.14", val: _val[0] });
-        dAgency["dAgency.14"] = _val[0];
-        _retArray.push('\t' + "<dAgency.14>" + _val[0] + "</dAgency.14>" + '\n');
-        _OLAPArray.push('\t' + "< EMSAgencyOrganizationalTaxStatus>" + _val[0] + "</EMSAgencyOrganizationalTaxStatus>" + '\n');
-
+        V3XML.Node("dAgency.14", _val[0]);
+        V3XML.Node("OrganizationalTaxStatus", _val[0]);
+        OLAPXML.Node("OrganizationalTaxStatus", setCodeText("dAgency.14", _val[0]));          
+        dAgency["dAgency.14"] = _val[0];        
     };
 
     ///////////////////////AgencyYearGroup
     _sectionIndex = getSectionIndex(agencyObject.attributes, "dAgency.AgencyYearGroup");
-  //  _sectionIndex = getSectionIndex(agencyObject, "dAgency.AgencyYearGroup");
-    for (var x = 0; x < _sectionIndex.length; x++) {
-        _retArray.push('\t' + "<dAgency.AgencyYearGroup>" + '\n');
-        _OLAPArray.push('\t' + "<dAgency.AgencyYearGroup>" + '\n');
+    var dYearGroup = [];
+    //  _sectionIndex = getSectionIndex(agencyObject, "dAgency.AgencyYearGroup");
+    for (var x = 0; x < _sectionIndex.length; x++) 
+    {
 
-        var YG = new Object;
-//        _elementList = agencyObject.sections[_sectionIndex[x]].attributes.elements;
+        V3XML.BeginNode("dAgency.AgencyYearGroup")
+        OLAPXML.BeginNode("dAgency.AgencyYearGroup")
+
+        var YG = new Object;        
         _elementList = agencyObject.attributes.sections[_sectionIndex[x]].attributes.elements;
 
 
         //dAgency.15///////
         _val = getValue(_elementList, "dAgency.15");
-        if (_val == null)
+        if (_val == null) 
         {
-            _v3Array.push({ section: "dAgency", element: "dAgency.15", val:null });
-
             ErrorList.push("dAgency.15 MANDATORY Element");
+            dYearGroup.push({ section: "D01", element: "D01_10", val: null });
         }
-        else
+        else 
         {
-            _v3Array.push({ section: "dAgency", element: "dAgency.15", val: _val[0] });
+            V3XML.Node("dAgency.15", _val[0]);
+            OLAPXML.Node("StatisticalCalendarYear", _val[0]);            
             YG["dAgency.15"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.15>" + _val[0] + "</dAgency.15>" + '\n');
+            YG["StatisticalCalendarYear"] = _val[0];
             _v2Array.push({ section: "D01", element: "D01_10", val: _val[0] });
-            _OLAPArray.push('\t\t' + "<StatisticalCalendarYear>" + _val[0] + "</StatisticalCalendarYear>" + '\n');
+            dYearGroup.push({ section: "D01", element: "D01_10", val: _val[0] });
         };
+        
 
         //dAgency.16///////
         _val = getValue(_elementList, "dAgency.16");
         if (_val == null) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.16", val: "NOT RECORDED" });
+            V3XML.BeginNode("dAgency.16")
+            OLAPXML.BeginNode("dAgency.16")
 
-            YG["dAgency.16"] = v3NOT_RECORDED;
-            _retArray.push('\t\t' + "<dAgency.16" + NIL_V3NOT_RECORDED + '\n');
-            _OLAPArray.push('\t\t' + "<TotalPrimaryServiceAreaSize>" + "NOT_RECORDED" + "</TotalPrimaryServiceAreaSize>" + '\n');
+            if (isRequiredStateElement("dAgency.16") == true) 
+            {
+                V3XML.Attrib("dAgency.16", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("TotalPrimaryServiceAreaSize", "NOT RECORDED");
+                YG["dAgency.03"] = v3NOT_RECORDED;
+                YG["TotalPrimaryServiceAreaSize"] = v3NOT_RECORDED;
+                dYearGroup.push({ section: "D01", element: "D01_12", val: v2NOT_RECORDED });
+            }
+            else 
+            {
+                V3XML.Attrib("dAgency.16", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("dAgency.1`6", "NOT REPORTING");
+                dAgency["TotalPrimaryServiceAreaSize"] = v3NOT_REPORTING;
+                OLAPXML.Node("TotalPrimaryServiceAreaSize", "NOT RECORDED");
+                dYearGroup.push({ section: "D01", element: "D01_12", val: v2NOT_AVAILABLE });
+            }
+            V3XML.EndNode()        
         }
-        else {
-            _v3Array.push({ section: "dAgency", element: "dAgency.16", val: _val[0] });
-
+        else 
+        {
+            V3XML.Node("dAgency.16", _val[0]);
             YG["dAgency.16"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.16>" + _val[0] + "</dAgency.16>" + '\n');
-            _v2Array.push({ section: "D01", element: "D01_12", val: setV2("dAgency.16", _val[0]) });
-            _OLAPArray.push('\t\t' + "<TotalPrimaryServiceAreaSize>" + _val[0] + "</TotalPrimaryServiceAreaSize>" + '\n');
+            YG["TotalPrimaryServiceAreaSize"] = _val[0];
+            OLAPXML.Node("TotalPrimaryServiceAreaSize", _val[0]);
+            dYearGroup.push({ section: "D01", element: "D01_12", val: setV2("dAgency.16", _val[0]) });
         };
 
         //dAgency.17///////
         _val = getValue(_elementList, "dAgency.17");
-        if (_val == null) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.17", val: "NOT RECORDED" });
+        if (_val == null) 
+        {
+            V3XML.BeginNode("dAgency.17")
+            dYearGroup.push({ section: "D01", element: "D01_13", val:  null });           
             YG["dAgency.17"] = v3NOT_RECORDED;
-            _retArray.push('\t\t' + "<dAgency.17" + NIL_V3NOT_RECORDED + '\n');
-            _OLAPArray.push('\t\t' + "<TotalServiceAreaPopulation>" + "NOT_RECORDED" + "</TotalServiceAreaPopulation>" + '\n');
+            YG["TotalServiceAreaPopulation"] = v3NOT_RECORDED;
+            OLAPXML.Node("TotalServiceAreaPopulation", "NOT RECORDED");
+            V3XML.EndNode()
         }
-        else {
-            _v3Array.push({ section: "dAgency", element: "dAgency.17", val: _val[0] });
-
+        else 
+        {
+            V3XML.Node("dAgency.17", _val[0]);
             YG["dAgency.17"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.17>" + _val[0] + "</dAgency.17>" + '\n');
-            _v2Array.push({ section: "D01", element: "D01_13", val: _val[0] });
-            _OLAPArray.push('\t\t' + "<TotalServiceAreaPopulation>" + _val[0] + "</TotalServiceAreaPopulation>" + '\n');
+            YG["TotalServiceAreaPopulation"] = _val[0];
+            OLAPXML.Node("TotalServiceAreaPopulation", _val[0]);            
+            dYearGroup.push({ section: "D01", element: "D01_13", val:  _val[0] });            
         };
 
         //dAgency.18///////////
         _val = getValue(_elementList, "dAgency.18");
-        if (_val == null) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.18", val: "NOT RECORDED" });
-
+        if (_val == null) 
+        {
+            V3XML.BeginNode("dAgency.18")
             YG["dAgency.18"] = v3NOT_RECORDED;
-            _retArray.push('\t\t' + "<dAgency.18" + NIL_V3NOT_RECORDED + '\n');
-            _OLAPArray.push('\t\t' + "<EMS911CallCenterVolumeperYear>" + "NOT_RECORDED" + "</EMS911CallCenterVolumeperYear>" + '\n');
+            YG["911CallCenterVolumeperYear"] = v3NOT_RECORDED;
+            V3XML.Attrib("dAgency.18", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("911CallCenterVolumeperYear", "NOT RECORDED");            
+            dYearGroup.push({ section: "D01", element: "D01_14", val:  null });
+            V3XML.EndNode()        
         }
-        else {
-            _v3Array.push({ section: "dAgency", element: "dAgency.18", val: _val[0] });
 
+        else 
+        {
             YG["dAgency.18"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.18>" + _val[0] + "</dAgency.18>" + '\n');
-            _v2Array.push({ section: "D01", element: "D01_14", val: _val[0] });
-            _OLAPArray.push('\t\t' + "<EMS911CallCenterVolumeperYear>" + _val[0] + "</EMS911CallCenterVolumeperYear>" + '\n');
+            YG["911CallCenterVolumeperYear"] = _val[0];
+            V3XML.Node("dAgency.18", _val[0]);
+            OLAPXML.Node("911CallCenterVolumeperYear", _val[0]);                        
+            dYearGroup.push({ section: "D01", element: "D01_14", val:  _val[0] });
         };
 
         //dAgency.19/////////
         _val = getValue(_elementList, "dAgency.19");
-        if (_val == null) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.19", val:null });
-
+        if (_val == null) 
+        {
+            V3XML.BeginNode("dAgency.19")
             YG["dAgency.19"] = v3NOT_RECORDED;
-            _OLAPArray.push('\t\t' + "<EMSDispatchVolumeperYear>" + "NOT_RECORDED" + "</EMSDispatchVolumeperYear>" + '\n');
-            _retArray.push('\t\t' + "<dAgency.19" + NIL_V3NOT_RECORDED + '\n');
+            YG["DispatchVolumeperYear"] = v3NOT_RECORDED;
+            V3XML.Attrib("dAgency.19", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("911CallCenterVolumeperYear", "NOT RECORDED");            
+            V3XML.EndNode();
+            dYearGroup.push({ section: "D01", element: "D01_15", val:  null });
         }
-        else {
-            _v3Array.push({ section: "dAgency", element: "dAgency.19", val: _val[0] });
+        else 
+        {
             YG["dAgency.19"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.19>" + _val[0] + "</dAgency.19>" + '\n');
-            _v2Array.push({ section: "D01", element: "D01_15", val: _val[0] });
-            _OLAPArray.push('\t\t' + "<EMSDispatchVolumeperYear>" + _v_val[0] + "</EMSDispatchVolumeperYear>" + '\n');
+            YG["911CallCenterVolumeperYear"] = _val[0];
+            V3XML.Node("dAgency.19", _val[0]);
+            OLAPXML.Node("911CallCenterVolumeperYear", _val[0]);
+            dYearGroup.push({ section: "D01", element: "D01_15", val:  _val[0] });
         };
 
 
         _val = getValue(_elementList, "dAgency.20");
-        if (_val == null) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.20", val: "NOT RECORDED" });
-
+        if (_val == null) 
+        {
+            V3XML.BeginNode("dAgency.20")
             YG["dAgency.20"] = v3NOT_RECORDED;
-            _OLAPArray.push('\t\t' + "<EMSPatientTransportVolumeperYear>" + "NOT_RECORDED" + "</EMSPatientTransportVolumeperYear>" + '\n');
-            _retArray.push('\t\t' + "<dAgency.20" + NIL_V3NOT_RECORDED + '\n');
+            YG["PatientTransportVolumeperYear"] = v3NOT_RECORDED;
+            V3XML.Attrib("dAgency.20", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("PatientTransportVolumeperYear", "NOT RECORDED");            
+            dYearGroup.push({ section: "D01", element: "D01_16", val:  null });
+            V3XML.EndNode()        
         }
-        else {
-            _v3Array.push({ section: "dAgency", element: "dAgency.20", val: _val[0] });
-
+        else 
+        {
             YG["dAgency.20"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.20>" + _val[0] + "</dAgency.20>" + '\n');
-            _v2Array.push({ section: "D01", element: "D01_16", val: _val[0] });
-            _OLAPArray.push('\t\t' + "<EMSPatientTransportVolumeperYear>" + _val[0] + "</EMSPatientTransportVolumeperYear>" + '\n');
+            YG["PatientTransportVolumeperYear"] = _val[0];
+            V3XML.Node("dAgency.20", _val[0]);
+            OLAPXML.Node("PatientTransportVolumeperYear", _val[0]);
+            dYearGroup.push({ section: "D01", element: "D01_16", val:  _val[0] });
         };
 
         //dAgency.21//////
         _val = getValue(_elementList, "dAgency.21");
-        if (_val == null) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.21", val: "NOT RECORDED" });
-
-            YG["dAgency.21"] =
-            _retArray.push('\t\t' + "<dAgency.21" + NIL_V3NOT_RECORDED + '\n');
-            _OLAPArray.push('\t\t' + "<EMSPatientContactVolumeperYear>" + "NOT_RECORDED" + "</EMSPatientContactVolumeperYear>" + '\n');
+        if (_val == null) 
+        {
+            V3XML.BeginNode("dAgency.21")
+            YG["dAgency.21"] = v3NOT_RECORDED;
+            YG["PatientContactVolumeperYear"] = v3NOT_RECORDED;
+            V3XML.Attrib("dAgency.21", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("PatientContactVolumeperYear", "NOT RECORDED");            
+            dYearGroup.push({ section: "D01", element: "D01_17", val:  null });
+            V3XML.EndNode()        
         }
-        else {
-            _v3Array.push({ section: "dAgency", element: "dAgency.21", val: _val[0] });
-
+        else 
+        {
             YG["dAgency.21"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.21>" + _val[0] + "</dAgency.21>" + '\n');
-            _v2Array.push({ section: "D01", element: "D01_17", val: _val[0] });
-            _OLAPArray.push('\t\t' + "<EMSPatientContactVolumeperYear>" + _val[0] + "</EMSPatientContactVolumeperYear>" + '\n');
+            YG["PatientContactVolumeperYear"] = _val[0];
+            V3XML.Node("dAgency.21", _val[0]);
+            OLAPXML.Node("PatientContactVolumeperYear", _val[0]);
+            dYearGroup.push({ section: "D01", element: "D01_17", val:  _val[0] });
         };
 
         //dAgency.22////
         _val = getValue(_elementList, "dAgency.22");
-        if (_val == null) {
-            if (isRequiredStateElement("dAgency.22") == true) {
-                _v3Array.push({ section: "dAgency", element: "dAgency.22", val: "NOT RECORDED" });
-
+        if (_val == null) 
+        {
+            if (isRequiredStateElement("dAgency.22") == true) 
+            {
+                V3XML.BeginNode("dAgency.22")
                 YG["dAgency.22"] = v3NOT_RECORDED;
-                _retArray.push('\t\t' + "<dAgency.22" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<EMSBillableCallsperYear>" + "NOT_RECORDED" + "</EMSBillableCallsperYear>" + '\n');
-            }
-            else {
-                _v3Array.push({ section: "dAgency", element: "dAgency.21", val: "NOT REPORTING" });
-
-                YG["dAgency.22"] = v2NOT_REPORTING;
-                _retArray.push('\t\t' + "<dAgency.22" + NIL_V3NOT_REPORTING + '\n');
-                _OLAPArray.push('\t\t' + "<EMSBillableCallsperYear" + V3NOT_REPORTING + '\n');
+                YG["BillableCallsperYear"] = v3NOT_RECORDED;
+                V3XML.Attrib("dAgency.22", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("BillableCallsperYear", "NOT RECORDED");    
+                dYearGroup.push({ section: "D01", element: "D01_18", val:  null });
+                V3XML.EndNode()        
             }
         }
-        else
+        else 
         {
-            _v3Array.push({ section: "dAgency", element: "dAgency.22", val: _val[0] });
             YG["dAgency.22"] = _val[0];
-            _retArray.push('\t\t' + "<dAgency.22>" + _val[0] + "</dAgency.22>" + '\n');
-            _v2Array.push({ section: "D01", element: "D01_18", val: _val[0] });
-            _OLAPArray.push('\t\t' + "<EMSBillableCallsperYear>" + _val[0] + "</EMSBillableCallsperYear>" + '\n');
+            YG["PatientContactVolumeperYear"] = _val[0];
+            V3XML.Node("dAgency.22", _val[0]);
+            OLAPXML.Node("BillableCallsperYear", _val[0]);
+            dYearGroup.push({ section: "D01", element: "D01_18", val:  _val[0] });                
         };
-
-        _retArray.push('\t' + "</dAgency.AgencyYearGroup>" + '\n');
-        _OLAPArray.push('\t' + "</dAgency.AgencyYearGroup>" + '\n');
+        dTotalYearArray.push(dYearGroup);
+        V3XML.EndNode()  //dAgency.AgencyYearGroup
+        OLAPXML.EndNode()//dAgency.AgencyYearGroup
         AgencyYearGroupArray.push(YG);
     };
 
     ////////////////////////
-
+    
     //dAgency.23///////
     _val = getValue(agencyObject.attributes.elements, "dAgency.23");
-    if (_val == null)
-    {
-        _v3Array.push({ section: "dAgency", element: "dAgency.23", val: null });
-        dAgency["dAgency.23"] = null;
-        _v2Array.push({ section: "D01", element: "D01_19", val: null });
-        _OLAPArray.push('\t' + "<EMSAgencyTimeZone>" + null + "</EMSAgencyTimeZone>" + '\n');
-        _retArray.push('\t' + "<dAgency.23>" + null + "</dAgency.23>" + '\n');
-    }
-    else {
-        _v3Array.push({ section: "dAgency", element: "dAgency.23", val: _val[0] });
+    console.log(_val)
 
+    if (_val == null) 
+    {
+        dAgency["dAgency.23"] = null;
+        dAgency["AgencyTimeZone"] = null;
+        V3XML.Node("dAgency.23", null);
+        OLAPXML.Node("AgencyTimeZone", null);
+        _v2Array.push({ section: "D01", element: "D01_19", val: null });
+    }
+    else 
+    {        
+        dAgency["AgencyTimeZone"] = _val[0];
+        V3XML.Node("dAgency.23", _val[0]);
+        OLAPXML.Node("AgencyTimeZone", _val[0]);
         dAgency["dAgency.23"] = _val[0];
         _v2Array.push({ section: "D01", element: "D01_19", val: setV2("dAgency.23", _val[0]) });
-        _retArray.push('\t' + "<dAgency.23>" + _val[0] + "</dAgency.23>" + '\n');
-        _OLAPArray.push('\t' + "<EMSAgencyTimeZone>" + _val[0] + "</EMSAgencyTimeZone>" + '\n');
     };
 
     //dAgency.24//////////////
     _val = getValue(agencyObject.attributes.elements, "dAgency.24");
-    if (_val == null) {
-        _v3Array.push({ section: "dAgency", element: "dAgency.24", val: null });
-
+     if (_val == null)
+     
+    {
         dAgency["dAgency.24"] = null;
-        _v2Array.push({ section: "D01", element: "D01_20", val: null });
-        _OLAPArray.push('\t' + "<EMSAgencyDaylightSavingsTimeUse>" + null + "</EMSAgencyDaylightSavingsTimeUse>" + '\n');
+        dAgency["AgencyDaylightSavingsTimeUse"] = null;
+        V3XML.Node("dAgency.24", null);
+        OLAPXML.Node("AgencyTimeZone", null);
+        _v2Array.push({ section: "D01", element: "D01_20", val:  null });
     }
-    else {
-        _v3Array.push({ section: "dAgency", element: "dAgency.24", val: _val[0] });
-
+    else 
+    {
         dAgency["dAgency.24"] = _val[0];
+        dAgency["AgencyDaylightSavingsTimeUse"] = _val[0];
+        V3XML.Node("dAgency.23", _val[0]);
+        OLAPXML.Node("AgencyTimeZone", _val[0]);        
         _v2Array.push({ section: "D01", element: "D01_20", val: setV2("dAgency.24", _val[0]) });
-        _retArray.push('\t' + "<dAgency.24>" + _val[0] + "</dAgency.24>" + '\n');
-        _OLAPArray.push('\t' + "<EMSAgencyDaylightSavingsTimeUse>" + _val[0] + "</EMSAgencyDaylightSavingsTimeUse>" + '\n');
     };
 
     //dAgency.25//////////////
     _val = getValue(agencyObject.attributes.elements, "dAgency.25");
-    if (_val == null) {
-        _v3Array.push({ section: "dAgency", element: "dAgency.25", val: null });
-
-        _retArray.push('\t' + "<dAgency.25" + NIL_V3NOT_RECORDED + '\n');
+    if (_val == null) 
+    {
+        V3XML.BeginNode("dAgency.25")
         dAgency["dAgency.25"] = v3NOT_RECORDED;
-        _v2Array.push({ section: "D01", element: "D01_20", val: v2NOT_RECORDED });
-        _OLAPArray.push('\t' + "<NationalProviderIdentifier>" + "NOT RECORDED" + "</NationalProviderIdentifier>" + '\n');
+        dAgency["NationalProviderIdentifier"] = v3NOT_RECORDED;
+        V3XML.Attrib("dAgency.25", NIL_V3NOT_RECORDED);
+        OLAPXML.Node("NationalProviderIdentifier", "NOT RECORDED");            
+        V3XML.EndNode();
     }
-    else {
+    else 
+    {
         _arr = [];
         _arrV2 = [];
-        for (var i = 0; i < _val.length ; i++) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.25", val: _val[i] });
-
+        for (var i = 0; i < _val.length ; i++) 
+        {
+            V3XML.Node("dAgency.25", _val[i]);
+            OLAPXML.Node("NationalProviderIdentifier", _val[i]);
             _arr.push(_val[i]);
             _arrV2.push(setV2("dAgency.25", _val[i]));
-            _retArray.push('\t' + "<dAgency.25>" + _val[i] + "</dAgency.25>" + '\n');
-            _OLAPArray.push('\t' + "<NationalProviderIdentifier>" + _val[i] + "</NationalProviderIdentifier>" + '\n');
+
         }
         dAgency["dAgency.25"] = _arr.slice(0);
+        dAgency["NationalProviderIdentifier"] = _arr.slice(0);
         _v2Array.push({ section: "D01", element: "D01_21", val: _arrV2 });
     };
-
+    
     //dAgency.26/////////////
     _val = getValue(agencyObject.attributes.elements, "dAgency.26");
-    if (_val == null) {
-        _v3Array.push({ section: "dAgency", element: "dAgency.26", val: "NOT RECORDED" });
-
-        dAgency["dAgency.26"] = v3NOT_RECORDED;
-        _retArray.push('\t' + "<dAgency.26" + NIL_V3NOT_RECORDED + '\n');
-        _OLAPArray.push('\t' + "<FireDepartmentIDNumber>" + "NOT RECORDED" + "</FireDepartmentIDNumber>" + '\n');
+    if (_val == null) 
+    {
+        V3XML.BeginNode("dAgency.26")
+        dAgency["dAgency.25"] = v3NOT_RECORDED;
+        dAgency["FireDepartmentIDNumber"] = v3NOT_RECORDED;
+        V3XML.Attrib("dAgency.26", NIL_V3NOT_RECORDED);
+        OLAPXML.Node("FireDepartmentIDNumber", "NOT RECORDED");            
+        V3XML.EndNode();        
     }
-    else {
+    else 
+    {
         _arr = [];
-        for (var i = 0; i < agencyObject.length ; i++) {
-            _v3Array.push({ section: "dAgency", element: "dAgency.26", val: _val[i] });
-
+        for (var i = 0; i < agencyObject.length ; i++) 
+        {
+            V3XML.Node("dAgency.26", _val[i]);
+            OLAPXML.Node("FireDepartmentIDNumber", _val[i]);
             _arr.push(_val[i]);
-            _valArray.push(_val[i]);
-            _retArray.push('\t' + "<dAgency.26>" + _val[i] + "</dAgency.26>" + '\n');
-            _OLAPArray.push('\t' + "<FireDepartmentIDNumber>" + _val[i] + "</FireDepartmentIDNumber>" + '\n');
         }
         dAgency["dAgency.26"] = _arr.slice(0);
+        dAgency["FireDepartmentIDNumber"] = _arr.slice(0);
     };
 
+    V3XML.EndNode();        
+    OLAPXML.EndNode();        
+    dAgency.Errors = ErrorList;
+    dAgency.V334XML = V3XML;
+    dAgency.OLAP334XML = OLAPXML;
 
-    _OLAPArray.push("</dAgency>");
-    _retArray.push("</dAgency>");
-
-    /////////////////////////////////////////////
-    //dAgency Assembly
-    //Build XML String
-
-    //Send back Errors - Dylan, check ErrorList.Length on each Submit
-    var Errors = [];
-    for (var i = 0; i < ErrorList.length ; i++) {
-        Errors.push(ErrorList[i]);
-    };
-    dAgency.Errors = Errors;;
-
-    
-
-    //XMLString to dAgency
-    for (var i = 0; i < _retArray.length ; i++) {
-        XMLString = XMLString + _retArray[i];
-    };
-
-    dAgency.V334XMLArray = _retArray;
-
-    var OLAPXMLString = "";
-    for (var i = 0; i < _OLAPArray.length ; i++) {
-        OLAPXMLString = OLAPXMLString + _OLAPArray[i];
-    };
-
-    dAgency.OLAPXMLArray = _OLAPArray;
-
-    var v2XMLString = "";
-    for (var i = 0; i < _v2Array.length ; i++) {
-        v2XMLString = v2XMLString + _v2Array[i];
-    };
-
-    dAgency.V221XMLArray = _v2Array;
-
-    if (AgencyServiceGroupArray.length > 0) {
+    if (AgencyServiceGroupArray.length > 0) 
+    {
         dAgency.AgencyServiceGroup = AgencyServiceGroupArray;
     };
 
-    if (AgencyYearGroupArray.length > 0) {
+    if (AgencyYearGroupArray.length > 0) 
+    {
         dAgency.AgencyYearGroup = AgencyYearGroupArray;
     }
-
-    dAgency.v3Array = _v3Array;
-    dAgency.XMLDocument = XMLString;
-
-
-    if (_OLAPArray.length > 0) {
-        dAgency.OLAPXML = OLAPXMLString;
-    }
-
-
-
+    console.log(V3XML.ToString())
+    return dAgency;
 };
 
 var setdConfiguration = function (configurationObject) {
 
-    var _retArray = [];
-    var _OLAPArray = [];
-    var _v2Array = [];
     var _arr = []
     var _arrV2 = []
     var dConfiguration = new Object();
     var ConfigurationGroup = new Object();
-    _retArray.push("<dConfiguration>" + '\n');
-    _OLAPArray.push("<dConfiguration>" + '\n');
 
-    for (var xx = 0; xx < configurationObject.attributes.sections.length; xx++) {
-        _retArray.push('\t' + "<dConfigurationGroup>" + '\n');
-        _OLAPArray.push('\t' + "<dConfigurationGroup>" + '\n');
+
+    V3XML.BeginNode("dConfiguration");
+    OLAPXML.BeginNode("dConfiguration");        
+
+
+    for (var xx = 0; xx < configurationObject.attributes.sections.length; xx++)
+    {
+        V3XML.BeginNode("dConfiguration.ConfigurationGroup>");
+        OLAPXML.BeginNode("dConfiguration.ConfigurationGroup>");
 
         ///dConfiguration.01 
         var elementList = configurationObject.attributes.sections[xx].attributes.elements;
         _val = getValue(elementList, "dConfiguration.01");
 
         if (_val == null) {
-            ErrorList.push("dConfiguration.01 Mandatory Element");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.01", Description: " State Associated with the Certification/Licensure Levels MANDATORY" })
         }
         else {
-            ConfigurationGroup["dConfiguration.01"] = _val;
-            _retArray.push('\t\t' + "<dConfiguration.01>" + _val + "</dConfiguration.01>" + '\n');
-            _OLAPArray.push('\t\t' + "<ConfigurationState>" + _val + "</ConfigurationState>" + '\n');
+
+            V3XML.Node("dConfiguration.01", _val[0]);
+            OLAPXML.Node("ConfigurationState", _val[0]);
+            ConfigurationGroup["dConfiguration.01"] = _val[0];
+            ConfigurationGroup["ConfigurationState"] = _val[0];
         };
 
         ///dConfiguration.02 
         _val = getValue(elementList, "dConfiguration.02");
         if (_val == null) {
-            ErrorList.push("dConfiguration.02 Mandatory Element");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.01", Description: " State Certification/Licensure Levels MANDATORY" })
         }
         else {
             _arr = [];
             _arrV2 = [];
             for (var t = 0; t < _val.length; t++) {
+                V3XML.Node("dConfiguration.02", _val[t]);
+                OLAPXML.Node("ConfigurationState", _val[t]);
                 _arr.push(_val[t]);
                 _arrV2.push(setV2("dConfiguration.02", _val[t]));
-
-                _retArray.push('\t\t' + "<dConfiguration.02>" + _val[t] + "</dConfiguration.02>" + '\n');
-                _OLAPArray.push('\t\t' + "<LicensureLevels>" + setCodeText("dConfiguration.02", _val[t]) + "</LicensureLevels>" + '\n');
             }
             ConfigurationGroup["dConfiguration.02"] = _arr.slice(0);
-            _v2Array.push({ section: "D04", element: "D04_01", val: _arrV2 });
+            ConfigurationGroup["ConfigurationState"] =_arr.slice(0);
+
+            _v2Array.push({ section: "D04", element: "D04_01", val: _arrV2.slice(0) });
         };
 
         ///dConfiguration.03 
         _val = getValue(elementList, "dConfiguration.03");
-        if (_val == null) {
-            if (isRequiredStateElement("dConfiguration.03") == true) {
+        if (_val == null) 
+        {
+            if (isRequiredStateElement("dConfiguration.03") == true) 
+            {
+                V3XML.BeginNode("dConfiguration.03")
                 ConfigurationGroup["dConfiguration.03"] = v3NOT_RECORDED;
-                _retArray.push('\t\t' + "<dConfiguration.03" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<ProceduresPermittedbytheState>" + "NOT_RECORDED" + "</ProceduresPermittedbytheState>" + '\n');
+                ConfigurationGroup["ProceduresPermittedbytheState"] = v3NOT_RECORDED;
+                V3XML.Attrib("dConfiguration.03", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ProceduresPermittedbytheState", "NOT RECORDED");            
+                V3XML.EndNode();        
             }
         }
-        else {
+        else 
+        {
             _arr = [];
-            for (var t = 0; t < _val.length; t++) {
+            for (var t = 0; t < _val.length; t++) 
+            {
+                V3XML.Node("dConfiguration.03", _val[t]);
+                OLAPXML.Node("ConfigurationState", _val[t]);
                 _arr.push(_val[t]);
-                _retArray.push('\t\t' + "<dConfiguration.03>" + _val[t] + "</dConfiguration.03>" + '\n');
-                _OLAPArray.push('\t\t' + "<ProceduresPermittedbytheState>" + setCodeText("dConfiguration.03", _val[t]) + "</ProceduresPermittedbytheState>" + '\n');
-            }
+                _arrV2.push(setV2("dConfiguration.02", _val[t]));
+            };
             ConfigurationGroup["dConfiguration.03"] = _arr.slice(0);
+            ConfigurationGroup["ConfigurationState"] = _arr.slice(0);
         };
 
         ///dConfiguration.04 
         _val = getValue(elementList, "dConfiguration.04");
         if (_val == null) {
             if (isRequiredStateElement("dConfiguration.04") == true) {
+                V3XML.BeginNode("dConfiguration.04")
                 ConfigurationGroup["dConfiguration.04"] = v3NOT_RECORDED;
-                _retArray.push('\t\t' + "<dConfiguration.04" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<MedicationsPermittedbytheState>" + "NOT_RECORDED" + "</MedicationsPermittedbytheState>" + '\n');
+                ConfigurationGroup["MedicationsPermittedbytheState"] = v3NOT_RECORDED;
+                V3XML.Attrib("dConfiguration.04", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("MedicationsPermittedbytheState", "NOT RECORDED");            
+                V3XML.EndNode();        
             }
         }
-        else {
+        else 
+        {
             _arr = [];
             for (var t = 0; t < _val.length; t++) {
+                V3XML.Node("dConfiguration.04", _val[t]);
+                OLAPXML.Node("MedicationsPermittedbytheState", _val[t]);
                 _arr.push(_val[t]);
-                _retArray.push('\t\t' + "<dConfiguration.04>" + _val[t] + "</dConfiguration.04>" + '\n');
-                _OLAPArray.push('\t\t' + "<MedicationsPermittedbytheState>" + setCodeText("dConfiguration.04", _val[t]) + "</ MedicationsPermittedbytheState>" + '\n');
+                _arrV2.push(setV2("dConfiguration.04", _val[t]));
+
             }
             ConfigurationGroup["dConfiguration.04"] = _arr.slice(0);
+            ConfigurationGroup["MedicationsPermittedbytheState"] = _arr.slice(0);
         };
 
         ///dConfiguration.05 
         _val = getValue(elementList, "dConfiguration.05");
-        if (_val == null) {
-            if (isRequiredStateElement("dConfiguration.05") == true) {
+        if (_val == null) 
+        {
+            if (isRequiredStateElement("dConfiguration.05") == true) 
+            {
+                V3XML.BeginNode("dConfiguration.05")
                 ConfigurationGroup["dConfiguration.05"] = v3NOT_RECORDED;
-                _retArray.push('\t\t' + "<dConfiguration.05" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<ProtocolsPermittedbytheState>" + "NOT_RECORDED" + "</ProtocolsPermittedbytheState>" + '\n');
-            }
+                ConfigurationGroup["ProtocolsPermittedbytheState"] = v3NOT_RECORDED;
+                V3XML.Attrib("dConfiguration.05", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ProtocolsPermittedbytheState", "NOT RECORDED");            
+                V3XML.EndNode();        
+            };
         }
         else {
             _arr = []
-            for (var t = 0; t < _val.length; t++) {
+            for (var t = 0; t < _val.length; t++) 
+            {
+                V3XML.Node("dConfiguration.05", _val[t]);
+                OLAPXML.Node("ProtocolsPermittedbytheState", _val[t]);
                 _arr.push(_val[t]);
-                _retArray.push('\t\t' + "<dConfiguration.05>" + _val[t] + "</dConfiguration.05>" + '\n');
-                _OLAPArray.push('\t\t' + "<ProtocolsPermittedbytheState>" + setCodeText("dConfiguration.05", _val[t]) + "</ProtocolsPermittedbytheState>" + '\n');
-            }
-            ConfigurationGroup["dConfiguration.05"] = _arr.slice(0);
-
+                _arrV2.push(setV2("dConfiguration.05", _val[t]));
+            };
+            ConfigurationGroup["ProtocolsPermittedbytheState"] = _arr.slice(0);
+            ConfigurationGroup["dConfiguration.05"] = _arr.slice(0);            
         };
 
 
         ///////////////////////ProcedureGroup
-//        _sectionIndex = getSectionIndex(agencyObject.attributes, "dAgency.AgencyServiceGroup");
+        //        _sectionIndex = getSectionIndex(agencyObject.attributes, "dAgency.AgencyServiceGroup");
         _sectionIndex = getSectionIndex(configurationObject.attributes.sections[xx].attributes, "dConfiguration.ProcedureGroup");
         for (var x = 0; x < _sectionIndex.length; x++) {
-            _retArray.push('\t\t' + "<dConfiguration.ProcedureGroup>" + '\n');
-            _OLAPArray.push('\t\t' + "<dConfiguration.ProcedureGroup>" + '\n');
+            V3XML.BeginNode("dConfiguration.ProcedureGroup");
+            OLAPXML.BeginNode("dConfiguration.ProcedureGroup");
 
             var ProcedureGroup = new Object;
             _pgElementList = configurationObject.attributes.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements;
 
             ///dConfiguration.06 
             _val = getValue(_pgElementList, "dConfiguration.06");
-            if (_val == null) {
-                ErrorList.push("dConfiguration.06 Mandatory Element");
+            if (_val == null) 
+            {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.06", Description: "EMS Certification Levels Permitted to Perform Each Procedure MANDATORY" })
             }
-            else {
-                _retArray.push('\t\t\t' + "<dConfiguration.06>" + _val + "</dConfiguration.06>" + '\n');
-                _OLAPArray.push('\t\t\t' + "<CertificationLevelsPermittedtoPerformEachProcedure>" + setCodeText("dConfiguration.06", _val) + "</CertificationLevelsPermittedtoPerformEachProcedure>" + '\n');
-                ProcedureGroup["dConfiguration.06"] = _val;;
+            else 
+            {
+                V3XML.Node("dConfiguration.06", _val[0]);
+                OLAPXML.Node("CertificationLevelsPermittedtoPerformEachProcedure", _val[0]);
+                ProcedureGroup["CertificationLevelsPermittedtoPerformEachProcedure"] = _val[0];
+                ProcedureGroup["dConfiguration.06"] = _val[0];
                 _v2Array.push({ section: "D04", element: "D04_05", val: setV2("dConfiguration.06", _val) });
             };
 
             ///dConfiguration.07 
             _val = getValue(_pgElementList, "dConfiguration.07");
             if (_val == null) {
-                ErrorList.push("dConfiguration.07 Mandatory Element");
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.07", Description: " EMS Agency Procedures MANDATORY" })
             }
             else {
                 _arr = [];
                 _arrV2 = [];
+                _valrrV2 = [];
 
                 for (var t = 0; t < _val.length; t++) {
+                    V3XML.Node("dConfiguration.07", _val[t]);
+                    OLAPXML.Node("EMSAgencyProcedures",  setCodeText("dConfiguration.07", _val[t]));
+                    _valrrV2.push(setCodeText("dConfiguration.07", _val[t]));
                     _arr.push(_val[t]);
                     _arrV2.push(setV2("dConfiguration.07", _val[t]));
-                    _retArray.push('\t\t\t' + "<dConfiguration.07>" + _val[t] + "</dConfiguration.07>" + '\n');
-                    _OLAPArray.push('\t\t\t' + "<EMSAgencyProcedures>" + setCodeText("dConfiguration.07", _val[t]) + "</EMSAgencyProcedures>" + '\n');
-
-                }
-                _v2Array.push({ section: "D04", element: "D04_04", val: _arrV2 });
+                };
+                _v2Array.push({ section: "D04", element: "D04_04", val: _arrV2.slice(0) });
                 ProcedureGroup["dConfiguration.07"] = _arr.slice(0);
+                ProcedureGroup["CertificationLevelsPermittedtoPerformEachProcedure"] = _valrrV2.slice(0);;
 
             };
-            _retArray.push('\t\t' + "</dConfiguration.ProcedureGroup>" + '\n');
-            _OLAPArray.push('\t\t' + "</dConfiguration.ProcedureGroup>" + '\n');
+
+            V3XML.EndNode()
+            OLAPXML.EndNode()          
         };
         //////////////////////////////
-
-
         ///////////////////////dConfiguration.MedicationGroup
- 
+
         _sectionIndex = getSectionIndex(configurationObject.attributes.sections[xx].attributes, "dConfiguration.MedicationGroup");
 
-    
         // console.log(_sectionIndex)
         var _MedicationGroupArray = new Array();
         for (var x = 0; x < _sectionIndex.length; x++) {
-            _retArray.push('\t\t' + "<dConfiguration.MedicationGroup>" + '\n');
-            _OLAPArray.push('\t\t' + "<dConfiguration.MedicationGroup>" + '\n');
+
+            V3XML.BeginNode("dConfiguration.MedicationGroup");
+            OLAPXML.BeginNode("dConfiguration.MedicationGroup");
 
             var MedicationGroup = new Object;
             _pgElementList = configurationObject.attributes.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements;
@@ -887,208 +976,219 @@ var setdConfiguration = function (configurationObject) {
             ///dConfiguration.08 
             _val = getValue(_pgElementList, "dConfiguration.08");
             if (_val == null) {
-                ErrorList.push("dConfiguration.08 Mandatory Element");
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.08", Description: "EMS Certification Levels Permitted to Perform Each Procedure MANDATORY" })
             }
-            else {
-                _retArray.push('\t\t\t' + "<dConfiguration.08>" + _val + "</dConfiguration.08>" + '\n');
-                _OLAPArray.push('\t\t\t' + "<EMSCertificationLevelsPermittedtoAdministerEachMedication>" + setCodeText("dConfiguration.08", _val[t]) + "</EMSCertificationLevelsPermittedtoAdministerEachMedication>" + '\n');
-                _v2Array.push({ section: "D04", element: "D04_04", val: setV2("dConfiguration.08", _val) });
-                MedicationGroup["dConfiguration.08"] = _arr.slice(0);
+            else 
+            {
+                V3XML.Node("dConfiguration.08", _val[0]);
+                OLAPXML.Node("CertificationLevelsPermittedtoPerformEachMedication", _val[0]);
+                MedicationGroup["CertificationLevelsPermittedtoPerformEachMedication"] = _val[0];
+                MedicationGroup["dConfiguration.08"] = _val[0];                                
+                _v2Array.push({ section: "D04", element: "D04_07", val: setV2("dConfiguration.08", _val) });                
             };
 
             ///dConfiguration.09 
             _val = getValue(_pgElementList, "dConfiguration.09");
             if (_val == null) {
-                ErrorList.push("dConfiguration.09 Madatory Element");
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.08", Description: "EMS Agency Medications MANDATORY" })
             }
             else {
                 _arr = [];
                 _arrV2 = [];
                 for (var t = 0; t < _val.length; t++) {
                     _arr.push(_val);
-                    _arrV2.push(setV2("dConfiguration.09", _val));
-                    _retArray.push('\t\t\t' + "<dConfiguration.09>" + _val[t] + "</dConfiguration.09>" + '\n');
-                    _OLAPArray.push('\t\t\t' + "<EMSAgencyMedications>" + setCodeText("dConfiguration.09", _val[t]) + "</EMSAgencyMedications>" + '\n');
+                    _arrV2.push(setV2("dConfiguration.09", _val[t]));
+                    V3XML.Node("dConfiguration.08", _val[t]);
+                    OLAPXML.Node("AgencyMedications", _val[t]);
                 };
-                _v2Array.push({ section: "D04", element: "D04_04", val: _arrV2 });
+                _v2Array.push({ section: "D04", element: "D04_04", val: _arrV2.slice(0) });
                 MedicationGroup["dConfiguration.09"] = _arr.slice(0);
+                MedicationGroup["AgencyMedications"] = _arr.slice(0);
             };
-
-            _OLAPArray.push('\t\t' + "</dConfiguration.MedicationGroup>" + '\n');
-            _retArray.push('\t\t' + "</dConfiguration.MedicationGroup>" + '\n');
+            _MedicationGroupArray.push(MedicationsGroup)
+            V3XML.EndNode()
+            OLAPXML.EndNode()          
         };
-
-        _retArray = _retArray.concat(_MedicationGroupArray);
 
         ///dConfiguration.10 
         _val = getValue(elementList, "dConfiguration.10");
         if (_val == null) {
-            ErrorList.push("dConfiguration.10 Mandatory Element");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.08", Description: "EMS Agency Protocols MANDATORY" })
         }
         else {
             _arr = [];
             _arrV2 = [];
-
+            _arrrV3 = [];
             for (var t = 0; t < _val.length; t++) {
                 _arr.push(_val);
                 _arrV2.push(setV2("dConfiguration.10", _val));
-                _retArray.push('\t\t' + "<dConfiguration.10>" + _val[t] + "</dConfiguration.10>" + '\n');
-                _OLAPArray.push('\t\t' + "<EMSAgencyProtocols>" + setCodeText("dConfiguration.10", _val[t]) + "</EMSAgencyProtocols>" + '\n');
+                V3XML.Node("dConfiguration.10", _val[t]);
+                OLAPXML.Node("AgencyProtocols", setCodeText("dConfiguration.10", _val[t]) );
+                _arrrV3 .push(setCodeText("dConfiguration.10", _val[t])); 
+            
             }
             ConfigurationGroup["dConfiguration.10"] = _arr.slice(0);
+            ConfigurationGroup["dConfiguration.10"] = _arrrV3.slice(0);
             _v2Array.push({ section: "D04", element: "D04_08", val: _arrV2 });
         };
 
         ///dConfiguration.11 
         _val = getValue(elementList, "dConfiguration.11");
-        if (_val == null) {
-            ErrorList.push("dConfiguration.11 Mandatory Element");
+        if (_val == null) 
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.08", Description: " EMS Agency Specialty Service Capability MANDATORY" })            
         }
         else {
-            for (var t = 0; t < _val.length; t++) {
-                _arr.push(_val[t]);
-                _retArray.push('\t\t' + "<dConfiguration.11>" + _val[t] + "</dConfiguration.11>" + '\n');
-                _OLAPArray.push('\t\t' + "<EMSAgencySpecialtyServiceCapability>" + setCodeText("dConfiguration.11", _val[t]) + "</EMSAgencySpecialtyServiceCapability>" + '\n');
+            _arrrV3 = [];
+            _arr = [];
+
+            for (var t = 0; t < _val.length; t++) 
+            {
+                _arr.push(_val[t]);               
+                V3XML.Node("dConfiguration.11", _val[t]);
+                OLAPXML.Node("AgencySpecialtyServiceCapability", setCodeText("dConfiguration.11", _val[t]));
+                _arrrV3.push(setCodeText("dConfiguration.11", _val[t]));
+              
             }
             ConfigurationGroup["dConfiguration.11"] = _arr.slice(0);
+            ConfigurationGroup["AgencySpecialtyServiceCapability"] = _arrrV3.slice(0);
         };
 
 
         ///dConfiguration.12 
         _val = getValue(elementList, "dConfiguration.12");
         if (_val == null) {
+            V3XML.Node("dConfiguration.10", null);
+            OLAPXML.Node("BillingStatus", null );
             _v2Array.push({ section: "D04", element: "D04_10", val: null });
-            _retArray.push('\t\t' + "<dConfiguration.12>" + null + "</dConfiguration.12>" + '\n');
-            _OLAPArray.push('\t\t' + "<BillingStatus>" + null + "</BillingStatus>" + '\n');
+
         }
         else {
-            _retArray.push('\t\t' + "<dConfiguration.12>" + _val + "</dConfiguration.12>" + '\n');
-            ConfigurationGroup["dConfiguration.12"] = _val;
-            _v2Array.push({ section: "D04", element: "D04_10", val: setV2("dConfiguration.12", _val) });
-            _OLAPArray.push('\t\t' + "<BillingStatus>" + setCodeText("dConfiguration.12", _val) + "</BillingStatus>" + '\n');
+            V3XML.Node("dConfiguration.12", _val[0]);
+            OLAPXML.Node("BillingStatus", setCodeText("dConfiguration.12", _val[0]) );
+            _v2Array.push({ section: "D04", element: "D04_10", val: null });
+            ConfigurationGroup["dConfiguration.12"] = _val[0];
+            _v2Array.push({ section: "D04", element: "D04_10", val: setV2("dConfiguration.12", _val) });            
         };
 
         ///dConfiguration.13 
         _val = getValue(elementList, "dConfiguration.13");
         if (_val == null) {
-            ErrorList.push("dConfiguration.13 Mandatory Element");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.08", Description: " Emergency Medical Dispatch (EMD) MANDATORY" })            
         }
-        else {
-            _retArray.push('\t\t' + "<dConfiguration.13>" + _val + "</dConfiguration.13>" + '\n');
-            ConfigurationGroup["dConfiguration.13"] = _val;
-            _OLAPArray.push('\t\t' + "<EMDProvidedtoEMSAgencyServiceArea>" + setCodeText("dConfiguration.13", _val) + "</EMDProvidedtoEMSAgencyServiceArea>" + '\n');
+        else 
+        {
+            V3XML.Node("dConfiguration.13", _val[0]);
+            OLAPXML.Node("EMDProvidedtoEMSAgencyServiceArea", setCodeText("dConfiguration.13", _val[0]) );
+            _v2Array.push({ section: "D04", element: "D04_10", val: null });
+            ConfigurationGroup["dConfiguration.13"] = _val[0];
+            ConfigurationGroup["EMDProvidedtoEMSAgencyServiceArea"] = setCodeText("dConfiguration.13", _val[0]);
         };
 
 
         ///dConfiguration.14 
         _val = getValue(elementList, "dConfiguration.14");
         if (_val == null) {
-            if (isRequiredStateElement("dConfiguration.14") == true) {
+            V3XML.BeginNode("dAgency.14")
+            OLAPXML.BeginNode("dAgency.14")
+            if (isRequiredStateElement("dConfiguration.14") == true) 
+            {
+                V3XML.Attrib("dConfiguration.14", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("EMDVendor", "NOT RECORDED");
                 ConfigurationGroup["dConfiguration.14"] = v3NOT_RECORDED;
-                _retArray.push('\t\t' + "<dConfiguration.14" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<EMDVendor>" + "NOT_RECORDED" + "</EMDVendor>" + '\n');
+                ConfigurationGroup["EMDVendor"] = v3NOT_RECORDED;
+                _v2Array.push({ section: "D04", element: "D04_17", val: v2NOT_RECORDED });  
             }
             else {
-                _retArray.push('\t\t' + "<dConfiguration.14" + NIL_V3NOT_REPORTING + '\n');
-                ConfigurationGroup["dConfiguration.14"] = v2NOT_REPORTING
-                ConfigurationGroup334.set("EMDVendor", v2NOT_REPORTING);
-                _OLAPArray.push('\t\t' + "<EMDVendor>" + "NOT_REPORTING" + "</EMDVendor>" + '\n');
+                V3XML.Attrib("dConfiguration.14", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("EMDVendor", "NOT RECORDED");
+                ConfigurationGroup["dConfiguration.14"] = v3NOT_REPORTING;
+                ConfigurationGroup["EMDVendor"] = v3NOT_REPORTING;
+                _v2Array.push({ section: "D04", element: "D04_17", val: v2NOT_REPORTING });  
             }
+            V3XML.EndNode();
         }
         else {
             _arr = [];
-            _arrV2 = [];
-
             for (var t = 0; t < _val.length; t++) {
-                _arr.push(_val);
-                _arrV2.push(setV2("dConfiguration.14", _val));
-                _retArray.push('\t\t' + "<dConfiguration.14>" + _val[t] + "</dConfiguration.14>" + '\n');
-                _OLAPArray.push('\t\t' + "<EMDVendor>" + _val[t] + "</EMDVendor>" + '\n');
+                _arr.push(_val[t]);
+                V3XML.Node("dConfiguration.14", _val[t]);
+                OLAPXML.Node("EMDVendor", _val[t] );
             }
-            _v2Array.push({ section: "D04", element: "D04_17", val: _arrV2[0] });  //Version 2 has but one
+            _v2Array.push({ section: "D04", element: "D04_17", val: _arr[0] });  //Version 2 has but one
             ConfigurationGroup["dConfiguration.14"] = _arr.slice(0);
+            ConfigurationGroup["EMDVendor"] = _arr.slice(0);
         };
 
         ///dConfiguration.15 
         _val = getValue(elementList, "dConfiguration.15");
         if (_val == null) {
-            ErrorList.push("dConfiguration.15 Madatory Element");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.08", Description: "Patient Monitoring Capability(ies) MANDATORY" })            
         }
         else {
             var _arr = [];
+            var _arrV3 = [];
             for (var t = 0; t < _val.length; t++) {
                 _arr.push(_val[t]);
-                _retArray.push('\t\t' + "<dConfiguration.15>" + _val[t] + "</dConfiguration.15>" + '\n');
-                _OLAPArray.push('\t\t' + "<PatientMonitoringCapabilities>" + _val[t] + "</PatientMonitoringCapabilities>" + '\n');
+                _arr.push(setCodeText("dConfiguration.15", _val[t]));
+                V3XML.Node("dConfiguration.14", _val[t]);
+                OLAPXML.Node("PatientMonitoringCapabilityies", setCodeText("dConfiguration.15", _val[t]) );
             }
             ConfigurationGroup["dConfiguration.15"] = _arr.slice(0);
+            ConfigurationGroup["PatientMonitoringCapabilityies"] = _arrV3.slice(0);
         };
 
 
         ///dConfiguration.16 
         _val = getValue(elementList, "dConfiguration.16");
         if (_val == null) {
-            ErrorList.push("dConfiguration.16 Mandatory Element");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dConfiguration.08", Description: "Crew Call Sign MANDATORY" })            
         }
         else {
+            var _arr = [];
+            var _arrV2 = [];
+            var _arrV3 = [];
             for (var t = 0; t < _val.length; t++) {
                 _arr.push(_val[t]);
-                _v2Array.push({ section: "D04", element: "D04_02", val: setV2("dConfiguration.11", _val[t]) });
-                _retArray.push('\t\t' + "<dConfiguration.16>" + _val[t] + "</dConfiguration.16>" + '\n');
-                _OLAPArray.push('\t\t' + "<CrewCallSign>" + _val[t] + "</CrewCallSign>" + '\n');
+
+                V3XML.Node("dConfiguration.16", _val[t]);
+                OLAPXML.Node("CrewCallSign", setCodeText("dConfiguration.15", _val[t]) );
+
             }
             ConfigurationGroup["dConfiguration.16"] = _arr.slice(0);
+            ConfigurationGroup["CrewCallSign"] = _arr.slice(0);
+            _v2Array.push({ section: "D04", element: "D04_02", val:_arr.slice(0) });            
         };
 
         ///dConfiguration.17 
         _val = getValue(elementList, "dConfiguration.17");
         if (_val == null) {
-            _retArray.push('\t\t' + "<dConfiguration.17>" + null + "</dConfiguration.17>" + '\n');
-            _OLAPArray.push('\t\t' + "<DispatchCenterID>" + null + "</DispatchCenterID>" + '\n');
+            V3XML.Node("dConfiguration.16", null);
+            OLAPXML.Node("DispatchCenterID", null );
+            ConfigurationGroup["dConfiguration.17"] = null;
+            ConfigurationGroup["DispatchCenterID"] = null;
+
         }
         else {
+            var _arr = [];
             for (var t = 0; t < _val.length; t++) {
                 _arr.push(_val[t]);
-                _retArray.push('\t\t' + "<dConfiguration.17>" + _val[t] + "</dConfiguration.17>" + '\n');
-                _OLAPArray.push('\t\t' + "<DispatchCenterID>" + _val[t] + "</DispatchCenterID>" + '\n');
+                V3XML.Node("dConfiguration.16", _val[t]);
+                OLAPXML.Node("DispatchCenterID", _val[t] );                
             }
             ConfigurationGroup["dConfiguration.17"] = _arr.slice(0);
+            ConfigurationGroup["DispatchCenterID"] = _arr.slice(0);;
         };
+        OLAPXML.EndNode();
+        V3XML.EndNode();
 
-
-        _retArray.push('\t' + "</dConfigurationGroup>" + '\n');
-        _OLAPArray.push('\t' + "</dConfigurationGroup>" + '\n');
     };
 
-    _OLAPArray.push("</dConfiguration>" + '\n');
-    _retArray.push("</dConfiguration>" + '\n');
-
+    OLAPXML.EndNode();
+    V3XML.EndNode();
     ////////////////////////////////////
     ////////////////////////////////////
     //XMLString to dConfigurations
-
-    for (var i = 0; i < _retArray.length ; i++) {
-        XMLString = XMLString + _retArray[i];
-    };
-
-    dConfiguration.V334XMLArray = _retArray;
-
-    var OLAPXMLString = "";
-    for (var i = 0; i < _OLAPArray.length ; i++) {
-        OLAPXMLString = OLAPXMLString + _OLAPArray[i];
-    };
-
-    dConfiguration.OLAPXML = OLAPXMLString;
-    dConfiguration.OLAPXMLArray = _OLAPArray;
-
-    var v2XMLString = "";
-    for (var i = 0; i < _v2Array.length ; i++) {
-        v2XMLString = v2XMLString + _v2Array[i];
-    };
-
-    dConfiguration.V221XMLArray = _v2Array;
-    dConfiguration.V221XML = v2XMLString;
-
     ConfigurationGroup.ProcedureGroup = ProcedureGroup;
     ConfigurationGroup.MedicationGroup = MedicationGroup;
     dConfiguration.ConfigurationGroup = ConfigurationGroup;
@@ -1096,580 +1196,758 @@ var setdConfiguration = function (configurationObject) {
     return dConfiguration;
 };
 
-var setdContact = function (contactObject) {
-   
-    var _retArray = [];
-    var _OLAPArray = [];
-    var _v2Array = [];
+var setdContact = function (contactObject) 
+{
+
     var ContactInfoGroup = new Object()
     var dContact = new Object()
-    _retArray.push("<dContact>" + '\n');
-    _OLAPArray.push("<dContact>" + '\n');
 
-    for (var xx = 0; xx < contactObject.attributes.sections.length; xx++) {
+    V3XML.BeginNode("dContact");
+    OLAPXML.BeginNode("dContact");
+
+
+    for (var xx = 0; xx < contactObject.attributes.sections.length; xx++) 
+    {
         var elementList = contactObject.attributes.sections[xx].attributes.elements;
-        _retArray.push('\t' + "<dContact.ContactInfoGroup>" + '\n');
-        _OLAPArray.push('\t' + "<dContact.ContactInfoGroup>" + '\n');
 
+        V3XML.BeginNode("dContact.ContactInfoGroup");
+        OLAPXML.BeginNode("dContact.ContactInfoGroup");
+        
         // dContact.01/////////////
         _val = getValue(elementList, "dContact.01");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.01") == true) {
+        if (_val == null) 
+        {
+            if (isRequiredStateElement("dContact.01") == true) 
+            {
+                V3XML.BeginNode("dContact.01")
+                V3XML.Attrib("dContact.01", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactType", "NOT RECORDED");
+                ContactInfoGroup["ContactType"] = v3NOT_RECORDED;
                 ContactInfoGroup["dContact.01"] = v3NOT_RECORDED;
-                _retArray.push('\t\t' + "<dContact.01" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<AgencyContactType>" + "NOT RECORDED" + "</AgencyContactType>" + '\n');
+                V3XML.EndNode();
             }
-            else {
-                _retArray.push('\t\t' + "<dContact.01" + NIL_V3NOT_REPORTING + '\n');
-                ContactInfoGroup["dContact.01"] = V3NOT_REPORTING;
-                _OLAPArray.push('\t\t' + "<AgencyContactType>" + "NOT REPORTING" + "</AgencyContactType>" + '\n');
+            else 
+            {
+                V3XML.BeginNode("dContact.01")
+                V3XML.Attrib("dContact.01", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactType", "NOT REPORTING");               
+                ContactInfoGroup["ContactType"] = v3NOT_REPORTING;
+                ContactInfoGroup["dContact.01"] = v3NOT_REPORTING;
+                V3XML.EndNode();
             }
         }
-        else {
-            _retArray.push('\t\t' + "<dContact.01>" + _val + "</dContact.01>" + '\n');
-            ContactInfoGroup["dContact.01"] = _val;
-            _OLAPArray.push('\t\t' + "<AgencyContactType>" + setCodeText("dContact.01", _val) + "</AgencyContactType>" + '\n');
+        else 
+        {
+            V3XML.Node("dContact.01", _val[0]);
+            OLAPXML.Node("ContactType",  setCodeText("dContact.01", _val[0]));
+            ContactInfoGroup["dContact.01"] = v3NOT_REPORTING;
+            ContactInfoGroup["ContactType"] = setCodeText("dContact.01", _val[0]);
         };
-
+        
         // dContact.02/////////////
         _val = getValue(elementList, "dContact.02");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.02") == - true) {
+        if (_val == null) 
+        {
+            _v2Array.push({ section: "D02", element: "D02_02", val: null });
+            if (isRequiredStateElement("dContact.02") == - true) 
+            {
+                V3XML.BeginNode("dContact.02")
+                V3XML.Attrib("dContact.02", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactLastName", "NOT RECORDED");                    
+                ContactInfoGroup["ContactLastName"] = v3NOT_RECORDED;
                 ContactInfoGroup["dContact.02"] = v3NOT_RECORDED;
-                _retArray.push('\t\t' + "<dContact.02" + NIL_V3NOT_RECORDED + '\n');
-                _v2Array.push({ section: "D02", element: "D02_01", val: null });
-                _OLAPArray.push('\t\t' + "<ContactLastName>" + "NOT RECORDED" + "</ContactLastName>" + '\n');
+                V3XML.EndNode();
             }
-            else {
-                ContactInfoGroup["dContact.02"] = v3NOT_REPORTING
-                _v2Array.push({ section: "D02", element: "D02_01", val: v2NOT_REPORTING });
-                _retArray.push('\t\t' + "<dContact.02" + NIL_V3NOT_REPORTING + '\n');
-                _OLAPArray.push('\t\t' + "<ContactLastName>" + "NOT REPORTING" + "</ContactLastName>" + '\n');
+            else 
+            {
+                V3XML.BeginNode("dContact.02")
+                V3XML.Attrib("dContact.02", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactLastName", "NOT REPORTING");
+                ContactInfoGroup["ContactLastName"] = v3NOT_REPORTING;
+                ContactInfoGroup["dContact.02"] = v3NOT_REPORTING;
+                V3XML.EndNode();
             }
         }
-        else {
-            ContactInfoGroup["dContact.02"] = _val;
-            _retArray.push('\t\t' + "<dContact.02>" + _val + "</dContact.02>" + '\n');
-            _v2Array.push({ section: "D02", element: "D02_01", val: _val });
-            _OLAPArray.push('\t\t' + "<ContactLastName>" + _val + "</ContactLastName>" + '\n');
+        else 
+        {
+            V3XML.Node("dContact.02", _val[0]);            
+            OLAPXML.Node("ContactLastName",  _val[0]);
+            ContactInfoGroup["dContact.02"] = v3NOT_REPORTING;
+            ContactInfoGroup["ContactType"] = setCodeText("dContact.01", _val[0]);
         };
 
 
         // dContact.03/////////////
         _val = getValue(elementList, "dContact.03");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.03") == - true) {
+        if (_val == null) 
+        { 
+            if (isRequiredStateElement("dContact.03") == - true) 
+            {
+                _v2Array.push({ section: "D02", element: "D02_03", val: v2NOT_RECORDED });
+                V3XML.BeginNode("dContact.03")
+                V3XML.Attrib("dContact.03", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactFirstName", "NOT RECORDED");                    
+                ContactInfoGroup["ContactFirstName"] = v3NOT_RECORDED;
                 ContactInfoGroup["dContact.03"] = v3NOT_RECORDED;
-                _OLAPArray.push('\t\t' + "<ContactFirstName>" + "NOT RECORDED" + "</ContactFirstName>" + '\n');
-                _retArray.push('\t\t' + "<dContact.03" + NIL_V3NOT_RECORDED + '\n');
-                _v2Array.push({ section: "D02", element: "D02_03", val: NIL_V3NOT_RECORDED });
+                V3XML.EndNode();
             }
-            else {
-                ContactInfoGroup["dContact.03"] = v3NOT_REPORTING
-                _OLAPArray.push('\t\t' + "<ContactFirstName>" + "NOT REPORTING" + "</ContactFirstName>" + '\n');
-                _retArray.push('\t\t' + "<dContact.03" + NIL_V3NOT_REPORTING + '\n');
+            else 
+            {
                 _v2Array.push({ section: "D02", element: "D02_03", val: v2NOT_REPORTING });
+                V3XML.BeginNode("dContact.03")
+                V3XML.Attrib("dContact.03", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactFirstName", "NOT REPORTING");
+                ContactInfoGroup["ContactFirstName"] = v3NOT_REPORTING;
+                ContactInfoGroup["dContact.03"] = v3NOT_REPORTING;
+                V3XML.EndNode();
             }
         }
-        else {
+        else 
+        {
+            V3XML.Node("dContact.03", _val[0]);            
+            OLAPXML.Node("ContactFirstName",  _val[0]);
             ContactInfoGroup["dContact.03"] = _val[0];
-            _retArray.push('\t\t' + "<dContact.03>" + _val[0] + "</dContact.03>" + '\n');
-            _v2Array.push({ section: "D02", element: "D02_03", val: _val[0] });
-            _OLAPArray.push('\t\t' + "<ContactFirstName>" + _val[0] + "</ContactFirstName>" + '\n');
+            ContactInfoGroup["ContactFirstName"] = _val[0];
+            _v2Array.push({ section: "D02", element: "D02_03", val: _val[0]});
         };
 
         // dContact.04/////////////
         _val = getValue(elementList, "dContact.04");
-        if (_val == null) {
-            _OLAPArray.push('\t\t' + "<ContactMiddleName>" + null + "</ContactMiddleName>" + '\n');
-            _v2Array.push({ section: "D02", element: "D02_02", val: v2NOT_KNOWN });
-            _retArray.push('\t\t' + "<dContact.04>" + null + "</dContact.04>" + '\n');
+        if (_val == null) 
+        {
+            _v2Array.push({ section: "D02", element: "D02_04", val: v2NOT_KNOWN });
+            V3XML.Node("dContact.04", null);            
+            OLAPXML.Node("ContactMiddleName",  null);
+            ContactInfoGroup["dContact.04"] = null;
+            ContactInfoGroup["ContactMiddleName"] = null;
         }
-        else {
-            ContactInfoGroup["dContact.04"] = _val[0];
+        else 
+        {
+            V3XML.Node("dContact.04", _val[0]);            
+            OLAPXML.Node("ContactMiddleName",  _val[0]);
+            ContactInfoGroup["dContact.04"] = v3NOT_REPORTING;
+            ContactInfoGroup["ContactMiddleName"] = _val[0];
             _v2Array.push({ section: "D02", element: "D02_02", val: _val[0] });
-            _retArray.push('\t\t' + "<dContact.04>" + _val[0] + "</dContact.04>" + '\n');
-            _OLAPArray.push('\t\t' + "<ContactMiddleName>" + _val[0] + "</ContactMiddleName>" + '\n');
         };
-
-
+        
         // dContact.05/////////////
         _val = getValue(elementList, "dContact.05");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.05") == - true) {
-                _retArray.push('\t\t' + "<dContact.05" + NIL_V3NOT_RECORDED + '\n');
+        if (_val == null)
+        { 
+            if (isRequiredStateElement("dContact.05") == - true) 
+            {
                 _v2Array.push({ section: "D02", element: "D02_04", val: v2NOT_RECORDED });
-                _OLAPArray.push('\t\t' + "<ContactAddress>" + "NOT RECORDED" + "</ContactAddress>" + '\n');
+                V3XML.BeginNode("dContact.05")
+                V3XML.Attrib("dContact.05", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactAddress", "NOT RECORDED");                    
+                ContactInfoGroup["ContactAddress"] = v3NOT_RECORDED;
+                ContactInfoGroup["dContact.05"] = v3NOT_RECORDED;
+                V3XML.EndNode();
             }
-            else {
-                ContactInfoGroup["dContact.05"] = v3NOT_REPORTING;
-                _OLAPArray.push('\t\t' + "<ContactAddress>" + "NOT REPORTING" + "</ContactAddress>" + '\n');
+            else 
+            {
                 _v2Array.push({ section: "D02", element: "D02_04", val: v2NOT_REPORTING });
-                _retArray.push('\t\t' + "<dContact.05" + NIL_V3NOT_REPORTING + '\n');
+                V3XML.BeginNode("dContact.05")
+                V3XML.Attrib("dContact.05", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactAddress", "NOT REPORTING");
+                ContactInfoGroup["ContactAddress"] = v3NOT_REPORTING;
+                ContactInfoGroup["dContact.05"] = v3NOT_REPORTING;
+                V3XML.EndNode();
             }
         }
-        else {
-            _retArray.push('\t\t' + "<dContact.05>" + _val + "</dContact.05>" + '\n');
-            _v2Array.push({ section: "D02", element: "D02_04", val: _val });
-            ContactInfoGroup["dContact.05"] = _val;
-            _OLAPArray.push('\t\t' + "<ContactAddress>" + _val + "</ContactAddress>" + '\n');
+        else 
+        {
+            V3XML.Node("dContact.05", _val[0]);            
+            OLAPXML.Node("ContactAddress",  _val[0]);
+            ContactInfoGroup["dContact.05"] = _val[0];
+            ContactInfoGroup["ContactAddress"] = _val[0];
+            _v2Array.push({ section: "D02", element: "D02_04", val: _val[0]});
         };
-
+        
         // dContact.06/////////////
         _val = getValue(elementList, "dContact.06");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.06") == - true) {
-                _OLAPArray.push('\t\t' + "<ContactCity>" + "NOT RECORDED" + "</ContactCity>" + '\n');
-                _retArray.push('\t\t' + "<dContact.06" + NIL_V3NOT_RECORDED + '\n');
-                ContactInfoGroup["dContact.06"] = v3NOT_RECORDED;
+        if (_val == null) 
+        {            
+            if (isRequiredStateElement("dContact.06") == - true) 
+            {
                 _v2Array.push({ section: "D02", element: "D02_05", val: v2NOT_RECORDED });
+                V3XML.BeginNode("dContact.06")
+                V3XML.Attrib("dContact.06", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactCity", "NOT RECORDED");                    
+                ContactInfoGroup["ContactCity"] = v3NOT_RECORDED;
+                ContactInfoGroup["dContact.06"] = v3NOT_RECORDED;
+                V3XML.EndNode();
             }
-            else {
-                ContactInfoGroup["dContact.06"] = v2NOT_REPORTING;
+            else 
+            {
                 _v2Array.push({ section: "D02", element: "D02_05", val: v2NOT_REPORTING });
-                _retArray.push('\t\t' + "<dContact.06" + NIL_V3NOT_REPORTING + '\n');
-                _OLAPArray.push('\t\t' + "<ContactCity>" + "NOT REPORTING" + "</ContactCity>" + '\n');
+                V3XML.BeginNode("dContact.06")
+                V3XML.Attrib("dContact.06", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactCity", "NOT REPORTING");
+                ContactInfoGroup["ContactCity"] = v3NOT_REPORTING;
+                ContactInfoGroup["dContact.06"] = v3NOT_REPORTING;
+                V3XML.EndNode();
             }
         }
-        else {
-            ContactInfoGroup["dContact.06"] = _val;
-            _retArray.push('\t\t' + "<dContact.06>" + _val + "</dContact.06>" + '\n');
-            _v2Array.push({ section: "D02", element: "D02_05", val: _val });
-            _OLAPArray.push('\t\t' + "<ContactCity>" + _val + "</ContactCity>" + '\n');
+        else 
+        {
+            V3XML.Node("dContact.06", _val[0]);            
+            OLAPXML.Node("ContactCity",  _val[0]);
+            ContactInfoGroup["dContact.06"] = _val[0];
+            ContactInfoGroup["ContactCity"] = _val[0];
+            _v2Array.push({ section: "D02", element: "D02_05", val: _val[0]});
         };
-
+        
         // dContact.07/////////////
         _val = getValue(elementList, "dContact.07");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.07") == - true) {
-                _OLAPArray.push('\t\t' + "<ContactState>" + "NOT RECORDED" + "</ContactState>" + '\n');
-                ContactInfoGroup["dContact.07"] = v3NOT_RECORDED;
+        if (_val == null)
+        { 
+            if (isRequiredStateElement("dContact.07") == - true) 
+            {
                 _v2Array.push({ section: "D02", element: "D02_06", val: v2NOT_RECORDED });
-                _retArray.push('\t\t' + "<dContact.07" + NIL_V3NOT_RECORDED + '\n');
+                V3XML.BeginNode("dContact.07")
+                V3XML.Attrib("dContact.07", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactState", "NOT RECORDED");                    
+                ContactInfoGroup["ContactState"] = v3NOT_RECORDED;
+                ContactInfoGroup["dContact.07"] = v3NOT_RECORDED;
+                V3XML.EndNode();
             }
-            else {
-                ContactInfoGroup["dContact.07"] = v2NOT_REPORTING;
-                _OLAPArray.push('\t\t' + "<ContactState>" + "NOT REPORTING" + "</ContactState>" + '\n');
+            else 
+            {
                 _v2Array.push({ section: "D02", element: "D02_06", val: v2NOT_REPORTING });
-                _retArray.push('\t\t' + "<dContact.07" + NIL_V3NOT_REPORTING + '\n');
-            }
+                V3XML.BeginNode("dContact.07")
+                V3XML.Attrib("dContact.07", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactState", "NOT REPORTING");
+                ContactInfoGroup["ContactState"] = v3NOT_REPORTING;
+                ContactInfoGroup["dContact.07"] = v3NOT_REPORTING;
+                V3XML.EndNode();
+            }            
         }
-        else {
-            ContactInfoGroup["dContact.07"] = _val;
-            _retArray.push('\t\t' + "<dContact.07>" + _val + "</dContact.07>" + '\n');
-            _v2Array.push({ section: "D02", element: "D02_06", val: _val });
-            _OLAPArray.push('\t\t' + "<ContactState>" + _val + "</ContactState>" + '\n');
+        else 
+        {
+            V3XML.Node("dContact.07", _val[0]);            
+            OLAPXML.Node("ContactState",  _val[0]);
+            ContactInfoGroup["dContact.07"] = _val[0];
+            ContactInfoGroup["ContactState"] = _val[0];
+            _v2Array.push({ section: "D02", element: "D02_06", val: _val[0]});
         };
 
         // dContact.08/////////////
         _val = getValue(elementList, "dContact.08");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.08") == - true) {
-                _OLAPArray.push('\t\t' + "<ContactZIPCode>" + "NOT RECORDED" + "</ContactZIPCode>" + '\n');
+        if (_val == null)
+        {
+            if (isRequiredStateElement("dContact.08") == - true) 
+            {
+                _v2Array.push({ section: "D02", element: "D02_07", val: v2NOT_RECORDED });
+                V3XML.BeginNode("dContact.08")
+                V3XML.Attrib("dContact.08", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactZip", "NOT RECORDED");                    
+                ContactInfoGroup["ContactZip"] = v3NOT_RECORDED;
                 ContactInfoGroup["dContact.08"] = v3NOT_RECORDED;
-                _retArray.push('\t\t' + "<dContact.08" + NIL_V3NOT_RECORDED + '\n');
-                _v2Array.push({ section: "D02", element: "D02_07", val: NIL_V3NOT_RECORDED });
+                V3XML.EndNode();
             }
-            else {
-                ContactInfoGroup["dContact.08"] = v2NOT_REPORTING;
-                _OLAPArray.push('\t\t' + "<ContactZIPCode>" + "NOT REPORTING" + "</ContactZIPCode>" + '\n');
-                _retArray.push('\t\t' + "<dContact.08" + NIL_V3NOT_REPORTING + '\n');
-                _v2Array.push({ section: "D02", element: "D02_07", val: NIL_V3NOT_REPORTING });
+            else 
+            {
+                _v2Array.push({ section: "D02", element: "D02_07", val: v2NOT_REPORTING });
+                V3XML.BeginNode("dContact.08")
+                V3XML.Attrib("dContact.08", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactZip", "NOT REPORTING");
+                ContactInfoGroup["ContactZip"] = v3NOT_REPORTING;
+                ContactInfoGroup["dContact.08"] = v3NOT_REPORTING;
+                V3XML.EndNode();
             }
         }
-        else {
-            ContactInfoGroup["dContact.08"] = _val;
-            _OLAPArray.push('\t\t' + "<ContactZIPCode>" + _val + "</ContactZIPCode>" + '\n');
-            _retArray.push('\t\t' + "<dContact.08>" + _val + "</dContact.08>" + '\n');
-            _v2Array.push({ section: "D02", element: "D02_07", val: _val });
+        else 
+        {
+            V3XML.Node("dContact.08", _val[0]);            
+            OLAPXML.Node("ContactZip",  _val[0]);
+            ContactInfoGroup["dContact.08"] = _val[0];
+            ContactInfoGroup["ContactZip"] = _val[0];
+            _v2Array.push({ section: "D02", element: "D02_07", val: _val[0]});
         };
-
-
+        
         // dContact.09/////////////
         _val = getValue(elementList, "dContact.09");
-        if (_val == null) {
-            ContactInfoGroup["dContact.09"] = null;
-            _retArray.push('\t\t' + "<dContact.09>" + null + "</dContact.09>" + '\n');
-            _OLAPArray.push('\t\t' + "<ContactCountry>" + null + "</ContactCountry>" + '\n');
+        if (_val == null) 
+        {
+            V3XML.Node("dContact.08", null);            
+            OLAPXML.Node("ContactCounty", null);
+            ContactInfoGroup["dContact.08"] = null;
+            ContactInfoGroup["ContactCounty"] = null;
         }
-        else {
-            ContactInfoGroup["dContact.09"] = _val;
-            _retArray.push('\t\t' + "<dContact.09>" + _val + "</dContact.09>" + '\n');
-            _OLAPArray.push('\t\t' + "<ContactCountry>" + setCodeText("dContact.09", _val) + "</ContactCountry>" + '\n');
+        else 
+        {
+            V3XML.Node("dContact.09", _val[0]);            
+            OLAPXML.Node("ContactCounty",  _val[0]);
+            ContactInfoGroup["dContact.09"] = _val[0];
+            ContactInfoGroup["ContactCounty"] = _val[0];
         };
 
 
         // dContact.10/////////////
-        _val = getValue(elementList, "dContact.10");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.10") == - true) {
-                dContact.ContactInfoGroup["dContact.10"] = v3NOT_RECORDED;
-                _v2Array.push({ section: "D02", element: "D02_08", val: v2NOT_RECORDED });
-                _retArray.push('\t\t' + "<dContact.10" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<ContactPhoneNumber>" + "NOT RECORDED" + "</ContactPhoneNumber>" + '\n');
-
+        _val = getValue(elementList, "dContact.10");        
+        if (_val == null)
+        {
+            if (isRequiredStateElement("dContact.10") == - true)
+            {
+                V3XML.BeginNode("dContact.10")
+                ContactInfoGroup["dContact.10"] = v3NOT_RECORDED;
+                ContactInfoGroup["ContactPhoneNumber"] = v3NOT_RECORDED;
+                V3XML.Attrib("dContact.10", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactPhoneNumber", "NOT RECORDED");
+                V3XML.EndNode();
             }
-            else {
-                ContactInfoGroup["dContact.10"] = v2NOT_REPORTING
-                _v2Array.push({ section: "D02", element: "D02_08", val: v2NOT_REPORTING });
-                _retArray.push('\t\t' + "<dContact.08" + NIL_V3NOT_REPORTING + '\n');
-                _OLAPArray.push('\t\t' + "<ContactPhoneNumber>" + "NOT REPORTING" + "</ContactPhoneNumber>" + '\n');
+            else
+            {
+                V3XML.BeginNode("dContact.10")
+                ContactInfoGroup["dContact.10"] = v3NOT_REPORTING;
+                ContactInfoGroup["ContactPhoneNumber"] = v3NOT_REPORTING;
+                V3XML.Attrib("dContact.10", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactPhoneNumber", "NOT REPORTED");
+                V3XML.EndNode();
             }
         }
-        else {
+        else 
+        {
             arr1 = [];
-            for (var i = 0; i < _val.length; i++) {
+            for (var i = 0; i < _val.length; i++) 
+            {
                 var PhoneNumberType = setPhoneNumberType("dContact.10", _val[i]);
 
                 if (PhoneNumberType == "9913001") {
-                    _OLAPArray.push('\t' + "<ContactPhoneNumber" + FAX + ">" + _val[i] + "</ContactPhoneNumber>" + '\n');
-                    _retArray.push('\t' + "<dContact.10" + FAX + ">" + _val[i] + "</dContact.10>" + '\n');
+                    V3XML.BeginNode("dContact.10")
+                    V3XML.AttribNoEQ(FAX, _val[i])                    
+
+                    OLAPXML.BeginNode("ContactPhoneNumber")
+                    OLAPXML.AttribNoEQ(FAX, _val[i])
+                    OLAPXML.EndNode();
+
                     arr1.push("FAX  " + _val[i]);
                 }
                 else if (PhoneNumberType == "9913003") {
-                    _OLAPArray.push('\t' + "<ContactPhoneNumber" + HOME + ">" + _val[i] + "</ContactPhoneNumber>" + '\n');
-                    _retArray.push('\t' + "<dContact.10" + HOME + ">" + _val[i] + "</dContact.10>" + '\n');
-                    _v2Array.push({ section: "E06", element: "E06_17", val: _val[i] });
+                    V3XML.BeginNode("dContact.10")
+                    V3XML.AttribNoEQ(HOME, _val[i])
+                    //V3XML.EndNode();
+
+                    OLAPXML.BeginNode("ContactPhoneNumber")
+                    OLAPXML.AttribNoEQ(HOME, _val[i])
+                    OLAPXML.EndNode();
+
                     arr1.push("HOME  " + _val[i]);
                 }
                 else if (PhoneNumberType == "9913005") {
-                    _OLAPArray.push('\t' + "<ContactPhoneNumber" + MOBILE + ">" + _val[i] + "</ContactPhoneNumber>" + '\n');
-                    _retArray.push('\t' + "<dContact.10" + MOBILE + ">" + _val[i] + "</dContact.10>" + '\n');
-                    _v2Array.push({ section: "E06", element: "E06_17", val: _val[i] });
+                    V3XML.BeginNode("dContact.10")
+                    V3XML.AttribNoEQ(MOBILE, _val[i])
+                    //V3XML.EndNode();
+
+                    OLAPXML.BeginNode("ContactPhoneNumber")
+                    OLAPXML.AttribNoEQ(MOBILE, _val[i])
+                    OLAPXML.EndNode();
+
                     arr1.push("MOBILE  " + _val[i]);
                 }
                 else if (PhoneNumberType == "9913007") {
-                    arr1.push("PAGER  " + _val[i]);
-                    _OLAPArray.push('\t' + "<ContactPhoneNumber" + PAGER + ">" + _val[i] + "</ContactPhoneNumber>" + '\n');
-                    _retArray.push('\t' + "<dContact.10" + PAGER + ">" + _val[i] + "</dContact.10>" + '\n');
+                    V3XML.BeginNode("dContact.10")
+                    V3XML.AttribNoEQ(PAGER, _val[i])
+                    //V3XML.EndNode();
+
+                    OLAPXML.BeginNode("ContactPhoneNumber")
+                    OLAPXML.AttribNoEQ(PAGER, _val[i])
+                    //OLAPXML.EndNode();
+
                 }
                 else if (PhoneNumberType == "9913009") {
-                    arr1.push("WORK  " + _val[i]);
-                    _OLAPArray.push('\t' + "<ContactPhoneNumber" + WORK + ">" + _val[i] + "</ContactPhoneNumber>" + '\n');
-                    _retArray.push('\t' + "<dContact.10" + WORK + ">" + _val[i] + "</dContact.10>" + '\n');
-                }
-                else {
-                    arr1.push(_val[i]);
-                    _v2Array.push({ section: "D02", element: "D02_08", val: _val[i] });
-                    _retArray.push('\t\t' + "<dContact.10>" + _val[i] + "</dContact.10>" + '\n');
-                    _OLAPArray.push('\t\t' + "<ContactPhoneNumber>" + _val[i] + "</ContactPhoneNumber>" + '\n');
-                }
-            }
-            ContactInfoGroup["dContact.10"] = arr1.slice(0);
-        };
+                    V3XML.BeginNode("dContact.10")
+                    V3XML.AttribNoEQ(WORKPHONE, _val[i])
+                    // V3XML.EndNode();
 
+                    OLAPXML.BeginNode("ContactPhoneNumber")
+                    OLAPXML.AttribNoEQ(WORKPHONE, _val[i])
+                 //   OLAPXML.EndNode();
+
+                    arr1.push("WORK  " + _val[i]);
+                }                
+                else
+                {
+                    console.log(_val[i])
+                    _v2Array.push({ section: "D02", element: "D02_08", val: _val[i] });
+                    V3XML.Node("dContact.10")
+                    V3XML.AttribNoEQ(WORKPHONE, _val[i])
+                    //V3XML.EndNode();
+
+                    OLAPXML.BeginNode("ContactPhoneNumber")
+                    OLAPXML.AttribNoEQ(WORKPHONE, _val[i])
+                    //OLAPXML.EndNode();
+                }
+                //V3XML.EndNode()
+            };
+
+            ContactInfoGroup["dContact.10"] = arr1.slice(0);
+            ContactInfoGroup["ContactPhoneNumber"] = arr1.slice(0);
+            _v2Array.push({ section: "D02", element: "D02_08", val: _val[0] });
+        };
+        
         // dContact.11/////////////
         _val = getValue(elementList, "dContact.11");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.11") == - true) {
+        if (_val == null) 
+        {
+            if (isRequiredStateElement("dContact.11") == - true) 
+            {
+                V3XML.BeginNode("dContact.11")
                 ContactInfoGroup["dContact.11"] = v3NOT_RECORDED;
-                _v2Array.push({ section: "D02", element: "D02_10", val: v2NOT_RECORDED });
-                _retArray.push('\t\t' + "<dContact.11" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<EmailAddress>" + "NOT RECORDED" + "</EmailAddress>" + '\n');
+                ContactInfoGroup["ContactEmail"] = v3NOT_RECORDED;
+                V3XML.Attrib("dContact.11", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("ContactEmail", "NOT RECORDED");
+                V3XML.EndNode();
+
             }
             else {
-                ContactInfoGroup["dContact.11"] = v2NOT_REPORTING;
-                _retArray.push('\t\t' + "<dContact.11" + NIL_V3NOT_REPORTING + '\n');
-                _v2Array.push({ section: "D02", element: "D02_10", val: v2NOT_REPORTING });
-                _OLAPArray.push('\t\t' + "<EmailAddress>" + "NOT REPORTING" + "</EmailAddress>" + '\n');
-            }
+
+                V3XML.BeginNode("dContact.11")
+                ContactInfoGroup["dContact.11"] = v3NOT_REPORTING;
+                ContactInfoGroup["ContactEmail"] = v3NOT_REPORTING;
+                V3XML.Attrib("dContact.11", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("ContactEmail", "NOT REPORTED");
+                V3XML.EndNode();
+            }            
         }
-        else {
+        else 
+        {
             arr1 = [];
-            for (var i = 0; i < _val.length; i++) {
+            for (var i = 0; i < _val.length; i++) 
+            {
                 var eMailType = seteMailType("dContact.11", _val[i]);
 
-                if (eMailType == "9904001") {
-                    arr1.push("PERSONAL EMAIL " + _val[i]);
-                    _OLAPArray.push('\t\t' + "<EmailAddress" + PERSONALEMAIL + ">" + _val[i] + "</EmailAddress>" + '\n');
-                    _retArray.push('\t\t' + "<dContact.11" + PERSONALEMAIL + ">" + _val[i] + "</dContact.11>" + '\n');
+                if (eMailType == "9904001") 
+                {
+                    V3XML.BeginNode("dContact.11")
+                    V3XML.AttribNoEQ(PERSONALEMAIL, _val[i])
+                    V3XML.EndNode();
+
+                    OLAPXML.BeginNode("ContactEmail")
+                    OLAPXML.AttribNoEQ(PERSONALEMAIL, _val[i])
+                    OLAPXML.EndNode();
+
+                    arr1.push("FAX  " + _val[i]);
                 }
-                else if (PhoneNumberType == "9913003") {
-                    arr1.push("WORKEMAIL " + _val[i]);
-                    _OLAPArray.push('\t\t\t' + "<PatientPhoneNumber" + WORKEMAIL + ">" + _val[i] + "</PatientPhoneNumber>" + '\n');
-                    _retArray.push('/t' + "<ePatient.18" + WORKEMAIL + ">" + _val[i] + "</ePatient.18>") + '\n';
-                }
-                else {
-                    arr1.push(_val[i]);
-                    _v2Array.push({ section: "D02", element: "D02_10", val: _val });
-                    _retArray.push('\t\t' + "<dContact.11>" + _val + "</dContact.11>" + '\n');
-                    _OLAPArray.push('\t\t' + "<EmailAddress>" + _val + "</EmailAddress>" + '\n')
-                }
-            }
+                else if (PhoneNumberType == "9904001") 
+                {
+                    V3XML.BeginNode("dContact.11")
+                    V3XML.AttribNoEQ(WORKEMAIL, _val[i])
+                    V3XML.EndNode();
+
+                    OLAPXML.BeginNode("ContactEmail")
+                    OLAPXML.AttribNoEQ(WORKEMAIL, _val[i])
+                    OLAPXML.EndNode();
+
+                    arr1.push("HOME  " + _val[i]);
+                }               
+            };
             ContactInfoGroup["dContact.11"] = arr1.slice(0);
+            ContactInfoGroup["ContactEmail"] = arr1.slice(0);
+            _v2Array.push({ section: "D02", element: "D02_10", val: _val[0] });
         };
+       
 
-
-        // dContact.12/////////////
-        _val = getValue(elementList, "dContact.12");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.12") == - true) {
-                ContactInfoGroup["dContact.12"] = v3NOT_RECORDED;
-                _v2Array.push({ section: "D02", element: "D02_11", val: v2NOT_RECORDED });
-                _retArray.push('\t\t' + "<dContact.12" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t' + "<WebAddress>" + "NOT RECORDED" + "</WebAddress>" + '\n');
-            }
-            else {
-                ContactInfoGroup["dContact.12"] = v2NOT_REPORTING
-                _v2Array.push({ section: "D02", element: "D02_11", val: v2NOT_REPORTING });
-                _retArray.push('\t\t' + "<dContact.12" + NIL_V3NOT_REPORTING + '\n');
-                _OLAPArray.push('\t\t' + "<WebAddress>" + "NOT REPORTING" + "</WebAddress>" + '\n');
-            }
+  
+    // dContact.12/////////////
+    _val = getValue(elementList, "dContact.12");
+    if (_val == null) 
+    {            
+        if (isRequiredStateElement("dContact.12") == - true) 
+        {
+            _v2Array.push({ section: "D02", element: "D02_11", val: v2NOT_RECORDED });
+            V3XML.BeginNode("dContact.12")
+            V3XML.Attrib("dContact.12", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("AgencyContactWebAddress", "NOT RECORDED");                    
+            ContactInfoGroup["AgencyContactWebAddress"] = v3NOT_RECORDED;
+            ContactInfoGroup["dContact.12"] = v3NOT_RECORDED;
         }
-        else {
-            ContactInfoGroup["dContact.12"] = _val;
-            _v2Array.push({ section: "D02", element: "D02_11", val: _val });
-            _retArray.push('\t\t' + "<dContact.12>" + _val + "</dContact.12>" + '\n');
-            _OLAPArray.push('\t\t' + "<WebAddress>" + _val + "</WebAddress>" + '\n');
-
-        };
-        //////////////////////////////
-        _retArray.push('\t\t' + "<dContact.EMSMedicalDirectorGroup>" + '\n');
-        _OLAPArray.push('\t\t' + "<dContact.EMSMedicalDirectorGroup>" + '\n');
-
-        // dContact.13/////////////
-        _val = getValue(elementList, "dContact.13");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.13") == - true) {
-                ContactInfoGroup["dContact.13"] = v3NOT_RECORDED;
-                _retArray.push('\t\t\t' + "<dContact.12" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t\t' + "<MedicalDirectorDegree>" + "NOT_RECORDED" + "</MedicalDirectorDegree>" + '\n');
-            }
-            else {
-                ContactInfoGroup["dContact.13"] = v3NOT_REPORTING
-                _retArray.push('\t\t\t' + "<dContact.13" + NIL_V3NOT_REPORTING + '\n');
-                _OLAPArray.push('\t\t\t' + "<MedicalDirectorDegree>" + "NOT_REPORTING" + "</MedicalDirectorDegree>" + '\n');
-            }
+        else 
+        {
+            _v2Array.push({ section: "D02", element: "D02_11", val: v2NOT_REPORTING });
+            V3XML.BeginNode("dContact.12")
+            V3XML.Attrib("dContact.12", NIL_V3NOT_REPORTING);
+            OLAPXML.Node("AgencyContactWebAddress", "NOT REPORTING");
+            ContactInfoGroup["AgencyContactWebAddress"] = v3NOT_REPORTING;
+            ContactInfoGroup["dContact.12"] = v3NOT_REPORTING;
         }
-        else {
-            ContactInfoGroup["dContact.13"] = _val;
-            _retArray.push('\t\t\t' + "<dContact.13>" + _val + "</dContact.13>" + '\n');
-            _OLAPArray.push('\t\t\t' + "<MedicalDirectorDegree>" + setCodeText("dContact.13", _val) + "</MedicalDirectorDegree>" + '\n');
-        };
-
-        // dContact.14/////////////
-        _val = getValue(elementList, "dContact.14");
-        if (_val == null) {
-            if (isRequiredStateElement("dContact.14") == - true) {
-                ContactInfoGroup["dContact.14"] = v3NOT_RECORDED;
-                _retArray.push('\t\t\t' + "<dContact.14" + NIL_V3NOT_RECORDED + '\n');
-                _OLAPArray.push('\t\t\t' + "<MedicalDirectorBoardCertificationType>" + "NOT_RECORDED" + "</MedicalDirectorBoardCertificationType>" + '\n');
-            }
-            else {
-                ContactInfoGroup["dContact.14"] = v3NOT_REPORTING
-                _retArray.push('\t\t\t' + "<dContact.14" + NIL_V3NOT_REPORTING + '\n');
-                _OLAPArray.push('\t\t\t' + "<MedicalDirectorBoardCertificationType>" + "NOT_REPORTING" + "</MedicalDirectorBoardCertificationType>" + '\n');
-            }
-        }
-        else {
-            ContactInfoGroup["dContact.14"] = _val;
-            _retArray.push('\t\t\t' + "<dContact.14>" + _val + "</dContact.14>" + '\n');
-            _OLAPArray.push('\t\t\t' + "<MedicalDirectorBoardCertificationType>" + setCodeText("dContact.14", _val) + "</MedicalDirectorBoardCertificationType>" + '\n');
-        };
-
-        // dContact.15/////////////
-        _val = getValue(elementList, "dContact.15");
-        if (_val == null) {
-            _OLAPArray.push('\t\t\t' + "<MedicalDirectorCompensation>" + null + "</MedicalDirectorCompensation>" + '\n');
-            _retArray.push('\t\t\t' + "<dContact.15>" + null + "</dContact.15>" + '\n');
-        }
-        else {
-            _OLAPArray.push('\t\t\t' + "<MedicalDirectorCompensation>" + setCodeText("dContact.15", _val) + "</MedicalDirectorCompensation>" + '\n');
-            ContactInfoGroup["dContact.15"] = _val;
-            _retArray.push('\t\t\t' + "<dContact.15>" + _val + "</dContact.15>" + '\n');
-        };
-
-        // dContact.16/////////////
-        _val = getValue(elementList, "dContact.16");
-        if (_val == null) {
-            _OLAPArray.push('\t\t\t' + "<MedicalDirectorFellowshipTrainedStatus>" + null + "</MedicalDirectorFellowshipTrainedStatus>" + '\n');
-            _retArray.push('\t\t\t' + "<dContact.16>" + null + "</dContact.16>" + '\n');
-        }
-        else {
-            _OLAPArray.push('\t\t\t' + "<MedicalDirectorFellowshipTrainedStatus>" + setCodeText("dContact.16", _val) + "</MedicalDirectorFellowshipTrainedStatus>" + '\n');
-            ContactInfoGroup["dContact.16"] = _val;
-            _retArray.push('\t\t\t' + "<dContact.16>" + _val + "</dContact.16>" + '\n');
-        };
-
-
-        _OLAPArray.push('\t\t' + "</dContact.EMSMedicalDirectorGroup>" + '\n');
-        _OLAPArray.push('\t' + "</dContact.ContactInfoGroup>" + '\n');
-        _retArray.push('\t\t' + "</dContact.EMSMedicalDirectorGroup>" + '\n');
-        _retArray.push('\t' + "</dContact.ContactInfoGroup>" + '\n');
-
-
-    } // loop term
-    _OLAPArray.push("</dContact>" + '\n');
-    _retArray.push("</dContact>" + '\n');
-
-    //    for (var i = 0; i < _retArray.length ; i++) {
-    //        XMLString = XMLString + _retArray[i];
-
-    //    }
-    //console.log(XMLString)
-
-    var Errors = [];
-    for (var i = 0; i < ErrorList.length ; i++) {
-        Errors.push(ErrorList[i]);
-    };
-    dContact.Errors = Errors;;
-
-    //XMLString to dAgency
-    for (var i = 0; i < _retArray.length ; i++) {
-        XMLString = XMLString + _retArray[i];
-    };
-
-    dContact.V334XMLArray = _retArray;
-
-    var OLAPXMLString = "";
-    for (var i = 0; i < _OLAPArray.length ; i++) {
-        OLAPXMLString = OLAPXMLString + _OLAPArray[i];
-    };
-
-    dContact.OLAPXMLArray = _OLAPArray;
-
-    var v2XMLString = "";
-    for (var i = 0; i < _v2Array.length ; i++) {
-        v2XMLString = v2XMLString + _v2Array[i];
-    };
-
-    dContact.V221XMLArray = _v2Array;
-
-
-    dContact.XMLDocument = XMLString;
-
-
-    if (_OLAPArray.length > 0) {
-        dContact.OLAPXML = OLAPXMLString;
+        V3XML.EndNode();        
     }
+    else 
+    {
+        V3XML.Node("dContact.12", _val[0]);            
+        OLAPXML.Node("AgencyContactWebAddress",  _val[0]);
+        ContactInfoGroup["dContact.12"] = _val[0];
+        ContactInfoGroup["AgencyContactWebAddress"] = _val[0];
+        _v2Array.push({ section: "D02", element: "D02_11", val: _val[0]});
+    };
 
+    //////////////////////////////
+  
+    V3XML.BeginNode("dContact.EMSMedicalDirectorGroup")
+    OLAPXML.BeginNode("dContact.EMSMedicalDirectorGroup")
+  
+    
+    // dContact.13/////////////
+    _val = getValue(elementList, "dContact.13");
+    if (_val == null) 
+    {
+        if (isRequiredStateElement("dContact.13") == - true) 
+        {
+            V3XML.BeginNode("dContact.13")
+            V3XML.Attrib("dContact.13", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("MedicalDirectorDegree", "NOT RECORDED");                    
+            ContactInfoGroup["MedicalDirectorDegree"] = v3NOT_RECORDED;
+            ContactInfoGroup["dContact.13"] = v3NOT_RECORDED;
+        }
+        else 
+        {
+            V3XML.BeginNode("dContact.13")
+            V3XML.Attrib("dContact.13", NIL_V3NOT_REPORTING);
+            OLAPXML.Node("MedicalDirectorDegree", "NOT REPORTING");
+            ContactInfoGroup["MedicalDirectorDegree"] = v3NOT_REPORTING;
+            ContactInfoGroup["dContact.13"] = v3NOT_REPORTING;
+        }
+        V3XML.EndNode();        
+    }
+    else 
+    {
+        V3XML.Node("dContact.13", _val[0]);            
+        OLAPXML.Node("MedicalDirectorDegree",  _val[0]);
+        ContactInfoGroup["dContact.13"] = _val[0];
+        ContactInfoGroup["MedicalDirectorDegree"] = _val[0];        
+    };
+    // dContact.14/////////////
+    _val = getValue(elementList, "dContact.14");
+    if (_val == null) 
+    { 
+        if (isRequiredStateElement("dContact.14") == - true) 
+        {
+            V3XML.BeginNode("dContact.14")
+            V3XML.Attrib("dContact.14", NIL_V3NOT_RECORDED);
+            OLAPXML.Node("MedicalDirectorBoardCertificationType", "NOT RECORDED");                    
+            ContactInfoGroup["MedicalDirectorBoardCertificationType"] = v3NOT_RECORDED;
+            ContactInfoGroup["dContact.14"] = v3NOT_RECORDED;
+        }
+        else 
+        {
+            V3XML.BeginNode("dContact.14")
+            V3XML.Attrib("dContact.14", NIL_V3NOT_REPORTING);
+            OLAPXML.Node("MedicalDirectorBoardCertificationType", "NOT REPORTING");
+            ContactInfoGroup["MedicalDirectorBoardCertificationType"] = v3NOT_REPORTING;
+            ContactInfoGroup["dContact.14"] = v3NOT_REPORTING;
+        }
+        V3XML.EndNode();        
+    }
+    else 
+    {
+        var arr = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++)
+        {
+            arr3.push(setCodeText("dContact.15", _val[i]));
+            arr.push(_val[i]);
+            V3XML.Node("dContact.14", _val[i]);            
+            OLAPXML.Node("MedicalDirectorBoardCertificationType", setCodeText("dContact.15", _val[i]));        
+        };
+        ContactInfoGroup["dContact.13"] = arr.slice(0);
+        ContactInfoGroup["MedicalDirectorBoardCertificationType"] = arr3.slice(0);
+    };
+
+    // dContact.15/////////////
+    _val = getValue(elementList, "dContact.15");
+    if (_val == null) 
+    {
+        V3XML.Node("dContact.15", null);            
+        OLAPXML.Node("MedicalDirectorCompensation", null);        
+        ContactInfoGroup["dContact.15"] = null;
+        ContactInfoGroup["MedicalDirectorCompensation"] = null;
+    }
+    else 
+    {
+        V3XML.Node("dContact.16", _val[0]);
+        OLAPXML.Node("MedicalDirectorCompensation", setCodeText("dContact.15", _val[0]));   
+        ContactInfoGroup["dContact.15"] = _val[0];
+        ContactInfoGroup["MedicalDirectorCompensation"] = _val[0];
+    };
+
+    // dContact.16/////////////
+    _val = getValue(elementList, "dContact.16");
+    if (_val == null) 
+    {
+        V3XML.Node("dContact.16", null);
+        OLAPXML.Node("MedicalDirectorFellowshipTrainedStatus", null);
+        ContactInfoGroup["dContact.16"] = null;
+        ContactInfoGroup["MedicalDirectorFellowshipTrainedStatus"] = null;
+    }
+    else 
+    {
+        V3XML.Node("dContact.16", null);
+        OLAPXML.Node("MedicalDirectorFellowshipTrainedStatus", null);
+        ContactInfoGroup["dContact.16"] = _val[0];
+        ContactInfoGroup["MedicalDirectorFellowshipTrainedStatus"] = _val[0];
+    };
+
+    
+    V3XML.EndNode();
+    OLAPXML.EndNode();
+    
+    V3XML.EndNode();
+    OLAPXML.EndNode();
+}; // loop term
+    console.log("here")
+    V3XML.EndNode();
+    OLAPXML.EndNode();
+    V3XML.EndNode();
+    OLAPXML.EndNode();
+
+
+    console.log(V3XML.ToString())
     dContact.ContactInfoGroup = ContactInfoGroup;
     return dContact;
 
 };    //end of function
 
-var setdDevice = function (deviceObject) {
-    var _retArray = [];
-    var _v2Array = [];
+var setdDevice = function (deviceObject) 
+{
     var DeviceGroup = new Object();
     var dDevice = new Object();
-    _retArray.push("<dDevice>" + '\n');
-    _OLAPArray.push("<dDevice>" + '\n');
+
+    V3XML.BeginNode("Device");
+    OLAPXML.BeginNode("Device");
 
     //    console.log(businessObject.sections.length);
-    for (var xx = 0; xx < deviceObject.attributes.sections.length; xx++) {
-        _retArray.push('\t' + "<dDeviceInfoGroup>" + '\n');
-        _OLAPArray.push('\t' + "<dDeviceInfoGroup>" + '\n');
+    for (var xx = 0; xx < deviceObject.attributes.sections.length; xx++)
+    {
+        V3XML.BeginNode("dDevice.DeviceGroup");
+        OLAPXML.BeginNode("dDevice.DeviceGroup");
+
         var elementList = deviceObject.attributes.sections[xx].attributes.elements;
 
         ///dDevice.01 
         _val = getValue(elementList, "dDevice.01");
-        if (_val == null) {
+        if (_val == null) 
+        {
+            V3XML.Node("dDevice.01", null);
+            OLAPXML.Node("DeviceSerialNumber", null);
             DeviceGroup["dDevice.01"] = null;
-            _retArray.push('\t\t' + "<dDevice.01>" + null + "</dDevice.01>" + '\n');
-            _OLAPArray.push('\t\t' + "<DeviceSerialNumber>" + null + "</DeviceSerialNumber>" + '\n');
+            DeviceGroup["DeviceSerialNumber"] = null;
         }
-        else {
+        else 
+        {
+            V3XML.Node("dDevice.01", _val[0]);
+            OLAPXML.Node("DeviceSerialNumber", _val[0]);
             DeviceGroup["dDevice.01"] = _val[0];
-            _retArray.push('\t\t' + "<dDevice.01>" + _val + "</dDevice.01>" + '\n');
-            _v2Array.push({ section: "D09", element: "D09_01", val: _val });
-            _OLAPArray.push('\t\t' + "<DeviceSerialNumber>" + _val + "</DeviceSerialNumber>" + '\n');
+            DeviceGroup["DeviceSerialNumber"] = _val[0];
         };
+    
 
         ///dDevice.02 
         _val = getValue(elementList, "dDevice.02");
-        if (_val == null) {
+        if (_val == null) 
+        {
+            V3XML.Node("dDevice.02", null);
+            OLAPXML.Node("DeviceNameorID", null);
             DeviceGroup["dDevice.02"] = null;
-            _retArray.push('\t\t' + "<dDevice.02>" + null + "</dDevice.02>" + '\n');
-            _OLAPArray.push('\t\t' + "<DeviceName>" + null + "</DeviceName>" + '\n');
+            DeviceGroup["DeviceNameorID"] = null;
         }
-        else {
+        else 
+        {
+            V3XML.Node("dDevice.02", _val[0]);
+            OLAPXML.Node("DeviceNameorID", _val[0]);
             DeviceGroup["dDevice.02"] = _val[0];
-            _retArray.push('\t\t' + "<dDevice.02>" + _val[0] + "</dDevice.02>" + '\n');
-            _v2Array.push({ section: "D09", element: "D09_02", val: _val });
-            _OLAPArray.push('\t\t' + "<DeviceName>" + _val + "</DeviceName>" + '\n');
+            DeviceGroup["DeviceNameorID"] = _val[0];
         };
 
         ///dDevice.03
         _val = getValue(elementList, "dDevice.03");
-        if (_val == null) {
-            _OLAPArray.push('\t\t' + "<MedicalDeviceType>" + null + "</MedicalDeviceType>" + '\n');
-            DeviceGroup["dDevice.03"] = null;
-            _retArray.push('\t\t' + "<dDevice.03>" + null + "</dDevice.03>" + '\n');
+        if (_val == null) 
+        {
+            V3XML.Node("dDevice.03", null);
+            OLAPXML.Node("DeviceType", null);
+            DeviceGroup["dDevice.02"] = null;
+            DeviceGroup["DeviceType"] = null;
         }
-        else {
+        else
+        {
             var arr = [];
-            for (var t = 0; t < _val.length; t++) {
-                _OLAPArray.push('\t\t' + "<MedicalDeviceType>" + setCodeText("dDevice.03", _val[t]) + "</MedicalDeviceType>" + '\n');
-                _v2Array.push({ section: "D02", element: "D02_01", val: null });
-                arr.push(_val[t]);
-                _retArray.push('\t\t' + "<dDevice.03>" + _val[t] + "</dDevice.03>" + '\n');
+            var arr3 = [];
+            for (var t = 0; t < _val.length; t++)
+            {
+                arr3.push(setCodeText("dDevice.03", _val[t]) );             
+                V3XML.Node("dDevice.03", _val[t]);
+                OLAPXML.Node("DeviceType", _val[t]);
             }
             DeviceGroup["dDevice.03"] = arr.slice(0);
+            DeviceGroup["DeviceType"] = arr3.slice(0);
         };
 
         ///dDevice.04
         _val = getValue(elementList, "dDevice.04");
-        if (_val == null) {
+        if (_val == null) 
+        {
+            V3XML.Node("dDevice.04", null);
+            OLAPXML.Node("DeviceManufacturer", null);
             DeviceGroup["dDevice.04"] = null;
-            _retArray.push('\t\t' + "<dDevice.04>" + null + "</dDevice.04>" + '\n');
-            _OLAPArray.push('\t\t' + "<DeviceManufacturer>" + null + "</DeviceManufacturer>" + '\n');
+            DeviceGroup["DeviceManufacturer"] = null;           
             _v2Array.push({ section: "D09", element: "D09_03", val: null });
         }
-        else {
+        else
+        {
+            V3XML.Node("dDevice.04", _val[0]);
+            OLAPXML.Node("DeviceManufacturer", _val[0]);
             DeviceGroup["dDevice.04"] = _val[0];
-            _OLAPArray.push('\t\t' + "<DeviceManufacturer>" + _val + "</DeviceManufacturer>" + '\n');
-            _retArray.push('\t\t' + "<dDevice.04>" + _val + "</dDevice.04>" + '\n');
-            _v2Array.push({ section: "D09", element: "D09_03", val: _val });
+            DeviceGroup["DeviceManufacturer"] = _val[0];           
+            _v2Array.push({ section: "D09", element: "D09_03", val: _val[0] });        
         };
 
         ///dDevice.05
         _val = getValue(elementList, "dDevice.05");
-        if (_val == null) {
+        if (_val == null) 
+        {
+            V3XML.Node("dDevice.05", null);
+            OLAPXML.Node("DeviceModelNumber", null);
             DeviceGroup["dDevice.05"] = null;
-            _retArray.push('\t\t' + "<dDevice.05>" + null + "</dDevice.05>" + '\n');
-            _OLAPArray.push('\t\t' + "<DeviceModelNumber>" + null + "</DeviceModelNumber>" + '\n');
+            DeviceGroup["DeviceModelNumber"] = null;           
+            _v2Array.push({ section: "D09", element: "D09_04", val: null });
+
         }
-        else {
+        else 
+        {
+            V3XML.Node("dDevice.05", _val[0]);
+            OLAPXML.Node("DeviceModelNumber", _val[0]);
             DeviceGroup["dDevice.05"] = _val[0];
-            _retArray.push('\t\t' + "<dDevice.04>" + _val[0] + "</dDevice.04>" + '\n');
-            _v2Array.push({ section: "D09", element: "D09_04", val: _val });
-            _OLAPArray.push('\t\t' + "<DeviceModelNumber>" + _val + "</DeviceModelNumber>" + '\n');
+            DeviceGroup["DeviceModelNumber"] = _val[0];
+            _v2Array.push({ section: "D09", element: "D09_04", val: _val[0] });
         };
 
         ///dDevice.06
         _val = getValue(elementList, "dDevice.06");
-        if (_val == null) {
+        if (_val == null) 
+        {
+            V3XML.Node("dDevice.06", null);
+            OLAPXML.Node("DevicePurchaseDate", null);
             DeviceGroup["dDevice.06"] = null;
-            _retArray.push('\t\t' + "<dDevice.06>" + null + "</dDevice.06>" + '\n');
-            _OLAPArray.push('\t\t' + "<DevicePurchaseDate>" + null + "</DevicePurchaseDate>" + '\n');
+            DeviceGroup["DevicePurchaseDate"] = null;           
+            _v2Array.push({ section: "D09", element: "D09_05", val: null });
         }
-        else {
-            DeviceGroup["dDevice.06"] = _val;
-            _retArray.push('\t\t' + "<dDevice.06>" + _val + "</dDevice.06>" + '\n');
-            _v2Array.push({ section: "D09", element: "D09_05", val: _val });
-            _OLAPArray.push('\t\t' + "<DevicePurchaseDate>" + _val + "</DevicePurchaseDate>" + '\n');
+        else 
+        {
+            V3XML.Node("dDevice.06", _val[0]);
+            OLAPXML.Node("DevicePurchaseDate", _val[0]);
+            DeviceGroup["dDevice.06"] = _val[0];
+            DeviceGroup["DevicePurchaseDate"] = _val[0];
+            _v2Array.push({ section: "D09", element: "D09_05", val: _val[0] });
         };
+        V3XML.EndNode();
+        OLAPXML.EndNode();
 
-        _retArray.push('\t' + "</dDeviceInfoGroup>" + '\n');
-        _OLAPArray.push('\t' + "</dDeviceInfoGroup>" + '\n');
     }; // loop term
 
 
-    _retArray.push("</dDevice>");
-    _OLAPArray.push("</dDevice>");
-
-    var XMLString = ""
-
-    for (var i = 0; i < _OLAPArray.length ; i++) {
-        XMLString = XMLString + _OLAPArray[i];
-
-    }
-    XMLString = ""
-    for (var i = 0; i < _retArray.length ; i++) {
-        XMLString = XMLString + _retArray[i];
-
-    }
+        V3XML.EndNode();
+        console.log(V3XML.ToString());
 };
 
 var setdFacility = function (facilityObject) {
@@ -1688,7 +1966,7 @@ var setdFacility = function (facilityObject) {
         _OLAPArray.push('\t' + "<dFacilityGroup>" + '\n');
         // console.log(businessObject.sections[a].attributes.name);
         var _elementList = facilityObject.attributes.sections[a].attributes.sections[0].attributes.elements;
-    
+
         //dFacility.01/////////
         _val = getValue(_elementList, "dFacility.01");
         if (_val == null) {
@@ -1908,11 +2186,11 @@ var setdFacility = function (facilityObject) {
     for (var i = 0; i < _OLAPArray.length ; i++) {
         XMLString = XMLString + _OLAPArray[i];
     }
-   // console.log(_v2Array)
+    // console.log(_v2Array)
 
     dFacilityGroup.FacilityGroup = FacilityGroup;
     dFacility.dFacilityGroup = dFacilityGroup
-     
+
 
 };    //end of function   
 
@@ -2124,7 +2402,7 @@ var setdPersonnel = function (personnelObject) {
     var _retArray = [];
     var _v2Array = [];
     var _sectionIndex = 0;
-   alert("need dPateient v2 codes")
+    //alert("need dPateient v2 codes")
     _retArray.push("<dPersonnel>" + '\n');
     _OLAPArray.push("<dPersonnel>" + '\n');
     for (var xx = 0; xx < personnelObject.attributes.sections.length; xx++) //All dPersonnelGroup
@@ -2864,7 +3142,7 @@ var setdPersonnel = function (personnelObject) {
 
                 //dPersonnel.39
                 _val = getValue(personnelObject.attributes.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements, "dPersonnel.39");
-                if (_val== null) {
+                if (_val == null) {
                     _v2Array.push({ section: "D07", element: "D07_06", val: null });
                     _retArray.push('\t\t\t' + "<dPersonnel.39>" + null + "</dPersonnel.39>" + '\n');
                     _OLAPArray.push('\t\t\t' + "<DateofProfessionalCertificationorLicensureforAgency>" + null + "</DateofProfessionalCertificationorLicensureforAgency>" + '\n');
@@ -2914,27 +3192,26 @@ var setdState = function (stateObject) {
     var _elementList = stateObject.attributes.elements;
 
     _val = getValue(_elementList, "dState.01");
-        if (_val == null) {
-            dState["dState.01"] = null;
-            _OLAPArray.push('\t' + "<StateRequiredElement>" + null + "</StateRequiredElement>" + '\n');
-            _retArray.push('\t' + "<dState.01>" + null + "</dState.01>" + '\n');
-        }
-        else
-        {
-            var arr = [];
-            for (var t = 0; t < _val.length; t++) {
-           
-                arr.push(_val[t]);
-                _OLAPArray.push('\t' + "<StateRequiredElement>" + _val[t] + "</StateRequiredElement>" + '\n');
-                _retArray.push('\t' + "<dState.01>" + _val[t] + "</dState.01>" + '\n');
-            }
-            dState["dState.01"] = arr.slice(0);
+    if (_val == null) {
+        dState["dState.01"] = null;
+        _OLAPArray.push('\t' + "<StateRequiredElement>" + null + "</StateRequiredElement>" + '\n');
+        _retArray.push('\t' + "<dState.01>" + null + "</dState.01>" + '\n');
+    }
+    else {
+        var arr = [];
+        for (var t = 0; t < _val.length; t++) {
 
+            arr.push(_val[t]);
+            _OLAPArray.push('\t' + "<StateRequiredElement>" + _val[t] + "</StateRequiredElement>" + '\n');
+            _retArray.push('\t' + "<dState.01>" + _val[t] + "</dState.01>" + '\n');
         }
+        dState["dState.01"] = arr.slice(0);
 
-        _retArray.push( "</dState>" + '\n');
-        _OLAPArray.push( "</dState>" + '\n');
-    
+    }
+
+    _retArray.push("</dState>" + '\n');
+    _OLAPArray.push("</dState>" + '\n');
+
 
 
     for (var i = 0; i < _retArray.length ; i++) {
@@ -3321,73 +3598,73 @@ function setV2(NEMSISElementNumber, v3Val) {
                 returnValue = "UNDEFINED";
             }
             else {
-                _returnValue= dConfiguration12[v3Val];
+                _returnValue = dConfiguration12[v3Val];
             }
             break;
 
         case "dFacility.01":
 
             if (dFacility01 == undefined) {
-                returnValue= v3Val + "UNDEFINED";
+                returnValue = v3Val + "UNDEFINED";
             }
             else {
-                returnValue=  dFacility01[v3Val];
+                returnValue = dFacility01[v3Val];
             }
             break;
 
         case "dLocation.01":
 
             if (dLocation01[v3Val] == undefined) {
-                returnValue= v3Val + "UNDEFINED";
+                returnValue = v3Val + "UNDEFINED";
             }
             else {
-                returnValue= dLocation01[v3Val];
+                returnValue = dLocation01[v3Val];
             }
             break;
 
         case "dPersonnel.12":
 
             if (dPersonnel09CodeMap[v3Val] == undefined) {
-                returnValue= v3Val + "UNDEFINED";
+                returnValue = v3Val + "UNDEFINED";
             }
             else {
-                returnValue= dPersonnel09CodeMap[v3Val];
+                returnValue = dPersonnel09CodeMap[v3Val];
             }
             break;
         case "dPersonnel.10":
-                if (dPersonnel10CodeMap[v3Val] == undefined) {
-                    returnValue= v3Val + "UNDEFINED";
-                }
-                else {
-                    returnValue= dPersonnel09CodeMap[v3Val];
-                }            
+            if (dPersonnel10CodeMap[v3Val] == undefined) {
+                returnValue = v3Val + "UNDEFINED";
+            }
+            else {
+                returnValue = dPersonnel09CodeMap[v3Val];
+            }
             break;
         case "dPersonnel.11":
 
             if (dPersonnel11CodeMap[v3Val] == undefined) {
-                returnValue=v3Val + "UNDEFINED";
+                returnValue = v3Val + "UNDEFINED";
             }
             else {
-                returnValue= dPersonnel11CodeMap[v3Val];
+                returnValue = dPersonnel11CodeMap[v3Val];
             }
             break;
 
         case "dVehicle.04":
 
             if (dVehicle04[v3Val] == undefined) {
-                returnValue= v3Val + "UNDEFINED";
+                returnValue = v3Val + "UNDEFINED";
             }
             else {
-                returnValue= dVehicle04[v3Val];
+                returnValue = dVehicle04[v3Val];
             }
             break;
         case "dVehicle.05":
 
             if (dVehicle05[v3Val] == undefined) {
-                returnValue= v3Val + "UNDEFINED";
+                returnValue = v3Val + "UNDEFINED";
             }
             else {
-                returnValue= dVehicle05[v3Val];
+                returnValue = dVehicle05[v3Val];
             }
             break;
         default:
@@ -3409,14 +3686,14 @@ function setCodeText(NEMSISElementNumber, codeVal) {
             }
             break;
         case "dAgency.10":
-      
+
             if (dAgency334_10[codeVal] == undefined) {
                 _return = codeVal + " UNDEFINED";
             }
             else {
                 _return = dAgency334_10[codeVal];
             }
-     
+
             break;
         case "dAgency.11":
             if (dAgency334_11[codeVal] == undefined) {
@@ -3775,7 +4052,6 @@ var dAgency09 = {
     "9920015": "5670",
     "9920019": "5680"
 };
-
 var dAgency10 = {
     "9920001": "5690",
     "9920003": "5700",
@@ -3852,7 +4128,6 @@ var dConfiguration02 = {
     "9911031": "6111",
 
 };
-
 var dConfiguration07 = {
     "424432007": "1.181",
     "226005007": "1.182",
@@ -3978,8 +4253,6 @@ var dConfiguration07 = {
     "NOT SURE": "100.3",
     "NOT SURE": "101.5"
 };
-
-
 var dConfiguration10 = {
 
     "NOT SURE": "6720",
@@ -4049,12 +4322,10 @@ var dConfiguration10 = {
     "9914151": "7240",
     "9914131": "7251"
 }
-var dConfiguration12 =
-{
+var dConfiguration12 ={
     "9923001": "0",
     "9923003": "1"
 };
-
 var dFacility01 = {
 
     "1701001": "7320",
@@ -4065,7 +4336,6 @@ var dFacility01 = {
     "1701011": "7280",
 
 };
-
 var dLocation01 = {
 
     "1701001": "7320",
@@ -4076,7 +4346,6 @@ var dLocation01 = {
     "1701011": "7280",
 
 };
-
 var dVehicle04 = {
     "1404001": "7370",
     "1404003": "7380",
@@ -4092,8 +4361,6 @@ var dVehicle04 = {
     "1404025": "7400",
 
 };
-
-
 var dVehicle05 = {
     "9917001": "6110",
     "9917003": "6120",
@@ -4182,8 +4449,6 @@ var dAgency334_24 = {
     "9923003": "Yes",
 
 };
-
-
 var dConfiguration334_02 = {
     "9911001": "2009 Advanced Emergency Medical Technician (AEMT)",
     "9911003": "2009 Emergency Medical Responder (EMR)",
@@ -4306,7 +4571,6 @@ var dConfiguration334_05 = {
     "9914199": "Medical-Tachycardia",
 
 };
-
 var dConfiguration334_06 = {
     "9917001": "2009 Advanced Emergency Medical Technician (AEMT)",
     "9917003": "2009 Emergency Medical Responder (EMR)",
@@ -4325,7 +4589,6 @@ var dConfiguration334_06 = {
     "9917029": "Licensed Practical Nurse (LPN)",
     "9917031": "Registered Nurse"
 };
-
 var dConfiguration334_08 = {
     "9917001": "2009 Advanced Emergency Medical Technician (AEMT)",
     "9917003": "2009 Emergency Medical Responder (EMR)",
@@ -4344,8 +4607,6 @@ var dConfiguration334_08 = {
     "9917029": "Licensed Practical Nurse (LPN)",
     "9917031": "Registered Nurse"
 };
-
-
 var dConfiguration334_10 = {
     "9914001": "Airway",
     "9914003": "Airway-Failed",
@@ -4449,7 +4710,6 @@ var dConfiguration334_10 = {
     "9914199": "Medical-Tachycardia",
 
 };
-
 var dConfiguration334_11 = {
 
     "1211001": "Air Rescue",
@@ -4471,8 +4731,6 @@ var dConfiguration334_11 = {
     "1211033": "Water or Ice Related Rescue (Incl Swift Water)",
     "1211035": "Wilderness Search and Rescue"
 };
-
-
 var dConfiguration334_13 = {
     "1213001": "No",
     "1213003": "Yes, 100% of the EMS Agency's Service Area",
@@ -4490,7 +4748,6 @@ var dConfiguration334_15 = {
     "1215017": "Ventilator-Transport",
     "1215019": "Vital Sign Monitoring"
 };
-
 var dContact334_01 = {
     "1101001": "Administrative Assistant",
     "1101003": "EMS Agency Director/Chief/Lead Administrator/CEO",
@@ -4511,7 +4768,6 @@ var dContact334_13 = {
     "1113001": "Doctor of Medicine",
     "1113003": "Doctor of Osteopathy"
 };
-
 var dContact334_14 = {
 
     "1114001": "Allergy and Immunology",
@@ -4541,12 +4797,10 @@ var dContact334_15 = {
     "1115001": "Compensated",
     "1115003": "Non-Compensated"
 };
-
 var dContact334_16 = {
     "9923001": "No",
     "9923003": "Yes"
 };
-
 var dDevice334_03 = {
 
     "1603001": "Capnography-Numeric",
@@ -4571,8 +4825,6 @@ var dDevice334_03 = {
     "1603039": "Ventilator Assistance-CPAP"
 
 };
-
-
 var dLocation334_01 = {
     "1301001": "EMS Agency Headquarters",
     "1301003": "EMS Staging Area",
@@ -4580,18 +4832,15 @@ var dLocation334_01 = {
     "1301007": "Other (Not Listed)"
 };
 var dLocation334_11 = {
-
     "CA": "Canada",
     "MX": "Mexico",
     "US": "United States"
 };
-
 var dPersonnel334_12 = {
     "9906001": "Female",
     "9906003": "Male",
     "9906005": "Unknown (Unable to Determine)"
 };
-
 var dPersonnel334_13 = {
     "1513001": "American Indian or Alaska Native",
     "1513003": "Asian",
@@ -4600,7 +4849,6 @@ var dPersonnel334_13 = {
     "1513009": "Native Hawaiian or Other Pacific Islander",
     "1513011": "White"
 };
-
 var dPersonnel334_15 = {
     "1515001": "No Schooling Completed",
     "1515003": "Nursery School to 4th Grade",
@@ -4619,7 +4867,6 @@ var dPersonnel334_15 = {
     "1515029": "Professional Degree (i.e. MD; DDS; DVM; LLB; JD)",
     "1515031": "Doctorate Degree (i.e. PhD; EdD)"
 };
-
 var dPersonnel334_16 = {
     "1516001": "Agriculture and Natural Resources",
     "1516003": "Architecture and Related Services",
@@ -4658,7 +4905,6 @@ var dPersonnel334_16 = {
     "1516069": "Transportation and Materials Moving",
     "1516071": "Visual and Performing Arts"
 };
-
 var dPersonnel334_17 = {
     "1517001": "All-Terrain Vehicle (ATV)",
     "1517003": "Commercial Class A",
@@ -4674,7 +4920,6 @@ var dPersonnel334_17 = {
     "1517023": "Taxi and Livery Class E"
 
 };
-
 var dPersonnel334_18 = {
     "1517001": "All-Terrain Vehicle (ATV)",
     "1517003": "Commercial Class A",
@@ -4743,7 +4988,6 @@ var dPersonnel334_20 = {
     "yid": "Yiddish",
 
 };
-
 var dPersonnel334_24 = {
     "9917001": "2009 Advanced Emergency Medical Technician (AEMT)",
     "9917003": "2009 Emergency Medical Responder (EMR)",
@@ -4759,7 +5003,6 @@ var dPersonnel334_24 = {
     "9917023": "Community Paramedicine",
 
 };
-
 var dPersonnel334_29 = {
     "1529901": "2009 Advanced Emergency Medical Technician(AEMT)",
     "1529003": "2009 Emergency Medical Responder (EMR)",
@@ -4771,7 +5014,6 @@ var dPersonnel334_29 = {
     "1529015": "First Responder",
 
 };
-
 var dPersonnel334_31 = {
     "1531001": "Full Time Paid Employee",
     "1531003": "Part Time Paid Employee",
@@ -4779,7 +5021,6 @@ var dPersonnel334_31 = {
     "1531007": "Neither an Employee Nor a Volunteer",
 
 };
-
 var dPersonnel334_34 = {
     "1531001": "Full Time Paid Employee",
     "1531003": "Part Time Paid Employee",
@@ -4787,7 +5028,6 @@ var dPersonnel334_34 = {
     "1531007": "Neither an Employee Nor a Volunteer",
 
 };
-
 var dPersonnel334_35 = {
     "1531001": "Full Time Paid Employee",
     "1531003": "Part Time Paid Employee",
@@ -4795,7 +5035,6 @@ var dPersonnel334_35 = {
     "1531007": "Neither an Employee Nor a Volunteer",
 
 };
-
 var dPersonnel334_38 = {
     "9917001": "2009 Advanced Emergency Medical Technician (AEMT)",
     "9917003": "2009 Emergency Medical Responder (EMR)",
@@ -4811,13 +5050,11 @@ var dPersonnel334_38 = {
     "9917023": "Community Paramedicine",
 
 };
-
 var dVehicle334_04 = {
     "9906001": "Female",
     "9906003": "Male",
     "9906005": "Unknown (Unable to Determine)"
 };
-
 var dVehicle334_05 = {
     "9917001": "2009 Advanced Emergency Medical Technician (AEMT)",
     "9917003": "2009 Emergency Medical Responder (EMR)",
@@ -4832,13 +5069,740 @@ var dVehicle334_05 = {
     "9917021": "Critical Care Paramedic",
     "9917023": "Community Paramedicine",
 };
-
-
 var setPhoneNumberType = function (NEMSISElement, codeValue) {
     return null;
 }
-
 var seteMailType = function (NEMSISElement, codeValue) {
     return null;
 }
+var createV2XML = function (V2XMLArray)
+{
+    try
+    {
+       // alert("built version 2 Statistal year structure from Version 3");
+        console.log(V2XMLArray)
 
+        ////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////
+        var XML = new XMLWriter();
+        XML.BeginNode("D01");
+        XML.Attrib("Status", "A");
+        XML.Attrib("Date", "20147/12/11");
+
+        //XML.WriteString("This is an example of the JS XML WriteString method.");        
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_01")
+        if (d2Vals == null) {
+            v2Array.push();
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D01_01", Description: "Agency Number Required" })
+        }
+        else {
+            XML.Node("D01_01", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_02")
+        if (d2Vals != null) {
+            XML.Node("D01_02", d2Vals[0]);
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_03")
+        if (d2Vals == null) {
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D01_03", Description: "Agency State Required" })
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_03", d2Vals[i]);
+            };
+        };
+
+
+        d2Vals = [];
+        console.log("D01_04 NOT Chars.  Need two digit FIPS Codes");
+        d2Vals = getV2Values(V2XMLArray, "D01_04")
+        if (d2Vals == null) {
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D01_04", Description: "Agency County Required" })
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_04", d2Vals[i]);
+            };
+        };
+
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_05")
+        if (d2Vals != null) {
+            XML.Node("D01_05", d2Vals[0]);
+        };
+
+        //alert("D106 not found");
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_06")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_06", d2Vals[i]);
+            };
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_07")
+        if (d2Vals == null) {
+            v2Array.push();
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D01_07", Description: "Level of Service Required" })
+        }
+        else {
+            XML.Node("D01_07", d2Vals[0]);
+        }
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_08")
+        if (d2Vals == null) {
+            v2Array.push();
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D01_08", Description: "Organizational Type Required" })
+        }
+        else {
+            XML.Node("D01_08", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_09")
+        if (d2Vals == null) {
+            v2Array.push();
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D01_08", Description: "Organizational Status Required" })
+        }
+        else {
+            XML.Node("D01_09", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_10")
+        if (d2Vals == null) {
+            v2Array.push();
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D01_08", Description: "Statistical Year Required" })
+        }
+        else {
+            XML.Node("D01_10", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_11")
+        if (d2Vals == null) {
+            XML.Node("D01_11", null);
+        }
+        else {
+            XML.Node("D01_11", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_12")
+        if (d2Vals == null) {
+            XML.Node("D01_12", "");
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_12", d2Vals[i]);
+            };
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_13")
+        if (d2Vals == null) {
+            XML.Node("D01_13", "");
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_13", d2Vals[i]);
+            };
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_14")
+        if (d2Vals == null) {
+            XML.Node("D01_14", "");
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_14", d2Vals[i]);
+            };
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_15")
+        if (d2Vals == null) {
+            XML.Node("D01_15", "");
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_15", d2Vals[i]);
+            };
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_16")
+        if (d2Vals == null) {
+            XML.Node("D01_16", "");
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_16", d2Vals[i]);
+            };
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_17")
+        if (d2Vals == null) {
+            XML.Node("D01_17", "");
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_17", d2Vals[i]);
+            };
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_18")
+        if (d2Vals == null) {
+            XML.Node("D01_18", "");
+        }
+        else {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D01_18", d2Vals[i]);
+            };
+        };
+
+        
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_19")
+        if (d2Vals == null) {
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D01_01", Description: "Agency Time Zone Required" })
+        }
+        else {
+            XML.Node("D01_19", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_20")
+        if (d2Vals != null) {
+            XML.Node("D01_20", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D01_21")
+        if (d2Vals == null) {
+            XML.Node("D01_21", null);
+        }
+        else {
+            XML.Node("D01_21", d2Vals[0]);
+        };
+        XML.EndNode();
+        ////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////
+        XML.BeginNode("D02");
+        XML.Attrib("Status", "A");
+        XML.Attrib("Date", "");
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_01")
+        if (d2Vals != null) {
+            XML.Node("D02_01", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_02")
+        if (d2Vals == null) {
+            XML.Node("D02_02", null);
+        }
+        else {
+            XML.Node("D02_02", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_03")
+        if (d2Vals == null) {
+            XML.Node("D02_03", null);
+        }
+        else {
+            XML.Node("D02_03", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_04")
+        if (d2Vals == null) {
+            XML.Node("D02_04", null);
+        }
+        else {
+            XML.Node("D02_04", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_05")
+        if (d2Vals == null) {
+            XML.Node("D02_05", null);
+        }
+        else {
+            XML.Node("D02_05", d2Vals[0]);
+        };
+
+        console.log("d206 not state Abbrev")
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_06")
+        if (d2Vals == null) {
+            XML.Node("D02_06", null);
+        }
+        else {
+            XML.Node("D02_06", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_07")
+        if (d2Vals == null) {
+            v2Array.push();
+            ErrorList.push({ Version: "2.2.1", Severity: "1", ElementID: "D02_07", Description: "Agency Contact Zip Code Required" })
+        }
+        else {
+            XML.Node("D02_07", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_08")
+        if (d2Vals == null) {
+            XML.Node("D02_08", null);
+        }
+        else {
+            XML.Node("D02_08", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_09")
+        if (d2Vals == null) {
+            XML.Node("D02_09", null);
+        }
+        else {
+            XML.Node("D02_09", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_10")
+        if (d2Vals == null) {
+            XML.Node("D02_10", null);
+        }
+        else {
+            XML.Node("D02_10", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D02_11")
+        if (d2Vals == null) {
+            XML.Node("D02_11", null);
+        }
+        else {
+            XML.Node("D02_11", d2Vals[0]);
+        };
+
+        XML.EndNode();
+        ////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////
+        XML.BeginNode("D03");
+        XML.Attrib("Status", "A");
+        XML.Attrib("Date", "");
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_01")
+        if (d2Vals != null) {
+            XML.Node("D03_01", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_02")
+        if (d2Vals == null) {
+            XML.Node("D03_02", null);
+        }
+        else {
+            XML.Node("D03_02", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_03")
+        if (d2Vals == null) {
+            XML.Node("D03_03", null);
+        }
+        else {
+            XML.Node("D03_03", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_04")
+        if (d2Vals == null) {
+            XML.Node("D03_04", null);
+        }
+        else {
+            XML.Node("D03_04", d2Vals[0]);
+        };
+
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_05")
+        if (d2Vals == null) {
+            XML.Node("D03_05", null);
+        }
+        else {
+            XML.Node("D03_05", d2Vals[0]);
+        };
+
+       // alert("FIPS not State Abbrev")
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_06")
+        if (d2Vals == null) {
+            6
+            XML.Node("D03_06", null);
+        }
+        else {
+            XML.Node("D03_06", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_07")
+        if (d2Vals == null) {
+            6
+            XML.Node("D03_07", null);
+        }
+        else {
+            XML.Node("D03_07", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_08")
+        if (d2Vals == null) {
+            6
+            XML.Node("D03_08", null);
+        }
+        else {
+            XML.Node("D03_08", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_09")
+        if (d2Vals == null) {
+            6
+            XML.Node("D03_09", null);
+        }
+        else {
+            XML.Node("D03_09", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_10")
+        if (d2Vals == null) {
+            6
+            XML.Node("D03_10", null);
+        }
+        else {
+            XML.Node("D03_10", d2Vals[0]);
+        };
+
+        var d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D03_11")
+        if (d2Vals == null) {
+            6
+            XML.Node("D03_11", null);
+        }
+        else {
+            XML.Node("D03_11", d2Vals[0]);
+        };
+
+        XML.EndNode();
+        ////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////
+        XML.BeginNode("D04");
+        XML.Attrib("Status", "A");
+        XML.Attrib("Date", "");
+
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_01")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_01", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_02")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_02", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_03")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_03", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_04")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_04", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_05")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_05", d2Vals[i]);
+            };
+        };
+
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_06")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_06", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_07")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_07", d2Vals[i]);
+            };
+        };
+
+       // alert("create Group ala dConfigurations")
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_09")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_09", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_10")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_10", d2Vals[i]);
+            };
+        };
+
+      //  alert("create Group ala dConfigurations")
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_11")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_11", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_12")
+        if (d2Vals == null) {
+            XML.Node("D04_12", null);
+        }
+        else
+        {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_12", d2Vals[i]);
+            };
+        };
+
+      //  alert("create Group ala dConfigurations")
+       // For group size
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_13")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_13", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_14")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_14", d2Vals[i]);
+            };
+        };
+
+        d2Vals = [];
+        d2Vals = getV2Values(V2XMLArray, "D04_15")
+        if (d2Vals != null) {
+            for (var i = 0; i < d2Vals.length; i++) {
+                XML.Node("D04_15", d2Vals[i]);
+            };
+        };
+
+
+        XML.Close(); // Takes care of unended tags.
+        // The replace in the following line are only for making the XML look prettier in the textarea.
+        // document.getElementById("ExampleOutput").value = XML.ToString().replace(/</g, "\n<");
+        console.log(XML.ToString())
+
+    }
+    catch (Err) {
+      //  alert("Error: " + Err.description);
+    }
+    return false;
+};
+
+function JSettings() {
+    this.IE = document.all ? true : false;
+    this.MouseX = _JSettings_MouseX;
+    this.MouseY = _JSettings_MouseY;
+    this.SrcElement = _JSettings_SrcElement;
+    this.Parent = _JSettings_Parent;
+    this.RunOnLoad = _JSettings_RunOnLoad;
+    this.FindParent = _JSettings_FindParent;
+    this.FindChild = _JSettings_FindChild;
+    this.FindSibling = _JSettings_FindSibling;
+    this.FindParentTag = _JSettings_FindParentTag;
+}
+function _JSettings_MouseX(e)
+{ return this.IE ? event.clientX : e.clientX; }
+function _JSettings_MouseY(e)
+{ return this.IE ? event.clientY : e.clientY; }
+function _JSettings_SrcElement(e)
+{ return this.IE ? event.srcElement : e.target; }
+function _JSettings_Parent(Node)
+{ return this.IE ? Node.parentNode : Node.parentElement; }
+function _JSettings_RunOnLoad(Meth) { var Prev = (window.onload) ? window.onload : function () { }; window.onload = function () { Prev(); Meth(); }; }
+function _JSettings_FindParent(Node, Attrib, Value) {
+    var Root = document.getElementsByTagName("BODY")[0];
+    Node = Node.parentNode; while (Node != Root && Node.getAttribute(Attrib) != Value) { Node = Node.parentNode; }
+    if (Node.getAttribute(Attrib) == Value) { return Node; } else { return null; }
+}
+function _JSettings_FindParentTag(Node, TagName) {
+    var Root = document.getElementsByTagName("BODY")[0];
+    TagName = TagName.toLowerCase();
+    Node = Node.parentNode; while (Node != Root && Node.tagName.toLowerCase() != TagName) { Node = Node.parentNode; }
+    if (Node.tagName.toLowerCase() == TagName) { return Node; } else { return null; }
+}
+function _JSettings_FindChild(Node, Attrib, Value) {
+    if (Node.getAttribute)
+        if (Node.getAttribute(Attrib) == Value) return Node;
+
+    var I = 0;
+    var Ret = null;
+    for (I = 0; I < Node.childNodes.length; I++) {
+        Ret = FindChildByAttrib(Node.childNodes[I]);
+        if (Ret) return Ret;
+    }
+    return null;
+}
+function _JSettings_FindSibling(Node, Attrib, Value) {
+    var Nodes = Node.parentNode.childNodes;
+    var I = 0;
+    for (I = 0; I < Nodes.length; I++) {
+        if (Nodes[I].getAttribute) {
+            if (Nodes[I].getAttribute(Attrib) == Value)
+            { return Nodes[I]; }
+        }
+    }
+    return null;
+}
+
+var Settings = new JSettings();
+
+function XMLWriter() {
+
+    this.XML = [];
+    this.Nodes = [];
+    this.State = "";
+    this.FormatXML = function (Str) {
+        if (Str)
+            return Str.replace(/&/g, "&amp;").replace(/\"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        return ""
+    }
+    this.BeginNode = function (Name) {
+        if (!Name) return;
+        if (this.State == "beg") this.XML.push(">");
+        this.State = "beg";
+        this.Nodes.push(Name);
+        this.XML.push("<" + Name);
+    }
+    this.EndNode = function () {
+        if (this.State == "beg") {
+
+            if (this.Att != undefined) {
+
+                this.XML.push(this.Att + ">");
+            }
+            else {
+                this.XML.push("/>");
+                this.Nodes.pop();
+            }
+        }
+        else if (this.Nodes.length > 0)
+            this.XML.push("</" + this.Nodes.pop() + ">");
+        this.State = "";
+    }
+    this.Attrib = function (Name, Value) {
+        if (this.State != "beg" || !Name) return;
+        this.XML.push(" " + Name + "=\"" + this.FormatXML(Value) + "\"");
+    }
+    this.AttribNoEQ = function (Name, Value) {
+        if (this.State != "beg" || !Name) return;
+        this.Att = this.Name
+        this.XML.push(" " + Name + "\"" + this.FormatXML(Value) + "\"");
+    }
+
+    this.WriteString = function (Value) {
+        if (this.State == "beg") this.XML.push(">");
+        this.XML.push(this.FormatXML(Value));
+        this.State = "";
+    }
+    this.Node = function (Name, Value) {
+        if (!Name) return;
+        if (this.State == "beg") this.XML.push(">");
+        this.XML.push((Value == "" || !Value) ? "<" + Name + "/>" : "<" + Name + ">" + this.FormatXML(Value) + "</" + Name + ">");
+        this.State = "";
+    }
+    this.Close = function () {
+        while (this.Nodes.length > 0)
+            this.EndNode();
+        this.State = "closed";
+    }
+    this.ToString = function () { return this.XML.join(""); }
+}
+
+
+
+
+var getV2Values = function (v2ObjectList, ElementName) {
+    var _arr = [];
+    for (var i = 0; i < v2ObjectList.length; i++)  // go through every object
+    {
+        //  console.log(v2ObjectList[i].element + " " + ElementName)
+        if (v2ObjectList[i].element == ElementName)  //if the object is found in the list
+        {
+
+            if (v2ObjectList[i].val instanceof Array)  // is the object an array?
+            {
+                for (var j = 0; j < v2ObjectList[i].val.length; j++)  //add values to array
+                {
+                    if (v2ObjectList[i].val != null) {
+                        _arr.push(v2ObjectList[i].val[j]);
+                    }
+                }
+            }
+            else  //if not an array, add it to return array
+            {
+                _arr.push(v2ObjectList[i].val);
+            }
+
+        }
+    }
+    console.log(ElementName, _arr.length)
+
+    return _arr;
+};
