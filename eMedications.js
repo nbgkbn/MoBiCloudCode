@@ -8,6 +8,8 @@ var v2NOT_APPLICABLE = "-25"
 var v2NOT_RECORDED = "-20";
 var v2NOT_KNOWN = "-10";
 var NIL_V3NOT_RECORDED =  "NV=\"7701003\" xsi:nil=\"true\"/>" ;
+var NOT_RECORDED =  "NOT RECORDED" ;
+var NOT_REPORTING =  "NOT REPORTING" ;
 var NIL_V3NOT_REPORTING = "NV=\"7701005\" xsi:nil=\"true\"/>" ;
 var NIL_V3NOT_APPLICABLE ="NV=\"7701001\" xsi:nil=\"true\"/>" ;
 var PN_REFUSED_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801019\"/>";
@@ -29,105 +31,154 @@ var WORKEMAIL= "EmailAddressType=\"9904003\"";
 
 
 var _retArray = [];
+var getSection = function(businessObject, sectionName)
+//Get NEMSIS Section Header element
+{
 
+    var dReturnObject = new Object;
+    {
+        var _retValue = [];
+        for (var d = 0; d < businessObject.length; d++) 
+        {
+            if (businessObject[d].attributes.name == sectionName) 
+            {
+                console.log(businessObject[d])
+                return businessObject[d];
+            }
+        }
+        if( dReturnObject == "undefined") 
+        {
+            return "undefined"
+        }
+    }
+};
+
+var getSectionIndex = function (sectionObject, sectionName)
+    //Returns an array of index values for a given sectionName within a sectionObject
+    // if sectionName does not exist within the sectionObject, return -1
+{
+    var _retValue = [];
+    for (var d = 0; d < sectionObject.sections.length; d++) 
+    {
+        if (sectionObject.sections[d].attributes.name == sectionName) 
+        {
+            _retValue.push(d);
+        }
+    }
+    if (_retValue.length == 0) 
+    {
+        _retValue.push(-1);
+    }
+    return _retValue;
+};
 var seteMedication = function (businessObject) 
 {
-    if(typeof businessObject == undefined)
-    {
-        SetNotApplicable();
-        return _retArray;
-    }
-    _retArray.push("<eMedications>");
+    var OLAPArray = [];
+    var MedicationObject = new Object();
+    MedicationObject = getSection(businessObject, "eMedications");
 
-    for (var i = 0; i < businessObject.sections.length ; i++)
+    var isNotApplicableFlag = true;  //once I have real data, set to False
+
+    var _medicationsGroupArray = [];
+    _medicationsGroupArray = getSectionIndex(MedicationObject.attributes, "eMedications.MedicationGroup");
+ 
+    for (var xx = 0; xx < _medicationsGroupArray.length ; xx++)pre
     {
-        var elementList = businessObject.sections[xx].attributes.elements;
-        _retArray.push('/t' + "<eMedications.MedicationGroup>");
+        var elementList = MedicationObject.attributes.sections[xx].elements;
+        console.log(elementList)
 
         //eMedications.01////////
         _val = getValue(elementList, "eMedications.01");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<DateTimeMedicationAdministered>" + "NOT_RECORDED" + "</DateTimeMedicationAdministered>" + '\n');
-            _retArray.push('/t/t' + "<eMedications.01" + NIL_V3NOT_RECORDED );
             MedicationGroup["eMedications.01"] = V3NOT_RECORDED;
+            MedicationGroup["eMedicatiDateTimeMedicationAdministeredons"] = NOTRECORDED;
             v2Array.push({ section: "E18", element: "E18_01", val: V2NOT_RECORDED });
         }        
         else 
         {
-            OLAPArray.push('\t\t\t' + "<DateTimeMedicationAdministered>" + _val + "</DateTimeMedicationAdministered>" + '\n');
-            MedicationGroup["eMedications.01"] = _val;
-            v2Array.push({ section: "E18", element: "E18_01", val: _val });
-            _retArray.push('/t/t' + "<eMedications.01>" + _val + "</eMedications.01>");
+            MedicationGroup["eMedicatiDateTimeMedicationAdministeredons"] = _val[0];
+            MedicationGroup["eMedications.01"] = _val[0];
+            v2Array.push({ section: "E18", element: "E18_01", val: _val[0] });
         }; 
-
         //eMedications.02////////
         _val = getValue(elementList, "eMedications.02");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<MedicationAdministeredPriortothisUnitEMSCare>" + "NOT_RECORDED" + "</MedicationAdministeredPriortothisUnitEMSCare>" + '\n');
-            _retArray.push('/t/t' + "<eMedications.02" + NIL_V3NOT_RECORDED );
             v2Array.push({ section: "E18", element: "E18_02", val: V2NOT_RECORDED });
             MedicationGroup["eMedications.02"] = V3NOT_RECORDED;
+            MedicationGroup["MedicationAdministeredPriortothisUnitEMSCare"] = NOT_RECORDED;
         }        
         else 
         {
-            OLAPArray.push('\t\t\t' + "<MedicationAdministeredPriortothisUnitEMSCare>" +setCodeText("eMedications.02", _val[i]) + "</MedicationAdministeredPriortothisUnitEMSCare>" + '\n');
-            MedicationGroup["eMedications.02"] = _val;             
-            _retArray.push('/t/t' + "<eMedications.02>" + _val + "</eMedications.02>");
-            v2Array.push({ section: "E18", element: "E18_02", val: SetD2("eMedications.02", _val) });
+            MedicationGroup["MedicationAdministeredPriortothisUnitEMSCare"] = setCodeText("eMedications.02", _val[0]);
+            MedicationGroup["eMedications.02"] = _val[0];
+            v2Array.push({ section: "E18", element: "E18_02", val: SetD2("eMedications.02", _val[0]) });
         }; 
 
         //eMedications.03////////
         _val = getValue(elementList, "eMedications.03");
         if (_val == null)
         {
-            if(isRequiredStateElement("eMedications.03"))
+            PNValue = getPertinentNegative("eMedications.03")
+            if (PNValue == null)
             {
-                _retArray.push('/t/t' + "<eMedications.03" + NIL_V3NOT_RECORDED );
-                E18.E18_03	= v2NOT_RECORDED;
-            }
-            else 
-            {
-                if(_val == 8801001)
-                {   
-                    OLAPArray.push('\t\t\t' + "<MedicationGiven>"+ PN_CONTRA_INDICATION_NOTED + _val + "</MedicationGiven>" + '\n');
-                    _retArray.push('/t/t' + "<eMedications.03" + PN_CONTRA_INDICATION_NOTED + _val + "</eMedications.03>" + '\n');
-                }
-                else if(_val == 8801003)
+                if (isRequiredStateElement("eMedications.03"))
                 {
-                    _retArray.push('/t/t' + "<eMedications.03" + PN_DENIED_BY_ORDER + _val + "</eMedications.03>" + '\n');
-                    OLAPArray.push('\t\t\t' + "<MedicationGiven>"+ PN_DENIED_BY_ORDER + _val + "</MedicationGiven>" + '\n');
-
-                }
-                else if(_val == 8801007)
-                {
-                    _retArray.push('/t/t' + "<eMedications.03" + PN_MEDICATION_ALLERGY + _val + "</eMedications.03>" + '\n');
-                    OLAPArray.push('\t\t\t' + "<MedicationGiven>"+ PN_MEDICATION_ALLERGY + _val + "</MedicationGiven>" + '\n');
-
-                }
-                else if(_val == 8801009)
-                {
-                    _retArray.push('/t/t' + "<eMedications.03" + PN_MEDICATION_ALREADY_TAKEN + _val + "</eMedications.03>" + '\n');
-                    OLAPArray.push('\t\t\t' + "<MedicationGiven>"+ PN_MEDICATION_ALREADY_TAKEN + _val + "</MedicationGiven>" + '\n')
-                }
-                else if(_val == 8801019)
-                {
-                    _retArray.push('/t/t' + "<eMedications.03" + PN_REFUSED_IS_NILLABLE + _val + "</eMedications.03>" + '\n');
-                    OLAPArray.push('\t\t\t' + "<MedicationGiven>"+ PN_REFUSED_IS_NILLABLE + _val + "</MedicationGiven>" + '\n')
-                }
-                else if(_val == 8801023)
-                {
-                    _retArray.push('/t/t' + "<eMedications.03" + PN_UNABLE_TO_COMPLETE_IS_NILLABLE + _val + "</eMedications.03>" + '\n');
-                    OLAPArray.push('\t\t\t' + "<MedicationGiven>"+ PN_UNABLE_TO_COMPLETE_IS_NILLABLE + _val + "</MedicationGiven>" + '\n')                    
+                    MedicationGroup["eMedications.03"] = v3NOT_RECORDED
+                    MedicationGroup["MedicationGiven"] = NOT_RECORDED;
+                    v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_RECORDED });
                 }
                 else
-               
-                ePatient["eMedications.03"]  = _val;
-                E18.E18_03 = _val[0];
-                _retArray.push('/t/t' + "<eMedications.03>" + val + "</eMedications.03>");
-                OLAPArray.push('\t\t\t' + "<MedicationGiven>"+ _val + "</MedicationGiven>" + '\n')                    
-            }; 
+                {
+                    if (PNValue == "8801001")
+                    {
+                        MedicationGroup["eMedications.03"] = PN_CONTRA_INDICATION_NOTED
+                        MedicationGroup["MedicationGiven"] = "CONTRA INDICATION NOTED";
+                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+                    }
+                    else if (_val == 8801003)
+                    {
+                        MedicationGroup["eMedications.03"] = PN_DENIED_BY_ORDER
+                        MedicationGroup["MedicationGiven"] = "DENIED BY ORDER";
+                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+
+                    }
+                    else if (_val == 8801007)
+                    {
+                        MedicationGroup["eMedications.03"] = PN_MEDICATION_ALLERGY
+                        MedicationGroup["MedicationGiven"] = "MEDICATION ALLERGY";
+                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+                    }
+                    else if (_val == 8801009)
+                    {
+                        MedicationGroup["eMedications.03"] = PN_MEDICATION_ALREADY_TAKEN
+                        MedicationGroup["MedicationGiven"] = "MEDICATION ALREADY TAKEN";
+                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+                    }
+                    else if (_val == 8801019)
+                    {
+                        MedicationGroup["eMedications.03"] = PN_REFUSED_IS_NILLABLE
+                        MedicationGroup["MedicationGiven"] = "REFUSED";
+                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+                    }
+                    else if (_val == 8801023)
+                    {
+                        MedicationGroup["eMedications.03"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE
+                        MedicationGroup["MedicationGiven"] = "UNABLE TO COMPLETE";
+                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+                    }
+                }
+            }
+        }
+        else
+        {
+            MedicationGroup["eMedications.03"] = _val[0];
+            MedicationGroup["MedicationGiven"] = _val[0];
+            v2Array.push({ section: "E18", element: "E18_03", val: _val[0] });
+
+        }
+
 
             //eMedication.04////////
             _val = getValue(elementList, "eMedications.04");
@@ -135,191 +186,169 @@ var seteMedication = function (businessObject)
             {
                 if(isRequiredStateElement("eMedications.04"))
                 {
-                    OLAPArray.push('\t\t\t' + "<MedicationAdministeredRoute>" + "NOT RECORDED" + "</MedicationAdministeredRoute>" + '\n');
-                    _retArray.push('/t/t' + "<eMedications.04" + NIL_V3NOT_RECORDED );
                     eMedication["eMedications.04"] = V3NOT_RECORDED;
+                    eMedication["MedicationAdministeredRoute"] = NOT_RECORDED;
                     v2Array.push({ section: "E18", element: "E18_04", val: V2NOT_RECORDED });
                 }            
                 else
                 {
-                    OLAPArray.push('\t\t\t' + "<MedicationAdministeredRoute>" + "NOT REPORTING" + "</MedicationAdministeredRoute>" + '\n');
-                    _retArray.push('/t/t' + "<eMedications.04" + NIL_V3NOT_REPORTING );
+                    
                     eMedication["eMedications.04"] = v3NOT_REPORTING;
+                    eMedication["MedicationAdministeredRoute"] = NOT_REPORTING;
                     v2Array.push({ section: "E18", element: "E18_04", val: v2NOT_REPORTING });
                 }
             }
             else 
             {
-                OLAPArray.push('\t\t\t' + "<MedicationAdministeredRoute>" +setCodeText("eMedications.04", _val) + "</MedicationAdministeredRoute>" + '\n');
-                eMedication["eMedications.04"] = _val;
+                eMedication["eMedications.04"] = setCodeText("eMedications.04", _val[0]) ;
+                eMedication["MedicationAdministeredRoute"] = _val[0];
                 v2Array.push({ section: "E18", element: "E18_04", val:  SetD2("eMedications.04",_val)});
-                _retArray.push('/t/t' + "<eMedications.04>" + _val + "</eMedications.04>");
             }; 
         
-
-            _retArray.push('/t/t' + "<DosageGroup>");
-            OLAPArray.push('/t/t' + "<DosageGroup>");
               
             //eMedication.05/////////////
             _val = getValue(elementList, "eMedications.05");
             if (_val == null) 
             {
-                OLAPArray.push('\t\t\t' + "<MedicationDosage>" + "NOT RECORDED" + "</MedicationDosage>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.05" + NIL_V3NOT_RECORDED );
                 eMedication["eMedications.05"] = V3NOT_RECORDED;
+                eMedication["MedicationDosage"] = V3NOT_RECORDED;
                 v2Array.push({ section: "E18", element: "E18_05", val: V2NOT_RECORDED });
             }
             else 
             {
-                _retArray.push('/t/t/t' + "<eMedications.05>" + _val + "</eMedications.05>");
-                v2Array.push({ section: "E18", element: "E18_05", val: _val });
-                eMedicationGroup["eMedications.05"] = _val;
-                eMedication["eMedications.05"] = _val;
+                v2Array.push({ section: "E18", element: "E18_05", val: _val[0] });
+                eMedicationGroup["MedicationDosage"] = _val[0];
+                eMedication["eMedications.05"] = _val[0];
             };
 
             //eMedication.06//////////////
             _val = getValue(elementList, "eMedications.06");
             if (_val == null) 
             {
-                OLAPArray.push('\t\t\t' + "<MedicationDosageUnits>" + "NOT RECORDED" + "</MedicationDosageUnits>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.06" + NIL_V3NOT_RECORDED );
                 eMedication["eMedications.06"] = V3NOT_RECORDED;
+                eMedication["MedicationDosageUnits"] = V3NOT_RECORDED;
                 v2Array.push({ section: "E18", element: "E18_08", val: V2NOT_RECORDED });
 
             }
             else 
             {
-                OLAPArray.push('\t\t\t' + "<MedicationDosageUnits>" +setCodeText("eMedications.06", _val) + "</MedicationDosageUnits>" + '\n');
-                _retArray.push('/t/t/t' + "<eMedications.06>" + _val + "</eMedications.06>")                
-                v2Array.push({ section: "E18", element: "E18_06", val: SetD2("eMedications.06",_val) });
-                eMedicationGroup["eMedications.06"] = _val;                
+                eMedication["MedicationDosageUnits"] = SetD2("eMedications.06", _val[0]);
+                v2Array.push({ section: "E18", element: "E18_06", val:  SetD2("eMedications.06",_val[0])});
+                eMedicationGroup["eMedications.06"] = _val[0];
             };
 
-            _retArray.push('/t/t' + "</DosageGroup>");
-            OLAPArray.push('/t/t' + "</DosageGroup>");
 
             //eMedications.07/////////////////
             _val = getValue(elementList, "eMedications.07");
             if (_val == null) 
             {
-                OLAPArray.push('\t\t\t' + "<ResponsetoMedication>" + "NOT RECORDED" + "</ResponsetoMedication>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.07" + NIL_V3NOT_RECORDED );
                 eMedication["eMedications.07"] = V3NOT_RECORDED;
+                eMedication["ResponsetoMedication"] = V3NOT_RECORDED;
                 v2Array.push({ section: "E18", element: "E18_07", val: V2NOT_RECORDED });
-
             }
             else 
             {
-                OLAPArray.push('\t\t\t' + "<ResponsetoMedication>" +setCodeText("eMedications.07", _val) + "</ResponsetoMedication>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.07>" + _val + "</eMedications.07>")
-                v2Array.push({ section: "E18", element: "E18_07", val: SetD2("eMedications.07",_val) });
-                eMedicationGroup["eMedications.07"] = _val;
+                eMedication["ResponsetoMedication"] = SetD2("eMedications.07", _val[0]);
+                v2Array.push({ section: "E18", element: "E18_07", val: SetD2("eMedications.07",_val[0]) });
+                eMedicationGroup["eMedications.07"] = _val[0];
             };
 
             //eMedications.08////////////
             _val = getValue(elementList, "eMedications.08");
             if (_val == null) 
             {
-                OLAPArray.push('\t\t\t' + "<MedicationComplication>" + "NOT RECORDED" + "</MedicationComplication>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.08" + NIL_V3NOT_RECORDED );
                 eMedication["eMedications.08"] = V3NOT_RECORDED;
+                eMedication["MedicationComplication"] = NOT_RECORDED;
                 v2Array.push({ section: "E18", element: "E18_08", val: V2NOT_RECORDED });
             }
-            else {
+            else
+            {
                 var arr1 = [];
                 var arr2 = [];
+                var arr3 = [];
                 for (var i = 0; i < _val.length; i++) 
                 {
-                    arr1[i]=_val[i];
-                    v2Array.push({ section: "E18", element: "E18_08", val: SetV2("eMedications.08", _val[i]) });
-                    _retArray.push('/t/t' + "<eMedications.08>" + _val[i] + "</eMedications.08>");
-                    OLAPArray.push('\t\t\t' + "<MedicationComplication>" +setCodeText("eMedications.07", _val) + "</MedicationComplication>" + '\n');
-                }
-                eMedicationGroup["eMedications.08"] = arr1.slice(0);
+                    arr1.push(_val[i]);
+                    arr2.push(setV2("eMedications.08", _val[i]));
+                    arr3.push(setCodeText("eMedications.08", _val[i]));
+                };
+                isNotApplicableFlag = false;            
+                v2Array.push({ section: "E18", element: "E18_08", val:arr2.slice(0) });
+                _retArray.push('/t/t' + "<eMedications.08>" + _val[i] + "</eMedications.08>");
+                OLAPArray.push('\t\t\t' + "<MedicationComplication>" +setCodeText("eMedications.07", _val) + "</MedicationComplication>" + '\n');
+            };
+            eMedicationGroup["eMedications.08"] = arr1.slice(0);
+            v2Array.push({ section: "E18", element: "E18_08", val:arr2.slice(0) });
+            eMedication["MedicationComplication"] = arr3.slice(0);
             };
      
-
             //eMedications.09//////////////
             _val = getValue(elementList, "eMedications.09");
             if (_val == null)
             {
                 if(isRequiredStateElement("eMedications.09"))
                 {
-                    OLAPArray.push('\t\t\t' + "<HealthcareProfessionalID>" + "NOT RECORDED" + "</HealthcareProfessionalID>" + '\n');
-                    _retArray.push('/t/t' + "<eMedications.09" + NIL_V3NOT_RECORDED );
                     eMedicationGroup["eMedications.09"] = V3NOT_RECORDED;
+                    eMedicationGroup["HealthcareProfessionalID"] = NOT_RECORDED;
                     v2Array.push({ section: "E18", element: "E18_09", val: V2NOT_RECORDED });
                 }            
                 else
                 {
-                    OLAPArray.push('\t\t\t' + "<HealthcareProfessionalID>" + "NOT REPORTING" + "</HealthcareProfessionalID>" + '\n');
-                    _retArray.push('/t/t' + "<eMedications.09" + NIL_V3NOT_REPORTING );
+                    eMedicationGroup["HealthcareProfessionalID"] = NOT_REPORTING;
                     eMedicationGroup["eMedications.09"] = v3NOT_REPORTING;
                     v2Array.push({ section: "E18", element: "E18_09", val: v2NOT_REPORTING });
                 }
             }
             else 
-            {
-                OLAPArray.push('\t\t\t' + "<HealthcareProfessionalID>" + _val + "</HealthcareProfessionalID>" + '\n');
-                eMedicationGroup["eMedications.09"] = _val;
-                v2Array.push({ section: "E18", element: "E18_09", val: SetD2("eMedications.09",_val) });                
-                _retArray.push('/t/t' + "<eMedications.09>" + _val + "</eMedication.09>");
+            {                
+                eMedicationGroup["HealthcareProfessionalID"] = _val[0];
+                eMedicationGroup["eMedications.09"] = _val[0];
+                v2Array.push({ section: "E18", element: "E18_09", val: _val[0] });                                
             }; 
 
             //eMedications.10////////////
             _val = getValue(elementList, "eMedications.10");
             if (_val == null) 
             {
-                OLAPArray.push('\t\t\t' + "<RoleTypeofPersonAdministeringMedication>" + "NOT RECORDED" + "</RoleTypeofPersonAdministeringMedication>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.10" + NIL_V3NOT_RECORDED);
                 eMedicationGroup["eMedications.10"] =V3NOT_RECORDED;
+                eMedicationGroup["RoleTypeofPersonAdministeringMedication"] =NOT_RECORDED;
             }
             else 
             {
-                OLAPArray.push('\t\t\t' + "<RoleTypeofPersonAdministeringMedication>" + setCodeText("eMedications.10", _val) + "</RoleTypeofPersonAdministeringMedication>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.10>" + _val + "</eMedication.10>")
-                eMedicationGroup["eMedications.10"] = _val;
+                eMedicationGroup["RoleTypeofPersonAdministeringMedication"] =setCodeText("eMedications.10", _val[0]);
+                eMedicationGroup["eMedications.10"] = _val[0];
             };
 
             //eMedications.11///////////
             _val = getValue(elementList, "eMedications.11");
             if (_val == null) 
             {
-                OLAPArray.push('\t\t\t' + "<MedicationAuthorization>" + null + "</MedicationAuthorization>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.11>" + null + "</eMedication.11>")
                 eMedicationGroup["eMedications.11"] =null;
+                eMedicationGroup["MedicationAuthorization"] =null;
                 v2Array.push({ section: "E18", element: "E18_10", val: null });                
             }
             else 
             {
-                OLAPArray.push('\t\t\t' + "<MedicationAuthorization>" + setCodeText("eMedications.11", _val) + "</MedicationAuthorization>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.11>" + _val + "</eMedications.11>")
-                v2Array.push({ section: "E18", element: "E18_10", val: SetD2("eMedications.11",_val) });                
-                eMedicationGroup["eMedications.11"] = _val;
+                v2Array.push({ section: "E18", element: "E18_10", val: SetD2("eMedications.11",_val[0]) });                
+                eMedicationGroup["eMedications.11"] = _val[0];
+                eMedicationGroup["MedicationAuthorization"] =setCodeText("eMedications.11", _val[0]);
             };
 
             //eMedications.12/////////////
             _val = getValue(elementList, "eMedications.12");
             if (_val == null) 
             {
-                OLAPArray.push('\t\t\t' + "<MedicationAuthorizingPhysician>" + null + "</MedicationAuthorizingPhysician>" + '\n');
-                _retArray.push('/t/t' + "<eMedications.11>" + null + "</eMedication.11>")
                 eMedicationGroup["eMedications.12"] =null;
+                eMedicationGroup["MedicationAuthorizingPhysician"] =null;
                 v2Array.push({ section: "E18", element: "E18_11", val: null });                
             }
             else 
             {
-                _retArray.push('/t/t' + "<eMedications.12>" + _val + "</eMedications.12>")
-                OLAPArray.push('\t\t\t' + "<MedicationAuthorizingPhysician>" + _val + "</MedicationAuthorizingPhysician>" + '\n');
-                v2Array.push({ section: "E18", element: "E18_11", val: _val });                
-                eMedicationGroup["eMedications.12"] = _val;
+                OLAPArray.push('\t\t\t' + "<MedicationAuthorizingPhysician>" + _val[0] + "</MedicationAuthorizingPhysician>" + '\n');
+                v2Array.push({ section: "E18", element: "E18_11", val: _val[0] });                
+                eMedicationGroup["eMedications.12"] = _val[0];
             };
-
-            _retArray.push('/t' + "</eMedications.MedicationGroup>");
-            OLAPArray.push('/t' + "</eMedications.MedicationGroup>");
-    }
-        OLAPArray.push = "</eMedications>";
-        _retArray.push = "</eMedications>";
+    
 };
 
 var setNotApplicable = function(elementID)
@@ -544,7 +573,8 @@ var eMedications08 = {
     "3708045":"4450"
 };
 
-var eMedications11 = {
+var eMedications11 = 
+    {
     "9918001":"4480",
     "9918003":"4485",
     "9918005":"4490",

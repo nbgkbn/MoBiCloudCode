@@ -47,28 +47,25 @@ var seteOther = function (businessObject)
         SetNotApplicable();
     }
 
-    if (typeof businessObject["eOther"] != undefined) {
+    if (typeof businessObject["eOther"] != undefined)
+    {
         console.log(businessObject);
         console.log(businessObject["eOther"].length);
 
-        _retArray.push("<eOther>");
-        OLAPArray.push("<eOther>");
 
         //eOther.01////////
         _val = getValue(businessObject.elements, "eOther.01");
         if (_val == null)
         {
             v2Array.push({ section: "E23", element: "E23_01", val: v2NOT_RECORDED });
-            _retArray.push('\t' + "<eOther.01" + v3NOT_RECORDED + '\n');
             eOther["eOther.01"] = v3NOT_RECORDED;
-            OLAPArray.push('\t' + "<ReviewRequested>" + "NOT RECORDED" + "</ReviewRequested>" + '\n');
+            eOther["ReviewRequested"] = NOT_RECORDED;
         }
         else
         {
-            OLAPArray.push('\t' + "<ReviewRequested>" + setCodeText("eOther.01", _val) + "</ReviewRequested>" + '\n');
-            _retArray.push('\t' + "<eOther.01>" + _val + "</eOther.01>");
-            v2Array.push({ section: "E23", element: "E23_01", val: SetD2("eOther.01", _val) });
-            eOther["eOther.01"] = _val;
+            v2Array.push({ section: "E23", element: "E23_01", val: SetD2("eOther.01", _val[0]) });
+            eOther["eOther.01"] = _val[0];
+            eOther["ReviewRequested"] = setCodeText("eOther.01", _val[0]);
         };
 
         //eOther.02//////////
@@ -76,126 +73,121 @@ var seteOther = function (businessObject)
         if (_val == null)
         {
             v2Array.push({ section: "E23", element: "E23_02", val: null });
-            _retArray.push('/t' + "<eOther.02>" + null + "</eOther.02>");
             eOther["eOther.02"] = v3NOT_RECORDED;
-            OLAPArray.push('\t' + "<PotentialSystemofCareSpecialtyRegistryPatient>" + "NOT RECORDED" + "</PotentialSystemofCareSpecialtyRegistryPatient>" + '\n');
-
+            eOther["PotentialSystemofCareSpecialtyRegistryPatient"] = NOT_RECORDED;
         }
         else
         {
             var arr1 = [];
             var arr2 = [];
-            for (var i = 0; i < _val.length; i++)
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++) 
             {
-                arr1[i]=_val[i];
-                v2Array.push({ section: "E23", element: "E23_02", val: SetV2("eOther.02", _val[i]) });
-                OLAPArray.push('\t' + "<PotentialSystemofCareSpecialtyRegistryPatient>" + setCodeText("eOther.02", _val[i]) + "</PotentialSystemofCareSpecialtyRegistryPatient>" + '\n');
-                _retArray.push('/t' + "<eOther.02>" + _val[i] + "</eOther.02>");
+                arr1.push(_val[i]);
+                arr2.push(setV2("eOther.03", _val[i]));
+                arr3.push(setCodeText("eOther.03", _val[i]));
             }
-            eOther["eOther.02"] = arr1.slice(0);
         };
+        isNotApplicableFlag = false;
+        eOther["eOther.02"] = arr1.slice(0);
+        eOther["PotentialSystemofCareSpecialtyRegistryPatient"] = arr3.slice(0);
+        v2Array.push({ section: "E23", element: "E23_02", val: arr2.slice(0) });
+
         ///////////////////eOther.EMSCrewMemberGroup
         _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eOther.EMSCrewMemberGroup");
         for (var x = 0; x < _sectionIndex.length; x++) 
         {
             var listOfElements = businessObject.sections[_sectionIndex[x]].attributes.elements
-            _retArray.push('/t' + "<eOther.EMSCrewMemberGroup>");
-            OLAPArray.push('/t' + "<eOther.EMSCrewMemberGroup>");
             
             //eOther.03//////////
             _val = getValue(businessObject.elements, "eOther.03");
             if (_val == null)
             {
-                v2Array.push({ section: "E23", element: "E23_03", val: null });
-                _retArray.push('/t' + "<eOther.03>" + null + "</eOther.03>");
+                v2Array.push({ section: "E23", element: "E23_03", val: null });                
                 EMSCrewMemberGroup["eOther.03"] = null;
-                OLAPArray.push('\t' + "<PersonalProtectiveEquipmentUsed>" + null + "</PersonalProtectiveEquipmentUsed>" + '\n');
+                EMSCrewMemberGroup["PersonalProtectiveEquipmentUsed"] = null;
             }
             else
             {
                 var arr1 = [];
                 var arr2 = [];
-                for (var i = 0; i < _val.length; i++)
-                {
-                    arr1[i]=_val[i];
-                    v2Array.push({ section: "E23", element: "E23_03", val: SetV2("eOther.03", _val[i]) });
-                    OLAPArray.push('\t' + "<PersonalProtectiveEquipmentUsed>" + setCodeText("eOther.03", _val[i]) + "</PersonalProtectiveEquipmentUsed>" + '\n');
-                    _retArray.push('/t/t' +"<eOther.03>" + _val[i] + "</eOther.03>");
-                }
-                EMSCrewMemberGroup["eOther.03"] = arr1.slice(0);
-
-            };
-
-            //eOther.04///////////
-            _val = getValue(businessObject.elements, "eOther.04");
-            if (_val == null)
-            {
-                EMSCrewMemberGroup["eOther.04"] = null;
-                _retArray.push('\t' + "<eOther.04>" + null + "</eOther.04>");               
-                OLAPArray.push('\t' + "<CrewMemberID>" + null + "</CrewMemberID>" + '\n');
-
-            }
-            else
-            {
-                EMSCrewMemberGroup["eOther.04"] = _val;
-                _retArray.push('/t/t' + "<eOther.04>" + _val + "</eOther.04>")
-                OLAPArray.push('\t' + "<CrewMemberID>" + _val + "</CrewMemberID>" + '\n');
-            };
-
-            //eOther.05/////////
-            _val = getValue(businessObject.elements, "eOther.05");
-            if (_val == null)
-            {
-                OLAPArray.push('\t' + "<SuspectedEMSWorkRelatedExposureInjuryorDeath>" + "NOT RECORDED" + "</SuspectedEMSWorkRelatedExposureInjuryorDeath>" + '\n');
-                v2Array.push({ section: "E23", element: "E23_05", val: V2NOT_RECORDED });
-                _retArray.push('/t/t' + "<eOther.05" + NIL_V3NOT_RECORDED);
-                EMSCrewMemberGroup["eOther.05"] = V3NOT_RECORDED;             
-            }
-            else 
-            {
-                OLAPArray.push('\t' + "<SuspectedEMSWorkRelatedExposureInjuryorDeath>" + setCodeText("eOther.05", _val[i]) + "</SuspectedEMSWorkRelatedExposureInjuryorDeath>" + '\n');
-                _retArray.push('/t/t' + "<eOther.05>" + _val + "</eOther.05>")
-                v2Array.push({ section: "E23", element: "E23_05", val: SetD2("eOther.05", _val) });
-                EMSCrewMemberGroup["eOther.05"] = _val[0];
-
-            };
-
-            //eOther.06/////////
-            _val = getValue(businessObject.elements, "eOther.06");
-            if (_val == null)
-            {
-                if (isRequiredStateElement("eOther.06"))
-                {
-                    OLAPArray.push('\t' + "<TypeofWorkRelatedInjuryDeathorSuspectedExposure>" + "NOT RECORDED" + "</TypeofWorkRelatedInjuryDeathorSuspectedExposure>" + '\n');
-                    _retArray.push('/t/t' + "<eOther.06" + NIL_V3NOT_RECORDED);
-                    EMSCrewMemberGroup["eOther.06"] = v3NOT_RECORDED;
-                    v2Array.push({ section: "E23", element: "E23_06", val: V2NOT_RECORDED });
-                }
-                else
-                {
-                    OLAPArray.push('\t' + "<TypeofWorkRelatedInjuryDeathorSuspectedExposure>" + "NOT REPORTING" + "</TypeofWorkRelatedInjuryDeathorSuspectedExposure>" + '\n');
-                    _retArray.push('/t/t' + "<eOther.06" + NIL_V3NOT_REPORTING);
-                    EMSCrewMemberGroup["eOther.06"] = v3NOT_REPORTING;
-                    v2Array.push({ section: "E23", element: "E23_06", val: v2NOT_REPORTING });
-                }            
-            }
-            else 
-            {
-                var arr1 = [];
-                var arr2 = [];
-                for (var i = 0; i < _val.length; i++)
-                {
-                    OLAPArray.push('\t' + "<TypeofWorkRelatedInjuryDeathorSuspectedExposure>" + setCodeText("eOther.06", _val[i]) + "</TypeofWorkRelatedInjuryDeathorSuspectedExposure>" + '\n');
-                    v2Array.push({ section: "E23", element: "E23_06", val: SetV2("eOther.06", _val[i]) });
+                var arr3 = [];
+                for (var i = 0; i < _val.length; i++) {
                     arr1.push(_val[i]);
-                    _retArray.push('/t/t' +"<eOther.06>" + _val[i] + "</eOther.06>");
-                }
-                EMSCrewMemberGroup["eOther.06"] = arr1.slice(0);
+                    arr2.push(setV2("eOther.04", _val[i]));
+                    arr3.push(setCodeText("eOther.04", _val[i]));
+                };
+                isNotApplicableFlag = false;            
             };
+            
+            EMSCrewMemberGroup["eOther.02"] = arr1.slice(0);
+            eOther["PersonalProtectiveEquipmentUsed"] = arr3.slice(0);
+            v2Array.push({ section: "E23", element: "E23_03", val: arr2.slice(0) });                            
+        };
 
-            _retArray.push('/t' + "</EMSCrewMemberGroup>");
-            OLAPArray.push('/t' + "</EMSCrewMemberGroup>");
-        }        
+        //eOther.04///////////
+        _val = getValue(businessObject.elements, "eOther.04");
+        if (_val == null)
+        {
+            EMSCrewMemberGroup["eOther.04"] = null;
+            EMSCrewMemberGroup["CrewMemberID"] = null;
+        }
+        else
+        {
+            EMSCrewMemberGroup["eOther.04"] = _val[0];
+            EMSCrewMemberGroup["CrewMemberID"] = _val[0];
+
+        };
+
+        //eOther.05/////////
+        _val = getValue(businessObject.elements, "eOther.05");
+        if (_val == null)
+        {
+            v2Array.push({ section: "E23", element: "E23_05", val: V2NOT_RECORDED });
+            EMSCrewMemberGroup["eOther.05"] = V3NOT_RECORDED;        
+            EMSCrewMemberGroup["SuspectedEMSWorkRelatedExposureInjuryorDeath"] = V3NOT_RECORDED;        
+        }
+        else 
+        {
+            v2Array.push({ section: "E23", element: "E23_05", val: SetD2("eOther.05", _val[0]) });
+            EMSCrewMemberGroup["eOther.05"] = _val[0];
+            EMSCrewMemberGroup["SuspectedEMSWorkRelatedExposureInjuryorDeath"] = setCodeText("eOther.05", _val[0]);                
+        };
+
+        //eOther.06/////////
+        _val = getValue(businessObject.elements, "eOther.06");
+        if (_val == null)
+        {
+            if (isRequiredStateElement("eOther.06"))
+            {
+                EMSCrewMemberGroup["eOther.06"] = v3NOT_RECORDED;
+                EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = NOT_RECORDED;
+                v2Array.push({ section: "E23", element: "E23_06", val: V2NOT_RECORDED });
+            }
+            else
+            {
+                EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = NOT_REPORTING;
+                EMSCrewMemberGroup["eOther.06"] = v3NOT_REPORTING;
+                v2Array.push({ section: "E23", element: "E23_06", val: v2NOT_REPORTING });
+            }            
+        }
+        else 
+        {
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++) 
+            {
+                arr1.push(_val[i]);
+                arr2.push(setV2("eOther.06", _val[i]));
+                arr3.push(setCodeText("eOther.06", _val[i]));
+            };
+            isNotApplicableFlag = false;      
+            EMSCrewMemberGroup["eOther.06"] = arr1.slice(0);
+            EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = arr3.slice(0);
+            v2Array.push({ section: "E23", element: "E23_06", val: arr2.slice(0) });
+        }
+    };
 
 
         ///////////////////////////
@@ -203,23 +195,26 @@ var seteOther = function (businessObject)
         _val = getValue(businessObject.elements, "eOther.07");
         if (_val == null)
         {
-            OLAPArray.push('\t' + "<NaturalSuspectedIntentionalorUnintentionalDisaster>" + null + "</NaturalSuspectedIntentionalorUnintentionalDisaster>" + '\n');
-            _retArray.push('/t' + "<eOther.07>" + null + "</eOther.07>");
             EMSCrewMemberGroup["eOther.07"] = null;
+            EMSCrewMemberGroup["NaturalSuspectedIntentionalorUnintentionalDisaster"] = null;
             v2Array.push({ section: "E23", element: "E23_04", val: null });
         }
         else
         {
             var arr1 = [];
             var arr2 = [];
-            for (var i = 0; i < _val.length; i++)
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++) 
             {
-                OLAPArray.push('\t' + "<NaturalSuspectedIntentionalorUnintentionalDisaster>" + setCodeText("eOther.07", _val[i]) + "</NaturalSuspectedIntentionalorUnintentionalDisaster>" + '\n');
                 arr1.push(_val[i]);
-                v2Array.push({ section: "E23", element: "E23_06", val: SetV2("eOther.07", _val[i]) });
-                _retArray.push('/t' + "<eOther.07>" + _val[i] + "</eOther.07>");
-            }
-            eOther["eOther.07"] = arr1.slice(0);            
+                arr2.push(setV2("eOther.07", _val[i]));
+                arr3.push(setCodeText("eOther.07", _val[i]));
+            };
+            isNotApplicableFlag = false;     
+            EMSCrewMemberGroup["eOther.07"] = arr1.slice(0);
+            EMSCrewMemberGroup["NaturalSuspectedIntentionalorUnintentionalDisaster"] = arr3.slice(0);
+            v2Array.push({ section: "E23", element: "E23_04", val: arr2.slice(0) });
+
         };
 
 
@@ -229,24 +224,21 @@ var seteOther = function (businessObject)
         {
             if (isRequiredStateElement("eOther.08"))
             {
-                OLAPArray.push('\t' + "<CrewMemberCompletingthisReport>" + "NOT RECORDED" + "</CrewMemberCompletingthisReport>" + '\n');
-                _retArray.push('/t' + "<eOther.08" + NIL_V3NOT_RECORDED);
                 eOther["eOther.08"] = v3NOT_RECORDED;
+                eOther["CrewMemberCompletingthisReport"] = NOT_RECORDED;
                 v2Array.push({ section: "E23", element: "E23_10", val: v2NOT_RECORDED });
             }
             else
             {
-                OLAPArray.push('\t' + "<CrewMemberCompletingthisReport>" + "NOT REPORTING" + "</CrewMemberCompletingthisReport>" + '\n');
-                _retArray.push('/t' + "<eOther.08" + NIL_V3NOT_REPORTING);
-                eOther["eOther.08"] = v3NOT_REPORTING;
+                eOther["CrewMemberCompletingthisReport"] = NOT_RECORDED;
+                eOther["eOther.08"] = NOT_REPORTING;
                 v2Array.push({ section: "E23", element: "E23_10", val: v2NOT_REPORTING });
             }
         }
         else
         {
-            OLAPArray.push('\t' + "<CrewMemberCompletingthisReport>" + setCodeText("eOther.08", _val) + "</CrewMemberCompletingthisReport>" + '\n');
-            _retArray.push('/t' + "<eOther.08>" + _val + "</eOther.08>")
-            eOther["eOther.08"] = _val;
+            eOther["eOther.08"] = _val[0];
+            eOther["CrewMemberCompletingthisReport"] = setCodeText("eOther.08", _val[0]);
             v2Array.push({ section: "E23", element: "E23_10", val: D2Val("eOther.08", _val[0]) });
         };
 
@@ -257,38 +249,30 @@ var seteOther = function (businessObject)
         for (var x = 0; x < _sectionIndex.length; x++) 
         {
             var listOfElements = businessObject.sections[_sectionIndex[x]].attributes.elements
-            OLAPArray.push('/t' + "<eOther.FileGroup>");
-            _retArray.push('/t' + "<eOther.FileGroup>");
-            
             //eOther.09//////////
             _val = getValue(listOfElements, "eOther.09");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<ExternalElectronicDocuments>" + null + "</ExternalElectronicDocuments>" + '\n');
-                _retArray.push('/t/t' + "<eOther.09>" + null + "</eOther.09>");
-                eOther["eOther.09"] = null;
+                FileGroup["ExternalElectronicDocuments"] = null;
+                FileGroup["eOther.09"] = null;
             }
             else
             {
-                OLAPArray.push('\t' + "<ExternalElectronicDocuments>" + setCodeText("eOther.09", _val) + "</ExternalElectronicDocuments>" + '\n');
-                _retArray.push('/t/t' + "<eOther.09>" + _val + "</eOther.09>");
-                FileGroup["eOther.09"] = arr1.slice(0);                
+                FileGroup["ExternalElectronicDocuments"] = setCodeText("eOther.09", _val[0]);
+                FileGroup["eOther.09"] = _val[0];                
             };
 
             //eOther.10//////////
             _val = getValue(listOfElements, "eOther.10");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<FileAttachmentType>" + null + "</FileAttachmentType>" + '\n');
-                _retArray.push('/t/t' + "<eOther.10>" + null + "</eOther.10>");
-                eOther["eOther.10"] = null;
-
+                FileGroup["FileAttachmentType"] = null;
+                FileGroup["eOther.10"] = null;
             }
             else
             {
-                OLAPArray.push('\t' + "<FileAttachmentType>" + _val + "</FileAttachmentType>" + '\n');
-                _retArray.push('/t/t' + "<eOther.10>" + _val + "</eOther.10>");
-                FileGroup["eOther.10"] = arr1.slice(0);                
+                FileGroup["FileAttachmentType"] = _val[0];
+                FileGroup["eOther.10"] = _val[0];                
             };
 
 
@@ -296,106 +280,83 @@ var seteOther = function (businessObject)
             _val = getValue(listOfElements, "eOther.11");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<FileAttachmentImage>" + null + "</FileAttachmentImage>" + '\n');
-                _retArray.push('/t/t' + "<eOther.11>" + null + "</eOther.11>");
-                eOther["eOther.11"] = null;
+                FileGroup["FileAttachmentImage"] = null;
+                FileGroup["eOther.11"] = null;
             }
             else
             {
-                OLAPArray.push('\t' + "<FileAttachmentImage>" + _val + "</FileAttachmentImage>" + '\n');
-                _retArray.push('/t/t' + "<eOther.11>" + _val + "</eOther.11>");
-                FileGroup["eOther.11"] = _val;                
-            };
-
-            
-            _retArray.push('/t' + "</eOther.FileGroup>");
-            OLAPArray.push('/t' + "</eOther.FileGroup>");
-        }
-        ///////////////////////////////////eOther.SignatureGroup
-
-        
-        ///////////////////eOther.FileGroup
+                FileGroup["FileAttachmentImage"] = _val[0];
+                FileGroup["eOther.11"] = _val[0];
+            }
+        };
         _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eOther.SignatureGroup");
         for (var x = 0; x < _sectionIndex.length; x++) 
         {
             var listOfElements = businessObject.sections[_sectionIndex[x]].attributes.elements
-            _retArray.push('/t' + "<eOther.SignatureGroup>");
-            OLAPArray.push('/t' + "<eOther.SignatureGroup>");
-
             //Other.12////////
+
             _val = getValue(listOfElements, "eOther.12");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<TypeofPersonSigning>" + null + "</TypeofPersonSigning>" + '\n');
-                _retArray.push('/t/t' + "<eOther.12>" + null + "</eOther.12>");
+                SignatureGroup["TypeofPersonSigning"] = null;
                 SignatureGroup["eOther.12"] = null;
             }
             else
             {
-                OLAPArray.push('\t' + "<ExternalElectronicDocuments>" + setCodeText("eOther.12", _val) + "</ExternalElectronicDocuments>" + '\n');
-                _retArray.push('/t/t' + "<eOther.12>" + _val + "</eOther.12>")
-                SignatureGroup["eOther.12"] = _val;
+                SignatureGroup["eOther.12"] = setCodeText("eOther.12", _val[0]);
+                SignatureGroup["eOther.12"] = _val[0];
             };
 
             //eOther.13
             _val = getValue(listOfElements, "eOther.13");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<SignatureReason>" + null + "</SignatureReason>" + '\n');
-                _retArray.push('/t/t' + "<eOther.13" + null + "</eOther.13>");
+                SignatureGroup["SignatureReason"] = null;
                 SignatureGroup["eOther.13"] = null;
             }
             else
             {
-                OLAPArray.push('\t' + "<SignatureReason>" + setCodeText("eOther.13", _val) + "</SignatureReason>" + '\n');
-                _retArray.push('/t/t' + "<eOther.13>" + _val + "</eOther.13>")
-                SignatureGroup["eOther.13"] = _val;
+                SignatureGroup["eOther.13"] = setCodeText("eOther.13",_val[0]);
+                SignatureGroup["eOther.13"] = _val[0];
             };
 
             //ether.14/////////
             _val = getValue(listOfElements, "eOther.14");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<TypeOfPatientRepresentative>" + null + "</TypeOfPatientRepresentative>" + '\n');
-                _retArray.push('/t/t' + "<eOther.14" + null + "</eOther.14>");
+                SignatureGroup["TypeOfPatientRepresentative"] = null;
                 SignatureGroup["eOther.14"] = null;
-
             }
             else
-            {
-                OLAPArray.push('\t' + "<TypeOfPatientRepresentative>" + setCodeText("eOther.14", _val) + "</TypeOfPatientRepresentative>" + '\n');
-                _retArray.push('/t/t' + "<eOther.14>" + _val + "</eOther.14>")
-                SignatureGroup["eOther.14"] = _val;
+            {                
+                SignatureGroup["TypeOfPatientRepresentative"] = setCodeText("eOther.14",_val[0]);
+                SignatureGroup["eOther.14"] = _val[0];
             };
 
             //eOther.15//////
             _val = getValue(listOfElements, "eOther.15");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<SignatureStatus>" + null + "</SignatureStatus>" + '\n');
-                _retArray.push('/t/t' + "<eOther.15" + null + "</eOther.15>");
+                SignatureGroup["SignatureStatus"] = null;
                 SignatureGroup["eOther.15"] = null;
             }
             else
             {
-                OLAPArray.push('\t' + "<SignatureStatus>" + setCodeText("eOther.15", _val) + "</SignatureStatus>" + '\n');
-                _retArray.push('/t/t' + "<eOther.15>" + _val + "</eOther.15>")
-                SignatureGroup["eOther.15"] = _val;
+                SignatureGroup["SignatureStatus"] = setCodeText("eOther.15", _val[0]);
+                SignatureGroup["eOther.15"] = _val[0];
             };
 
             //eOther.16/////////
             _val = getValue(listOfElements, "eOther.16");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<SignatureFileName>" + null + "</SignatureFileName>" + '\n');
-                _retArray.push('/t/t' + "<eOther.16" + null + "</eOther.16>");
+                SignatureGroup["SignatureFileName"] = null;
                 SignatureGroup["eOther.16"] = null;
 
             }
             else
             {
-                OLAPArray.push('\t' + "<SignatureFileName>" + setCodeText("eOther.15", _val) + "</SignatureFileName>" + '\n');
-                _retArray.push('/t/t' + "<eOther.16>" + _val + "</eOther.16>")
+                SignatureGroup["SignatureFileName"] = setCodeText("eOther.16", _val[0]) ;
                 SignatureGroup["eOther.16"] = _val;
             };
 
@@ -403,55 +364,50 @@ var seteOther = function (businessObject)
             _val = getValue(listOfElements, "eOther.17");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<SignatureFileType>" + null + "</SignatureFileType>" + '\n');
-                _retArray.push('/t/t' + "<eOther.17" + null + "</eOther.17>");
+                SignatureGroup["SignatureFileType"] = null;
                 SignatureGroup["eOther.17"] = null;
             }
             else
             {
-                OLAPArray.push('\t' + "<SignatureFileType>" + _val + "</SignatureFileType>" + '\n');
-                _retArray.push('/t/t' + "<eOther.17>" + _val + "</eOther.17>")
-                SignatureGroup["eOther.17"] = _val;
+                SignatureGroup["SignatureFileType"] = _val[0];
+                SignatureGroup["eOther.17"] = _val[0];
             };
 
             //eOther.18///////
             _val = getValue(listOfElements, "eOther.18");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<SignatureGraphic>" + null + "</SignatureGraphic>" + '\n');
-                _retArray.push('/t/t' + "<eOther.18" + null + "</eOther.18>");
+                OLAPArray.push('\t' + "<>" + null + "</SignatureGraphic>" + '\n');
+                SignatureGroup["SignatureGraphic"] = null;
                 SignatureGroup["eOther.18"] = null;
 
             }
             else
             {
-                OLAPArray.push('\t' + "<SignatureGraphic>" + _val + "</SignatureGraphic>" + '\n');
-                SignatureGroup["eOther.18"] = _val;
-                _retArray.push('/t/t' + "<eOther.18>" + _val + "</eOther.18>");
+                SignatureGroup["eOther.18"] = _val[0];
+                SignatureGroup["SignatureGraphic"] = _val[0];
             };
 
             //eOther.19//////////
             _val = getValue(listOfElements, "eOther.19");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<DateTimeofSignature>" + null + "</DateTimeofSignature>" + '\n');
-                _retArray.push('/t/t' + "<eOther.19" + null + "</eOther.19>");
+                SignatureGroup["DateTimeofSignature"] = null;
                 SignatureGroup["eOther.19"] = null;
             }
             else
             {
-                OLAPArray.push('\t' + "<DateTimeofSignature>" + _val + "</DateTimeofSignature>" + '\n');
-                SignatureGroup["eOther.19"] = _val;
-                _retArray.push('/t/t' + "<eOther.19>" + _val + "</eOther.19>");
+                SignatureGroup["eOther.19"] = _val[0];
+                SignatureGroup["DateTimeofSignature"] = _val[0];
             };
 
             //eOther.20///////
             _val = getValue(listOfElements, "eOther.20");
             if (_val == null)
             {
-                OLAPArray.push('\t' + "<SignatureLastName>" + null + "</SignatureLastName>" + '\n');
-                _retArray.push('/t/t' + "<eOther.20" + null + "</eOther.20>");
-                SignatureGroup["eOther.20"] = null;
+                OLAPArray.push('\t' + "<>" + null + "</SignatureLastName>" + '\n');
+                SignatureGroup["SignatureLastName"] = null;
+                SignatureGroup["eOt  her.20"] = null;
             }
             else
             {

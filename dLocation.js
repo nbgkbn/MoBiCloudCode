@@ -12,242 +12,357 @@ var NIL_V3NOT_APPLICABLE = " NV=\"7701001\" xsi:nil=\"true\"/>";
 var PN_REFUSED_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801019\"/>";
 var PN_UNABLE_TO_COMPLETE_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801023\"/>";
 var PN_FINDING_NOT_PRESENT_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801005\"/>";
-var OLAPArray = [];
-var LocationGroup = new Object;
 
-var getSectionIndex = function (businessObject, sectionName) {
+var dLocation= new Object;
+var LocationGroup = new Object;
+var LocationGroupArray = [];
+
+var getSectionIndex = function (businessObject, sectionName)
+{
     //console.log(businessObject)
     var _retValue = [];
-    for (var d = 0; d < businessObject.sections.length; d++) {
-        if (businessObject.sections[d].attributes.name == sectionName) {
+    for (var d = 0; d < businessObject.sections.length; d++)
+    {
+        if (businessObject.sections[d].attributes.name == sectionName)
+        {
             _retValue.push(d);
         }
     }
-    if (_retValue.length == 0) {
+    if (_retValue.length == 0)
+    {
         _retValue.push(-1);
     }
     return _retValue;
-}
+};
 
-var setdLocation = function (businessObject) {
+var setdLocation = function (businessObject)
+{
     console.log(businessObject.name)
-    if (businessObject.name != "dLocation") {
+    if (businessObject.name != "dLocation")
+    {
         return null
     };
-
-    var v2Array = [];
-    var _retArray = [];
-    var XMLString = "";
-    _retArray.push("<dLocation>" + '\n');
-    OLAPArray.push("<dLocation>" + '\n');
-
+    V3XML.BeginNode("dFacility");
+    OLAPXML.BeginNode("dFacility");
     _sectionIndex = getSectionIndex(businessObject, "dLocation.LocationGroup");
 
     console.log(_sectionIndex)
 
-    for (var xx = 0; xx <_sectionIndex.length; xx++)
-    {  
-
+    for (var xx = 0; xx < _sectionIndex.length; xx++)
+    {
         var elementList = businessObject.sections[xx].attributes.elements;
-        _retArray.push('\t' + "<dLocation.LocationGroup>" + '\n');
-        OLAPArray.push('\t' + "<dLocation.LocationGroup>" + '\n');
+        V3XML.BeginNode("dLocation.LocationGroup");
+        OLAPXML.BeginNode("dLocation.LocationGroup");
+
 
         // console.log(elementList)
 
         //dLocation.01/////////
         _val = getdLocationValue(elementList, "dLocation.01");
-        if (_val == null) {
+        if (_val == null)
+        {
             LocationGroup["dLocation.01"] = null;
-            OLAPArray.push('\t\t' + "<LocationType>" + null + "</LocationType>" + '\n');
-            _retArray.push('\t\t' + "<dLocation.01>" + null + "</dLocation.01>" + '\n');
+            V3XML.Node("dLocation.01", null);
+            OLAPXML.Node("LocationType", null);
+            LocationGroup["LocationType"] = null;
         }
-        else {
-            OLAPArray.push('\t\t' + "<LocationType>" + setCodeText("dLocation.01", _val) + "</LocationType>" + '\n');
-            LocationGroup["dLocation.01"] = _val;
-            _retArray.push('\t\t' + "<dLocation.01>" + _val + "</dLocation.01>" + '\n');
+        else
+        {
+            LocationGroup["dLocation.01"] = _val[0];
+            V3XML.Node("dLocation.01", _val[0]);
+            OLAPXML.Node("LocationType", setCodeText("dLocation.01", _val[0]));
+            LocationGroup["LocationType"] = setCodeText("dLocation.01", _val[0]);
         };
 
         //dLocation.02/////////
         _val = getdLocationValue(elementList, "dLocation.02");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<LocationName>" + null + "</LocationName>" + '\n');
             LocationGroup["dLocation.02"] = null;
+            V3XML.Node("dLocation.02", null);
+            OLAPXML.Node("LocationName", null);
+            LocationGroup["LocationName"] = null;
         }
         else
         {
-            LocationGroup["dLocation.02"] = _val;
-            OLAPArray.push('\t\t' + "<LocationName>" + _val + "</LocationName>" + '\n');
-            _retArray.push('\t\t' + "<dLocation.02>" + _val + "</dLocation.02>" + '\n');
-            v2Array.push({ section: "D05", element: "D05_01", val: _val });
+            LocationGroup["dLocation.02"] = _val[0];
+            V3XML.Node("dLocation.02", _val[0]);
+            OLAPXML.Node("LocationName", _val[0]);
+            LocationGroup["LocationName"] = _val[0];
         };
 
         //dLocation.03/////////
         _val = getdLocationValue(elementList, "dLocation.03");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<LocationNumber>" + null + "</LocationNumber>" + '\n');
             LocationGroup["dLocation.03"] = null;
+            V3XML.Node("dLocation.03", null);
+            OLAPXML.Node("LocationNumber", null);
+            LocationGroup["LocationNumber"] = null;
+            _v2Array.push({ section: "D05", element: "D05_02", val: null });
         }
         else
         {
-            OLAPArray.push('\t\t' + "<LocationNumber>" + _val + "</LocationNumber>" + '\n');
-            v2Array.push({ section: "D05", element: "D05_02", val: _val });
-            LocationGroup["dLocation.03"] = _val;
-            _retArray.push('\t\t' + "<dLocation.03>" + _val + "</dLocation.03>" + '\n');
+            LocationGroup["dLocation.03"] = _val[0];
+            V3XML.Node("dLocation.03", _val[0]);
+            OLAPXML.Node("LocationNumber", _val[0]);
+            LocationGroup["LocationNumber"] = _val[0];
+            _v2Array.push({ section: "D05", element: "D05_02", val: _val[0] });
         };
 
         //dLocation.04/////////
         _val = getdLocationValue(elementList, "dLocation.04");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<GPS>" + null + "</GPS>" + '\n');
             LocationGroup["dLocation.04"] = null;
+            V3XML.Node("dLocation.04", null);
+            OLAPXML.Node("GPS", null);
+            LocationGroup["GPS"] = null;
+            _v2Array.push({ section: "D05", element: "D05_04", val: null });
         }
-        else {
-            v2Array.push({ section: "D05", element: "D05_04", val: _val });
-            LocationGroup["dLocation.04"] = _val;
-            OLAPArray.push('\t\t' + "<GPS>" + _val + "</GPS>" + '\n');
-            _retArray.push('\t\t' + "<dLocation.04>" + _val + "</dLocation.04>" + '\n');
+        else
+        {
+            LocationGroup["dLocation.04"] = _val[0];
+            V3XML.Node("dLocation.04", _val[0]);
+            OLAPXML.Node("GPS", _val[0]);
+            LocationGroup["GPS"] = _val[0];
+            _v2Array.push({ section: "D05", element: "D05_04", val: _val[0] });
         };
 
         //dLocation.05/////////
         _val = getdLocationValue(elementList, "dLocation.05");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<NationalGridCoordinates>" + null + "</NationalGridCoordinates>" + '\n');
             LocationGroup["dLocation.05"] = null;
+            V3XML.Node("dLocation.05", null);
+            OLAPXML.Node("NationalGridCoordinates", null);
+            LocationGroup["NationalGridCoordinates"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t' + "<NationalGridCoordinates>" + _val + "</NationalGridCoordinates>" + '\n');
-            LocationGroup["dLocation.05"] = _val;
-            _retArray.push('\t\t' + "<dLocation.05>" + _val + "</dLocation.05>" + '\n');
+            LocationGroup["dLocation.05"] = _val[0];
+            V3XML.Node("dLocation.05", _val[0]);
+            OLAPXML.Node("NationalGridCoordinates", _val[0]);
+            LocationGroup["NationalGridCoordinates"] = _val[0];
         };
 
         //dLocation.06/////////
         _val = getdLocationValue(elementList, "dLocation.06");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<Address>" + null + "</Address>" + '\n');
             LocationGroup["dLocation.06"] = null;
+            V3XML.Node("dLocation.06", null);
+            OLAPXML.Node("Address", null);
+            LocationGroup["Address"] = null;
+            _v2Array.push({ section: "D05", element: "D05_05", val: null });
         }
         else
         {
-            OLAPArray.push('\t\t' + "<Address>" + _val + "</Address>" + '\n');
-            v2Array.push({ section: "D05", element: "D05_05", val: _val });
-            LocationGroup["dLocation.06"] = _val;
-            _retArray.push('\t\t' + "<dLocation.06>" + _val + "</dLocation.06>" + '\n');
-
+            LocationGroup["dLocation.06"] = _val[0];
+            V3XML.Node("dLocation.06", _val[0]);
+            OLAPXML.Node("Address", _val[0]);
+            LocationGroup["Address"] = _val[0];
+            _v2Array.push({ section: "D05", element: "D05_05", val: _val[0] });
         };
 
         //dLocation.07/////////
         _val = getdLocationValue(elementList, "dLocation.07");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<City>" + null + "</City>" + '\n');
             LocationGroup["dLocation.07"] = null;
+            V3XML.Node("dLocation.07", null);
+            OLAPXML.Node("City", null);
+            LocationGroup["City"] = null;
+            _v2Array.push({ section: "D05", element: "D05_06", val: null });
         }
         else
         {
-            OLAPArray.push('\t\t' + "<City>" + _val + "</City>" + '\n');
-            v2Array.push({ section: "D05", element: "D05_06", val: _val });
-            LocationGroup["dLocation.07"] = _val;
-            _retArray.push('\t\t' + "<dLocation.07>" + _val + "</dLocation.07>" + '\n');
+            LocationGroup["dLocation.07"] = _val[0];
+            V3XML.Node("dLocation.07", _val[0]);
+            OLAPXML.Node("City", _val[0]);
+            LocationGroup["City"] = _val[0];
+            _v2Array.push({ section: "D05", element: "D05_06", val: _val[0] });
         };
 
         //dLocation.08/////////
         _val = getdLocationValue(elementList, "dLocation.08");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<State>" + null + "</State>" + '\n');
             LocationGroup["dLocation.08"] = null;
+            V3XML.Node("dLocation.08", null);
+            OLAPXML.Node("State", null);
+            LocationGroup["State"] = null;
+            _v2Array.push({ section: "D05", element: "D05_07", val: null });
         }
         else
         {
-            OLAPArray.push('\t\t' + "<State>" + _val + "</State>" + '\n');
-            v2Array.push({ section: "D05", element: "D05_07", val: _val });
-            LocationGroup["dLocation.08"] = _val;
-            _retArray.push('\t\t' + "<dLocation.08>" + _val + "</dLocation.08>" + '\n');
+            LocationGroup["dLocation.08"] = _val[0];
+            V3XML.Node("dLocation.08", _val[0]);
+            OLAPXML.Node("State", _val[0]);
+            LocationGroup["State"] = _val[0];
+            _v2Array.push({ section: "D05", element: "D05_07", val: _val[0] });
         };
 
         //dLocation.09/////////
         _val = getdLocationValue(elementList, "dLocation.09");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<Zip>" + null + "</Zip>" + '\n');
             LocationGroup["dLocation.09"] = null;
+            V3XML.Node("dLocation.09", null);
+            OLAPXML.Node("Zip", null);
+            LocationGroup["Zip"] = null;
+            _v2Array.push({ section: "D05", element: "D05_08", val: null });
         }
         else
         {
-            OLAPArray.push('\t\t' + "<Zip>" + _val + "</Zip>" + '\n');
-            LocationGroup["dLocation.09"] = _val;
-            v2Array.push({ section: "D05", element: "D05_08", val: _val });
-            _retArray.push('\t\t' + "<dLocation.09>" + _val + "</dLocation.09>" + '\n');
+            LocationGroup["dLocation.09"] = _val[0];
+            V3XML.Node("dLocation.09", _val[0]);
+            OLAPXML.Node("Zip", _val[0]);
+            LocationGroup["Zip"] = _val[0];
+            _v2Array.push({ section: "D05", element: "D05_08", val: _val[0] });
         };
 
         //dLocation.10/////////
         _val = getdLocationValue(elementList, "dLocation.10");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<County>" + null + "</County>" + '\n');
             LocationGroup["dLocation.10"] = null;
+            V3XML.Node("dLocation.10", null);
+            OLAPXML.Node("County", null);
+            LocationGroup["County"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t' + "<County>" + _val + "</County>" + '\n');
-            LocationGroup["dLocation.10"] = _val;
-            _retArray.push('\t\t' + "<dLocation.10>" + _val + "</dLocation.10>" + '\n');
+            LocationGroup["dLocation.10"] = _val[0];
+            V3XML.Node("dLocation.10", _val[0]);
+            OLAPXML.Node("County", _val[0]);
+            LocationGroup["County"] = _val[0];
         };
 
-          
+
         //dLocation.11/////////
         _val = getdLocationValue(elementList, "dLocation.11");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<Country>" + null + "</Country>" + '\n');
             LocationGroup["dLocation.11"] = null;
+            V3XML.Node("dLocation.11", null);
+            OLAPXML.Node("Country", null);
+            LocationGroup["Country"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t' + "<Country>" + setCodeText("dLocation.11", _val) + "</Country>" + '\n');
-            LocationGroup["dLocation.11"] = _val;
-            _retArray.push('\t\t' + "<dLocation.11>" + _val + "</dLocation.11>" + '\n');
+            LocationGroup["dLocation.11"] = _val[0];
+            V3XML.Node("dLocation.11", _val[0]);
+            OLAPXML.Node("Country", setCodeText("dLocation.11", _val[0]));
+            LocationGroup["Country"] = setCodeText("dLocation.11", _val[0]);
         };
 
-        //dLocation.11/////////
-        _val = getdLocationValue(elementList, "dLocation.12");
-        if (_val == null)
-        {
-            LocationGroup["dLocation.12"] = null;
-            OLAPArray.push('\t\t' + "<Phone>" + null + "</Phone>" + '\n');
-
+        //dLocation.12/////////
+        _val = getValue(elementList, "dLocation.12");
+        if (_val == null) {
+            if (isRequiredStateElement("dLocation.12") == - true) {
+                V3XML.BeginNode("dLocation.12")
+                ContactInfoGroup["dLocation.12"] = v3NOT_RECORDED;
+                ContactInfoGroup["LocationPhoneNumber"] = v3NOT_RECORDED;
+                V3XML.Attrib("dLocation.12", NIL_V3NOT_RECORDED);
+                OLAPXML.Node("LocationPhoneNumber", "NOT RECORDED");
+                V3XML.EndNode();
+            }
+            else
+            {
+                V3XML.BeginNode("dLocation.12")
+                ContactInfoGroup["dLocation.12"] = v3NOT_REPORTING;
+                ContactInfoGroup["LocationPhoneNumber"] = v3NOT_REPORTING;
+                V3XML.Attrib("dLocation.12", NIL_V3NOT_REPORTING);
+                OLAPXML.Node("LocationPhoneNumber", "NOT REPORTED");
+                V3XML.EndNode();
+            }
         }
         else {
-            var arr = [];
-            var arr2 = [];
-            for (var t = 0; t < _val.length; t++) {
-                arr2.push(setV2("dLocation.12", _val));
-                arr.push(_val[t]);
-                _retArray.push('\t\t' + "<dLocation.12>" + _val[t] + "</dLocation.12>" + '\n');
-                OLAPArray.push('\t\t' + "<Phone>" + _val[t] + "</Phone>" + '\n');
-            }
-            LocationGroup["dLocation.12 "] = arr.slice(0);
-            v2Array.push({ section: "D05", element: "D05_06", val: arr2.slice(0) });
+            arr1 = [];
+            for (var i = 0; i < _val.length; i++) {
+                var PhoneNumberType = setPhoneNumberType("dLocation.12", _val[i]);
 
+                if (PhoneNumberType == "9913001") {
+                    V3XML.BeginNode("dLocation.12")
+                    V3XML.AttribNoEQ(FAX, _val[i])
+
+                    OLAPXML.BeginNode("LocationPhoneNumber")
+                    OLAPXML.AttribNoEQ(FAX, _val[i])
+                    OLAPXML.EndNode();
+
+                    arr1.push("FAX  " + _val[i]);
+                }
+                else if (PhoneNumberType == "9913003") {
+                    V3XML.BeginNode("dLocation.12")
+                    V3XML.AttribNoEQ(HOME, _val[i])
+                
+                    OLAPXML.BeginNode("LocationPhoneNumber")
+                    OLAPXML.AttribNoEQ(HOME, _val[i])
+                    OLAPXML.EndNode();
+
+                    arr1.push("HOME  " + _val[i]);
+                }
+                else if (PhoneNumberType == "9913005") {
+                    V3XML.BeginNode("dLocation.12")
+                    V3XML.AttribNoEQ(MOBILE, _val[i])
+                
+                    OLAPXML.BeginNode("LocationPhoneNumber")
+                    OLAPXML.AttribNoEQ(MOBILE, _val[i])
+                    OLAPXML.EndNode();
+
+                    arr1.push("MOBILE  " + _val[i]);
+                }
+                else if (PhoneNumberType == "9913007") {
+                    V3XML.BeginNode("dLocation.12")
+                    V3XML.AttribNoEQ(PAGER, _val[i])
+                
+                    OLAPXML.BeginNode("LocationPhoneNumber")
+                    OLAPXML.AttribNoEQ(PAGER, _val[i])
+                
+                }
+                else if (PhoneNumberType == "9913009") {
+                    V3XML.BeginNode("dLocation.12")
+                    V3XML.AttribNoEQ(WORKPHONE, _val[i])
+                
+                    OLAPXML.BeginNode("LocationPhoneNumber")
+                    OLAPXML.AttribNoEQ(WORKPHONE, _val[i])
+                
+                    arr1.push("WORK  " + _val[i]);
+                }
+                else {
+                    console.log(_val[i])
+                    _v2Array.push({ section: "D05", element: "D05_09", val: _val[i] });
+                    V3XML.Node("dLocation.12")
+                    V3XML.AttribNoEQ(WORKPHONE, _val[i])
+                
+                    OLAPXML.BeginNode("LocationPhoneNumber")
+                    OLAPXML.AttribNoEQ(WORKPHONE, _val[i])
+                
+                }
+                
+            };
+            LocationGroup["dLocation.12"] = arr1.slice(0);
+            LocationGroup["LocationPhoneNumber"] = arr1.slice(0);
         };
-        _retArray.push('\t' + "</dLocation.LocationGroup>" + '\n');
-        OLAPArray.push('\t' + "</dLocation.LocationGroup>" + '\n');
+
+        LocationGroupArray.push(LocationGroup)
+
+        V3XML.EndNode();
+        OLAPXML.EndNode();
+
     };
-    _retArray.push("</dLocation>" + '\n');
-    OLAPArray.push("</dLocation>" + '\n');
+    V3XML.EndNode();
+    OLAPXML.EndNode();
 
-    for (var i = 0; i < _retArray.length ; i++) {
-        XMLString = XMLString + _retArray[i];
 
-    }
-    console.log(XMLString)
-    return LocationGroup;
+    if (LocationGroupArray.length > 0) {
+        dLocation.LocationGroup = LocationGroupArray;
+    };
+
+
+    return dLocation;
+
 
 };    //end of function   
 
@@ -340,10 +455,10 @@ function setCodeText(NEMSISElementNumber, codeVal) {
 
 
 var dLocation334_01 = {
-    "1301001" : "EMS Agency Headquarters", 
-    "1301003" : "EMS Staging Area", 
-    "1301005" : "EMS Station", 
-    "1301007" : "Other (Not Listed)"
+    "1301001": "EMS Agency Headquarters",
+    "1301003": "EMS Staging Area",
+    "1301005": "EMS Station",
+    "1301007": "Other (Not Listed)"
 };
 var dLocation334_11 = {
 

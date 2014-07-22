@@ -48,38 +48,34 @@ var seteInjury = function (businessObject)
     {
         SetNotApplicable();
     }
-    _retArray.push("<eInjury>" + '\n');
-    OLAPArray.push("<eInjury>" + '\n');
-
-    
+ 
     if(typeof businessObject["eInjury"] != undefined)
     {
-        console.log(businessObject);
-        console.log(businessObject["eInjury"].length);
-                
         //eInjury.01///////////////////
 
-        alert("If No Value in Injury.01, might set all content to Not Applicable?")
+        var isNotApplicableFlag = true;  //once I have real data, set to False
         _val = getValue(businessObject.elements, "eInjury.01");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<CauseofInjury>" + "NOT RECORDED" + "</CauseofInjury>" + '\n');
-            _retArray.push('/t' +"<eInjury.01" + NIL_V3NOT_RECORDED );
+            eInjury["CauseofInjury"] = "NOT RECORDED";
             eInjury["eInjury.01"] = V3NOT_RECORDED;
-            v2Array.push({ section: "E10", element: "E10_01", val: null});          
+            v2Array.push({ section: "E10", element: "E10_01", val:  v2NOT_RECORDED});          
         }
         else 
         {
             var arr1 = [];
             var arr2 = [];
+            var arr3 = [];
             for (var i = 0; i < _val.length; i++) 
             {
-                arr1[i]=_val[i];                
-                v2Array.push({ section: "E10", element: "E10_01", val: setV2("eInjury.01",_val)});        
-                _retArray.push('/t' +"<eInjury.01>" + _val[i] + "</eInjury.01>");
-                OLAPArray.push('\t\t' + "<CauseofInjury>" +  _val[i] + "</CauseofInjury>" + '\n');
-            }
+                arr1.push(_val[i]);
+                arr2.push(setV2("eInjury.01", _val[i]));
+                arr3.push(setCodeText("eInjury.01", _val[i]));
+            };
+            isNotApplicableFlag = false;
             eInjury["eInjury.01"] = arr1.slice(0);            
+            eInjury["CauseofInjury"] = arr3.slice(0);  
+            v2Array.push({ section: "E10", element: "E10_01", val:  arr2.slice(0)});          
         }; 
 
         //eInjury.02///////////////////
@@ -88,16 +84,14 @@ var seteInjury = function (businessObject)
         {
             if(isRequiredStateElement("eInjury.02"))
             {
-                OLAPArray.push('\t\t' + "<MechanismofInjury>" + "NOT RECORDED" + "</MechanismofInjury>" + '\n');
                 eInjury["eInjury.01"] = V3NOT_RECORDED;
+                eInjury["MechanismofInjury"] = "NOT RECORDED";
                 v2Array.push({ section: "E10", element: "E10_03", val: V2NOT_RECORDED});                          
-                _retArray.push('/t' +"<eInjury.02" + NIL_V3NOT_RECORDED );
             }            
             else
             {
-                OLAPArray.push('\t\t' + "<MechanismofInjury>" + "NOT REPORTING" + "</MechanismofInjury>" + '\n');
-                _retArray.push('/t' +"<eInjury.02" + NIL_V3NOT_REPORTING );
                 eInjury["eInjury.02"] = v3NOT_REPORTING;
+                eInjury["MechanismofInjury"] = "NOT REPORTING";
                 v2Array.push({ section: "E10", element: "E10_03", val: v2NOT_REPORTING});                
             }
         }
@@ -105,15 +99,17 @@ var seteInjury = function (businessObject)
         {
             var arr1 = [];
             var arr2 = [];
+            var arr3 = [];
             for (var i = 0; i < _val.length; i++) 
             {
-                arr1[i]=_val[i];
-                arr2[i] = SetV2("eInjury.02", _val[i]);
-                _retArray.push('/t' +"<eInjury.02>" + _val[i] + "</eInjury.02>");
-                OLAPArray.push('\t\t' + "<MechanismofInjury>" + setCodeText("eInjury.02", _val[i]) + "</MechanismofInjury>" + '\n');
-                v2Array.push({ section: "E10", element: "E10_03", val:  setV2("eInjury.02",_val)});                
-            }
+                arr1.push(_val[i]);
+                arr2.push(setV2("eExam.04", _val[i]));
+                arr3.push(setCodeText("eExam.04", _val[i]));
+            };
             eInjury["eInjury.02"] = arr1.slice(0);
+            eInjury["MechanismofInjury"] = arr3.slice(0);
+            v2Array.push({ section: "E10", element: "E10_03", val: arr2.slice(0)});                
+            isNotApplicableFlag = false;
         }; 
 
 
@@ -123,56 +119,60 @@ var seteInjury = function (businessObject)
         {
             if(isRequiredStateElement("eInjury.03"))
             {
-                OLAPArray.push('\t\t' + "<TraumaCenterCriteria>" + "NOT_RECORDED" + "</TraumaCenterCriteria>" + '\n');
-                _retArray.push('/t' +"<eInjury.03" + NIL_V3NOT_RECORDED );
                 eInjury["eInjury.03"] = V3NOT_RECORDED;
+                eInjury["TraumaCenterCriteria"] = "NOT RECORDED";
             }
         }
         else 
         {
             var arr1 = [];
-            var arr2 = [];
+            var arr3 = [];
             for (var i = 0; i < _val.length; i++) 
             {
-                arr1[i]=_val[i];
-                _retArray.push('/t' +"<eInjury.03>" + _val[i] + "</eInjury.03>");
-                OLAPArray.push('\t\t' + "<MechanismofInjury>" + setCodeText("eInjury.03", _val[i]) + "</MechanismofInjury>" + '\n');
-            }
+                arr1.push(_val[i]);
+                arr3.push(setCodeText("eExam.04", _val[i]));
+            };
             eInjury["eInjury.03"] = arr1.slice(0);
+            eInjury["TraumaCenterCriteria"] = arr3.slice(0);
         }; 
 
         
         alert("eInjury.04 PN")
         //eInjury.04///////////////////
         _val = getValue(businessObject.elements, "eInjury.04");
-        if (_val == "8801005")
+        if (_val == null)
         {
-            _retArray.push('/t' +"<eInjury.04" + PN_FINDING_NOT_PRESENT_IS_NILLABLE );
-            eInjury["eInjury.04"] =_val;
-            
-
-            OLAPArray.push('\t\t' + "<VehicularPedestrianorOtherInjuryRiskFactor>" + _val + "</VehicularPedestrianorOtherInjuryRiskFactor>" + '\n');
-
-        }
-        else if (_val == null)
-        {
-            OLAPArray.push('\t\t' + "<VehicularPedestrianorOtherInjuryRiskFactor>" + "NOT_RECORDED" + "</VehicularPedestrianorOtherInjuryRiskFactor>" + '\n');
-            _retArray.push('/t' +"<eInjury.04" + NIL_V3NOT_RECORDED );
-            eInjury["eInjury.04"] = V3NOT_RECORDED;
-            v2Array.push({ section: "E10", element: "E10_04", val:  V2NOT_RECORDED});                
+            PNValue = getPertinentNegative("eInjury.04")
+            if(PNValue != null)
+            {
+                if(PNValue =="8801005")
+                {
+                    eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = "REFUSED";
+                    eInjury["eInjury.04"] = PN_REFUSED_IS_NILLABLE;
+                    v2Array.push({ section: "E16", element: "E16_02", val: v2NOT_KNOWN});       
+                }
+            }
+            else 
+            {
+                eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = "NOT RECORDED";
+                eInjury["eInjury.04"] = V3NOT_RECORDED;
+                v2Array.push({ section: "E10", element: "E10_04", val:  V2NOT_RECORDED});                
+            }
         }
         else 
         {
             var arr1 = [];
             var arr2 = [];
+            var arr3 = [];
             for (var i = 0; i < _val.length; i++) 
             {
-                arr1[i]=_val[i];                
-                OLAPArray.push('\t\t' + "<VehicularPedestrianorOtherInjuryRiskFactor>" + setCodeText("eInjury.04", _val[i]) + "</VehicularPedestrianorOtherInjuryRiskFactor>" + '\n');
-                v2Array.push({ section: "E10", element: "E10_04", val:  setV2("eInjury.04",_val)});                
-                _retArray.push('/t' +"<eInjury.04>" + _val[i] + "</eInjury.04>");
-            }
+                arr1.push(_val[i]);
+                arr2.push(setV2("eInjury.04", _val[i]));
+                arr3.push(setCodeText("eInjury.04", _val[i]));
+            };
             eInjury["eInjury.04"] = arr1.slice(0);
+            eInjury["VehicularPedestrianorOtherInjuryRiskFactor.04"] = arr3.slice(0);
+            v2Array.push({ section: "E10", element: "E10_04", val:  arr2.slice(0)});     
         }; 
 
         ///eInjury.05////////////
@@ -181,36 +181,31 @@ var seteInjury = function (businessObject)
         {
             if(isRequiredStateElement("eInjury.05"))
             {
-                OLAPArray.push('\t\t' + "<MainAreaoftheVehicleImpactedbytheCollision>" + null + "</MainAreaoftheVehicleImpactedbytheCollision>" + '\n');
-                _retArray.push('/t' +"<eInjury.05>" + null + "</eInjury.05>");
                 eInjury["eInjury.05"] = null;
+                eInjury["MainAreaoftheVehicleImpactedbytheCollision"] = null;
                 v2Array.push({ section: "E10", element: "E10_05", val:  null});
             }
         }
         else 
         {
-            OLAPArray.push('\t\t' + "<MainAreaoftheVehicleImpactedbytheCollision>" + _val + "</MainAreaoftheVehicleImpactedbytheCollision>" + '\n');
-            eInjury["eInjury.05"] = _val;
-            v2Array.push({ section: "E10", element: "E10_05", val:  setV2("eInjury.05",_val)}); 
-            _retArray.push('/t' +"<eInjury.05>" + _val + "</eInjury.05>");
+            eInjury["eInjury.05"] = _val[0];
+            eInjury["MainAreaoftheVehicleImpactedbytheCollision"] = _val[0];
+            v2Array.push({ section: "E10", element: "E10_05", val:  setV2("eInjury.05",_val[0])}); 
         }; 
 
         //eInjury.06///////////
         _val = getValue(businessObject.elements, "eInjury.06");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<LocationofPatientinVehicle>" + null + "</LocationofPatientinVehicle>" + '\n');
-            _retArray.push('/t' +"<eInjury.06>" + null + "</eInjury.06>");
             eInjury["eInjury.06"] = null;
-            v2Array.push({ section: "E10", element: "E10_06", val:  null});
-         
+            eInjury["LocationofPatientinVehicle"] = null;
+            v2Array.push({ section: "E10", element: "E10_06", val:  null});         
         }
         else 
         {
-            eInjury["eInjury.06"] = _val;
-            v2Array.push({ section: "E10", element: "E10_06", val:  setV2("eInjury.06",_val)}); 
-            _retArray.push('/t' +"<eInjury.06>" + _val + "</eInjury.06>");
-            OLAPArray.push('\t\t' + "<LocationofPatientinVehicle>" + setCodeText("eInjury.06", _val[i])+ "</LocationofPatientinVehicle>" + '\n');
+            eInjury["eInjury.06"] = _val[0];
+            eInjury["LocationofPatientinVehicle"] = setCodeText("eInjury.06", _val[0]);
+            v2Array.push({ section: "E10", element: "E10_06", val:  setV2("eInjury.06",_val[0])}); 
         }; 
 
         //eInjury.07/////////
@@ -219,55 +214,55 @@ var seteInjury = function (businessObject)
         {
             if(isRequiredStateElement("eInjury.07"))
             {
-                OLAPArray.push('\t\t' + "<UseofOccupantSafetyEquipment>" + "NOT_RECORDED"+ "</UseofOccupantSafetyEquipment>" + '\n');
-                _retArray.push('/t' +"<eInjury.07" + NIL_V3NOT_RECORDED );
                 eInjury["eInjury.07"] = V3NOT_RECORDED;
+                eInjury["UseofOccupantSafetyEquipment"] = "NOT RECORDED";
                 v2Array.push({ section: "E10", element: "E10_08", val:  V2NOT_RECORDED});
             }            
             else
             {
-                OLAPArray.push('\t\t' + "<UseofOccupantSafetyEquipment>" + "NOT_REPORTING"+ "</UseofOccupantSafetyEquipment>" + '\n');
-                _retArray.push('/t' +"<eInjury.07" + NIL_V3NOT_REPORTING );
                 eInjury["eInjury.07"] = v3NOT_REPORTING;
+                eInjury["UseofOccupantSafetyEquipment"] = "NOT REPORTING";
                 v2Array.push({ section: "E10", element: "E10_08", val:  v2NOT_REPORTING});
             }
         }
         else 
-        {
+        {         
             var arr1 = [];
             var arr2 = [];
+            var arr3 = [];
             for (var i = 0; i < _val.length; i++) 
             {
-                arr1[i]=_val[i];
-                _retArray.push('/t' +"<eInjury.07>" + _val[i] + "</eInjury.07>");
-                OLAPArray.push('\t\t' + "<UseofOccupantSafetyEquipment>" + setCodeText("eInjury.07", _val[i])+ "</UseofOccupantSafetyEquipment>" + '\n');
-                v2Array.push({ section: "E10", element: "E10_08", val:  setV2("eInjury.07",_val[i])}); 
-            }
-            eInjury["eInjury.07"] = arr1.slice(0);       
+                arr1.push(_val[i]);
+                arr2.push(setV2("eInjury.07", _val[i]));
+                arr3.push(setCodeText("eInjury.07", _val[i]));
+            };
+            eInjury["eInjury.07"] = arr1.slice(0);
+            eInjury["UseofOccupantSafetyEquipment"] = arr3.slice(0);
+            v2Array.push({ section: "E10", element: "E10_08", val:  arr2.slice(0)});
         }; 
 
         //eInjury.08//////////
         _val = getValue(businessObject.elements, "eInjury.08");
         if (_val == null) 
-        {
-            OLAPArray.push('\t\t' + "<AirbagDeployment>" + null + "</AirbagDeployment>" + '\n');
-            _retArray.push('/t' +"<eInjury.08>" + null+ "</eInjury.08>");
+        {          
             eInjury["eInjury.08"] = null;
+            eInjury["AirbagDeployment"] = null;
             v2Array.push({ section: "E10", element: "E10_09", val:  null});
         }
         else 
         {
             var arr1 = [];
             var arr2 = [];
+            var arr3 = [];
             for (var i = 0; i < _val.length; i++) 
             {
-                arr1[i]=_val[i];
-                arr2[i] = SetV2("eInjury.08", _val[i]);
-                _retArray.push('/t' +"<eInjury.08>" + _val[i] + "</eInjury.08>");
-                OLAPArray.push('\t\t' + "<AirbagDeployment>" + setCodeText("eInjury.08", _val[i])+ "</AirbagDeployment>" + '\n');
-                v2Array.push({ section: "E10", element: "E10_09", val:  setV2("eInjury.08",_val[i])}); 
-            }
+                arr1.push(_val[i]);
+                arr2.push(setV2("eInjury.08", _val[i]));
+                arr3.push(setCodeText("eInjury.08", _val[i]));
+            };
             eInjury["eInjury.08"] = arr1.slice(0);
+            eInjury["AirbagDeployment"] = arr3.slice(0);
+            v2Array.push({ section: "E10", element: "E10_09", val:arr2.slice(0)});
         }; 
     };
 
@@ -275,16 +270,14 @@ var seteInjury = function (businessObject)
     _val = getValue(businessObject.elements, "eInjury.09");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<HeightofFall>" + null + "</HeightofFall>" + '\n');
-        _retArray.push('/t' +"<eInjury.09>" + null + "</eInjury.09>"+ '\n');
         eInjury["eInjury.09"] = null;
+        eInjury["HeightofFall"] = null;
         v2Array.push({ section: "E10", element: "E10_10", val:  null});
     }
     else 
     {
-        _retArray.push('/t' +"<eInjury.09>" + _val + "</eInjury.09>");
-        OLAPArray.push('\t\t' + "<HeightofFall>" + _val+ "</HeightofFall>" + '\n');
-        eInjury["eInjury.09"] = _val;
+        eInjury["eInjury.09"] = _val[0];
+        eInjury["HeightofFall"] = _val[0];
         v2Array.push({ section: "E10", element: "E10_10", val:  _val});
     };
           
@@ -292,283 +285,231 @@ var seteInjury = function (businessObject)
     _val = getValue(businessObject.elements, "eInjury.10");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<OSHAPersonalProtectiveEquipmentUsed>" + null + "</OSHAPersonalProtectiveEquipmentUsed>" + '\n');
-        _retArray.push('\t' +"<eInjury.10>" + null + "</eInjury.10>")
         eInjury["eInjury.10"] = null;
+        eInjury["OSHAPersonalProtectiveEquipmentUsed"] = null;
     }
     else 
-    {
-        var arr1 = [];
+    {     
+        var arr1 = [];        
+        var arr3 = [];
         for (var i = 0; i < _val.length; i++) 
         {
-            arr1[i] = _val[i];
-            _retArray.push('\t' +"<eInjury.10>" + _val[i] + "</eInjury.10>");
-            OLAPArray.push('\t\t' + "<OSHAPersonalProtectiveEquipmentUsed>" + setCodeText("eInjury.10", _val[i]) + "</OSHAPersonalProtectiveEquipmentUsed>" + '\n');
-        }
+            arr1.push(_val[i]);    
+            arr3.push(setCodeText("eInjury.10", _val[i]));
+        };
         eInjury["eInjury.10"] = arr1.slice(0);
+        eInjury["OSHAPersonalProtectiveEquipmentUsed"] = arr3.slice(0);
     };
 
     //eInjury.11///////
     _val = getValue(businessObject.elements, "eInjury.11");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNSystemCompanyProvidingACNData>" + null + "</ACNSystemCompanyProvidingACNData>" + '\n');
-        _retArray.push('\t' +"<eInjury.11>" + null + "</eInjury.11>")
-        eInjury["eInjury.11"] = null;       
+        eInjury["eInjury.11"] = null;   
+        eInjury["ACNSystemCompanyProvidingACNData"] = null;   
     }
     else {
-        _retArray.push('\t' +"<eInjury.11>" + _val + "</eInjury.11>")
-        eInjury["eInjury.11"] = _val;
-        OLAPArray.push('\t\t' + "<ACNSystemCompanyProvidingACNData>" + _val+ "</ACNSystemCompanyProvidingACNData>" + '\n');
+        eInjury["ACNSystemCompanyProvidingACNData"] = _val[0];
+        eInjury["eInjury.11"] = _val[0];
     };
 
-
-    _retArray.push('\t' + "<CollisionGroup>");
-    OLAPArray.push('\t' + "<CollisionGroup>");
-    //////////////////////////////
-    
-    alert("PhoneNumber")
 
     //eInjury.12///////////
     _val = getValue(businessObject.elements, "eInjury.12");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentID>" + null + "</ACNIncidentID>" + '\n');
-        _retArray.push('\t' +"<eInjury.12>" + null + "</eInjury.12>")
-        CollisionGroup["eInjury.12"] = null;       
+        CollisionGroup["eInjury.12"] = null;
+        CollisionGroup["ACNIncidentID"] = null;
         
     }
     else 
-    {
-        OLAPArray.push('\t\t' + "<ACNIncidentID>" + _val + "</ACNIncidentID>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.12>" + _val + "</eInjury.12>")          
-        CollisionGroup["eInjury.12"] = _val;
+    {        
+        CollisionGroup["ACNIncidentID"] = _val[0];
+        CollisionGroup["eInjury.12"] = _val[0];
     };
 
     //eInjury.13/////////////
     _val = getValue(businessObject.elements, "eInjury.13");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNCallBackPhoneNumber>" + null + "</ACNCallBackPhoneNumber>" + '\n');
-        _retArray.push('\t' +"<eInjury.13>" + null + "</eInjury.13>")
         CollisionGroup["eInjury.13"] = null;       
+        CollisionGroup["ACNCallBackPhoneNumber"] = null;       
     }
     else 
     {
         var arr1 = [];
-        for (var i = 0; i < _val.length; i++) {
-            arr1[i] = _val[i];
-            if (_phoneNumberType == "9913001") {
-                _retArray.push('\t\t' +"<eInjury.13" + FAX + ">" + _val[i] + "</eInjury.13>");
-                OLAPArray.push('\t\t' +"<ACNCallBackPhoneNumber" + FAX + ">" + _val[i] + "</ACNCallBackPhoneNumber>");
-                CollisionGroup["eInjury.13"] = FAX + " " +_val[i];
-                arr1[i] = FAX + " " + _val[i];
-            }
-            else if (_phoneNumberType == "9913003") {
-                _retArray.push('\t\t' +"<eInjury.13" + HOME + ">" + _val[i] + "</eInjury.13>");
-                OLAPArray.push('\t\t' +"<ACNCallBackPhoneNumber" + HOME + ">" + _val[i] + "</ACNCallBackPhoneNumber>");
-                CollisionGroup["eInjury.13"] = HOME + " " +_val[i];
-                arr1[i] = HOME + " " + _val[i];
-            }
-            else if (_phoneNumberType == "9913005") {
-                _retArray.push('\t\t' +"<eInjury.13" + MOBILE + ">" + _val[i] + "</eInjury.13>");
-                OLAPArray.push('\t\t' +"<ACNCallBackPhoneNumber" + MOBILE + ">" + _val[i] + "</ACNCallBackPhoneNumber>");
-                CollisionGroup["eInjury.13"] = MOBILE + " " +_val[i];
-                arr1[i] = MOBILE + " " + _val[i];
-            }
-            else if (_phoneNumberType == "9913007") {
-                _retArray.push('\t\t' +"<eInjury.13" + PAGER + ">" + _val[i] + "</eInjury.13>");
-                OLAPArray.push('\t\t' +"<ACNCallBackPhoneNumber" + PAGER + ">" + _val[i] + "</ACNCallBackPhoneNumber>");
-                CollisionGroup["eInjury.13"] = PAGER + " " +_val[i];
-                arr1[i] = PAGER + " " + _val[i];
-            }
-            else if (_phoneNumberType == "9913009") {
-                _retArray.push('\t\t' +"<eInjury.13" + WORK + ">" + _val[i] + "</eInjury.13>");
-                OLAPArray.push('\t\t' +"<ACNCallBackPhoneNumber" + WORK + ">" + _val[i] + "</ACNCallBackPhoneNumber>");
-                CollisionGroup["eInjury.13"] = WORK + " " +_val[i];
-                arr1[i] = WORK + " " + _val[i];
-            }
-            else (_phoneNumberType == "9913003")
+        _phoneNumberType = getPhoneNumber(_val[0])
+        if(_phoneNumberType !=null)
+        {
+            for (var i = 0; i < _val.length; i++) 
             {
-                _retArray.push('\t\t' +"<eInjury.13>" + _val[i] + "</eInjury.13>");
-                OLAPArray.push('\t\t' +"<ACNCallBackPhoneNumber"  + _val[i] + "</ACNCallBackPhoneNumber>");
-                CollisionGroup["eInjury.13"] = _val[0];
                 arr1[i] = _val[i];
+                if (_phoneNumberType == "9913001") 
+                {             
+                    CollisionGroup["eInjury.13"] = FAX + " " +_val[i];
+                    CollisionGroup["ACNCallBackPhoneNumber"] = FAX + " " +_val[i];                
+                }
+                else if (_phoneNumberType == "9913003") 
+                {
+                    CollisionGroup["eInjury.13"] = HOME + " " +_val[i];
+                    CollisionGroup["ACNCallBackPhoneNumber"] = HOME + " " +_val[i];                
+                }
+                else if (_phoneNumberType == "9913005") 
+                {
+                    CollisionGroup["eInjury.13"] = MOBILE + " " +_val[i];
+                    CollisionGroup["ACNCallBackPhoneNumber"] = MOBILE + " " +_val[i];
+                }
+                else if (_phoneNumberType == "9913007") 
+                {
+                    CollisionGroup["ACNCallBackPhoneNumber"] = PAGER + " " +_val[i];
+                    CollisionGroup["eInjury.13"] = PAGER + " " +_val[i];
+                }
+                else if (_phoneNumberType == "9913009") 
+                {
+                    CollisionGroup["ACNCallBackPhoneNumber"] = WORK + " " +_val[i];
+                    CollisionGroup["eInjury.13"] = WORK + " " +_val[i];
+                }
+                else if (_phoneNumberType == "9913003")
+                {
+                    CollisionGroup= _val[i];
+                    CollisionGroup["eInjury.13"] = _val[0];
+                }
             }
-        };
-        eInjury["eInjury.10"] = arr1.slice(0);
-
+        }; 
     };
+
     //eInjury.14///////////////
     _val = getValue(businessObject.elements, "eInjury.14");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<DateTimeofACNIncident>" + null + "</DateTimeofACNIncident>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.14>" + null + "</eInjury.14>")
         CollisionGroup["eInjury.14"] = null;               
+        CollisionGroup["DateTimeofACNIncident"] = null;    
     }
-    else {
-        _retArray.push('\t\t' +"<eInjury.14>" + _val + "</eInjury.14>")          
-        OLAPArray.push('\t\t' + "<DateTimeofACNIncident>" + _val+ "</DateTimeofACNIncident>" + '\n');
-        CollisionGroup["eInjury.14"] = _val;
+    else 
+    {
+        CollisionGroup["DateTimeofACNIncident"] = _val[0];    
+        CollisionGroup["eInjury.14"] = _val[0];
     };
           
     //eInjury.15//////////////  
     _val = getValue(businessObject.elements, "eInjury.15");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentLocation>" + null + "</ACNIncidentLocation>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.15>" + null + "</eInjury.15>")
-        CollisionGroup["eInjury.15"] = null;               
-        
+        CollisionGroup["ACNIncidentLocation"] = null;        
+        CollisionGroup["eInjury.15"] = null;        
     }
     else 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentLocation>" + _val+ "</ACNIncidentLocation>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.15>" + _val + "</eInjury.15>")          
-        CollisionGroup["eInjury.15"] = _val;
+        CollisionGroup["ACNIncidentLocation"] = _val[0];
+        CollisionGroup["eInjury.15"] = _val[0];
     };
 
     //eInjury.16//////////////
     _val = getValue(businessObject.elements, "eInjury.16");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleBodyType>" + null + "</ACNIncidentVehicleBodyType>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.16>" + null + "</eInjury.16>")
+        CollisionGroup["ACNIncidentVehicleBodyType"] = null;            
         CollisionGroup["eInjury.16"] = null;                       
     }
     else 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleBodyType>" + _val+ "</ACNIncidentVehicleBodyType>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.16>" + _val + "</eInjury.16>")          
-        CollisionGroup["eInjury.16"] = _val;
+        CollisionGroup["ACNIncidentVehicleBodyType"] = _val[0];            
+        CollisionGroup["eInjury.16"] = _val[0];
     };
 
     //eInjury.17//////////////
     _val = getValue(businessObject.elements, "eInjury.17");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleManufacturer>" + null + "</ACNIncidentVehicleManufacturer>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.17>" + null + "</eInjury.17>")
         CollisionGroup["eInjury.17"] = null;                       
-        
+        CollisionGroup["ACNIncidentVehicleManufacturer"] = null;                       
     }
     else 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleManufacturer>" + _val+ "</ACNIncidentVehicleManufacturer>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.17>" + _val + "</eInjury.17>")          
-        CollisionGroup["eInjury.17"] = _val;
+        CollisionGroup["ACNIncidentVehicleManufacturer"] = _val[0];
+        CollisionGroup["eInjury.17"] = _val[0];
     };
 
     //eInjury.18//////////////
     _val = getValue(businessObject.elements, "eInjury.18");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleMake>" + null + "</ACNIncidentVehicleMake>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.18>" + null + "</eInjury.18>")
-        CollisionGroup["eInjury.18"] = null;                       
-            
+        CollisionGroup["eInjury.18"] = null;      
+        CollisionGroup["ACNIncidentVehicleMake"] = null;                  
     }
     else 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleMake>" + _val + "</ACNIncidentVehicleMake>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.18>" + _val + "</eInjury.18>")          
-        CollisionGroup["eInjury.18"] = _val;
+        CollisionGroup["ACNIncidentVehicleMake"] = _val[0];      
+        CollisionGroup["eInjury.18"] = _val[0];
     };
 
     //eInjury.19//////////////
     _val = getValue(businessObject.elements, "eInjury.19");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleModel>" + null + "</ACNIncidentVehicleModel>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.19>" + null + "</eInjury.19>")
-        CollisionGroup["eInjury.19"] = null;                       
-            
+        CollisionGroup["ACNIncidentVehicleModel"] = null;                                   
+        CollisionGroup["eInjury.19"] = null;                                   
     }
     else 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleModel>" + _val+ "</ACNIncidentVehicleModel>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.19>" + _val + "</eInjury.19>") 
-        CollisionGroup["eInjury.19"] = _val;
+        CollisionGroup["ACNIncidentVehicleModel"] = _val[0];
+        CollisionGroup["eInjury.19"] = _val[0];
     };
-
 
     //eInjury.20//////////////
     _val = getValue(businessObject.elements, "eInjury.20");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleModelYear>" + null + "</ACNIncidentVehicleModelYear>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.20>" + null + "</eInjury.20>")
+        CollisionGroup["ACNIncidentVehicleModelYear"] = null;   
         CollisionGroup["eInjury.20"] = null;                               
     }
     else 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentVehicleModelYear>" + _val+ "</ACNIncidentVehicleModelYear>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.20>" + _val + "</eInjury.20>") 
-        CollisionGroup["eInjury.20"] = _val;
+        CollisionGroup["ACNIncidentVehicleModelYear"] = _val[0];   
+        CollisionGroup["eInjury.20"] = _val[0];
     };
 
     //eInjury.21//////////////
     _val = getValue(businessObject.elements, "eInjury.21");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentMultipleImpacts>" + null + "</ACNIncidentMultipleImpacts>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.21>" + null + "</eInjury.21>")
+        CollisionGroup["ACNIncidentMultipleImpacts"] = null;                               
         CollisionGroup["eInjury.21"] = null;                               
     }
     else 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentMultipleImpacts>" + _val+ "</ACNIncidentMultipleImpacts>" + '\n');
-        _retArray.push('/t/t' +"<eInjury.21>" + _val + "</eInjury.21>") 
-        CollisionGroup["eInjury.21"] = _val;
+        CollisionGroup["eInjury.21"] = _val[0];
+        CollisionGroup["ACNIncidentMultipleImpacts"] = _val[0];
     };
 
 
-    alert("Deltas")
     //eInjury.22//////////////
     _val = getValue(businessObject.elements, "eInjury.22");
     if (_val == null) 
     {
-        OLAPArray.push('\t\t' + "<ACNIncidentDeltaVelocity>" + null + "</ACNIncidentDeltaVelocity>" + '\n');
-        _retArray.push('\t\t' +"<eInjury.22>" + null + "</eInjury.22>")
-        CollisionGroup["eInjury.22"] = null;                                           
+        CollisionGroup["eInjury.22"] = null;
+        CollisionGroup["ACNIncidentDeltaVelocity"] = null;
     }
     else 
     {
-        var arr1 = [];
+        var arr1 = [];        
         for (var i = 0; i < _val.length; i++) 
         {
-            arr1[i] = _val[i];
-            if(_velocityUnit == 9921001 )
-            {
-                if(_deltaVelocityUnit != null)
+            _velocityUnit = getVelocityUnit(_val[0]);
+            if(_velocityUnit !=null)
                 {
-                    _retArray.push('\t\t' +"<eInjury.22" + KPH + ">/" + _val + "</eInjury.22>") 
-                    OLAPArray.push('\t\t' + "<ACNIncidentDeltaVelocity)>" + _val + "</ACNIncidentDeltaVelocity>" + '\n');
-                    CollisionGroup["eInjury.22"] =  KPH +_val;
-                    arr1[i]  = KPH + _val ;
+                if(_velocityUnit == 9921001 )
+                {                    
+                    arr1.push(KPH + _val[i]);                 
+                }
+                else if(_velocityUnit == 9921003 )
+                {
+                    arr1.push(MPH + _val[i]);                
                 }
                 else
                 {
-                    _retArray.push('\t\t' +"<eInjury.22" + KPH +" "+ DELTA_VELOCITY_ORDINAL +"/"+_deltaVelocity + ">/" + _val[0] + "</eInjury.22>") 
-                    CollisionGroup["eInjury.22"] = KPH +" "+ DELTA_VELOCITY_ORDINAL +"/"+_deltaVelocity + "/" + _val[0] ;
-                    arr1[i] =  KPH +" "+ DELTA_VELOCITY_ORDINAL +"/"+_deltaVelocity + "/" + _val[0] ;
+                    arr1.push(_val[i]);                
                 }
-            }
-            else
-            {
-                if(_deltaVelocityUnit != null)
-                {
-                    _retArray.push('/t/t' +"<eInjury.22" + MPH +">/" + _val[0] + "</eInjury.22") 
-                    CollisionGroup["eInjury.22"] = MPH + _val[0] ;
-                    arr1[i] =  MPH +" "+ DELTA_VELOCITY_ORDINAL +"/"+_deltaVelocity + "/" + _val[0] ;                            
-                }
-                else
-                {
-                    _retArray.push('/t/t' +"<eInjury.22" + MPH + ">/" + _val[0] + "</eInjury.22>") 
-                    CollisionGroup["eInjury.22"] = MPH +_val[0];
-                }
-
             }
             eInjury["eInjury.22"] = arr1.slice(0);
         };
@@ -578,14 +519,12 @@ var seteInjury = function (businessObject)
         _val = getValue(businessObject.elements, "eInjury.23");
         if (_val == null) 
         {
-            OLAPArray.push('\t\t' + "<ACNHighProbabilityofInjury>" + null + "</ACNHighProbabilityofInjury>" + '\n');
-            _retArray.push('\t\t' +"<eInjury.22>" + null + "</eInjury.22>")
-            CollisionGroup["eInjury.22"] = null;                                               
+            CollisionGroup["ACNHighProbabilityofInjury"] = null;
+            CollisionGroup["eInjury.22"] = null;
         }
         else 
         {
-            OLAPArray.push('\t\t' + "<ACNHighProbabilityofInjury>" + _val + "</ACNHighProbabilityofInjury>" + '\n');
-            _retArray.push('\t\t' +"<eInjury.23>" + _val + "</eInjury.23>") 
+            CollisionGroup["ACNHighProbabilityofInjury"] =  setCodeText("eInjury.23",_val[0]);;
             CollisionGroup["eInjury.23"] = _val;
         };
 
@@ -593,111 +532,90 @@ var seteInjury = function (businessObject)
         _val = getValue(businessObject.elements, "eInjury.24");
         if (_val == null) 
         {
-            OLAPArray.push('\t\t' + "<ACNHighProbabilityofInjury>" + null + "</ACNHighProbabilityofInjury>" + '\n');
-            _retArray.push('\t\t' +"<eInjury.22>" + null + "</eInjury.22>")
-            CollisionGroup["eInjury.22"] = null;                                               
+            CollisionGroup["ACNHighProbabilityofInjury"] = null;
+            CollisionGroup["eInjury.22"] = null;
         }
         else 
         {
-            OLAPArray.push('\t\t' + "<ACNHighProbabilityofInjury>" + _val + "</ACNHighProbabilityofInjury>" + '\n');
-            _retArray.push('/t/t' +"<eInjury.24>" + _val + "</eInjury.24>") 
-            CollisionGroup["eInjury.24"] = _val;
+            CollisionGroup["ACNHighProbabilityofInjury"] = _val[0];
+            CollisionGroup["eInjury.24"] = _val[0];
         };
-
     };
         	
     _sectionIndex = getSectionIndex(businessObject.sections[xx].attributes, "eInjury.SeatGroup");      
     for (var x = 0; x <_sectionIndex.length; x++)
     {     	
         elementList = businessObject.sections[i].attributes.elements;
-
-        _retArray.push('/t/t' +"<eInjury.SeatGroup>");
-        OLAPArray.push('/t/t' +"<eInjury.SeatGroup>");
          
         //eInjury.25////////
         _val = getValue(elementList, "eInjury.25");
         if (_val == null) 
         {
-            OLAPArray.push('/t/t' + "<ACNIncidentRollover>" + null + "</ACNIncidentRollover>" + '\n');
-            _retArray.push('/t/t' +"<eInjury.25>" + null + "</eInjury.25>")
-            CollisionGroup["eInjury.25"] = null;                                               
-      
+            SeatGroup["ACNIncidentRollover"] = null;                                                     
+            SeatGroup["eInjury.25"] = null;                                                     
         }
         else 
         {
-            OLAPArray.push('/t/t' + "<ACNIncidentRollover>" +  setCodeText("eInjury.25", _val)+ "</ACNIncidentRollover>" + '\n');
-            _retArray.push('/t/t/t' +"<eInjury.25>" + _val + "</eInjury.25>") 
-            SeatGroup["eInjury.25"] = _val;
+            SeatGroup["ACNIncidentRollover"] = _val[0];
+            SeatGroup["eInjury.25"] = setCodeText("eInjury.25", _val[0]);
         };
 
         //eInjury.26////////                        
         _val = getValue(elementList, "eInjury.26");
         if (_val == null) 
         {
-            OLAPArray.push('/t/t' + "<ACNVehicleSeatLocation>" + null + "</ACNVehicleSeatLocation>" + '\n');
-            _retArray.push('/t/t' +"<eInjury.26>" + null + "</eInjury.26>")
-            CollisionGroup["eInjury.26"] = null;                                                   
+            SeatGroup["ACNVehicleSeatLocation"] = null;
+            SeatGroup["eInjury.26"] = null;                                                   
         }
-        else {
-            OLAPArray.push('/t/t' + "<ACNVehicleSeatLocation>" + setCodeText("eInjury.26", _val) + "</ACNVehicleSeatLocation>" + '\n');
-            _retArray.push('/t/t/t' +"<eInjury.26>" + _val + "</eInjury.26>") 
-            SeatGroup["eInjury.26"] = _val;
+        else 
+        {
+            SeatGroup["eInjury.26"] = setCodeText("eInjury.26", _val[0]);
+            SeatGroup["eInjury.26"] = _val[0];
         };
 
         //eInjury.27////////
         _val = getValue(businessObject.elements, "eInjury.27");
         if (_val == null) 
         {
-            OLAPArray.push('/t/t' + "<SeatOccupied>" + null + "</SeatOccupied>" + '\n');
-            _retArray.push('/t/t' +"<eInjury.27>" + null + "</eInjury.27>")
+            OLAPArray.push('/t/t' + "<SeatOccupied>" + null + "</>" + '\n');
+            CollisionGroup["SeatOccupied"] = null;                           
             CollisionGroup["eInjury.27"] = null;                                                               
         }
         else 
-        {
-            OLAPArray.push('/t/t' + "<SeatOccupied>" + _val + "</SeatOccupied>" + '\n');
-            _retArray.push('/t/t/t' +"<eInjury.27>" + _val + "</eInjury.27>") 
-            SeatGroup["eInjury.27"] = _val;
+        {            
+            SeatGroup["eInjury.27"] = setCodeText("eInjury.27", _val[0]);
+            SeatGroup["eInjury.27"] = _val[0];
         };
 
         //eInjury.28////////
         _val = getValue(businessObject.elements, "eInjury.28");
         if (_val == null) 
         {
-            OLAPArray.push('/t/t' + "<SeatOccupied>" + null + "</SeatOccupied>" + '\n');
-            _retArray.push('/t/t' +"<eInjury.27>" + null + "</eInjury.27>")
-            CollisionGroup["eInjury.27"] = null;                                                               
+            OLAPArray.push('/t/t' + "<SeatOccupied>" + null + "</>" + '\n');
+            CollisionGroup["SeatOccupied"] = null;                                                               
+            CollisionGroup["eInjury.28"] = null;                                                               
             
         }
         else 
         {
-            OLAPArray.push('/t/t' + "<SeatOccupied>" + _val + "</SeatOccupied>" + '\n');
-            _retArray.push('/t/t/t' +"<eInjury.28>" + _val + "</eInjury.28>") 
-            SeatGroup["eInjury.28"] = _val;
+            SeatGroup["eInjury.28"] = setCodeText("eInjury.28", _val[0]);
+            SeatGroup["eInjury.28"] = _val[0];
         };
 
         //eInjury.29////////
         _val = getValue(businessObject.elements, "eInjury.29");
         if (_val == null) 
         {
-            OLAPArray.push('/t/t' + "<ACNIncidentSeatbeltUse>" + null + "</ACNIncidentSeatbeltUse>" + '\n');
-            _retArray.push('/t/t' +"<eInjury.28>" + null + "</eInjury.28>")
-            CollisionGroup["eInjury.28"] = null;                                                                                       
+            SeatGroup["ACNIncidentSeatbeltUse"] = null;
+            CollisionGroup["eInjury.29"] = null;                                                                                       
         }
         else 
         {
-            OLAPArray.push('/t/t' + "<ACNIncidentSeatbeltUse>" + _val+ "</ACNIncidentSeatbeltUse>" + '\n');
-            _retArray.push('/t/t/t' +"<eInjury.29>" + _val + "</eInjury.29>") 
-            SeatGroup["eInjury.29"] = _val;
+            SeatGroup["ACNIncidentSeatbeltUse"] = setCodeText("eInjury.29", _val[0]);
+            SeatGroup["eInjury.29"] = _val[0];
         };
-        OLAPArray.push("</eInjury.SeatGroup>");
-        _retArray.push("</eInjury.SeatGroup>");
-    };
-    OLAPArray.push("</eInjury.CollisionGroup>");
-    _retArray.push("</eInjury.CollisionGroup>");
-    
-    OLAPArray.push("</eInjury>");
-    _retArray.push("</eInjury>");
 
+    };
 };
 
     var isRequiredStateElement = function (elementID) {

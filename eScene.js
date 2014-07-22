@@ -16,32 +16,22 @@ PN_FINDING_NOT_PRESENT_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801005\"/>";
 
 var seteScene = function (businessObject)
 {
-    if (typeof businessObject == undefined)
-    {
-        SetNotApplicable();
-        return _retArray;
-    }
-    var _retArray = [];
-    var OLAPArray = [];
 
-    _retArray.push("<eScene>" + '\n');
-    OLAPArray.push("<eScene>" + '\n');
-
+    var isNotApplicableFlag = true;  //once I have real data, set to False    
     console.log(businessObject);
 
     //////////////////////eScene.01
     _val = getValue(businessObject.elements, "eScene.01");
     if (_val == null)
     {
-        OLAPArray.push('\t\t' + "<FirstEMSUnitonScene>" + "NOT RECORDED" + "</FirstEMSUnitonScene>" + '\n');
-        _retArray.push('\t\t' + "<eScene.01" + NIL_V3NOT_RECORDED + '\n');
+        eScene["FirstEMSUnitonScene"] = NOT_RECORDED;
         eScene["eScene.01"] = v3NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t\t' + "<FirstEMSUnitonScene>" + setCodeText("eScene.01", _val) + "</FirstEMSUnitonScene>" + '\n');
-        eScene["eScene.01"] = _val;
-        _retArray.push('\t' + "<eScene.01>" + _val + "</eScene.01>" + '\n')
+        isNotApplicableFlag = false;
+        eScene["eScene.01"] = _val[0];
+        eScene["FirstEMSUnitonScene"] = setCodeText("eScene.01", _val[0]);
     };
 
     ///////////////////////////////////    
@@ -51,95 +41,83 @@ var seteScene = function (businessObject)
 
         var elementList = businessObject.sections[i].attributes.elements;
 
-        _retArray.push('\t' + "<eScene.ResponderGroup>" + '\n');
-        OLAPArray.push('\t' + "<eScene.ResponderGroup>" + '\n');
 
         //////////////////////eScene.02
         _val = getValue(elementList, "eScene.02");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<OtherEMSorPublicSafetyAgenciesatScene>" + null + "</OtherEMSorPublicSafetyAgenciesatScene>" + '\n');
-            _retArray.push('\t\t' + "<eScene.02>" + null + "</eScene.02>" + '\n')
             ResponderGroup["eScene.02"] = null;
+            ResponderGroup["OtherEMSorPublicSafetyAgenciesatScene"] = null;
             v2Array.push({ section: "E08", element: "E08_01", val: v2NOT_KNOWN });
         }
         else
         {
-            OLAPArray.push('\t\t' + "<OtherEMSorPublicSafetyAgenciesatScene>" + _val + "</OtherEMSorPublicSafetyAgenciesatScene>" + '\n');
-            ResponderGroupArray.push('\t\t' + "<eScene.02>" + _val + "</eScene.02>" + '\n')
-            v2Array.push({ section: "E08", element: "E08_01", val: _val });
-            ResponderGroup["eScene.02"] = _val;
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E08", element: "E08_01", val: _val[0] });
+            ResponderGroup["eScene.02"] = _val[0];
+            ResponderGroup["OtherEMSorPublicSafetyAgenciesatScene"] = _val[0];
         };
 
         //////////////////////eScene.03
         _val = getValue(elementList, "eScene.03");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<OtherEMSorPublicSafetyAgencyIDNumber>" + null + "</OtherEMSorPublicSafetyAgencyIDNumber>" + '\n');
-            _retArray.push('\t\t' + "<eScene.03>" + null + "</eScene.03>" + '\n')
             ResponderGroup["eScene.02"] = null;
+            ResponderGroup["OtherEMSorPublicSafetyAgencyIDNumber"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t' + "<OtherEMSorPublicSafetyAgencyIDNumber>" + _val + "</OtherEMSorPublicSafetyAgencyIDNumber>" + '\n');
-            ResponderGroup["eScene.02"] = _val;
-            _retArray.push('\t\t' + "<eScene.03>" + _val + "</eScene.03>" + '\n')
+            isNotApplicableFlag = false;
+            ResponderGroup["eScene.02"] = _val[0];
+            ResponderGroup["OtherEMSorPublicSafetyAgencyIDNumber"] = _val[0];
         };
 
         //////////////////////eScene.04
         _val = getValue(elementList, "eScene.04");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<TypeofOtherServiceatScene>" + null + "</TypeofOtherServiceatScene>" + '\n');
-            _retArray.push('\t\t' + "<eScene.04>" + null + "</eScene.04>" + '\n')
             ResponderGroup["eScene.04"] = null;
+            ResponderGroup["TypeofOtherServiceatScene"] = null;
             v2Array.push({ section: "E08", element: "E08_02", val: v2NOT_KNOWN });
         }
         else
         {
-            OLAPArray.push('\t\t' + "<TypeofOtherServiceatScene>" + setCodeText("eScene.04", _val) + "</TypeofOtherServiceatScene>" + '\n');
-            _retArray.push('\t\t' + "<eScene.04>" + _val + "</eScene.04>" + '\n')
-            ResponderGroup["eScene.04"] = _val;
-            v2Array.push({ section: "E08", element: "E08_02", val: setV2("eScene.04", _val) });
+            isNotApplicableFlag = false;
+            ResponderGroup["eScene.04"] = _val[0];
+            ResponderGroup["TypeofOtherServiceatScene"] = setCodeText("eScene.04", _val[0]);
+            v2Array.push({ section: "E08", element: "E08_02", val: setV2("eScene.04", _val[0]) });
         };
-
-        _retArray.push('\t' + "</eScene.ResponderGroup>" + '\n');
-        OLAPArray.push('\t' + "</eScene.ResponderGroup>" + '\n');
     };
     ///////////////////////////////
     //////////////////////eScene.05
     _val = getValue(businessObject.elements, "eScene.05");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<DateTimeInitialResponderArrivedonScene>" + null + "</DateTimeInitialResponderArrivedonScene>" + '\n');
-        _retArray.push('\t' + "<eScene.05>" + null + "</eScene.05>" + '\n')
         eScene["eScene.04"] = null;
-        v2Array.push({ section: "E08", element: "E08_04", val: "" });
-
+        eScene["eScene.04"] = DateTimeInitialResponderArrivedonScene;
+        v2Array.push({ section: "E08", element: "E08_04", val: null });
     }
     else
     {
-        OLAPArray.push('\t' + "<DateTimeInitialResponderArrivedonScene>" + _val + "</DateTimeInitialResponderArrivedonScene>" + '\n');
-        eScene["eScene.04"] = _val;
-        v2Array.push({ section: "E08", element: "E08_04", val: _val });
-        _retArray.push('\t' + "<eScene.05>" + _val + "</eScene.05>" + '\n')        
+        isNotApplicableFlag = false;
+        eScene["eScene.04"] = _val[0];
+        eScene["DateTimeInitialResponderArrivedonScene"] = _val[0];
+        v2Array.push({ section: "E08", element: "E08_04", val: _val[0] });
     };
 
     //////////////////////eScene.06
     if (getValue(businessObject.elements, "eScene.06") == null)
     {
-        ErrorList.push("eScene.06 required");
-        OLAPArray.push('\t' + "<NumberofPatientsatScene>" + "NOT RECORDED" + "</NumberofPatientsatScene>" + '\n');
         v2Array.push({ section: "E08", element: "E08_05", val: v2NOT_RECORDED });
-        _retArray.push('\t' + "<eScene.06" + NIL_V3NOT_RECORDED + '\n');
         eScene["eScene.06"] = V3NOT_RECORDED;
+        eScene["NumberofPatientsatScene"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<NumberofPatientsatScene>" + setCodeText("eScene.06", _val) + "</NumberofPatientsatScene>" + '\n');
-        _retArray.push('\t' + "<eScene.06>" + _val + "</eScene.06>" + '\n');
-        v2Array.push({ section: "E08", element: "E08_05", val: setV2("eScene.06", _val) });
-        eScene["eScene.06"] = _val;
+        isNotApplicableFlag = false;
+        eScene["NumberofPatientsatScene"] = setCodeText("eScene.06", _val[0]);
+        v2Array.push({ section: "E08", element: "E08_05", val: setV2("eScene.06", _val[0]) });
+        eScene["eScene.06"] = _val[0];
     };
 
 
@@ -147,51 +125,46 @@ var seteScene = function (businessObject)
     _val = getValue(businessObject.elements, "eScene.07");
     if (_val == null)
     {
-        ErrorList.push("eScene.07 required");
-        OLAPArray.push('\t' + "<MassCasualtyIncident>" + "NOT RECORDED" + "</MassCasualtyIncident>" + '\n');
         v2Array.push({ section: "E08", element: "E08_06", val: v2NOT_RECORDED });
-        _retArray.push('\t' + "<eScene.06" + NIL_V3NOT_RECORDED + '\n');
         eScene["eScene.07"] = V3NOT_RECORDED;
+        eScene["MassCasualtyIncident"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<MassCasualtyIncident>" + setCodeText("eScene.07", _val) + "</MassCasualtyIncident>" + '\n');
-        v2Array.push({ section: "E08", element: "E08_06", val: setV2("eScene.07", _val) });
-        _retArray.push('\t' + "<eScene.07>" + _val + "</eScene.07>" + '\n')
-        eScene["eScene.07"] = _val;      
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E08", element: "E08_06", val: setV2("eScene.07", _val[0]) });
+        eScene["eScene.07"] = _val[0];
+        eScene["eScene.07"] = setCodeText("eScene.07", _val[0]);
     };
 
     //////////////////////eScene.08
     _val = getValue(businessObject.elements, "eScene.08");
     if (_val == null)
     {       
-        OLAPArray.push('\t' + "<TriageClassificationforMCIPatient>" + "NOT RECORDED" + "</TriageClassificationforMCIPatient>" + '\n');
         eScene["eScene.08"] = V3NOT_RECORDED;
-        ErrorList.push("eScene.08 required");
-        _retArray.push('\t' + "<eScene.08" + NIL_V3NOT_RECORDED) + '\n';
+        eScene["TriageClassificationforMCIPatient"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<TriageClassificationforMCIPatient>" + setCodeText("eScene.08", _val) + "</TriageClassificationforMCIPatient>" + '\n');
-        eScene["eScene.08"] = _val;
-        _retArray.push('\t' + "<eScene.08>" + _val + "</eScene.08>" + '\n')
+        isNotApplicableFlag = false;
+        eScene["TriageClassificationforMCIPatient"] = setCodeText("eScene.08", _val[0]);
+        eScene["eScene.08"] = _val[0];
     };
 
     //////////////////////eScene.09
     _val = getValue(businessObject.elements, "eScene.09");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<IncidentLocationType>" + "NOT RECORDED" + "</IncidentLocationType>" + '\n');
         v2Array.push({ section: "E08", element: "E08_07", val: v2NOT_RECORDED });
         eScene["eScene.09"] = V3NOT_RECORDED;
-        _retArray.push('\t' + "<eScene.09" + NIL_V3NOT_RECORDED + '\n');
+        eScene["IncidentLocationType"] = NOT_RECORDED;
     }
     else
-    {        
-        OLAPArray.push('\t' + "<IncidentLocationType>" + setCodeText("eScene.09", _val) + "</IncidentLocationType>" + '\n');
-        _retArray.push('\t' + "<eScene.09>" + _val + "</eScene.09>" + '\n')
-        v2Array.push({ section: "E08", element: "E08_07", val: setV2("eScene.09", _val) });
-        eScene["eScene.09"] = V3NOT_RECORDED;        
+    {
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E08", element: "E08_07", val: setV2("eScene.09", _val[0]) });
+        eScene["IncidentLocationType"] = setCodeText("eScene.09", _val[0]);
+        eScene["eScene.09"] = _val[0];
     };
 
     //////////////////////eScene.10
@@ -200,25 +173,23 @@ var seteScene = function (businessObject)
     {
         if (isRequiredStateElement("eScene.10") == true)
         {
-            OLAPArray.push('\t' + "<IncidentFacilityCode>" + "NOT RECORDED" + "</IncidentFacilityCode>" + '\n');
             v2Array.push({ section: "E08", element: "E08_08", val: v2NOT_RECORDED });
             eScene["eScene.10"] = V3NOT_RECORDED;
-            _retArray.push('\t' + "<eScene.10" + NIL_V3NOT_RECORDED + '\n');
+            eScene["IncidentFacilityCode"] = NOT_RECORDED;
         }
         else
         {
-            OLAPArray.push('\t' + "<IncidentFacilityCode>" + "NOT RECORDED" + "</IncidentFacilityCode>" + '\n');
             v2Array.push({ section: "E08", element: "E08_08", val: v2NOT_REPORTING });
             eScene["eScene.10"] = V3NOT_REPORTING;
-            _retArray.push('\t' + "<eScene.10" + NIL_V3NOT_REPORTING + '\n');
+            eScene["IncidentFacilityCode"] = NOT_REPORTING;
         }
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentFacilityCode>" + _val + "</IncidentFacilityCode>" + '\n');
-        v2Array.push({ section: "E08", element: "E08_08", val: _val });
-        eScene["eScene.10"] = V3NOT_RECORDED;
-        _retArray.push('\t' + "<eScene.10>" + _val + "</eScene.10>" + '\n');
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E08", element: "E08_08", val: _val[0] });
+        eScene["eScene.10"] = _val[0];
+        eScene["IncidentFacilityCode"] = _val[0];
     };
 
 
@@ -227,24 +198,17 @@ var seteScene = function (businessObject)
     if (_val == null) {
         if (isRequiredStateElement("eScene.11") == true)
         {            
-            v2Array.push({ section: "E08", element: "E08_10", val: v2NOT_RECORDED });
+            v2Array.push({ section: "E08", element: "E08_10", val: null });
             eScene["eScene.11"] = null;
-            _retArray.push('\t' + "<eScene.11>" + null + "</eScene.11>" + '\n');
-        }
-        else
-        {
-            OLAPArray.push('\t' + "<SceneGPSLocation>" + null + "</SceneGPSLocation>" + '\n');
-            v2Array.push({ section: "E08", element: "E08_10", val: v2NOT_RECORDED });
-            eScene["eScene.11"] = null;
-            _retArray.push('\t' + "<eScene.11>" + null + "</eScene.11>" + '\n');
+            eScene["GPSLocation"] = null;
         }
     }
     else
     {
-        OLAPArray.push('\t' + "<SceneGPSLocation>" + _val + "</SceneGPSLocation>" + '\n');
-        v2Array.push({ section: "E08", element: "E08_10", val: _val });
-        eScene["eScene.11"] = _val;
-        _retArray.push('\t' + "<eScene.11>" + _val + "</eScene.11>" + '\n');
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E08", element: "E08_10", val: _val[0] });
+        eScene["eScene.11"] = _val[0];
+        eScene["GPSLocation"] = _val[0];
     };
 
 
@@ -254,70 +218,39 @@ var seteScene = function (businessObject)
     {
         if (isRequiredStateElement("eScene.12") == true)
         {         
-            OLAPArray.push('\t' + "<SceneUSNationalGridCoordinates>" + null + "</SceneUSNationalGridCoordinates>" + '\n');
             eScene["eScene.12"] = null;
-            _retArray.push('\t' + "<eScene.12>" + null + "</eScene.12>" + '\n');
-        }
-        else
-        {
-            OLAPArray.push('\t' + "<SceneUSNationalGridCoordinates>" + null + "</SceneUSNationalGridCoordinates>" + '\n');
-            eScene["eScene.12"] = null;
-            _retArray.push('\t' + "<eScene.12>" + null + "</eScene.12>" + '\n');
+            eScene["NationalGridCoordinates"] = null;
         }
     }
     else
     {
-        OLAPArray.push('\t' + "<SceneUSNationalGridCoordinates>" + _val + "</SceneUSNationalGridCoordinates>" + '\n');
-        eScene["eScene.12"] = _val;
-        _retArray.push('\t' + "<eScene.12>" + _val + "</eScene.12>" + '\n');
+        isNotApplicableFlag = false;
+        eScene["eScene.12"] = _val[0];
+        eScene["NationalGridCoordinates"] = _val[0];        
     };
 
     //////////////////////eScene.13
     _val = getValue(businessObject.elements, "eScene.13");
-    if (_val == null)
-    {
-        if (isRequiredStateElement("eScene.13") == true)
-        {
-            OLAPArray.push('\t' + "<IncidentFacilityorLocationName>" + null + "</IncidentFacilityorLocationName>" + '\n');
-            eScene["eScene.13"] = null;
-            _retArray.push('\t' + "<eScene.13>" + null + "</eScene.13>" + '\n');
-        }
-        else
-        {
-            OLAPArray.push('\t' + "<IncidentFacilityorLocationName>" + null + "</IncidentFacilityorLocationName>" + '\n');
-            eScene["eScene.13"] = null;
-            _retArray.push('\t' + "<eScene.13>" + null + "</eScene.13>" + '\n');
-        }
+    if (_val == null) {
+        eScene["eScene.13"] = null;
+        eScene["IncidentFacilityorLocationName"] = null;
     }
-    else
-    {
-        OLAPArray.push('\t' + "<IncidentFacilityorLocationName>" + _val + "</IncidentFacilityorLocationName>" + '\n');
-        eScene["eScene.13"] = _val;
-        _retArray.push('\t' + "<eScene.13>" + _val + "</eScene.13>" + '\n');
+    else {
+        isNotApplicableFlag = false;
+        eScene["eScene.13"] = _val[0];
+        eScene["IncidentFacilityorLocationName"] = _val[0];
     };
 
     //////////////////////eScene.14
     _val = getValue(businessObject.elements, "eScene.14");
-    if (_val == null)
-    {
-        if (isRequiredStateElement("eScene.14") == true)
-        {
-            OLAPArray.push('\t' + "<MilePostorMajorRoadway>" + null + "</MilePostorMajorRoadway>" + '\n');
-            eScene["eScene.14"] = null;
-            _retArray.push('\t' + "<eScene.14>" + null + "</eScene.14>" + '\n');
-        }
-        else
-        {
-            OLAPArray.push('\t' + "<MilePostorMajorRoadway>" + null + "</MilePostorMajorRoadway>" + '\n');
-            eScene["eScene.14"] = null;
-            _retArray.push('\t' + "<eScene.14>" + null + "</eScene.14>" + '\n');
-        }
+    if (_val == null) {
+        eScene["eScene.14"] = null;
+        eScene["MilePostorMajorRoadway"] = null;
     }
-    else
-    {
-        OLAPArray.push('\t' + "<MilePostorMajorRoadway>" + _val + "</MilePostorMajorRoadway>" + '\n');
-        eScene["eScene.14"] = _val;
-        _retArray.push('\t' + "<eScene.14>" + _val + "</eScene.14>" + '\n');
+    else {
+        isNotApplicableFlag = false;
+        eScene["eScene.14"] = _val[0];
+        eScene["MilePostorMajorRoadway"] = _val[0];
     };
 
     //////////////////////eScene.15
@@ -326,25 +259,23 @@ var seteScene = function (businessObject)
     {
         if (isRequiredStateElement("eScene.15") == true)
         {
-            OLAPArray.push('\t' + "<IncidentStreetAddress>" + "NOT RECORDED" + "</IncidentStreetAddress>" + '\n');
             v2Array.push({ section: "E08", element: "E08_11", val: v2NOT_RECORDED });
-            _retArray.push('\t' + "<eScene.15" + NIL_V3NOT_RECORDED + '\n');
             eScene["eScene.15"] = V3NOT_RECORDED;
+            eScene["IncidentStreetAddress"] = NOT_RECORDED;
         }
         else  //if it isn't required, is nillable
         {
-            OLAPArray.push('\t' + "<IncidentStreetAddress>" + null + "</IncidentStreetAddress>" + '\n');
             v2Array.push({ section: "E08", element: "E08_11", val: v2NOT_KNOWN });
-            _retArray.push('\t' + "<eScene.15>" + null + "</eScene.15>") + '\n';
             eScene["eScene.15"] = null;
+            eScene["IncidentStreetAddress"] = null;
         }
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentStreetAddress>" + _val + "</IncidentStreetAddress>" + '\n');
-        v2Array.push({ section: "E08", element: "E08_11", val: _val });
-        _retArray.push('\t' + "<eScene.15>" + _val + "</eScene.15>") + '\n';
-        eScene["eScene.15"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E08", element: "E08_11", val: _val[0] });
+        eScene["eScene.15"] = _val[0];
+        eScene["IncidentStreetAddress"] = _val[0];
     };
 
     //////////////////////eScene.16
@@ -353,21 +284,19 @@ var seteScene = function (businessObject)
     {
         if (isRequiredStateElement("eScene.16") == true)
         {
-            OLAPArray.push('\t' + "<IncidentApartmentSuiteorRoom>" + "NOT RECORDED" + "</IncidentApartmentSuiteorRoom>" + '\n');
-            _retArray.push('\t' + "<eScene.16" + NIL_V3NOT_RECORDED + '\n');
             eScene["eScene.16"] = V3NOT_RECORDED;
+            eScene["IncidentApartmentSuiteorRoom"] = V3NOT_RECORDED;
         }
         else {
-            OLAPArray.push('\t' + "<IncidentApartmentSuiteorRoom>" + null + "</IncidentApartmentSuiteorRoom>" + '\n');
-            _retArray.push('\t' + "<eScene.16>" + null + "</eScene.16>") + '\n';
             eScene["eScene.16"] = null;
+            eScene["IncidentApartmentSuiteorRoom"] = null;
         }
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentApartmentSuiteorRoom>" + _val + "</IncidentApartmentSuiteorRoom>" + '\n');
-        eScene["eScene.16"] = _val;
-        _retArray.push('\t' + "<eScene.16>" + _val + "</eScene.16>" + '\n');
+        isNotApplicableFlag = false;
+        eScene["eScene.16"] = _val[0];
+        eScene["IncidentApartmentSuiteorRoom"] = _val[0];
     };
 
     //////////////////////eScene.17
@@ -376,25 +305,23 @@ var seteScene = function (businessObject)
     {
         if (isRequiredStateElement("eScene.17") == true)
         {
-            OLAPArray.push('\t' + "<IncidentCity>" + "NOT RECORDED" + "</IncidentCity>" + '\n');
-            _retArray.push('\t' + "<eScene.17" + NIL_V3NOT_RECORDED + '\n');
             v2Array.push({ section: "E08", element: "E08_12", val: v2NOT_RECORDED });
             eScene["eScene.17"] = v3NOT_RECORDED;
+            eScene["IncidentCity"] = NOT_RECORDED;
         }
         else
         {
-            OLAPArray.push('\t' + "<IncidentCity>" + "NOT REPORTING" + "</IncidentCity>" + '\n');
-            _retArray.push('\t' + "<eScene.17" + NIL_V3NOT_REPORTING + '\n');
             v2Array.push({ section: "E08", element: "E08_12", val: v2NOT_REPORTING });
             eScene["eScene.17"] = v3NOT_REPORTING;
+            eScene["IncidentCity"] = NOT_REPORTING;
         }
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentCity>" + _val + "</IncidentCity>" + '\n');
-        _retArray.push('\t' + "<eScene.17>" + _val + "</eScene.17>" + '\n')
-        v2Array.push({ section: "E08", element: "E08_12", val: v2NOT_REPORTING });
-        eScene["eScene.17"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E08", element: "E08_12", val: _val[0] });
+        eScene["eScene.17"] = _val[0];
+        eScene["IncidentCity"] = _val[0];
     };
 
 
@@ -402,34 +329,32 @@ var seteScene = function (businessObject)
     _val = getValue(businessObject.elements, "eScene.18");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<IncidentState>" + "NOT REPORTING" + "</IncidentState>" + '\n');
-        _retArray.push('\t' + "<eScene.18" + NIL_V3NOT_RECORDED + '\n');
         v2Array.push({ section: "E08", element: "E08_14", val: v2NOT_RECORDED });
         eScene["eScene.18"] = v3NOT_RECORDED;
+        eScene["IncidentState"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentState>" + _val + "</IncidentState>" + '\n');
-        v2Array.push({ section: "E08", element: "E08_14", val: _val });
-        eScene["eScene.18"] = _val;
-        _retArray.push('\t' + "<eScene.18>" + _val + "</eScene.18>" + '\n')
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E08", element: "E08_14", val: _val[0] });
+        eScene["eScene.18"] = _val[0];
+        eScene["IncidentState"] = _val[0];
     };
 
     //////////////////////eScene.19
     _val = getValue(businessObject.elements, "eScene.19");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<IncidentZip>" + "NOT RECORDED" + "</IncidentZip>" + '\n');
         v2Array.push({ section: "E08", element: "E08_15", val: v2NOT_RECORDED });
         eScene["eScene.19"] = v3NOT_RECORDED;
-        _retArray.push('\t' + "<eScene.19" + NIL_V3NOT_RECORDED + '\n');
+        eScene["IncidentZip"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentZip>" + _val + "</IncidentZip>" + '\n');
-        v2Array.push({ section: "E08", element: "E08_15", val: _val});
-        _retArray.push('\t' + "<eScene.19>" + _val + "</eScene.19>" + '\n');
-        eScene["eScene.19"] = _val;
+        v2Array.push({ section: "E08", element: "E08_15", val: _val[0] });
+        eScene["eScene.19"] = _val[0];
+        eScene["IncidentZip"] = _val[0];
+        isNotApplicableFlag = false;
     };
 
 
@@ -439,22 +364,20 @@ var seteScene = function (businessObject)
     {
         if (isRequiredStateElement("eScene.20") == true)
         {
-            OLAPArray.push('\t' + "<SceneCrossStreetorDirections>" + "NOT RECORDED" + "</SceneCrossStreetorDirections>" + '\n');
             eScene["eScene.20"] = v3NOT_RECORDED;
-            _retArray.push('\t' + "<eScene.20" + NIL_V3NOT_RECORDED + '\n');
+            eScene["SceneCrossStreetorDirections"] = NOT_RECORDED;
         }
         else
         {
-            OLAPArray.push('\t' + "<SceneCrossStreetorDirections>" + "NOT REPORTING" + "</SceneCrossStreetorDirections>" + '\n');
             eScene["eScene.20"] = v3NOT_REPORTING;
-            _retArray.push('\t' + "<eScene.20" + NIL_V3NOT_REPORTING + '\n');
+            eScene["SceneCrossStreetorDirections"] = NOT_REPORTING;
         }
     }
     else
     {
-        OLAPArray.push('\t' + "<SceneCrossStreetorDirections>" + _val + "</SceneCrossStreetorDirections>" + '\n');
-        eScene["eScene.20"] = _val;
-        _retArray.push('\t' + "<eScene.20>" + _val + "</eScene.20>" + '\n');
+        eScene["eScene.20"] = _val[0];
+        eScene["SceneCrossStreetorDirections"] = _val[0];
+        isNotApplicableFlag = false;
     };
 
 
@@ -464,61 +387,52 @@ var seteScene = function (businessObject)
     {
         if (isRequiredStateElement("eScene.21") == true)
         {
-            OLAPArray.push('\t' + "<IncidentCounty>" + "NOT RECORDED" + "</IncidentCounty>" + '\n');
-            _retArray.push('\t' + "<eScene.21" + NIL_V3NOT_RECORDED + '\n');
             v2Array.push({ section: "E08", element: "E08_13", val: v2NOT_RECORDED });
             eScene["eScene.21"] = v3NOT_RECORDED;
+            eScene["IncidentCounty"] = NOT_RECORDED;
         }
         else
         {
-            OLAPArray.push('\t' + "<IncidentCounty>" + null + "</IncidentCounty>" + '\n');
-            _retArray.push('\t' + "<eScene.21>" + null + "</eScene.21>" + '\n');
             v2Array.push({ section: "E08", element: "E08_13", val: v2NOT_KNOWN });
             eScene["eScene.21"] = null;
+            eScene["IncidentCounty"] = null;
         }
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentCounty>" + _val + "</IncidentCounty>" + '\n');
-        _retArray.push('\t' + "<eScene.21>" + _val + "</eScene.21>" + '\n');
-        v2Array.push({ section: "E08", element: "E08_13", val: _val });
-        eScene["eScene.21"] = _val;
+        v2Array.push({ section: "E08", element: "E08_13", val: _val[0] });
+        eScene["eScene.21"] = _val[0];
+        eScene["IncidentCounty"] = _val[0];
+        isNotApplicableFlag = false;
     };
 
     //////////////////////eScene.22
     _val = getValue(businessObject.elements, "eScene.22");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<IncidentCountry>" + null + "</IncidentCountry>" + '\n');
-        _retArray.push('\t' + "<eScene.22>" + null + "</eScene.22>" + '\n')
         eScene["eScene.22"] = null;
+        eScene["IncidentCountry"] = null;
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentCountry>" + _val + "</IncidentCountry>" + '\n');
-        eScene["eScene.22"] = _val;
-        _retArray.push('\t' + "<eScene.22>" + _val + "</eScene.22>" + '\n')
-    };
+        eScene["IncidentCountry"] = _val[0];
+        eScene["eScene.22"] = _val[0];
+        isNotApplicableFlag = false;
+    }
 
     //////////////////////eScene.22
     _val = getValue(businessObject.elements, "eScene.23");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<IncidentCensusTract>" + null + "</IncidentCensusTract>" + '\n');
-        _retArray.push('\t' + "<eScene.23>" + null + "</eScene.23>" + '\n')
         eScene["eScene.23"] = null;
+        eScene["IncidentCensusTract"] = null;
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentCensusTract>" + _val + "</IncidentCensusTract>" + '\n');
-        _retArray.push('\t' + "<eScene.23>" + _val + "</eScene.23>" + '\n')
-        eScene["eScene.23"] = _val;
+        eScene["eScene.23"] = _val[0];
+        eScene["IncidentCensusTract"] = _val[0];
+        isNotApplicableFlag = false;
     };
-
-
-    _retArray.push("/<eScene>");
-    OLAPArray.push("/<eScene>");
-
     return _retArray;
 };
 

@@ -13,32 +13,24 @@ var PN_REFUSED_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801019\"/>";
 var PN_UNABLE_TO_COMPLETE_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801023\"/>";
 var PN_FINDING_NOT_PRESENT_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801005\"/>";
 
-
+var eResponse = new Object();
 var seteResponseGroup = function (businessObject) {
-    if (typeof businessObject == undefined) {
-        SetNotApplicable();
-        return _retArray;
-    }
-    var _retArray = [];
-    var OLAPArray = [];
-
-    _retArray.push("<eResponse>" + '\n');
-    OLAPArray.push("<eResponse>" + '\n');
-
-    _retArray.push('\t' + "<eResponse.AgencyGroup>+ '\n'");
-    OLAPArray.push('\t' + "<eResponse.AgencyGroup>+ '\n'");
+    var isNotApplicableFlag = true;  //once I have real data, set to False    
 
     //////////////////////eResponse.01
     _val = getValue(businessObject.elements, "eResponse.01");
-    if (_val == null) {
-        ErrorList.push("eResponse.01 Mandatory");
+    if (_val == null)
+    {
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.01", Description: "EMS Agency Number  MANDATORY" })
+        eResponse["EMSAgencyNumber"] = null;
+        eResponse["eResponse.01"] = null;
     }
     else
     {
-        OLAPArray.push('\t\t' + "<EMSAgencyNumber>" + _val + "</EMSAgencyNumber>" + '\n');
-        _retArray.push('\t\t' + "<eResponse.01>" + _val + "</eResponse.01>" + '\n')
-        v2Array.push({ section: "E02", element: "E02_01", val: _val });
-        AgencyGroup["eResponse.01"] = _val;
+        v2Array.push({ section: "E02", element: "E02_01", val: _val[0] });
+        eResponse["eResponse.01"] = _val[0];
+        eResponse["EMSAgencyNumber"] = _val[0];
+        isNotApplicableFlag = false;
     };
 
     //////////////////////eResponse.02
@@ -47,63 +39,39 @@ var seteResponseGroup = function (businessObject) {
     {
         if (isRequiredStateElement("eResponse.02"))
         {
-            OLAPArray.push('\t\t' + "<EMSAgencyName>" + "NOT RECORDED" + "</EMSAgencyNumber>" + '\n');
-            _retArray.push('\t\t' + "<eResponse.02" + NIL_V3NOT_RECORDED + '\n');
-            AgencyGroup["eResponse.02"] = V3NOT_RECORDED;
+            eResponse["eResponse.02"] = V3NOT_RECORDED;
+            eResponse["EMSAgencyName"] = NOT_RECORDED;
         }
         else
         {
-            OLAPArray.push('\t\t' + "<EMSAgencyName>" + "NOT REPORTING" + "</EMSAgencyNumber>" + '\n');
-            _retArray.push('\t\t' + "<eResponse.02" + NIL_V3NOT_REPORTING + '\n');
-            AgencyGroup["eResponse.02"] = v3NOT_REPORTING;
+            eResponse["EMSAgencyName"] = NOT_REPORTING;
+            eResponse["eResponse.02"] = v3NOT_REPORTING;
         }
     }
     else
     {
-        OLAPArray.push('\t\t' + "<EMSAgencyName>" + _val + "</EMSAgencyNumber>" + '\n');
-        AgencyGroup["eResponse.02"] = _val;
-        _retArray.push('\t\t' + "<eResponse.02>" + _val + "</eResponse.02>" + '\n');
+        eResponse["eResponse.02"] = _val[0];
+        eResponse["EMSAgencyName"] = _val[0];
+        isNotApplicableFlag = false;
     };
-
-    //////////////////////eResponse.02
-    _val = getValue(businessObject.elements, "eResponse.03");
-    if (_val == null)
-    {
-        if (isRequiredStateElement("eResponse.02") == true)
-        {
-            OLAPArray.push('\t\t' + "<IncidentNumber>" + "NOT RECORDED" + "</IncidentNumber>" + '\n');
-            _retArray.push('\t\t' + "<eResponse.02" + NIL_V3NOT_RECORDED + '\n');
-            v2Array.push({ section: "E02", element: "E02_01", val: v2NOT_RECORDED });
-            AgencyGroup["eResponse.02"] = V3NOT_RECORDED;
-        }
-    }
-    else
-    {
-        OLAPArray.push('\t\t' + "<IncidentNumber>" + "NOT RECORDED" + "</IncidentNumber>" + '\n');
-        _retArray.push('\t\t' + "<eResponse.02>" + _val + "</eResponse.02>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_02", val: _val });
-        AgencyGroup["eResponse.02"] = _val;
-    };
-
-    _retArray.push('\t' + "</eResponse.AgencyGroup>" + '\n');
-    OLAPArray.push('\t' + "</eResponse.AgencyGroup>" + '\n');
-
 
     //////////////////////eResponse.03
     _val = getValue(businessObject.elements, "eResponse.03");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<IncidentNumber>" + "NOT RECORDED" + "</IncidentNumber>" + '\n');
-        _retArray.push('\t' + "<eResponse.03" + NIL_V3NOT_RECORDED + '\n');
-        v2Array.push({ section: "E02", element: "E02_02", val: v2NOT_RECORDED });
-        eResponse["eResponse.03"] = _val;
+        if (isRequiredStateElement("eResponse.02") == true)
+        {
+            v2Array.push({ section: "E02", element: "E02_02", val: v2NOT_RECORDED });
+            eResponse["eResponse.03"] = V3NOT_RECORDED;
+            eResponse["IncidentNumber"] = NOT_RECORDED;
+        }
     }
     else
     {
-        OLAPArray.push('\t' + "<IncidentNumber>" + "NOT RECORDED" + "</IncidentNumber>" + '\n');
-        _retArray.push('\t' + "<eResponse.03>" + _val + "</eResponse.03>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_02", val: _val });
-        eResponse["eResponse.03"] = _val;
+        v2Array.push({ section: "E02", element: "E02_02", val: _val[0] });
+        eResponse["eResponse.03"] = _val[0];
+        eResponse["IncidentNumber"] = _val[0];
+        isNotApplicableFlag = false;
     };
 
 
@@ -111,68 +79,66 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.04");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<EMSResponseNumber>" + "NOT RECORDED" + "</EMSResponseNumber>" + '\n');
-        _retArray.push('\t' + "<eResponse.04" + NIL_V3NOT_RECORDED+ '\n');
         v2Array.push({ section: "E02", element: "E02_03", val: v2NOT_RECORDED });
-        eResponse["eResponse.04"] = null;
+        eResponse["eResponse.04"] = v3NOT_RECORDED;
+        eResponse["ResponseNumber"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<EMSResponseNumber>" + _val + "</EMSResponseNumber>" + '\n');
-        _retArray.push('\t' + "<eResponse.04>" + _val + "</eResponse.04>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_03", val: _val });
-        eResponse["eResponse.04"] = _val;
+        v2Array.push({ section: "E02", element: "E02_03", val: _val[0] });
+        eResponse["eResponse.04"] = _val[0];
+        eResponse["eResponse.04"] = _val[0];
+        isNotApplicableFlag = false;
     };
 
     //////////////////////eResponse.05
-    _retArray.push('\t' + "<eResponse.ServiceGroup>" + '\n');
-    OLAPArray.push('\t' + "<eResponse.ServiceGroup>" + '\n');
 
     _val = getValue(businessObject.elements, "eResponse.05");
     if (_val == null)
     {
-        ErrorList.push("eResponse.01 Mandatory");
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.05", Description: "Type of Service Request  MANDATORY" })
+
+        eResponse["eResponse.05"] = null;
+        eResponse["TypeofServiceRequested"] = null;
+        v2Array.push({ section: "E02", element: "E02_04", val: null });
     }
     else
     {
-        OLAPArray.push('\t\t' + "<TypeofServiceRequested>" + setCodeText("eResponse.05", _val) + "</TypeofServiceRequested>" + '\n');
-        _retArray.push('\t\t' + "<eResponse.05>" + _val + "</eResponse.05>" + '\n')
         v2Array.push({ section: "E02", element: "E02_04", val: setV2("eResponse.05", _val) });
-        eResponse["eResponse.05"] = _val;
+        eResponse["eResponse.05"] = _val[0];
+        eResponse["TypeofServiceRequested"] = setCodeText("eResponse.05", _val[0]);
+        isNotApplicableFlag = false;
     };
 
     //////////////////////eResponse.06
     _val = getValue(businessObject.elements, "eResponse.06");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<StandbyPurpose>" + "NOT RECORDED" + "</StandbyPurpose>" + '\n');
-        _retArray.push('\t' + "<eResponse.06" + NIL_V3NOT_RECORDED + '\n');
         eResponse["eResponse.06"] = null;
+        eResponse["StandbyPurpose"] = null;
     }
     else
     {
-        OLAPArray.push('\t\t' + "<StandbyPurpose>" + setCodeText("eResponse.06", _val) + "</StandbyPurpose>" + '\n');
-        _retArray.push('\t\t' + "<eResponse.06>" + _val + "</eResponse.06>" + '\n')
-        eResponse["eResponse.06"] = _val;
+        isNotApplicableFlag = false;
+        eResponse["eResponse.06"] = _val[0];
+        eResponse["StandbyPurpose"] = setCodeText("eResponse.06", _val[0]);
     };
-
-
-    OLAPArray.push('\t' + "</eResponse.ServiceGroup>" + '\n');
-    _retArray.push('\t' + "</eResponse.ServiceGroup>")+ '\n';
 
 
     //////////////////////eResponse.07
     _val = getValue(businessObject.elements, "eResponse.07");
     if (_val == null)
     {
-        ErrorList.push("eResponse.07 Mandatoruy");
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.07", Description: "Primary Role of the Unit MANDATORY" })
+        v2Array.push({ section: "E02", element: "E02_05", val: SetV2("eResponse.07", null) });
+        eResponse["eResponse.07"] = null;
+        eResponse["PrimaryRoleoftheUnit"] = null;
     }
     else
     {
-        OLAPArray.push('\t' + "<PrimaryRoleoftheUnit>" + setCodeText("eResponse.07", _val) + "</PrimaryRoleoftheUnit>" + '\n');
-        _retArray.push('\t' + "<eResponse.07>" + _val + "</eResponse.07>" + '\n')
-        v2Array.push({ section: "E02", element: "E02_05", val: SetV2("eResponse.07", _val) });
-        eResponse["eResponse.07"] = _val;
+        isNotApplicableFlag = false;
+        eResponse["PrimaryRoleoftheUnit"] = setCodeText("eResponse.07", _val[0]);
+        eResponse["eResponse.07"] = _val[0];
     };
 
     alert("A dispatch delay is any time delay that occurs from the time of PSAP call (eTimes.01) to the time the unit is notified by dispatch (eTimes.03).")
@@ -180,35 +146,48 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.08");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<TypeofDispatchDelay>" + "NOT RECORDED" + "</TypeofDispatchDelay>" + '\n');
         v2Array.push({ section: "E02", element: "E02_05", val: v2NOT_RECORDED });
-        _retArray.push('\t' + "<eResponse.08" + NIL_V3NOT_RECORDED + '\n');
         eResponse["eResponse.08"] = v3NOT_RECORDED;
+        eResponse["TypeofDispatchDelay"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<TypeofDispatchDelay>" + setCodeText("eResponse.08", _val) + "</TypeofDispatchDelay>" + '\n');
-        _retArray.push('\t' + "<eResponse.08>" + _val + "</eResponse.08>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_05", val: SetD2("eResponse.08", _val) });
-        eResponse["eResponse.08"] = _val;
-    };
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++) {
+            arr1.push(_val[i]);
+            arr2.push(setD2("eResponse.08", _val[i]));
+            arr3.push(setCodeText("eResponse.08", _val[i]));
+        };
+        isNotApplicableFlag = false;
+        eResponse["TypeofDispatchDelay"] =arr3.slice(0);
+        v2Array.push({ section: "E02", element: "E02_05", val: arr2.slice(0) });
+        eResponse["eResponse.08"] = arr1.slice(0);
 
     //////////////////////eResponse.09
     alert("A response delay is any time delay that occurs from the time the unit is notified by dispatch (eTimes.03) to the time the unit arrived on scene (eTimes.06).")
     _val = getValue(businessObject.elements, "eResponse.09");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<TypeofResponseDelay>" + "NOT RECORDED" + "</TypeofResponseDelay>" + '\n');
         v2Array.push({ section: "E02", element: "E02_07", val: v2NOT_RECORDED });
-        _retArray.push('\t' + "<eResponse.09" + NIL_V3NOT_RECORDED + '\n');
         eResponse["eResponse.09"] = v3NOT_RECORDED;
+        eResponse["TypeofResponseDelay"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<TypeofResponseDelay>" + setCodeText("eResponse.09", _val) + "</TypeofResponseDelay>" + '\n');
-        _retArray.push('\t' + "<eResponse.09>" + _val + "</eResponse.09>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_07", val: SetD2("eResponse.09", _val) });
-        eResponse["eResponse.09"] = _val;
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++) {
+            arr1.push(_val[i]);
+            arr2.push(setD2("eResponse.09", _val[i]));
+            arr3.push(setCodeText("eResponse.09", _val[i]));
+        };
+        v2Array.push({ section: "E02", element: "E02_07", val:  arr1.slice(0) });
+        eResponse["eResponse.09"] = arr1.slice(0);
+        eResponse["TypeofResponseDelay"]  =arr3.slice(0);
+        isNotApplicableFlag = false;
     };
 
 
@@ -217,17 +196,24 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.10");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<TypeofSceneDelay>" + "NOT RECORDED" + "</TypeofSceneDelay>" + '\n');
-        _retArray.push('\t' + "<eResponse.10" + NIL_V3NOT_RECORDED + '\n');
         v2Array.push({ section: "E02", element: "E02_08", val: v2NOT_RECORDED });
         eResponse["eResponse.10"] = v3NOT_RECORDED;
+        eResponse["TypeofSceneDelay"] = NOT_RECORDED;
     }
     else
     {
-        OLAPArray.push('\t' + "<TypeofSceneDelay>" + setCodeText("eResponse.09", _val) + "</TypeofSceneDelay>" + '\n');
-        _retArray.push('\t' + "<eResponse.10>" + _val + "</eResponse.10>" + '\n')
-        v2Array.push({ section: "E02", element: "E02_08", val: SetD2("eResponse.10", _val) });
-        eResponse["eResponse.10"] = _val;
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++) {
+            arr1.push(_val[i]);
+            arr2.push(setD2("eResponse.10", _val[i]));
+            arr3.push(setCodeText("eResponse.10", _val[i]));
+        };
+        v2Array.push({ section: "E02", element: "E02_08", val:  arr1.slice(0) });
+        eResponse["eResponse.10"] = arr1.slice(0);
+        eResponse["TypeofSceneDelay"]  =arr3.slice(0);       
+        isNotApplicableFlag = false;
     };
 
     //////////////////////eResponse.11
@@ -235,38 +221,50 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.11");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<TypeofSceneDelay>" + "NOT RECORDED" + "</TypeofSceneDelay>" + '\n');
         v2Array.push({ section: "E02", element: "E02_09", val: v2NOT_RECORDED });
-        _retArray.push('\t' + "<eResponse.11" + NIL_V3NOT_RECORDED + '\n');
         eResponse["eResponse.11"] = v2NOT_RECORDED;
+        eResponse["TypeofTransportDelay"] = NOT_RECORDED;
     }
     else
-    {
-        OLAPArray.push('\t' + "<TypeofSceneDelay>" + setCodeText("eResponse.11", _val) + "</TypeofSceneDelay>" + '\n');
-        _retArray.push('\t' + "<eResponse.11>" + _val + "</eResponse.11>" + '\n')
-        eResponse["eResponse.11"] = _val;
-        v2Array.push({ section: "E02", element: "E02_09", val: SetD2("eResponse.11", _val) });
+    {        
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++) {
+            arr1.push(_val[i]);
+            arr2.push(setD2("eResponse.11", _val[i]));
+            arr3.push(setCodeText("eResponse.11", _val[i]));
+        };
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_09", val:  arr1.slice(0) });
+        eResponse["eResponse.11"] = arr1.slice(0);
+        eResponse["TypeofTransportDelay"]  =arr3.slice(0);       
     };
 
     //////////////////////eResponse.12
     alert("If a patient is being transported by the unit, turn-around delay is any time delay that occurs from the time the patient arrived at the destination (eTimes.10) until the time the unit is back in service (eTimes.13) or unit back at the home location (eTimes15) [whichever is the greater of the two times]");
     //If no patient is being transported by the unit, turn-around delay is any time delay that occurs from the time the unit arrived on scene (eTimes.06) until the unit is back in service (eTimes.13) or the unit back at the home location (eTimes.15) [whichever is the greater of the two times].")
     
-    //////////////////////eResponse.12
+    alert("A transport delay is any time delay that occurs from the time the unit left the scene (eTimes.09) to the time the patient arrived at the destination (eTimes.10).")
     _val = getValue(businessObject.elements, "eResponse.12");
-    if (_val == null) 
-    {
-        OLAPArray.push('\t' + "<TypeofTurnAroundDelay>" + "NOT RECORDED" + "</TypeofTurnAroundDelay>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E02", element: "E02_10", val: v2NOT_RECORDED });
-        _retArray.push('\t' + "<eResponse.12" + NIL_V3NOT_RECORDED + '\n');
         eResponse["eResponse.12"] = v2NOT_RECORDED;
+        eResponse["TypeofTurnAroundDelay"] = NOT_RECORDED;
     }
-    else
-    {
-        OLAPArray.push('\t' + "<TypeofTurnAroundDelay>" + setCodeText("eResponse.12", _val) + "</TypeofTurnAroundDelay>" + '\n');
-        _retArray.push('\t' + "<eResponse.12>" + _val + "</eResponse.12>" + '\n')
-        v2Array.push({ section: "E02", element: "E02_10", val: SetD2("eResponse.12", _val) });
-        eResponse["eResponse.12"] = _val;
+    else {
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++) {
+            arr1.push(_val[i]);
+            arr2.push(setD2("eResponse.12", _val[i]));
+            arr3.push(setCodeText("eResponse.12", _val[i]));
+        };
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_10", val:  arr1.slice(0) });
+        eResponse["eResponse.12"] = arr1.slice(0);
+        eResponse["TypeofTurnAroundDelay"]  =arr3.slice(0);       
     };
 
 
@@ -274,30 +272,32 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.13");
     if (_val == null)
     {
-        ErrorList.push("eResponse.13 Mandatory");
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.13", Description: "EMS Unit number MANDATORY" })
         v2Array.push({ section: "E02", element: "E02_11", val: null });
         eResponse["eResponse.13"] = null;
+        eResponse["EMSVehicleUnitNumber"] = null;
     }
     else
     {
-        OLAPArray.push('\t' + "<EMSVehicleUnitNumber>" + _val + "</EMSVehicleUnitNumber>" + '\n');
-        _retArray.push('\t' + "<eResponse.13>" + _val + "</eResponse.13>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_11", val: _val });
-        eResponse["eResponse.13"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_11", val: _val[0] });
+        eResponse["EMSVehicleUnitNumber"] = _val[0];
+        eResponse["eResponse.13"] = _val[0];
     }
 
     //////////////////////eResponse.14
     _val = getValue(businessObject.elements, "eResponse.14");
     if (_val == null) {
-        ErrorList.push("eResponse.14 Mandatory");
-
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.14", Description: "EMS Unit Call Sign MANDATORY" })
+        eResponse["eResponse.14"] = null;
+        eResponse["EMSUnitCallSign"] = null;
     }
     else
     {
-        OLAPArray.push('\t' + "<EMSUnitCallSign>" + _val + "</EMSUnitCallSign>" + '\n');
-        _retArray.push('\t' + "<eResponse.14>" + _val + "</eResponse.14>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_12", val: _val });
-        eResponse["eResponse.14"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_12", val: _val[0] });
+        eResponse["eResponse.14"] = _val[0];
+        eResponse["EMSUnitCallSign"] = _val[0];
     };
 
 
@@ -305,12 +305,14 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.15");
     if (_val == null)
     {
-        ErrorList.push("eResponse.15 Mandatory");
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.15", Description: "Unit Level of Care MANDATORY" })
+        eResponse["eResponse.15"] = null;
+        eResponse["LevelofCareofThisUnit"] = null;
     }
     else {
-        OLAPArray.push('\t' + "<LevelofCareofThisUnit>" + _val + "</LevelofCareofThisUnit>" + '\n');
-        _retArray.push('\t' + "<eResponse.15>" + _val + "</eResponse.15>" + '\n');
-        eResponse["eResponse.15"] = _val;
+        isNotApplicableFlag = false;
+        eResponse["LevelofCareofThisUnit"] = setCodeText("eResponse.15", _val[0]);;
+        eResponse["eResponse.15"] = _val[0];
     };
 
 
@@ -318,17 +320,16 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.16");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<VehicleDispatchLocation>" + null + "</VehicleDispatchLocation>" + '\n');
         v2Array.push({ section: "E02", element: "E02_13", val: v2NOT_KNOWN });
-        _retArray.push('\t' + "<eResponse.16>" + null + "</eResponse.16>" + '\n');
         eResponse["eResponse.16"] = null;
+        eResponse["VehicleDispatchLocation"] = null;
     }
     else
     {
-        OLAPArray.push('\t' + "<VehicleDispatchLocation>" + _val + "</VehicleDispatchLocation>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_13", val: _val });
-        _retArray.push('\t' + "<eResponse.16>" + _val + "</eResponse.16>" + '\n');
-        eResponse["eResponse.16"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_13", val: _val[0] });
+        eResponse["VehicleDispatchLocation"] = _val[0];
+        eResponse["eResponse.16"] = _val[0];
     };
 
 
@@ -336,54 +337,54 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.17");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<VehicleDispatchGPSLocation>" + null + "</VehicleDispatchGPSLocation>" + '\n');
         v2Array.push({ section: "E02", element: "E02_15", val: v2NOT_KNOWN });
-        _retArray.push('\t' + "<eResponse.17>" + null + "</eResponse.17>" + '\n');
         eResponse["eResponse.17"] = null;
+        eResponse["VehicleDispatchGPSLocation"] = null;
     }
     else
-    {
-        OLAPArray.push('\t' + "<VehicleDispatchGPSLocation>" + _val + "</VehicleDispatchGPSLocation>" + '\n');
-        _retArray.push('\t' + "<eResponse.17>" + _val + "</eResponse.17>" + '\n')
-        eResponse["eResponse.17"] = _val;
+    {        
+        isNotApplicableFlag = false;
+        eResponse["VehicleDispatchGPSLocation"] = _val[0];
+        eResponse["eResponse.17"] = _val[0];
     };
 
     //////////////////////eResponse.18
     _val = getValue(businessObject.elements, "eResponse.18");
     if (_val == null)
     {
-        OLAPArray.push('\t' + "<VehicleDispatchUSNationalGridLocation>" + null + "</VehicleDispatchUSNationalGridLocation>" + '\n');
-        _retArray.push('\t' + "<eResponse.18>" + null + "</eResponse.18>" + '\n');
         eResponse["eResponse.18"] = null;
+        eResponse["VehicleDispatchUSNationalGridLocation"] = null;
     }
     else
     {
-        OLAPArray.push('\t' + "<VehicleDispatchUSNationalGridLocation>" + _val + "</VehicleDispatchUSNationalGridLocation>" + '\n');
-        _retArray.push('\t' + "<eResponse.18>" + _val + "</eResponse.18>" + '\n');
-        eResponse["eResponse.18"] = _val;
-
+        isNotApplicableFlag = false;
+        eResponse["VehicleDispatchUSNationalGridLocation"] = _val[0];
+        eResponse["eResponse.18"] = _val[0];
     };
 
     //////////////////////eResponse.19
     _val = getValue(businessObject.elements, "eResponse.19");
-    if (_val == null) {
-        if (isRequiredStateElement("eResponse.19") == true)
-        {
-            ErrorList.push("eResponse.19 Mandatory");
-            v2Array.push({ section: "E02", element: "E02_16", val: null });       
+    if (_val == null)
+    {
+        if (isRequiredStateElement("eResponse.19") == true) {
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.19", Description: "Beginning Odometer MANDATORY" })
+            v2Array.push({ section: "E02", element: "E02_17", val: null });
+            eResponse["eResponse.19"] = null;
+            eResponse["BeginningOdometerReadingofRespondingVehicle"] = null;
         }
         else {
-            OLAPArray.push('\t' + "<BeginningOdometerReadingofRespondingVehicle>" + null + "</BeginningOdometerReadingofRespondingVehicle>" + '\n');
+
             v2Array.push({ section: "E02", element: "E02_16", val: null });
-            _retArray.push('\t' + "<eResponse.19>" + null + "</eResponse.19>" + '\n');
             eResponse["eResponse.19"] = null;
+            eResponse["BeginningOdometerReadingofRespondingVehicle"] = null;
         }
     }
-    else {
-        OLAPArray.push('\t' + "<VehicleDispatchUSNationalGridLocation>" + _val + "</VehicleDispatchUSNationalGridLocation>" + '\n');
-        _retArray.push('\t' + "<eResponse.19>" + _val + "</eResponse.19>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_16", val: _val });
-        eResponse["eResponse.19"] = _val;
+    else
+    {
+        isNotApplicableFlag = false;
+        eResponse["BeginningOdometerReadingofRespondingVehicle"] = _val[0];        
+        v2Array.push({ section: "E02", element: "E02_16", val: _val[0] });
+        eResponse["eResponse.19"] = _val[0];
     };
 
 
@@ -391,24 +392,24 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.20");
     if (_val == null)
     {
-        if (isRequiredStateElement("eResponse.20") == true)
-        {
-            ErrorList.push("eResponse.20 Mandatory");
-            v2Array.push({ section: "E02", element: "E02_17", val: null });            
+        if (isRequiredStateElement("eResponse.20") == true) {
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.20", Description: "On-scene Odometer MANDATORY" })
+            v2Array.push({ section: "E02", element: "E02_17", val: null });
+            eResponse["eResponse.20"] = null;
+            eResponse["OnSceneOdometerReadingofRespondingVehicle"] = null;
         }
         else
         {
-            OLAPArray.push('\t' + "<OnSceneOdometerReadingofRespondingVehicle>" + null + "</OnSceneOdometerReadingofRespondingVehicle>" + '\n');
             v2Array.push({ section: "E02", element: "E02_17", val: null });
-            _retArray.push('\t' + "<eResponse.20>" + _val + "</eResponse.20>" + '\n');
+            eResponse["OnSceneOdometerReadingofRespondingVehicle"] = null;
             eResponse["eResponse.20"] = null;
         }
     }
     else {
-        OLAPArray.push('\t' + "<OnSceneOdometerReadingofRespondingVehicle>" + _val + "</OnSceneOdometerReadingofRespondingVehicle>" + '\n');
-        _retArray.push('\t' + "<eResponse.20>" + _val + "</eResponse.20>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_16", val: _val });
-        eResponse["eResponse.20"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_16", val: _val[0] });
+        eResponse["eResponse.20"] = _val[0];
+        eResponse["OnSceneOdometerReadingofRespondingVehicle"] = _val[0];
     };
 
 
@@ -416,42 +417,44 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.21");
     if (_val == null) {
         if (isRequiredStateElement("eResponse.21") == true) {
-            ErrorList.push("eResponse.21 Mandatory");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.21", Description: "On-scene Odometer MANDATORY" })
+            eResponse["eResponse.21"] = null;
+            eResponse["PatientDestinationOdometerReadingofRespondingVehicle"] = null;
             v2Array.push({ section: "E02", element: "E02_18", val: null });
         }
         else {
-            OLAPArray.push('\t' + "<PatientDestinationOdometerReadingofRespondingVehicle>" + null + "</PatientDestinationOdometerReadingofRespondingVehicle>" + '\n');
-            v2Array.push({ section: "E02", element: "E02_18", val: null });
-            _retArray.push('\t' + "<eResponse.21>" + _val + "</eResponse.21>" + '\n');
+            eResponse["PatientDestinationOdometerReadingofRespondingVehicle"] = null;
+            v2Array.push({ section: "E02", element: "E02_18", val: null });           
             eResponse["eResponse.21"] = null;
         }
     }
     else {
-        OLAPArray.push('\t' + "<PatientDestinationOdometerReadingofRespondingVehicle>" + _val + "</PatientDestinationOdometerReadingofRespondingVehicle>" + '\n');
-        _retArray.push('\t' + "<eResponse.21>" + _val + "</eResponse.21>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_18", val: _val });
-        eResponse["eResponse.21"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_18", val: _val[0] });
+        eResponse["eResponse.21"] = _val[0];
+        eResponse["PatientDestinationOdometerReadingofRespondingVehicle"] = _val[0];
     };
 
     //////////////////////eResponse.22
     _val = getValue(businessObject.elements, "eResponse.22");
     if (_val == null) {
         if (isRequiredStateElement("eResponse.22") == true) {
-            ErrorList.push("eResponse.22 Mandatory");
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.22", Description: "Ending Odometer MANDATORY" })
             v2Array.push({ section: "E02", element: "E02_19", val: null });
+            eResponse["eResponse.22"] = null;
+            eResponse["EndingOdometerReadingofRespondingVehicle"] = null;
         }
         else {
-            OLAPArray.push('\t' + "<EndingOdometerReadingofRespondingVehicle>" + null + "</EndingOdometerReadingofRespondingVehicle>" + '\n');
             v2Array.push({ section: "E02", element: "E02_19", val: null });
-            _retArray.push('\t' + "<eResponse.22>" + _val + "</eResponse.22>" + '\n');
             eResponse["eResponse.22"] = null;
+            eResponse["EndingOdometerReadingofRespondingVehicle"] = null;
         }
     }
     else {
-        OLAPArray.push('\t' + "<EndingOdometerReadingofRespondingVehicle>" + _val + "</EndingOdometerReadingofRespondingVehicle>" + '\n');
-        _retArray.push('\t' + "<eResponse.22>" + _val + "</eResponse.22>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_19", val: _val });
-        eResponse["eResponse.22"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_19", val: _val[0] });
+        eResponse["eResponse.22"] = _val[0];
+        eResponse["EndingOdometerReadingofRespondingVehicle"] = _val[0];
     };
 
 
@@ -459,14 +462,16 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.22");
     if (_val == null)
     {
-        ErrorList.push("eResponse.23 Mandatory");
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.23", Description: "Response Mode to Scene MANDATORY" })
+        eResponse["eResponse.23"] = null;
+        eResponse["ResponseModetoScene"] = null;
     }
     else
     {
-        OLAPArray.push('\t' + "<ResponseModetoScene>" + _val + "</ResponseModetoScene>" + '\n');
-        _retArray.push('\t' + "<eResponse.23>" + _val + "</eResponse.23>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_20", val: setV2("eResponse.23", _val) });
-        eResponse["eResponse.23"] = _val;
+        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_20", val: setV2("eResponse.23", _val[0]) });
+        eResponse["ResponseModetoScene"] = setCodeText("eResponse.23", _val[0]);
+        eResponse["eResponse.23"] = _val[0];
     };
 
 
@@ -475,24 +480,27 @@ var seteResponseGroup = function (businessObject) {
     if (_val == null) {
         if (isRequiredStateElement("eResponse.24") == true)
         {
-            OLAPArray.push('\t' + "<AdditionalResponseModeDescriptors>" + "NOT RECORDED" + "</AdditionalResponseModeDescriptors>" + '\n');
-            _retArray.push('\t' + "<eResponse.24" + NIL_V3NOT_RECORDED + '\n');
             eResponse["eResponse.24"] = V3NOT_RECORDED;
+            eResponse["AdditionalResponseModeDescriptors"] = NOT_RECORDED;
         }
     }
     else 
     {
-        OLAPArray.push('\t' + "<AdditionalResponseModeDescriptors>" + setCodeText("eResponse.24", _val) + "</AdditionalResponseModeDescriptors>" + '\n');
-        _retArray.push('\t' + "<eResponse.24>" + _val + "</eResponse.24>" + '\n');
-        v2Array.push({ section: "E02", element: "E02_02", val: setV2("eResponse.24", _val) });
-        eResponse["eResponse.24"] = _val;
+        var arr1 = [];
+        var arr2 = [];
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++) {
+            arr1.push(_val[i]);            
+            arr3.push(setCodeText("eResponse.24", _val[i]));
+        };
+        eResponse["eResponse.12"] = arr1.slice(0);
+        eResponse["AdditionalResponseModeDescriptors"]  =arr3.slice(0);      
+        isNotApplicableFlag = false;
     };
 
    
-    OLAPArray.push("/<eResponse>" + '\n');
-    _retArray.push("/<eResponse>" + '\n');
 
-    return _retArray;
+
 };
 
 var isRequiredStateElement = function (elementID) {
@@ -692,257 +700,4 @@ var eResponse23 = {
     "2223007": "385",
     "2223001": "390",
     "2223005": "395"
-};
-
-var eResponse334_05 = {
-    "2205001" : "911 Response (Scene)", 
-    "2205003" : "Intercept", 
-    "2205005" : "Interfacility Transport", 
-    "2205007" : "Medical Transport", 
-    "2205009" : "Mutual Aid", 
-    "2205011" : "Public Assistance/Other Not Listed", 
-    "2205013" : "Standby"
-};
-var eResponse334_06 = {
-    "2206001" : "Disaster Event-Drill/Exercise", 
-    "2206003" : "Disaster Event-Live Staging", 
-    "2206005" : "Education", 
-    "2206007" : "EMS Staging-Improve Coverage", 
-    "2206009" : "Fire Support-Rehab", 
-    "2206011" : "Fire Support-Standby", 
-    "2206013" : "Mass Gathering-Concert/Entertainment Event", 
-    "2206015" : "Mass Gathering-Fair/Community Event", 
-    "2206017" : "Mass Gathering-Sporting Event", 
-    "2206019" : "Other (Not Listed)", 
-    "2206021" : "Public Safety Support"
-};
-var eResponse334_07 = {
-    "2207001" : "Air Transport", 
-    "2207003" : "Ground Transport", 
-    "2207005" : "Non-Transport Administrative (e.g.; Supervisor)", 
-    "2207007" : "Non-Transport Assistance", 
-    "2207009" : "Non-Transport Rescue"
-};
-var eResponse334_08 = {
-    "2208001" : "Caller (Uncooperative)", 
-    "2208003" : "Diversion/Failure (of previous unit)", 
-    "2208005" : "High Call Volume", 
-    "2208007" : "Language Barrier", 
-    "2208009" : "Location (Inability to Obtain)", 
-    "2208011" : "No EMS Vehicles (Units) Available", 
-    "2208013" : "None/No Delay", 
-    "2208015" : "Other (Not Listed)", 
-    "2208017" : "Technical Failure (Computer; Phone etc.)"
-};
-var eResponse334_09 = {
-    "2209001" : "Crowd", 
-    "2209003" : "Directions/Unable to Locate", 
-    "2209005" : "Distance", 
-    "2209007" : "Diversion (Different Incident)", 
-    "2209009" : "HazMat", 
-    "2209011" : "None/No Delay", 
-    "2209013" : "Other (Not Listed)", 
-    "2209015" : "Rendezvous Transport Unavailable", 
-    "2209017" : "Route Obstruction (e.g.; train)", 
-    "2209019" : "Scene Safety (Not Secure for EMS)", 
-    "2209021" : "Staff Delay", 
-    "2209023" : "Traffic", 
-    "2209025" : "Vehicle Crash Involving this Unit", 
-    "2209027" : "Vehicle Failure of this Unit", 
-    "2209029" : "Weather"
-};
-var eResponse334_10 = {
-    "2210001" : "Awaiting Air Unit", 
-    "2210003" : "Awaiting Ground Unit", 
-    "2210005" : "Crowd", 
-    "2210007" : "Directions/Unable to Locate", 
-    "2210009" : "Distance", 
-    "2210011" : "Extrication", 
-    "2210013" : "HazMat", 
-    "2210015" : "Language Barrier", 
-    "2210017" : "None/No Delay", 
-    "2210019" : "Other (Not Listed)", 
-    "2210021" : "Patient Access", 
-    "2210023" : "Safety-Crew/Staging", 
-    "2210025" : "Safety-Patient", 
-    "2210027" : "Staff Delay", 
-    "2210029" : "Traffic", 
-    "2210031" : "Triage/Multiple Patients", 
-    "2210033" : "Vehicle Crash Involving this Unit", 
-    "2210035" : "Vehicle Failure of this Unit", 
-    "2210037" : "Weather"
-};
-
-var eResponse334_11 = {
-    "2211001" : "Crowd", 
-    "2211003" : "Directions/Unable to Locate", 
-    "2211005" : "Distance", 
-    "2211007" : "Diversion", 
-    "2211009" : "HazMat", 
-    "2211011" : "None/No Delay", 
-    "2211013" : "Other (Not Listed)", 
-    "2211015" : "Rendezvous Transport Unavailable", 
-    "2211017" : "Route Obstruction (e.g.; Train)", 
-    "2211019" : "Safety", 
-    "2211021" : "Staff Delay", 
-    "2211023" : "Traffic", 
-    "2211025" : "Vehicle Crash Involving this Unit", 
-    "2211027" : "Vehicle Failure of this Unit", 
-    "2211029" : "Weather"
-};
-var eResponse334_12 = {
-    "2212001" : "Clean-up", 
-    "2212003" : "Decontamination", 
-    "2212005" : "Distance", 
-    "2212007" : "Documentation", 
-    "2212009" : "ED Overcrowding / Transfer of Care", 
-    "2212011" : "Equipment Failure", 
-    "2212013" : "Equipment/Supply Replenishment", 
-    "2212015" : "None/No Delay", 
-    "2212017" : "Other (Not Listed)", 
-    "2212019" : "Rendezvous Transport Unavailable", 
-    "2212021" : "Route Obstruction (e.g. Train)", 
-    "2212023" : "Staff Delay", 
-    "2212025" : "Traffic", 
-    "2212027" : "Vehicle Crash of this Unit", 
-    "2212029" : "Vehicle Failure of this Unit", 
-    "2212031" : "Weather"
-};
-var eResponse334_15 = {
-    "2215001" : "BLS-First Responder/EMR", 
-    "2215003" : "BLS-Basic /EMT", 
-    "2215005" : "BLS-AEMT", 
-    "2215007" : "BLS-Intermediate", 
-    "2215009" : "ALS-AEMT", 
-    "2215011" : "ALS-Intermediate", 
-    "2215013" : "ALS-Paramedic", 
-    "2215015" : "ALS-Community Paramedicine", 
-    "2215017" : "ALS-Nurse", 
-    "2215019" : "ALS-Physician", 
-    "2215021" : "Specialty Critical Care"
-};
-var eResponse334_23 = {
-    "2223001" : "Emergent (Immediate Response)", 
-    "2223003" : "Emergent Downgraded to Non-Emergent", 
-    "2223005" : "Non-Emergent", 
-    "2223007" : "Non-Emergent Upgraded to Emergent"
-};
-
-var eResponse334_24 = {
-    "2224001": "Intersection Navigation-Against Normal Light  Patterns",
-    "2224003": "Intersection Navigation-With Automated Light Changing Technology",
-    "2224005": "Intersection Navigation-With Normal Light Patterns",
-    "2224007": "Scheduled",
-    "2224009": "Speed-Enhanced per Local Policy",
-    "2224011": "Speed-Normal Traffic",
-    "2224013": "Unscheduled"
-};
-function setCodeText(NEMSISElementNumber, codeVal) {
-    var _return = [];
-
-
-    switch (NEMSISElementNumber) {
-
-        case "eResponse.05":
-            if (eResponse334_05[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_05[codeVal];
-            }
-            break;
-
-        case "eResponse.06":
-            if (eResponse334_06[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_06[codeVal];
-            }
-            break;
-
-        case "eResponse.07":
-            if (eResponse334_07[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_07[codeVal];
-            }
-            break;
-
-        case "eResponse.08":
-            if (eResponse334_08[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_08[codeVal];
-            }
-            break;
-        case "eResponse.09":
-            if (eResponse334_09[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_09[codeVal];
-            }
-            break;
-
-        case "eResponse.10":
-            if (eResponse334_10[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_10[codeVal];
-            }
-            break;
-        case "eResponse.11":
-            if (eResponse334_11[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_11[codeVal];
-            }
-            break;
-
-        case "eResponse.12":
-            if (eResponse334_12[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_12[codeVal];
-            }
-            break;
-
-
-        case "eResponse.15":
-            if (eResponse334_15[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_15[codeVal];
-            }
-            break;
-        case "eResponse.23":
-            if (eResponse334_23[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_23[codeVal];
-            }
-            break;
-
-        case "eResponse.24":
-            if (eResponse334_24[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eResponse334_24[codeVal];
-            }
-            break;
-
-        default:
-            _return = " UNDEFINED";
-    }
-    return _return;
-
-};
+}

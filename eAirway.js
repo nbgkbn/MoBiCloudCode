@@ -38,7 +38,7 @@ var seteAirwayGroup = function (businessObject) {
     for (var a = 0; a < businessObject.sections.length; a++)
     {        
         console.log(businessObject);
-        
+        var isNotApplicableFlag = true;  //once I have real data, set to False
         /////eAirway.01
         _val = geteAirwayValue(businessObject.sections[a].attributes.elements, "eAirway.01");
         if (_val == null) 
@@ -56,6 +56,7 @@ var seteAirwayGroup = function (businessObject) {
         }
         else 
         {
+            isNotApplicableFlag = false;
             AirwayGroup["eAirway.01"] = _val[0];
             AirwayGroup["IndicationsforInvasiveAirway"] = setCodeText("eAirway.01", _val[0]);
 
@@ -84,6 +85,7 @@ var seteAirwayGroup = function (businessObject) {
             }
             else
             {
+                isNotApplicableFlag = false;
                 ConfirmationGroup["eAirway.02"] = _val[0];
                 ConfirmationGroup["DateTimeAirwayDevicePlacementConfirmation"] = setCodeText("eAirway.02", _val[0]);
             };
@@ -105,6 +107,7 @@ var seteAirwayGroup = function (businessObject) {
             }
             else
             {
+                isNotApplicableFlag = false;
                 ConfirmationGroup["eAirway.03"] = _val[0];
                 ConfirmationGroup["AirwayDeviceBeingConfirmed"] = setCodeText("eAirway.03", _val[0]);
             };
@@ -126,6 +129,7 @@ var seteAirwayGroup = function (businessObject) {
             }
             else 
             {
+                isNotApplicableFlag = false;
                 arr1 = _val;
                 arr2 = _val;
                 for (var i = 0; i < _val.length; i++) 
@@ -146,6 +150,7 @@ var seteAirwayGroup = function (businessObject) {
             }
             else 
             {
+                isNotApplicableFlag = false;
                 ConfirmationGroup["eAirway.04"] = _val[0];
                 ConfirmationGroup["TubeDepth"] = _val[0];
             };
@@ -167,6 +172,7 @@ var seteAirwayGroup = function (businessObject) {
             }
             else
             {
+                isNotApplicableFlag = false;
                 ConfirmationGroup["eAirway.06"] = _val[0];
                 ConfirmationGroup["TypeofIndividualConfirmingAirwayDevicePlacement"] = _val[0];
             };
@@ -188,6 +194,7 @@ var seteAirwayGroup = function (businessObject) {
             }
             else
             {
+                isNotApplicableFlag = false;
                 ConfirmationGroup["eAirway.07"] = _val[0];
                 ConfirmationGroup["CrewMemberID"] = setCodeText("eAirway.07", _val[0]);                
             };
@@ -209,6 +216,7 @@ var seteAirwayGroup = function (businessObject) {
             }
             else 
             {
+                isNotApplicableFlag = false;
                 var arr1 = [];
                 var arr2 = [];
                 for (var i = 0; i < _val.length; i++) 
@@ -237,6 +245,7 @@ var seteAirwayGroup = function (businessObject) {
             }
             else 
             {
+                isNotApplicableFlag = false;
                 var arr1 = [];
                 var arr2 = [];
                 for (var i = 0; i < _val.length; i++)
@@ -262,6 +271,7 @@ var seteAirwayGroup = function (businessObject) {
         }
         else 
         {
+            isNotApplicableFlag = false;
             AirwayGroup["eAirway.10"] = _val[0];
             AirwayGroup["DateTimeDecisiontoManagethePatientwithanInvasiveAirway"] = _val;
 
@@ -276,6 +286,7 @@ var seteAirwayGroup = function (businessObject) {
         }
         else 
         {
+            isNotApplicableFlag = false;
             AirwayGroup["eAirway.11"] = _val[0];
             AirwayGroup["DateTimeInvasiveAirwayPlacementAttemptsAbandoned"] = _val[0];
         };

@@ -1,6 +1,6 @@
 var ErrorList = [];
 var v3NOT_REPORTING = " NV=\"7701005\"";
-var v3NOT_RECORDED = " NV=\"7701003\"";N
+var v3NOT_RECORDED = " NV=\"7701003\"";
 var v2NOT_AVAILABLE = "-5";
 var v2NOT_REPORTING = "-15";
 var v2NOT_APPLICABLE = "-25"
@@ -18,117 +18,98 @@ var E11 = new Object;
 var _retArray = [];
 var XMLString = ""
 var seteCrew = function (businessObject) {
-    if (businessObject.name != "eCrew") {
-        return null
-    };
 
-    var _retArray = [];
-    if (businessObject == undefined) {
-        _retArray = setNotApplicableAll();
-        console.log(_retArray)
-        for (var i = 0; i < _retArray.length ; i++) {
-            XMLString = XMLString + _retArray[i];
+    var isNotApplicableFlag = true;  //once I have real data, set to False
 
-        }
-        console.log(XMLString)
-        return _retArray;
-    }
-    _retArray.push("<eCrew>" + '\n');
-    for (var i = 0; i < businessObject.sections.length; i++)
-    {
-        
-        _retArray.push('\t' + "<eCrew.CrewGroup>" + '\n');
-
+    for (var i = 0; i < businessObject.sections.length; i++) {
         //eCrew.01/////////////
         _val = getValue(businessObject.elements, "eCrew.01");
-        if (_val == null) 
-        {
-            if (isRequiredStateElement("eCrew.01") == true) 
-            {
-                _retArray.push('\t\t' + "<eCrew.01" + v3NOT_RECORDED + '\n');
-                OLAPArray.push('\t\t' + "<CrewMemberID>" + v3NOT_RECORDED + "</CrewMemberID>" + '\n');
+        if (_val == null) {
+            if (isRequiredStateElement("eCrew.01") == true) {
                 CrewGroup["eCrew.01"] = v3NOT_RECORDED;
+                CrewGroup["CrewMemberID"] = v3NOT_RECORDED;
                 v2Array.push({ section: "E04", element: "E04_01", val: v2NOT_RECORDED });
             }
             else 
             {
-                OLAPArray.push('\t\t' + "<CrewMemberID>" + v3NOT_REPORTING+ "</CrewMemberID>" + '\n');
                 CrewGroup["eCrew.01"] = v3NOT_REPORTING;
-                _retArray.push('\t\t' + "<eCrew.01" + NIL_V3NOT_REPORTING + '\n');
+                CrewGroup["CrewMemberID"] = "NOT REPORTING";
                 v2Array.push({ section: "E04", element: "E04_01", val: v2NOT_REPORTING });
             }
         }
-        else 
+        else
         {
-            OLAPArray.push('\t\t' + "<CrewMemberID>" + _val+ "</CrewMemberID>" + '\n');
-            E04.E04_01 = _val;
-            CrewGroup["eCrew.01"] = _val;
-            _retArray.push('\t\t' + "<eCrew.01>" + _val + "</eCrew.01>" + '\n');
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E04", element: "E04_01", val: _val[0] });
+            CrewGroup["eCrew.01"] = _val[0];
+            CrewGroup["CrewMemberID"] = _val[0];            
         };
 
         //eCrew.02/////////////
         _val = getValue(businessObject.elements, "eCrew.02");
-        if (_val == null) 
+        if (_val == null)
         {
-            if (isRequiredStateElement("eCrew.02") == true) 
+            if (isRequiredStateElement("eCrew.02") == true)
             {
-                OLAPArray.push('\t\t' + "<CrewMemberLevel>" + "NOT_RECORDED" + "</CrewMemberLevel>" + '\n');
-                _retArray.push('\t\t' + "<eCrew.02" + v3NOT_RECORDED + '\n');
                 CrewGroup["eCrew.02"] = v3NOT_RECORDED;
+                CrewGroup["CrewMemberLevel"] = v3NOT_RECORDED;
                 v2Array.push({ section: "E04", element: "E04_03", val: v2NOT_RECORDED });
             }
-            else 
+            else
             {
-                OLAPArray.push('\t\t' + "<CrewMemberLevel>" + "NOT_REPORTING"+ "</CrewMemberLevel>" + '\n');
                 CrewGroup["eCrew.02"] = v3NOT_REPORTING;
-                _retArray.push('\t\t' + "<eCrew.02" + NIL_V3NOT_REPORTING + '\n');
+                CrewGroup["CrewMemberLevel"] = v3NOT_REPORTING;
                 v2Array.push({ section: "E04", element: "E04_03", val: v2NOT_REPORTING });
             }
         }
-        else 
+        else
         {
-            OLAPArray.push('\t\t' + "<CrewMemberLevel>" +  setCodeText("eCrew.02", _val)+ "</CrewMemberLevel>" + '\n');
-            v2Array.push({ section: "E04", element: "E04_03", val: setV2("eCrew.02", _val)});
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E04", element: "E04_03", val: setV2("eCrew.02", _val[0]) });
             CrewGroup["eCrew.02"] = _val;
-            _retArray.push('\t\t' + "<eCrew.02>" + _val + "</eCrew.02>" + '\n');
+            CrewGroup["CrewMemberLevel"] = setCodeText("eCrew.02", _val[0]);
         };
 
         //eCrew.03/////////////
         _val = getValue(businessObject.elements, "eCrew.03");
-        if (_val == null) 
+        if (_val == null)
         {
-            if (isRequiredStateElement("eCrew.03") == true) 
+            if (isRequiredStateElement("eCrew.03") == true)
             {
-                OLAPArray.push('\t\t' + "<CrewMemberResponseRole>" + "NOT_RECORDED" + "</CrewMemberResponseRole>" + '\n');
-                _retArray.push('\t\t' + "<eCrew.03" + v3NOT_RECORDED + '\n');
                 CrewGroup["eCrew.03"] = v3NOT_RECORDED;
-                v2Array.push({ section: "E04", element: "E04_02", val: v2NOT_RECORDED});
+                CrewGroup["CrewMemberResponseRole"] = v3NOT_RECORDED;
+                v2Array.push({ section: "E04", element: "E04_02", val: v2NOT_RECORDED });
             }
-            else 
+            else
             {
-                v2Array.push({ section: "E04", element: "E04_02", val: v2NOT_REPORTING});
-                OLAPArray.push('\t\t' + "<CrewMemberResponseRole>" + "NOT_REPORTING" + "</CrewMemberResponseRole>" + '\n');
+                v2Array.push({ section: "E04", element: "E04_02", val: v2NOT_REPORTING });
+                CrewGroup["CrewMemberResponseRole"] = v3NOT_REPORTING;
                 CrewGroup["eCrew.03"] = v3NOT_REPORTING;
-                _retArray.push('\t\t' + "<eCrew.03" + NIL_V3NOT_REPORTING + '\n');
             }
         }
-        else 
+        else
         {
-            v2Array.push({ section: "E04", element: "E04_02", val: setV2("eCrew.03", _val)});
-            CrewGroup["eCrew.03"] = _val[0];
-            OLAPArray.push('\t\t' + "<CrewMemberResponseRole>" + setCodeText("eCrew.03", _val) + "</CrewMemberResponseRole>" + '\n');
-            _retArray.push('\t\t' + "<eCrew.03>" + _val[0] + "</eCrew.03>" + '\n');
+            isNotApplicableFlag = false;
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++)
+            {
+                arr1.push(_val[i]);
+                arr2.push(setV2("eCrew.03", _val[i]));
+                arr3.push(setCodeText("eCrew.03", _val[i]));
+            }
+            CrewGroup["eCrew.03"] = arr1.slice(0);
+            v2Array.push({ section: "E04", element: "E04_02", val: arr1.slice(0) });
+            CrewGroup["CrewMemberResponseRole"] = arr3.slice(0);
         };
-        _retArray.push('\t' + "</eCrew.CrewGroup>" + '\n');
-
-    }
+    };
 };
 
-var setNotApplicableAll = function (businessObject) 
-{
-    v2Array.push({ section: "E04", element: "E04_01", val: v2NOT_APPLICABLE});
-    v2Array.push({ section: "E04", element: "E04_02", val: v2NOT_APPLICABLE});
-    v2Array.push({ section: "E04", element: "E04_03", val: v2NOT_APPLICABLE});
+var setNotApplicableAll = function (businessObject) {
+    v2Array.push({ section: "E04", element: "E04_01", val: v2NOT_APPLICABLE });
+    v2Array.push({ section: "E04", element: "E04_02", val: v2NOT_APPLICABLE });
+    v2Array.push({ section: "E04", element: "E04_03", val: v2NOT_APPLICABLE });
 
     _retArray.push("<eCrew>" + '\n');
     _retArray.push('\t' + "<eCrew.CrewGroup>" + '\n');
@@ -140,14 +121,14 @@ var setNotApplicableAll = function (businessObject)
     // console.log(_retArray);
     return _retArray;
 
-}
+};
 
 
 
 var isRequiredStateElement = function (elementID) {
     return true;
 };
-var getValue = function (businessObject, valueObject) {
+var getdAgencyValue = function (businessObject, valueObject) {
     //console.log(businessObject.length);
     var _retValue = null;
     var _bFound = false;
@@ -168,40 +149,46 @@ var getValue = function (businessObject, valueObject) {
         i++;
     }
     return _retVal;
-};
+};// JavaScript source code
+function setD2(NEMSISElementNumber, valueArray) {
+    //    console.log(NEMSISElementNumber);
+    var _retArray = [];
+    //    console.log(valueArray);
+    switch (NEMSISElementNumber) {
+        case "eCrew.01":
 
-    function setV2(NEMSISElementNumber, valueArray) {
-        //    console.log(NEMSISElementNumber);
-        var _retArray = [];
-        //    console.log(valueArray);
-        switch (NEMSISElementNumber) {
-            case "eCrew.02":
-
-                if (eCrew02[valueArray[0]] == undefined) {
-                    _retArray.push(valueArray[0] + "UNDEFINED");
+            if (eCrew02[valueArray[0]] == undefined) {
+                _retArray.push(valueArray[0] + "UNDEFINED");
+            }
+            else {
+                _retArray.push(eCrew01[valueArray[0]]);
+            }
+            break;
+        case "eCrew.02":
+            for (i = 0; i < valueArray.length; i++) {
+                if (eCrew02[valueArray[i]] == undefined) {
+                    _retArray.push(valueArray[i] + "UNDEFINED");
                 }
                 else {
-                    _retArray.push(eCrew02[valueArray[0]]);
+                    _retArray.push(eCrew02[valueArray[i]]);
                 }
-                break;
-            case "eCrew.03":
-                for (i = 0; i < valueArray.length; i++) {
-                    if (eCrew03[valueArray[i]] == undefined) {
-                        _retArray.push(valueArray[i] + "UNDEFINED");
-                    }
-                    else {
-                        _retArray.push(eCrew03[valueArray[i]]);
-                    }
-                }
-                break;
-           
-            default:
-                _retArray.push(NEMSISElementNumber = " version 2 not found");
-        }
+            }
+            break;
+        case "eCrew.03":
+            if (eCrew03[valueArray[0]] == undefined) {
+                _retArray.push(valueArray[0] + "UNDEFINED");
+            }
+            else {
+                _retArray.push(eCrew03[valueArray[0]]);
+            }
+            break;
 
-        return _retArray;
+        default:
+            _retArray.push(NEMSISElementNumber = " version 2 not found");
+    }
 
-    };
+    return _retArray;
+};
 
     var eCrew03 = {
         "2403001":"580",
@@ -233,28 +220,55 @@ var getValue = function (businessObject, valueObject) {
         "9925041":"6111",
         "9925043":"6111"
     };
-    function setCodeText(NEMSISElementNumber, codeVal) {
+
+    var eCrew334_02 = {
+        "2402001" : "2009 Advanced Emergency Medical Technician (AEMT)", 
+        "2402003" : "2009 Emergency Medical Responder (EMR)", 
+        "2402005" : "2009 Emergency Medical Technician (EMT)", 
+        "2402007" : "2009 Paramedic", 
+        "2402009" : "First Responder", 
+        "2402011" : "EMT-Basic", 
+        "2402013" : "EMT-Intermediate", 
+        "2402015" : "EMT-Paramedic", 
+        "2402017" : "Nurse", 
+        "2402019" : "Other Healthcare Professional", 
+        "2402021" : "Other Non-Healthcare Professional", 
+        "2402023" : "Physician", 
+        "2402025" : "Respiratory Therapist", 
+        "2402027" : "Student", 
+        "2402029" : "Critical Care Paramedic", 
+        "2402031" : "Community Paramedicine"
+    };
+
+    var eCrew334_03 = {
+        "2403001": "Driver/Pilot-Response",
+        "2403003": "Driver/Pilot-Transport",
+        "2403005": "Other (Not Listed)",
+        "2403007": "Other Patient Caregiver-At Scene",
+        "2403009": "Other Patient Caregiver-Transport",
+        "2403011": "Primary Patient Caregiver-At Scene",
+        "2403013": "Primary Patient Caregiver-Transport"
+    };
+
+    function setCodeText(NEMSISElementNumber, valueArray) {
         var _return = [];
-
-
         switch (NEMSISElementNumber) {
             case "eCrew.02":
-                if (eCrew334_02[codeVal] == undefined) {
-                    _return = codeVal;
+                if (eCrew334_03[valueArray] == undefined) {
+                    _return = valueArray + " UNDEFINED";
                 }
                 else {
-                    _return = eCrew334_02[codeVal];
+                    _return = eCrew334_03[valueArray];
                 }
                 break;
             case "eCrew.03":
-                if (eCrew334_03[codeVal] == undefined) {
-                    _return = codeVal;
+                if (eCrew334_03[valueArray] == undefined) {
+                    _return = valueArray + " UNDEFINED";
                 }
                 else {
-                    _return = eCrew334_03[codeVal];
+                    _return = eCrew334_03[valueArray];
                 }
                 break;
-
 
 
             default:
@@ -263,33 +277,3 @@ var getValue = function (businessObject, valueObject) {
         return _return;
 
     };
-
-var eCrew334_02 = {
-    "2402001" : "2009 Advanced Emergency Medical Technician (AEMT)", 
-    "2402003" : "2009 Emergency Medical Responder (EMR)", 
-    "2402005" : "2009 Emergency Medical Technician (EMT)", 
-    "2402007" : "2009 Paramedic", 
-    "2402009" : "First Responder", 
-    "2402011" : "EMT-Basic", 
-    "2402013" : "EMT-Intermediate", 
-    "2402015" : "EMT-Paramedic", 
-    "2402017" : "Nurse", 
-    "2402019" : "Other Healthcare Professional", 
-    "2402021" : "Other Non-Healthcare Professional", 
-    "2402023" : "Physician", 
-    "2402025" : "Respiratory Therapist", 
-    "2402027" : "Student", 
-    "2402029" : "Critical Care Paramedic", 
-    "2402031" : "Community Paramedicine" 
-};
-
-var eCrew334_03= {
-
-"2403001" : "Driver/Pilot-Response", 
-"2403003" : "Driver/Pilot-Transport", 
-"2403005" : "Other (Not Listed)", 
-"2403007" : "Other Patient Caregiver-At Scene", 
-"2403009" : "Other Patient Caregiver-Transport", 
-"2403011" : "Primary Patient Caregiver-At Scene", 
-"2403013" : "Primary Patient Caregiver-Transport" 
-}

@@ -42,19 +42,13 @@ var getSectionIndex = function (businessObject, sectionName) {
     }
     return _retValue;
 }
-var seteHistory = function (businessObject) 
+var seteLabs = function (businessObject) 
 {
-    if(typeof businessObject == undefined)
-    {
-        //SetNotApplicable();
-    }
-    _retArray.push("<eLabs>" + '\n');
-    OLAPArray.push("<eLabs>" + '\n');
+
 
     for (var i = 0; i < businessObject.sections.length ; i++)
     {
-        elementList = businessObject.sections[i].attributes.elements;
-        _retArray.push = ('/t' +"<eLabs.LabsGroup>");
+        elementList = businessObject.sections[i].attributes.elements;        
         if(typeof businessObject["eLabs"] != undefined)
         {
             console.log(businessObject);
@@ -64,15 +58,13 @@ var seteHistory = function (businessObject)
             _val = getValue(elementList, "eLabs.01");
             if (_val == null) 
             {          
-                OLAPArray.push('\t\t\t' + "<DateTimeofLaboratoryorImagingResult>" + null + "</DateTimeofLaboratoryorImagingResult>" + '\n');
                 LabsGroup["eLabs.01"] = null;
-                _retArray.push('/t/t' +"<eLabs.01>" + null + "</eLabs.01>")
+                LabsGroup["DateTimeofLaboratoryorImagingResult"] = null;
             }
             else 
             {
-                OLAPArray.push('\t\t\t' + "<DateTimeofLaboratoryorImagingResult>" + _val+ "</DateTimeofLaboratoryorImagingResult>" + '\n');
-                _retArray.push('/t/t' +"<eLabs.01>" + _val + "</eLabs.01>")
-                LabsGroup["eLabs.01"] = _val;
+                LabsGroup["eLabs.01"] = _val[0];
+                LabsGroup["DateTimeofLaboratoryorImagingResult"] = _val[0];
             };
 
 
@@ -80,15 +72,13 @@ var seteHistory = function (businessObject)
             _val = getValue(elementList, "eLabs.02");
             if (_val == null) 
             {
-                OLAPArray.push('\t\t\t' + "<StudyResultPriortothisUnitEMSCare>" + null + "</StudyResultPriortothisUnitEMSCare>" + '\n');
-                LabsGroup["eLabs.01"] = null;
-                _retArray.push('/t/t' +"<eLabs.02>" + null + "</eLabs.02>")
+                LabsGroup["eLabs.02"] = null;
+                LabsGroup["StudyResultPriortothisUnitEMSCare"] = null;
             }
             else 
             {
-                OLAPArray.push('\t\t\t' + "<StudyResultPriortothisUnitEMSCare>" + setCodeText("eLabs.02", _val) + "</StudyResultPriortothisUnitEMSCare>" + '\n');
-                _retArray.push('/t/t' +"<eLabs.02>" + _val + "</eLabs.02>")
-                LabsGroup["eLabs.02"] = _val;
+                LabsGroup["eLabs.02"] = _val[0];
+                LabsGroup["StudyResultPriortothisUnitEMSCare"] = _val[0];
             };
     
             ///////////////////LabResultGroup
@@ -97,78 +87,60 @@ var seteHistory = function (businessObject)
             for (var x = 0; x < _sectionIndex.length; x++) 
             {
                 var listOfElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.elements
-                _retArray.push ('/t/t' +"<eLabs.LabResultGroup>");
-                OLAPArray.push ('/t/t' +"<eLabs.LabResultGroup>");
-
                 ///////////eLabs.03
                 _val = getValue(businessObject.elements, "eLabs.03");
                 if (_val == null) 
                 {
-                    OLAPArray.push('\t\t\t' + "<LaboratoryResultType>" + null + "</LaboratoryResultType>" + '\n');
                     LabResultGroup["eLabs.03"] = null;
-                    _retArray.push('/t/t' +"<eLabs.03>" + null + "</eLabs.03>")
-
+                    LabResultGroup["LaboratoryResultType"] = null;
                 }
                 else 
                 {
-                    OLAPArray.push('\t\t\t' + "<LaboratoryResultType>" + setCodeText("eLabs.03", _val) + "</LaboratoryResultType>" + '\n');
-                    _retArray.push('/t/t' +"<eLabs.03>" + _val + "</eLabs.03>")
-                    LabResultGroup["eLabs.03"] = _val;
+                    LabResultGroup["eLabs.03"] = _val[0];
+                    LabResultGroup["LaboratoryResultType"] = _val[0];
                 };
 
                 ///////////eLabs.04
                 _val = getValue(businessObject.elements, "eLabs.04");
                 if (_val == null) 
                 {
-                    OLAPArray.push('\t\t\t' + "<LaboratoryResult>" + null + "</LaboratoryResult>" + '\n');
                     LabResultGroup["eLabs.04"] = null;
-                    _retArray.push('/t/t' +"<eLabs.04>" + null + "</eLabs.04>")          
+                    LabResultGroup["LaboratoryResult"] = null;
                 }
                 else 
                 {
-                    OLAPArray.push('\t\t\t' + "<LaboratoryResult>" + _val + "</LaboratoryResult>" + '\n');
-                    _retArray.push('/t/t' +"<eLabs.04>" + _val + "</eLabs.04>")
-                    LabResultGroup["eLabs.04"] = _val;
+                    LabResultGroup["eLabs.04"] = _val[0];
+                    LabResultGroup["LaboratoryResult"] = _val[0];
                 };
-                _retArray.push ('/t/t' +"<eLabs.LabResultGroup>");
-                OLAPArray.push ('/t/t' +"<eLabs.LabResultGroup>");
-                
             };            
             ///////////////////LabImageGroup
             _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eLabs.LabImageGroup");
             for (var x = 0; x < _sectionIndex.length; x++) 
             {
                 var listOfElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.elements
-                _retArray.push ('/t/t' +"<eLabs.LabImageGroup>");
-                OLAPArray.push ('/t/t' +"<eLabs.LabImageGroup>");
 
                 _val = getValue(listOfElements, "eLabs.05");
                 if (_val == null) 
                 {
-                    OLAPArray.push('\t\t\t' + "<ImagingStudyType>" + null + "</ImagingStudyType>" + '\n');
                     LabResultGroup["eLabs.05"] = null;
-                    _retArray.push('/t/t' +"<eLabs.05>" + null + "</eLabs.05>")          
+                    LabResultGroup["ImagingStudyType"] = null;
                 }
                 else 
                 {
-                    OLAPArray.push('\t\t\t' + "<ImagingStudyType>" + setCodeText("eLabs.05", _val) + "</ImagingStudyType>" + '\n');
-                    LabImageGroupArray.push('/t/t' +"<eLabs.05>" + _val + "</eLabs.05>")
-                    LabImageGroup["eLabs.05"] = _val;
+                    LabResultGroup["eLabs.05"] = _val[0];
+                    LabResultGroup["ImagingStudyType"] = _val[0];
                 };
 
                 _val = getValue(listOfElements, "eLabs.06");
                 if (_val == null) 
                 {
-                    OLAPArray.push('\t\t\t' + "<ImagingStudyResults>" + null + "</ImagingStudyResults>" + '\n');
                     LabResultGroup["eLabs.06"] = null;
-                    _retArray.push('/t/t' +"<eLabs.06>" + null + "</eLabs.06>")          
-
+                    LabResultGroup["ImagingStudyResults"] = null;
                 }
                 else 
                 {
-                    OLAPArray.push('\t\t\t' + "<ImagingStudyResults>" +  _val+ "</ImagingStudyResults>" + '\n');
-                    LabImageGroupArray.push('/t/t' +"<eLabs.06>" + _val + "</eLabs.06>")
-                    LabImageGroup["eLabs.06"] = _val;
+                    LabResultGroup["eLabs.06"] = _val[0];
+                    LabResultGroup["ImagingStudyResults"] = _val[0];
                 };
 
                 /////////////////////////////////
@@ -177,54 +149,33 @@ var seteHistory = function (businessObject)
                 for (var k = 0; k < _sectionIndex.length; k++) 
                 {
                     var _waveFormElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.section[k].attributes.elements;
-
-                    _retArray.push ('/t/t/t' +"<eLabs.WaveformGraphicGroup>");
-                    OLAPArray.push ('/t/t/t' +"<eLabs.WaveformGraphicGroup>");
-
                     _val = getValue(_waveFormElements, "eLabs.07");
                     if (_val == null) 
                     {
-                        OLAPArray.push('/t/t/t/t' + "<ImagingStudyFileorWaveformGraphicType>" + null + "</ImagingStudyFileorWaveformGraphicType>" + '\n');
                         LabResultGroup["eLabs.07"] = null;
-                        _retArray.push('/t/t/t/t' +"<eLabs.07>" + null + "</eLabs.06>")          
-          
+                        LabResultGroup["ImagingStudyFileorWaveformGraphicType"] = null;          
                     }
                     else 
                     {
-                        OLAPArray.push('/t/t/t/t' + "<ImagingStudyFileorWaveformGraphicType>" + _val+ "</ImagingStudyFileorWaveformGraphicType>" + '\n');
-                        _retArray.push('/t/t/t/t' +"<eLabs.07>" + _val + "</eLabs.07>")
-                        WaveformGraphicGroup["eLabs.07"] = _val;
+                        LabResultGroup["eLabs.07"] = _val[0];
+                        LabResultGroup["ImagingStudyFileorWaveformGraphicType"] = _val[0];
                     };
 
                     _val = getValue(_waveFormElements, "eLabs.08");
                     if (_val == null) 
                     {
-                        OLAPArray.push('/t/t/t/t' + "<ImagingStudyFileorWaveformGraphic>" + null + "</ImagingStudyFileorWaveformGraphic>" + '\n');
                         LabResultGroup["eLabs.08"] = null;
-                        _retArray.push('/t/t/t/t' +"<eLabs.08>" + null + "</eLabs.08>")                    
+                        LabResultGroup["ImagingStudyFileorWaveformGraphic"] = null;
                     }
                     else 
                     {
-                        OLAPArray.push('/t/t/t/t' + "<ImagingStudyFileorWaveformGraphic>" + _val+ "</ImagingStudyFileorWaveformGraphic>" + '\n');
-                        _retArray.push('/t/t/t/t' +"<eLabs.08>" + _val + "</eLabs.08>")
-                        WaveformGraphicGroup["eLabs.08"] = _val;
+                        LabResultGroup["eLabs.08"] = _val[0];
+                        LabResultGroup["ImagingStudyFileorWaveformGraphic"] = _val[0];
                     };
-                    _retArray.push ('/t/t/t' +"</eLabs.WaveformGraphicGroup>");
-                    OLAPArray.push ('/t/t/t' +"</eLabs.WaveformGraphicGroup>");
                     
                 }                
-                _retArray.push('/t/t' +"</LabImageGroup>");
-                OLAPArray.push('/t/t' +"</LabImageGroup>");
             }
-            ///////////////////LabImageGroup
-
-            
-            OLAPArray.push('/t/t' + "</eLabs.LabResultGroup>");
-            OLAPArray.push = ('/t' + "</eLabs.LabsGroup>");
-            OLAPArray.push = "</eLabs>";        
-            _retArray.push('/t/t' +"</eLabs.LabResultGroup>");
-            _retArray.push = ('/t' +"</eLabs.LabsGroup>");
-            _retArray.push = "</eLabs>";
+            ///////////////////LabImageGroup            
         }
         return _retArray;
     };

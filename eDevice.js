@@ -17,98 +17,86 @@ var PN_DENIED_BY_ORDER_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801003\"/>";
 
 
 var seteDevice = function (businessObject) {
-    if(typeof businessObject == undefined)
-    {
-        SetNotApplicable();
-        return _retArray;
-    }
-    _retArray.push("<eDevice>")
-    OLAPArray.push("<eDevice>")
+    var isNotApplicableFlag = true;  //once I have real data, set to False
+
+    
     for (var xx = 0; xx < businessObject.sections.length; xx++) 
     {
-        var elementList = businessObject.sections[xx].attributes.elements;
-        console.log(isDefined("eDevice"));  // if Not, set all to NOT_APPLICABLE
-        return;
-        var _retArray = [];
-
-
-        _retArray.push('\t' + "<eDeviceGroup>")
-        OLAPArray.push('\t' + "<eDeviceGroup>")
+        var elementList = businessObject.sections[xx].attributes.elements;        
 
         //eDevice.01/////////////
         _val = getValue(businessObject.elements, "eDevice.01");
         if (_val == null)
         {
             eDeviceGroup["eDevice.01"] = null;
-            OLAPArray.push('\t' + "<MedicalDeviceSerialNumber>" + null + "</MedicalDeviceSerialNumber>" + '\n');
+            eDeviceGroup["MedicalDeviceSerialNumber"] = null;            
         }
         else
         {
-            OLAPArray.push('\t' + "<MedicalDeviceSerialNumber>" + setCodeText("eDevice.01", _val) + "</MedicalDeviceSerialNumber>" + '\n');
-            _retArray.push('\t' + "<eDevice.01>" + _val + "</eDevice.01>")
-            eDeviceGroup["eDevice.01"] = _val;
+            isNotApplicableFlag = false;
+            eDeviceGroup["eDevice.01"] = _val[0];
+            eDeviceGroup["MedicalDeviceSerialNumber"] = setCodeText("eDevice.01", _val)[0];
         };
 
 
         //eDevice.02////////////
         _val = getValue(businessObject.elements, "eDevice.02");
         if (_val == null)
-        {
-            OLAPArray.push('\t' + "<DateTimeofEvent>" + null + "</DateTimeofEvent>" + '\n');
-            v2Array.push({ section: "E21", element: "E21_01", val: "" });
+        {            
+            v2Array.push({ section: "E21", element: "E21_01", val:null });
             eDeviceGroup["eDevice.02"] = null;
-            _retArray.push('\t' + "<eDevice.02>" + null + "</eDevice.02>")
+            eDeviceGroup["DateTimeofEvent"] = null;
         }
         else
         {
-            OLAPArray.push('\t' + "<DateTimeofEvent>" + _val + "</DateTimeofEvent>" + '\n');
-            _retArray.push('\t' + "<eDevice.02>" + _val + "</eDevice.02>")
-            v2Array.push({ section: "E21", element: "E21_01", val: _val });
-            eDeviceGroup["eDevice.02"] = _val;
+            isNotApplicableFlag = false;            
+            v2Array.push({ section: "E21", element: "E21_01", val: _val[0] });
+            eDeviceGroup["eDevice.02"] = _val[0];
+            eDeviceGroup["DateTimeofEvent"] = _val[0];
         };
 
         //eDevice.03////////////
         _val = getValue(businessObject.elements, "eDevice.03");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<MedicalDeviceEventType>" + null + "</MedicalDeviceEventType>" + '\n');
             eDeviceGroup["eDevice.03"] = null;
-            _retArray.push('\t\t' + "<eDevice.03>" + null + "</eDevice.03>");
-            v2Array.push({ section: "E21", element: "E21_02", val: _val });
+            eDeviceGroup["MedicalDeviceEventType"] = null;
+            v2Array.push({ section: "E21", element: "E21_02", val: null });
         }
         else
         {
+            isNotApplicableFlag = false;
             var arr1 = [];
             var arr2 = [];
-            for (var i = 0; i < _val.length; i++) {
-                arr1[i] = _val[i];
-                arr2[i] = SetV2("eDevice.03", _val[0]);
-                _retArray.push('\t\t' + "<eDevice.03>" + _val[i] + "</eDevice.03>");
-                OLAPArray.push('\t\t' + "<MedicalDeviceEventType>" + setCodeText("eDevice.03", _val[i]) + "</MedicalDeviceEventType>" + '\n');
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++)
+            {
+                arr1.push(_val[i]);
+                arr2.push(SetV2("eDevice.03", _val[0]));
+                arr3.push(setCodeText("eDevice.03", _val[0]));
             }
             eDeviceGroup["eDevice.03"] = arr1.slice(0);
+            eDeviceGroup["MedicalDeviceEventType"] = arr3.slice(0);
             v2Array.push({ section: "E21", element: "E21_02", val: arr2.slice(0) });
         };
 
         ////////////////////////////////////////////
         ////////////////////////////////////////////
-        _retArray.push('\t\t' + "<eDevice.WaveformGroup>")
-        OLAPArray.push('\t\t' + "<eDevice.WaveformGroup>")
 
         //eDevice.04///////////////
         _val = getValue(businessObject.elements, "eDevice.04");
         if (_val == null)
         {
+            eDeviceGroup["eDevice.04"] = null;
+            eDeviceGroup["MedicalDeviceWaveformGraphicType"] = null;
             v2Array.push({ section: "E21", element: "E21_03", val: null });
-            _retArray.push('\t\t\t' + "<eDevice.04>" + null + "</eDevice.04>")
-            OLAPArray.push('\t\t\t' + "<MedicalDeviceWaveformGraphicType>" + null + "</MedicalDeviceWaveformGraphicType>" + '\n');
         }
         else 
         {
-            v2Array.push({ section: "E21", element: "E21_03", val: setV2("eDevice.04", _val) });
-            OLAPArray.push('\t\t\t' + "<MedicalDeviceWaveformGraphicType>" + _val + "</MedicalDeviceWaveformGraphicType>" + '\n');
-            _retArray.push('\t\t\t' + "<eDevice.04>" + _val + "</eDevice.04>")
-            eDeviceGroup["eDevice.04"] = _val;
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E21", element: "E21_03", val: setV2("eDevice.04", _val)[0] });
+            eDeviceGroup["eDevice.04"] = _val[0];
+            eDeviceGroup["MedicalDeviceWaveformGraphicType"] = _val[0];
         };
 
         //eDevice.05//////////////////
@@ -116,15 +104,15 @@ var seteDevice = function (businessObject) {
         if (_val == null)
         {
             v2Array.push({ section: "E21", element: "E21_04", val: null });
-            _retArray.push('\t\t\t' + "<eDevice.05>" + null + "</eDevice.05>")
-            OLAPArray.push('\t\t\t' + "<MedicalDeviceWaveformGraphic>" + null + "</MedicalDeviceWaveformGraphic>" + '\n');
             eDeviceGroup["eDevice.05"] = null;
+            eDeviceGroup["MedicalDeviceWaveformGraphic"] = null;
         }
-        else {
-            _retArray.push('\t\t\t' + "<eDevice.05>" + _val + "</eDevice.05>")
-            OLAPArray.push('\t\t\t' + "<MedicalDeviceWaveformGraphic>" + _val + "</MedicalDeviceWaveformGraphic>" + '\n');
-            v2Array.push({ section: "E21", element: "E21_04", val: null });
-            eDeviceGroup["eDevice.05"] = _val;
+        else
+        {
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E21", element: "E21_04", val: _val[0] });
+            eDeviceGroup["eDevice.05"] = _val[0];
+            eDeviceGroup["MedicalDeviceWaveformGraphic"] = _val[0];
         };
 
         //eDevice.06////////////////
@@ -132,21 +120,17 @@ var seteDevice = function (businessObject) {
         if (_val == null)
         {
             v2Array.push({ section: "E21", element: "E21_05", val: null });
-            _retArray.push('\t\t\t' + "<eDevice.06>" + null + "</eDevice.06>")
-            OLAPArray.push('\t\t\t' + "<MedicalDeviceMode>" + null + "</MedicalDeviceMode>" + '\n');
             eDeviceGroup["eDevice.06"] = null;
+            eDeviceGroup["MedicalDeviceMode"] = null;
         }
         else
         {
-            v2Array.push({ section: "E21", element: "E21_05", val: setV2("eDevice.06", _val) });
-            _retArray.push('\t\t\t' + "<eDevice.06>" + _val + "</eDevice.06>")
-            OLAPArray.push('\t\t\t' + "<MedicalDeviceMode>" + setCodeText("eDevice.06", _val) + "</MedicalDeviceMode>" + '\n');
-
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E21", element: "E21_05", val: setV2("eDevice.06", _val[0]) });
+            eDeviceGroup["MedicalDeviceMode"] = _val[0];
             eDeviceGroup["eDevice.06"] = _val[0];
         };
 
-        _retArray.push('\t\t' + "</eDevice.WaveformGroup>")
-        OLAPArray.push('\t\t' + "</eDevice.WaveformGroup>")
         /////////////////////////////////////
         /////////////////////////////////////
 
@@ -155,22 +139,23 @@ var seteDevice = function (businessObject) {
         if (_val == null)
         {
             v2Array.push({ section: "E21", element: "E21_06", val: null });
-            _retArray.push('\t\t' + "<eDevice.07>" + null + "</eDevice.07>")
-            OLAPArray.push('\t\t' + "<MedicalDeviceECGLead>" + null + "</MedicalDeviceECGLead>" + '\n');
             eDeviceGroup["eDevice.07"] = null;
+            eDeviceGroup["MedicalDeviceECGLead"] = null;
         }
         else
         {
+            isNotApplicableFlag = false;
             var arr1 = [];
             var arr2 = [];
+            var arr3 = [];
             for (var i = 0; i < _val.length; i++)
             {
-                arr1[i] = _val[i];
-                arr2[i] = SetV2("eDevice.07", _val[0]);
-                _retArray.push('\t\t' + "<eDevice.07>" + _val[i] + "</eDevice.07>");
-                OLAPArray.push('\t\t' + "<MedicalDeviceECGLead>" + setCodeText("eDevice.06", _val[i]) + "</MedicalDeviceECGLead>" + '\n');
+                arr1.push(_val[i]);
+                arr2.push(SetV2("eDevice.07", _val[i]));
+                arr3.push(setCodeText("eDevice.07", _val[i]));
             }
             eArrest["eDevice.07"] = arr1.slice(0);
+            eArrest["MedicalDeviceECGLead"] = arr3.slice(0);
             v2Array.push({ section: "E21", element: "E21_06", val: arr2.slice(0) });
         };
 
@@ -179,39 +164,33 @@ var seteDevice = function (businessObject) {
         if (_val == null)
         {
             v2Array.push({ section: "E21", element: "E21_07", val: null });
-            _retArray.push('\t\t' + "<eDevice.08>" + null + "</eDevice.08>")
-            OLAPArray.push('\t\t' + "<ECGInterpretation>" + null + "</ECGInterpretation>" + '\n');
             eDeviceGroup["eDevice.07"] = null;
+            eDeviceGroup["ECGInterpretation"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t' + "<ECGInterpretation>" + _val + "</ECGInterpretation>" + '\n');
-            _retArray.push('\t\t' + "<eDevice.08>" + _val + "</eDevice.08>");
-            v2Array.push({ section: "E21", element: "E21_07", val: _val });
-            eDeviceGroup["eDevice.08"] = _val;
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E21", element: "E21_07", val: _val[0] });
+            eDeviceGroup["eDevice.08"] = _val[0];
+            eDeviceGroup["ECGInterpretation"] = _val[0];
         };
 
         /////////////////////////////////
-        /////////////////////////////////
-
-        _retArray.push('\t\t' + "<eDevice.ShockGroup>")
-        OLAPArray.push('\t\t' + "<eDevice.ShockGroup>")
 
         //eDevice.09///////////
         _val = getValue(businessObject.elements, "eDevice.09");
         if (_val == null)
         {
             v2Array.push({ section: "E21", element: "E21_08", val: null });
-            _retArray.push('\t\t\t' + "<eDevice.09>" + null + "</eDevice.09>")
-            OLAPArray.push('\t\t\t' + "<TypeofShock>" + null + "</TypeofShock>" + '\n');
             eDeviceGroup["eDevice.09"] = null;
+            eDeviceGroup["TypeofShock"] = null;            
         }
         else
         {
-            v2Array.push({ section: "E21", element: "E21_08", val: setV2("eDevice.09", _val) });
-            _retArray.push('\t\t\t' +"<eDevice.09>" + _val + "</eDevice.09>")
-            OLAPArray.push('\t\t' + "<TypeofShock>" + setCodeText("eDevice.09", _val) + "</TypeofShock>" + '\n');
-            eDeviceGroup["eDevice.09"] = _val;
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E21", element: "E21_08", val: setV2("eDevice.09", _val[0]) });
+            eDeviceGroup["eDevice.09"] = _val[0];
+            eDeviceGroup["TypeofShock"] = _setCodeText("eDevice.09", _val[0]);
         };
 
         //eDevice.10//////////////
@@ -219,17 +198,15 @@ var seteDevice = function (businessObject) {
         if (_val == null)
         {
             v2Array.push({ section: "E21", element: "E21_09", val: null });
-            _retArray.push('\t\t\t' + "<eDevice.10>" + null + "</eDevice.10>")
-            OLAPArray.push('\t\t\t' + "<ShockorPacingEnergy>" + null + "</ShockorPacingEnergy>" + '\n');
             eDeviceGroup["eDevice.10"] = null;
-
+            eDeviceGroup["ShockorPacingEnergy"] = null;
         }
         else
         {
-            _retArray.push('\t\t\t' +"<eDevice.10>" + _val + "</eDevice.10>")
-            v2Array.push({ section: "E21", element: "E21_09", val: _val });
-            eDeviceGroup["eDevice.10"] = _val;
-            OLAPArray.push('\t\t\t' + "<ShockorPacingEnergy>" + _val + "</ShockorPacingEnergy>" + '\n');
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E21", element: "E21_09", val: _val[0] });
+            eDeviceGroup["eDevice.10"] = _val[0];
+            eDeviceGroup["ShockorPacingEnergy"] = _val[0];            
         };
 
         //eDevice.11//////////////
@@ -237,16 +214,14 @@ var seteDevice = function (businessObject) {
         if (_val == null)
         {
             v2Array.push({ section: "E21", element: "E21_10", val: null });
-            _retArray.push('\t\t\t' + "<eDevice.11>" + null + "</eDevice.11>")
-            OLAPArray.push('\t\t\t' + "<TotalNumberofShocksDelivered>" + null + "</TotalNumberofShocksDelivered>" + '\n');
             eDeviceGroup["eDevice.11"] = null;
-
+            eDeviceGroup["TotalNumberofShocksDelivered"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<TotalNumberofShocksDelivered>" + _val + "</TotalNumberofShocksDelivered>" + '\n');
-            _retArray.push('\t\t\t' +"<eDevice.11>" + _val + "</eDevice.11>")
+            isNotApplicableFlag = false;
             eDeviceGroup["eDevice.11"] = _val[0];
+            eDeviceGroup["TotalNumberofShocksDelivered"] = _val[0];
             v2Array.push({ section: "E21", element: "E21_10", val: _val});
         };
 
@@ -255,25 +230,17 @@ var seteDevice = function (businessObject) {
         if (_val == null)
         {
             v2Array.push({ section: "E21", element: "E21_11", val: null });
-            _retArray.push('\t\t\t' + "<eDevice.12>" + null + "</eDevice.12>")
-            OLAPArray.push('\t\t\t' + "<PacingRate>" + null + "</PacingRate>" + '\n');
             eDeviceGroup["eDevice.12"] = null;
-
+            eDeviceGroup["PacingRate"] = null;
         }
         else
         {
-            _retArray.push('\t\t\t' + "<eDevice.12>" + _val + "</eDevice.12>");
-            v2Array.push({ section: "E21", element: "E21_11", val: _val });
-            OLAPArray.push('\t\t\t' + "<PacingRate>" + _val + "</PacingRate>" + '\n');
-            eDeviceGroup["eDevice.12"] = _val;
+            isNotApplicableFlag = false;
+            v2Array.push({ section: "E21", element: "E21_11", val: _val[0] });         
+            eDeviceGroup["eDevice.12"] = _val[0];
+            eDeviceGroup["PacingRate"] = _val[0];
         };
-        OLAPArray.push('\t\t' + "<eDevice.ShockGroup>")
-        OLAPArray.push('\t' + "<eDevice.DeviceGroup>")
-        _retArray.push('\t\t' + "<eDevice.ShockGroup>")
-        _retArray.push('\t' + "</eDevice.DeviceGroup>")
     };
-    OLAPArray.push("</eDevice>")
-    _retArray.push("</eDevice>")
 
     return _retArray;
 };
@@ -441,3 +408,123 @@ function setD2(NEMSISElementNumber, valueArray) {
         "4109001":"5310",
         "4109003":"5311"
     }
+
+
+    var eDevice334_02 = {
+
+    "4103001" : "12-Lead ECG", 
+    "4103003" : "Analysis (Button Pressed)", 
+    "4103005" : "CO2", 
+    "4103007" : "Date Transmitted", 
+    "4103009" : "Defibrillation", 
+    "4103011" : "ECG-Monitor", 
+    "4103013" : "Heart Rate", 
+    "4103015" : "Invasive Pressure 1", 
+    "4103017" : "Invasive Pressure 2", 
+    "4103019" : "No Shock Advised", 
+    "4103021" : "Non-Invasive BP", 
+    "4103023" : "Other", 
+    "4103025" : "Pacing Electrical Capture", 
+    "4103027" : "Pacing Started", 
+    "4103029" : "Pacing Stopped", 
+    "4103031" : "Patient Connected", 
+    "4103033" : "Power On", 
+    "4103035" : "Pulse Oximetry", 
+    "4103037" : "Pulse Rate", 
+    "4103039" : "Respiratory Rate", 
+    "4103041" : "Shock Advised", 
+    "4103043" : "Sync Off", 
+    "4103045" : "Sync On", 
+    "4103047" : "Temperature 1", 
+    "4103049" : "Temperature 2"
+};
+
+var eDevice334_06 = {
+   "4106001" : "Advisory", 
+   "4106003" : "Automated", 
+   "4106005" : "Demand", 
+   "4106007" : "Manual", 
+   "4106009" : "Mid-Stream", 
+   "4106011" : "Sensing", 
+   "4106013" : "Side-Stream"
+    };
+
+var eDevice334_07 = {
+   "4107001" : "I", 
+   "4107003" : "II", 
+   "4107005" : "III", 
+   "4107007" : "AVR", 
+   "4107009" : "AVL", 
+   "4107011" : "AVF", 
+   "4107013" : "Paddle", 
+   "4107015" : "Pads", 
+   "4107017" : "V1", 
+   "4107019" : "V2", 
+   "4107021" : "V3", 
+   "4107023" : "V3r", 
+   "4107025" : "V4", 
+   "4107027" : "V4r", 
+   "4107029" : "V5", 
+   "4107031" : "V5r", 
+   "4107033" : "V6", 
+   "4107035" : "V6r", 
+   "4107037" : "V7", 
+   "4107039" : "V8", 
+   "4107041" : "V9"
+    };
+var eDevice334_09 = {
+    "4109001" : "Biphasic", 
+    "4109003" : "Monophasic", 
+};
+
+function setCodeText(NEMSISElementNumber, valueArray) {
+    var _return = [];
+    switch (NEMSISElementNumber) {
+        case "eDevice.03":
+            if (eDevice334_03[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eDevice334_03[valueArray];
+            }
+            break;
+        case "eDevice.06":
+            if (eDevice334_06[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eDevice334_06[valueArray];
+            }
+            break;
+        case "eDevice.07":
+            if (eDevice334_07[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eDevice334_07[valueArray];
+            }
+            break;
+        case "eDevice.06":
+            if (eDevice334_06[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eDevice334_06[valueArray];
+            }
+            break;
+        case "eDevice.07":
+            if (eDevice334_07[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eDevice334_07[valueArray];
+            }
+            break;
+
+
+        default:
+            _return = " UNDEFINED";
+    }
+    return _return;
+
+};

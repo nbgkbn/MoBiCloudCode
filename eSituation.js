@@ -15,6 +15,7 @@ var PN_UNABLE_TO_COMPLETE_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801023\"/>";
 PN_FINDING_NOT_PRESENT_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801005\"/>";
 
 var eSituation = new Object;
+var PatientComplaintGroup = new Object();
 var E05 = new Object;
 
 var _retArray = [];
@@ -40,68 +41,49 @@ var getSectionIndex = function (businessObject, sectionName)
 
 var seteSituation = function (businessObject) 
 {
-    var OLAPArray = [];
-    var _retArray = [];
-
-    if (typeof businessObject == undefined) 
-    {
-        SetNotApplicable();
-        return _retArray;
-    }
-    _retArray.push("<eSituation>" + '\n');
-    OLAPArray.push("<eSituation>" + '\n');
-
+    var isNotApplicableFlag = true;  //once I have real data, set to False    
     //////////////////////eSituation.01
     _val = getValue(businessObject.elements, "eSituation.01");
     if (_val == null)
     {
         if (isRequiredStateElement("eSituation.01"))
         {
-            OLAPArray.push('\t' + "<DateTimeofSymptomOnsetLastNormal>" + "NOT RECORDED" + "</DateTimeofSymptomOnsetLastNormal>" + '\n');
             eSituation["dSituation.01"] = v3NOT_RECORDED;
-            _retArray.push('\t' + "<dSituation.01" + NIL_V3NOT_RECORDED + '\n');
+            eSituation["DateTimeofSymptomOnsetLastNormal"] = NOT_RECORDED;
             v2Array.push({ section: "E05", element: "E05_01", val: v2NOT_RECORDED });
         }
         else
         {
-            OLAPArray.push('\t' + "<EMSAgencyName>" + "NOT REPORTING" + "</EMSAgencyNumber>" + '\n');            
-            _retArray.push('\t' + "<eResponse.02>" + NIL_V3NOT_REPORTING + + "</eResponse.02>" + '\n');
             eSituation["dSituation.01"] = v3NOT_REPORTING;
+            eSituation["DateTimeofSymptomOnsetLastNormal"] = NOT_REPORTING;
             v2Array.push({ section: "E05", element: "E05_01", val: v2NOT_REPORTING });
         }
     }
     else 
     {
-        OLAPArray.push('\t' + "<DateTimeofSymptomOnsetLastNormal>" + _val + "</DateTimeofSymptomOnsetLastNormal>" + '\n');
-        eSituation["dSituation.01"] = _val;
-        _retArray.push('\t' + "<eSituation.01>" + _val + "</eSituation.01>" + '\n');
-        v2Array.push({ section: "E05", element: "E05_01", val: _val });
+        isNotApplicableFlag = false;
+        eSituation["dSituation.01"] = _val[0];
+        eSituation["DateTimeofSymptomOnsetLastNormal"] = _val[0];
+        v2Array.push({ section: "E05", element: "E05_01", val: _val[0] });
     }; 
 
     //////////////////////eSituation.02
     _val = getValue(businessObject.elements, "eSituation.02");
     if (_val == null)
     {
-        if (isRequiredStateElement("eSituation.02")) {
-            OLAPArray.push('\t' + "<PossibleInjury>" + "NOT RECORDED" + "</PossibleInjury>" + '\n');
-            _retArray.push('\t' + "<eSituation.02" + NIL_V3NOT_RECORDED + '\n');
-            eSituation["dSituation.02"] = v3NOT_RECORDED;
-            v2Array.push({ section: "E09", element: "E09_04", val: v2NOT_RECORDED });
-        }
-        else
+        if(isRequiredStateElement("eSituation.02"))
         {
-            OLAPArray.push('\t' + "<PossibleInjury>" + null+ "</PossibleInjury>" + '\n');
-            _retArray.push('\t' + "<eSituation.02>" + null + "</eSituation.02>" + '\n');
-            eSituation["dSituation.02"] = null;
-            v2Array.push({ section: "E09", element: "E09_04", val: null });
-        }
+            eSituation["dSituation.02"] = v3NOT_RECORDED;
+            eSituation["PossibleInjury"] = NOT_RECORDED;
+            v2Array.push({ section: "E09", element: "E09_04", val: v2NOT_RECORDED });
+        }            
     }
     else 
     {
-        OLAPArray.push('\t\t' + "<PossibleInjury>" + setCodeText("eSituation.02", _val) + "</PossibleInjury>" + '\n');
-        eSituation["dSituation.02"] = _val;
+        isNotApplicableFlag = false;
+        eSituation["dSituation.02"] = _val[0];
+        eSituation["PossibleInjury"] = setCodeText("eSituation.02", _val[0]);
         v2Array.push({ section: "E09", element: "E09_04", val: setV2("eSituation.02", _val) });
-        _retArray.push('\t' + "<eSituation.02>" + _val + "</eSituation.02>" + '\n');
     };
 
 
@@ -109,8 +91,6 @@ var seteSituation = function (businessObject)
         _sectionIndex = getSectionIndex(businessObject.sections[xx].attributes, "eSituation.PatientComplaintGroup");      
         for (var x = 0; x <_sectionIndex.length; x++)
         {     	
-            _retArray.push('\t' + "<eSituation.PatientComplaintGroup>" + '\n');
-            OLAPArray.push('\t' + "<eSituation.PatientComplaintGroup>" + '\n');
             var _listElements = businessObject.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements;
 
             /////////eSituation.03            
@@ -119,22 +99,20 @@ var seteSituation = function (businessObject)
             {
                 if(isRequiredStateElement("eSituation.03"))
                 {
-                    OLAPArray.push('\t\t' + "<ComplaintType>" + "NOT RECORDED" + "</ComplaintType>" + '\n');
-                   _retArray.push('\t\t' + "<eSituation.03" + NIL_V3NOT_RECORDED + '\n');
-                   PatientComplaintGroup["dSituation.03"] = v3NOT_REPORTING;
+                    PatientComplaintGroup["dSituation.03"] = v3NOT_RECORDED;
+                    PatientComplaintGroup["ComplaintType"] = NOT_RECORDED;
                 }            
                 else
                 {
-                    OLAPArray.push('\t\t' + "<ComplaintType>" + "NOT REPORTING" + "</ComplaintType>" + '\n');
-                    _retArray.push('\t\t' +"<eSituation.03" + NIL_V3NOT_REPORTING  + '\n');
-                    PatientComplaintGroup["dSituation.03"] = v3NOT_RECORDED;
+                    PatientComplaintGroup["dSituation.03"] = v3NOT_REPORTING;
+                    PatientComplaintGroup["ComplaintType"] = NOT_REPORTING;
                 }
             }
             else 
             {
-                OLAPArray.push('\t\t' + "<ComplaintType>" + setCodeText("eSituation.03", _val) + "</ComplaintType>" + '\n');
-                PatientComplaintGroup["dSituation.03"] = _val;
-                _retArray.push('\t\t' + "<eSituation.03>" + _val + "</eSituation.17>") + '\n';
+                isNotApplicableFlag = false;
+                PatientComplaintGroup["dSituation.03"] = _val[0];
+                PatientComplaintGroup["ComplaintType"] = setCodeText("eSituation.03", __val[0]);
             }; 
 
 
@@ -144,25 +122,24 @@ var seteSituation = function (businessObject)
             {
                 if (isRequiredStateElement("eSituation.04"))
                 {
-                    OLAPArray.push('\t\t' + "<Complaint>" + "NOT RECORDED" + "</Complaint>" + '\n');
-                    _retArray.push('\t\t' + "<eSituation.04" + NIL_V3NOT_RECORDED + '\n');
                     PatientComplaintGroup["dSituation.04"] = V3NOT_RECORDED;
+                    PatientComplaintGroup["Complaint"] = NOT_RECORDED;
                     v2Array.push({ section: "E09", element: "E09_05", val: V2NOT_RECORDED });
                 }
                 else
                 {
-                    OLAPArray.push('\t\t' + "<Complaint>" + "NOT REPORTING" + "</Complaint>" + '\n');
-                    _retArray.push('\t\t' + "<eSituation.04" + NIL_V3NOT_REPORTING + '\n');
+
                     PatientComplaintGroup["dSituation.04"] = v3NOT_REPORTING;
+                    PatientComplaintGroup["Complaint"] = NOT_REPORTING;
                     v2Array.push({ section: "E09", element: "E09_05", val: v2NOT_REPORTING });
                 }
             }
             else 
             {
-                OLAPArray.push('\t\t' + "<Complaint>" + _val + "</Complaint>" + '\n');
-                v2Array.push({ section: "E09", element: "E09_05", val: _val });
-                PatientComplaintGroup["dSituation.04"] = _val;
-                _retArray.push('\t\t' + "<eSituation.04>" + _val + "</eSituation.04>" + '\n');
+                isNotApplicableFlag = false;
+                v2Array.push({ section: "E09", element: "E09_05", val: _val[0] });
+                PatientComplaintGroup["dSituation.04"] = _val[0];
+                PatientComplaintGroup["Complaint"] = _val[0];
             }; 
 
             /////////eSituation.05
@@ -171,23 +148,23 @@ var seteSituation = function (businessObject)
             {
                 if(isRequiredStateElement("eSituation.05"))
                 {
-                    OLAPArray.push('\t\t' + "<DurationofComplaint>" + "NOT RECORDED" + "</DurationofComplaint>" + '\n');
-                    _retArray.push('\t\t' + "<eSituation.05" + NIL_V3NOT_RECORDED + '\n');
                     PatientComplaintGroup["dSituation.05"] = V3NOT_RECORDED;
+                    PatientComplaintGroup["DurationofComplaint"] = NOT_RECORDED;
                     v2Array.push({ section: "E09", element: "E09_06", val: null });
                 }            
                 else
                 {
-                    OLAPArray.push('\t\t' + "<DurationofComplaint>" + "NOT REPORTING" + "</DurationofComplaint>" + '\n');
+                    PatientComplaintGroup["DurationofComplaint"] = NOT_REPORTING;
                     PatientComplaintGroup["dSituation.05"] = v3NOT_REPORTING;
                     v2Array.push({ section: "E09", element: "E09_06", val: null });
                 }
             }
             else 
             {
-                OLAPArray.push('\t\t' + "<DurationofComplaint>" + _val + "</DurationofComplaint>" + '\n');
-                v2Array.push({ section: "E09", element: "E09_06", val: _val });
-                _retArray.push('\t\t' +"<eSituation.05>" + _val + "</eSituation.05>" + '\n');
+                isNotApplicableFlag = false;
+                PatientComplaintGroup["DurationofComplaint"] = _val[0];
+                PatientComplaintGroup["dSituation.05"] = _val[0]
+                v2Array.push({ section: "E09", element: "E09_06", val: _val[0] });
             }; 
 
             /////////eSituation.06
@@ -196,50 +173,41 @@ var seteSituation = function (businessObject)
             {
                 if(isRequiredStateElement("eSituation.06"))
                 {
-                    OLAPArray.push('\t\t' + "<TimeUnitsofDurationofComplaint>" + "NOT RECORDED" + "</TimeUnitsofDurationofComplaint>" + '\n');
-                    _retArray.push('\t\t' + "<eSituation.06" + NIL_V3NOT_RECORDED + '\n');
                     PatientComplaintGroup["dSituation.06"] = V3NOT_RECORDED;
+                    PatientComplaintGroup["TimeUnitsofDurationofComplaint"] = NOT_RECORDED;
                     v2Array.push({ section: "E09", element: "E09_07", val: null });
                 }            
                 else
                 {
-                    OLAPArray.push('\t\t' + "<TimeUnitsofDurationofComplaint>" + "NOT REPORTING" + "</TimeUnitsofDurationofComplaint>" + '\n');
-                    _retArray.push('\t\t' + "<eSituation.06" + NIL_V3NOT_REPORTING + '\n');
+                    PatientComplaintGroup["TimeUnitsofDurationofComplaint"] = NOT_REPORTING;
                     PatientComplaintGroup["dSituation.06"] = v3NOT_REPORTING;
                     v2Array.push({ section: "E09", element: "E09_07", val: V2NOT_RECORDED });
                 }
             }
             else 
             {
-                OLAPArray.push('\t\t' + "<TimeUnitsofDurationofComplaint>" + _val + "</TimeUnitsofDurationofComplaint>" + '\n');
-                PatientComplaintGroup["dSituation.06"] = _val;
-                _return.push('\t\t' +"<eSituation.06>" + _val + "</eSituation.06>" + '\n');
+                isNotApplicableFlag = false;
+                PatientComplaintGroup["dSituation.06"] = _val[0];
+                PatientComplaintGroup["TimeUnitsofDurationofComplaint"] = _val[0];
+                v2Array.push({ section: "E09", element: "E09_07", val: _val[0] });
             }; 
         }; //END LOOP
-
-        _retArray.push('\t' + "<eSituation.PatientComplaintGroup>" + '\n');
-        OLAPArray.push('\t' + "<eSituation.PatientComplaintGroup>" + '\n');
-        
-
-
-        ///////////////////////////////////
 
             
     /////////eSituation.07
         _val = getValue(businessObject.elements, "eSituation.07");
         if (_val == null)
         {
-            OLAPArray.push('\t' + "<ChiefComplaintAnatomicLocation>" + "NOT RECORDED" + "</ChiefComplaintAnatomicLocation>" + '\n');
-            _retArray.push('\t' + "<eSituation.07" + NIL_V3NOT_RECORDED  + '\n');
             eSituation["dSituation.07"] = v3NOT_RECORDED;
+            eSituation["ChiefComplaintAnatomicLocation"] = NOT_RECORDED;
             v2Array.push({ section: "E09", element: "E09_11", val: V2NOT_RECORDED });
         }
         else 
         {
-            OLAPArray.push('\t' + "<ChiefComplaintAnatomicLocation>" + setCodeText("dSituation.07", _val) + "</ChiefComplaintAnatomicLocation>" + '\n');
-            eSituation["dSituation.07"] = _val;
-            v2Array.push({ section: "E09", element: "E09_11", val: setV2("dSituation.07", _val) });
-            _retArray.push('\t' + "<eSituation.07>" + _val + "</eSituation.07>" + '\n');
+            isNotApplicableFlag = false;
+            eSituation["dSituation.07"] = _val[0];
+            eSituation["ChiefComplaintAnatomicLocation"] = _val[0];
+            v2Array.push({ section: "E09", element: "E09_11", val: setV2("dSituation.07", _val[0]) });
         }; 
                 
 
@@ -247,17 +215,16 @@ var seteSituation = function (businessObject)
         _val = getValue(businessObject.elements, "eSituation.08");
         if (_val == null)
         {
-            OLAPArray.push('\t' + "<ChiefComplaintOrganSystem>" + "NOT RECORDED" + "</ChiefComplaintOrganSystem>" + '\n');
-            _retArray.push('\t' + "<eSituation.08" + NIL_V3NOT_RECORDED  + '\n');
             eSituation["dSituation.08"] = v3NOT_RECORDED;
+            eSituation["ChiefComplaintOrganSystem"] = NOT_RECORDED;
             v2Array.push({ section: "E09", element: "E09_11", val: v2NOT_RECORDED });
         }
         else 
         {
-            OLAPArray.push('\t' + "<ChiefComplaintOrganSystem>" + setCodeText("dSituation.08", _val) + "</ChiefComplaintOrganSystem>" + '\n');
-            eSituation["dSituation.08"] = _val;
-            v2Array.push({ section: "E09", element: "E09_12", val: setV2("dSituation.08", _val) });
-            _retArray.push('\t' + "<eSituation.08>" + _val + "</eSituation.08>" + '\n');
+            isNotApplicableFlag = false;
+            eSituation["dSituation.08"] = _val[0];
+            eSituation["ChiefComplaintOrganSystem"] = setCodeText("dSituation.08", _val[0]);
+            v2Array.push({ section: "E09", element: "E09_12", val: setV2("dSituation.08", _val[0]) });
         }; 
 
 
@@ -265,17 +232,16 @@ var seteSituation = function (businessObject)
         _val = getValue(businessObject.elements, "eSituation.09");
         if (_val == null)
         {
-            OLAPArray.push('\t' + "<PrimarySymptom>" + "NOT RECORDED" + "</PrimarySymptom>" + '\n');
-            _retArray.push('\t' + "<eSituation.09" + NIL_V3NOT_RECORDED  + '\n');
             eSituation["dSituation.09"] = v3NOT_RECORDED;
+            eSituation["PrimarySymptom"] = NOT_RECORDED;
             v2Array.push({ section: "E09", element: "E09_13", val: v2NOT_RECORDED });            
         }
         else 
         {
-            OLAPArray.push('\t' + "<PrimarySymptom>" + setCodeText("dSituation.09", _val) + "</PrimarySymptom>" + '\n');
-            eSituation["dSituation.09"] = _val;
-            v2Array.push({ section: "E09", element: "E09_13", val: setV2("dSituation.09", _val) });
-            _retArray.push('\t' + "<eSituation.09>" + _val + "</eSituation.09>" + '\n');
+            isNotApplicableFlag = false;
+            eSituation["dSituation.09"] = _val[0];
+            eSituation["PrimarySymptom"] = setCodeText("dSituation.09", _val[0]);
+            v2Array.push({ section: "E09", element: "E09_13", val: setV2("dSituation.09", _val[0]) });            
         }; 
 
 
@@ -283,40 +249,44 @@ var seteSituation = function (businessObject)
         _val = getValue(businessObject.elements, "eSituation.10");
         if (_val == null)
         {
-            OLAPArray.push('\t' + "<OtherAssociatedSymptoms>" + "NOT RECORDED" + "</OtherAssociatedSymptoms>" + '\n');
-            _retArray.push('\t' + "<eSituation.10" + NIL_V3NOT_RECORDED  + '\n');
             eSituation["dSituation.10"] = v3NOT_RECORDED;
+            eSituation["OtherAssociatedSymptoms"] = NOT_RECORDED;
             v2Array.push({ section: "E09", element: "E09_14", val: setV2("dSituation.09", v2NOT_RECORDED) });
         }
         else 
         {
             var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
             for (var i = 0; i < _val.length; i++)
             {
                 arr1.push(_val[i]);
-                OLAPArray.push('\t' + "<OtherAssociatedSymptoms>" + setCodeText("dSituation.10", _val[i]) + "</OtherAssociatedSymptoms>" + '\n');
-                _retArray.push('\t' + "<eSituation.10>" + _val[i] + "</eSituation.10>" + '\n');
-                v2Array.push({ section: "E09", element: "E09_14", val: _val[i] });
-            }
+                arr2.push(setD2("dSituation.10", _val[i]));
+                arr3.push(setCodeText("dSituation.10", _val[i]));               
+
+            };
+            isNotApplicableFlag = false;
+            eSituation["OtherAssociatedSymptoms"] = arr3.slice(0);;
             eSituation["dSituation.10"] = arr1.slice(0);
+            v2Array.push({ section: "E09", element: "E09_14", val: arr2.slice(0);});
         }; 
 
     /////////eSituation.11
         _val = getValue(businessObject.elements, "eSituation.11");
         if (_val == null)
-        {
-            OLAPArray.push('\t' + "<ProviderPrimaryImpression>" + "NOT RECORDED" + "</ProviderPrimaryImpression>" + '\n');
-            _retArray.push('\t' + "<eSituation.11" + NIL_V3NOT_RECORDED  + '\n');
+        {         
             eSituation["dSituation.11"] = v3NOT_RECORDED;
+            eSituation["ProviderPrimaryImpression"] = NOT_RECORDED;
             v2Array.push({ section: "E09", element: "E09_15", val: v2NOT_RECORDED });
 
         }
         else 
         {
-            OLAPArray.push('\t' + "<ProviderPrimaryImpression>" + _val + "</ProviderPrimaryImpression>" + '\n');
-            eSituation["dSituation.11"] = _val;
+            isNotApplicableFlag = false;
+            eSituation["dSituation.11"] = _val[0];
+            eSituation["ProviderPrimaryImpression"] = _val[0];
             v2Array.push({ section: "E09", element: "E09_15", val: _val });
-            _retArray.push('\t' + "<eSituation.11>" + _val + "</eSituation.11>" + '\n');
+         
         }; 
 
 
@@ -324,36 +294,31 @@ var seteSituation = function (businessObject)
         _val = getValue(businessObject.elements, "eSituation.12");
         if (_val == null)
         {
-            OLAPArray.push('\t' + "<ProviderSecondaryImpressions>" + "NOT RECORDED" + "</ProviderSecondaryImpressions>" + '\n');
-            _retArray.push('\t' + "<eSituation.12" + NIL_V3NOT_RECORDED  + '\n');
             eSituation["dSituation.12"] = v3NOT_RECORDED;
+            eSituation["ProviderSecondaryImpressions"] = NOT_RECORDED;
             v2Array.push({ section: "E09", element: "E09_16", val: v2NOT_RECORDED });
         }
         else 
         {
-            OLAPArray.push('\t' + "<ProviderSecondaryImpressions>" + _val + "</ProviderSecondaryImpressions>" + '\n');
-            eSituation["dSituation.12"] = _val;
-            v2Array.push({ section: "E09", element: "E09_16", val: _val });
-            _retArray.push('\t' + "<eSituation.12>" + _val + "</eSituation.12>" + '\n');
+            isNotApplicableFlag = false;
+            eSituation["ProviderSecondaryImpressions"] = _val[0];
+            eSituation["dSituation.12"] = _val[0];
+            v2Array.push({ section: "E09", element: "E09_16", val: _val[0] });
         }; 
 
     /////////eSituation.13
         _val = getValue(businessObject.elements, "dSituation.13");
         if (_val == null)
         {
-            OLAPArray.push('\t' + "<InitialPatientAcuity>" + "NOT RECORDED" + "</InitialPatientAcuity>" + '\n');
-            _retArray.push('\t' + "<eSituation.13" + NIL_V3NOT_RECORDED  + '\n');
-            eSituation["dSituation.13"] = v3NOT_RECORDED;                    
+            eSituation["dSituation.13"] = v3NOT_RECORDED;                 
+            eSituation["InitialPatientAcuity"] = NOT_RECORDED;                 
         }
         else 
         {
-            OLAPArray.push('\t' + "<InitialPatientAcuity>" + setCodeText("dSituation.13", _val[i]) + "</InitialPatientAcuity>" + '\n');
-            eSituation["dSituation.13"] = _val;                    
-            _retArray.push('\t' + "<eSituation.13>" + _val + "</eSituation.13>" + '\n');
+            isNotApplicableFlag = false;
+            eSituation["dSituation.13"] = _val[0];
+            eSituation["InitialPatientAcuity"] = setCodeText("dSituation.13", _val[0]);                 
         }; 
-       
-        _retArray.push('\t' + "<WorkRelatedGroup>");
-        OLAPArray.push('\t' + "<WorkRelatedGroup>");
 
     /////////eSituation.14
         _val = getValue(businessObject.elements, "eSituation.14");
@@ -361,41 +326,40 @@ var seteSituation = function (businessObject)
         {
             if (isRequiredStateElement("eSituation.14"))
             {
-                OLAPArray.push('\t\t' + "<WorkRelatedIllnessInjury>" + "NOT RECORDED" + "</WorkRelatedIllnessInjury>" + '\n');
-                _retArray.push('\t\t' + "<eSituation.14" + NIL_V3NOT_RECORDED + '\n');
                 eSituation["dSituation.14"] = v3NOT_RECORDED;
+                eSituation["WorkRelatedIllnessInjury"] = NOT_RECORDED;
                 v2Array.push({ section: "E07", element: "E07_15", val: v2NOT_RECORDED });
             }
             else
             {
-                OLAPArray.push('\t\t' + "<WorkRelatedIllnessInjury>" + "NOT REPORTING" + "</WorkRelatedIllnessInjury>" + '\n');
-                _retArray.push('\t\t' + "<eSituation.14" + NIL_V3NOT_REPORTING + '\n');
                 eSituation["dSituation.14"] = v3NOT_REPORTING;
+                eSituation["WorkRelatedIllnessInjury"] = NOT_REPORTING;
                 v2Array.push({ section: "E07", element: "E07_15", val: v2NOT_REPORTING });
             }
         }
         else
         {
-            OLAPArray.push('\t\t' + "<WorkRelatedIllnessInjury>" + setCodeText("eSituation.14", _val) + "</WorkRelatedIllnessInjury>" + '\n');
-            eSituation["dSituation.14"] = _val;
-            v2Array.push({ section: "E07", element: "E07_15", val: setV2("eSituation.14", _val) });
-            _retArray.push('\t\t' + "<eSituation.14>" + _val + "</eSituation.14>" + '\n');
+            isNotApplicableFlag = false;
+            eSituation["dSituation.14"] = _val[0];
+            eSituation["WorkRelatedIllnessInjury"] = setCodeText("eSituation.14", _val[0]);
+            v2Array.push({ section: "E07", element: "E07_15", val: setV2("eSituation.14", _val[0]) });
         };
       
     /////////eSituation.15
         _val = getValue(businessObject.elements, "eSituation.15");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<PatientOccupationalIndustry>" + null + "</PatientOccupationalIndustry>" + '\n');
-            _retArray.push('\t\t' + "<eSituation.15>" + null + "</eSituation.15>" + '\n');
             v2Array.push({ section: "E07", element: "E07_16", val: null });
+            eSituation["dSituation.15"] = null;
+            eSituation["PatientOccupationalIndustry"] = null;
         }
         else 
         {
-            OLAPArray.push('\t\t' + "<PatientOccupationalIndustry>" + setCodeText("eSituation.15", _val) + "</PatientOccupationalIndustry>" + '\n');
+            isNotApplicableFlag = false;
+            eSituation["PatientOccupationalIndustry"] = setCodeText("eSituation.15", _val[0]);
             eSituation["dSituation.15"] = _val;
-            v2Array.push({ section: "E07", element: "E07_16", val: setV2("eSituation.15", _val) });
-            _retArray.push('\t\t' +"<eSituation.15>" + _val + "</eSituation.15>" + '\n');
+            v2Array.push({ section: "E07", element: "E07_16", val: setV2("eSituation.15", _val[0]) });
+           
         }; 
 
 
@@ -403,20 +367,18 @@ var seteSituation = function (businessObject)
         _val = getValue(businessObject.elements, "eSituation.16");
         if (_val == null)
         {
-            OLAPArray.push('\t\t' + "<PatientOccupation>" + null + "</PatientOccupation>" + '\n');
-            _retArray.push('\t\t' + "<eSituation.15>" + null + "</eSituation.15>" + '\n');
             v2Array.push({ section: "E07", element: "E07_17", val: null });
-            eSituation["dSituation.17"] = _val;
+            eSituation["dSituation.17"] = _val[0];
+            eSituation["PatientOccupation"] = _val[0];
         }
         else 
         {
-            OLAPArray.push('\t' + "<PatientOccupation>" + setCodeText("eSituation.16", _val) + "</PatientOccupation>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_17", val: _val });
+            isNotApplicableFlag = false;
+            eSituation["PatientOccupation"] =setCodeText("eSituation.16", _val[0]);
+            v2Array.push({ section: "E07", element: "E07_17", val: setV2("eSituation.16", _val[0]) });
             eSituation["dSituation.16"] = _val;
-            _retArray.push('\t\t' +"<eSituation.16>" + _val + "</eSituation.16" + '\n');
         }; 
-        _retArray.push('\t' + "</WorkRelatedGroup>");
-        OLAPArray.push('\t' + "</WorkRelatedGroup>");
+
 
     /////////eSituation.17
         _val = getValue(businessObject.elements, "eSituation.17");
@@ -424,15 +386,15 @@ var seteSituation = function (businessObject)
         {
             if(isRequiredStateElement("eSituation.17"))
             {
-                OLAPArray.push('\t\t' + "<PatientActivity>" + "NOT RECORDED" + "</PatientActivity>" + '\n');
-                _retArray.push('\t' + "<eSituation.17" + NIL_V3NOT_RECORDED + '\n');
                 eSituation["dSituation.17"] = v3NOT_RECORDED;
+                eSituation["PatientActivity"] = NOT_RECORDED;
             }            
             else
             {
                 OLAPArray.push('\t\t' + "<PatientActivity>" + "NOT REPORTING" + "</PatientActivity>" + '\n');
                 _retArray.push('\t' + "<eSituation.17" + NIL_V3NOT_REPORTING + '\n');
-                eSituation["dSituation.17"] = v3NOT_RECORDED;
+                eSituation["dSituation.17"] = v3NOT_REPORTING;
+                eSituation["PatientActivity"] = NOT_REPORTING;
             }
         }
         else 
@@ -441,15 +403,14 @@ var seteSituation = function (businessObject)
             for (var i = 0; i < _val.length; i++)
             {
                 arr1.push(_val[i]);
-                OLAPArray.push('\t\t' + "<PatientActivity>" + _val[i] + "</PatientActivity>" + '\n');
-                _retArray.push('\t' + "<eSituation.17>" + _val[i] + "</eSituation.17>" + '\n');                
             }
-
-            eSituation["dSituation.17"] = arr1.slice(0);;            
-        };            
-        _retArray.push("</eSituation>" + '\n');
-        OLAPArray.push("</eSituation>" + '\n');
-    };    //end of function   
+            isNotApplicableFlag = false;
+            eSituation["PatientActivity"] = arr1.slice(0);    
+            eSituation["dSituation.17"] = arr1.slice(0);    
+            _retArray.push('\t' + "<eSituation.17>" + arr1.slice(0) + "</eSituation.17>" + '\n');                
+        }
+        };
+    //end of function   
 
 
 
@@ -798,216 +759,21 @@ var eSituation10 = {
     "R46.2": "1565",
     "R46.3": "1565",
     "R46.4": "1565",
-    "H53.14": "1570",
-    "R11.10": "1570",
-    "R11.12": "1570",
-    "R14.2": "1570",
-    "R14.3": "1570",
-    "R15": "1570",
-    "R63.1": "1570",
-    "R63.3": "1570",
-    "R63.4": "1570",
-    "R63.5": "1570",
-    "R64": "1570",
-    "K92.0": "1570",
-    "R11.0": "1570",
-    "R14.0": "1570",
-    "R63.0": "1570",
-    "R68.2": "1570",
-    "R11.0": "1570",
-};
-
-var eSituation334_02 = {
-
-    "9922001" : "No",
-    "9922003" : "Unknown",
-    "9922005" : "Yes"
-};
-var eSituation334_03 = {
-    "2803001" : "Chief (Primary)",
-    "2803003" : "Other (Not Listed)",
-    "2803005" : "Secondary"
-};
-var eSituation334_06 = {
-
-    "2806001" : "Seconds",
-    "2806003" : "Minutes",
-    "2806005" : "Hours",
-    "2806007" : "Days",
-    "2806009" : "Weeks",
-    "2806011" : "Months",
-    "2806013" : "Years"
-};
-var eSituation334_07 = {
-    "2807001" : "Abdomen",
-    "2807003" : "Back",
-    "2807005" : "Chest",
-    "2807007" : "Extremity-Lower",
-    "2807009" : "Extremity-Upper",
-    "2807011" : "General/Global",
-    "2807013" : "Genitalia",
-    "2807015" : "Head",
-    "2807017" : "Neck"
-};
-var eSituation334_08 = {
-    "2808001" : "Behavioral/Psychiatric",
-    "2808003" : "Cardiovascular",
-    "2808005" : "CNS/Neuro",
-    "2808007" : "Endocrine/Metabolic",
-    "2808009" : "GI",
-    "2808011" : "Global/General",
-    "2808013" : "Lymphatic/Immune",
-    "2808015" : "Musculoskeletal/Skin",
-    "2808017" : "Reproductive",
-    "2808019" : "Pulmonary",
-    "2808021" : "Renal"
-};
-var eSituation334_13 = {
-    "2813001" : "Critical (Red)",
-    "2813003" : "Emergent (Yellow)",
-    "2813005" : "Lower Acuity (Green)",
-    "2813007" : "Dead without Resuscitation Efforts (Black)"
-};
-var eSituation334_14 = {
-    "9922001" : "No",
-    "9922003" : "Unknown",
-    "9922005" : "Yes"
-};
-var eSituation334_15 = {
-    "2815001" : "Accommodation and Food Services",
-    "2815003" : "Administrative and Support and Waste Management and Remediation Services",
-    "2815005" : "Agriculture; Forestry; Fishing and Hunting",
-    "2815007" : "Arts; Entertainment; and Recreation",
-    "2815009" : "Construction",
-    "2815011" : "Educational Services",
-    "2815013" : "Finance and Insurance",
-    "2815015" : "Health Care and Social Assistance",
-    "2815017" : "Information",
-    "2815019" : "Management of Companies and Enterprises",
-    "2815021" : "Manufacturing",
-    "2815023" : "Mining; Quarrying; and Oil and Gas Extraction",
-    "2815025" : "Other Services (except Public Administration)",
-    "2815027" : "Professional; Scientific; and Technical Services",
-    "2815029" : "Public Administration",
-    "2815031" : "Real Estate and Rental and Leasing",
-    "2815033" : "Retail Trade",
-    "2815035" : "Transportation and Warehousing",
-    "2815037" : "Utilities",
-    "2815039" : "Wholesale Trade"
-};
-var eSituation334_16 = {
-    "2816001": "Architecture and Engineering Occupations",
-    "2816003": "Arts; Design; Entertainment; Sports; and Media Occupations",
-    "2816005": "Building and Grounds Cleaning and Maintenance Occupations",
-    "2816007": "Business and Financial Operations Occupations",
-    "2816009": "Community and Social Services Occupations",
-    "2816011": "Computer and Mathematical Occupations",
-    "2816013": "Construction and Extraction Occupations",
-    "2816015": "Education; Training; and Library Occupations",
-    "2816017": "Farming; Fishing and Forestry Occupations",
-    "2816019": "Food Preparation and Serving Related Occupations",
-    "2816021": "Healthcare Practitioners and Technical Occupations",
-    "2816023": "Healthcare Support Occupations",
-    "2816025": "Installation; Maintenance; and Repair Occupations",
-    "2816027": "Legal Occupations",
-    "2816029": "Life; Physical; and Social Science Occupations",
-    "2816031": "Management Occupations",
-    "2816033": "Military Specific Occupations",
-    "2816035": "Office and Administrative Support Occupations",
-    "2816037": "Personal Care and Service Occupations",
-    "2816039": "Production Occupations",
-    "2816041": "Protective Service Occupations",
-    "2816043": "Sales and Related Occupations",
-    "2816045": "Transportation and Material Moving Occupations"
-};
-
-function setCodeText(NEMSISElementNumber, codeVal) {
-    var _return = [];
-
-
-    switch (NEMSISElementNumber) {
-
-        case "eSituation.02":
-            if (eSituation334_02[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_02[codeVal];
-            }
-            break;
-
-        case "eSituation.03":
-            if (eSituation334_03[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_03[codeVal];
-            }
-            break;
-
-        case "eSituation.06":
-            if (eSituation334_06[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_06[codeVal];
-            }
-            break;
-
-        case "eSituation.07":
-            if (eSituation334_07[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_07[codeVal];
-            }
-            break;
-        case "eSituation.08":
-            if (eSituation334_08[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_08[codeVal];
-            }
-            break;
-
-        case "eSituation.13":
-            if (eSituation334_13[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_13[codeVal];
-            }
-            break;
-
-        case "eSituation.14":
-            if (eSituation334_14[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_14[codeVal];
-            }
-            break;
-        case "eSituation.15":
-            if (eSituation334_15[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_15[codeVal];
-            }
-            break;
-
-        case "eSituation.16":
-            if (eSituation334_16[codeVal] == undefined) {
-                _return = codeVal;
-            }
-            else {
-                _return = eSituation334_16[codeVal];
-            }
-            break;
-        default:
-            _return = " UNDEFINED";
-    }
-    return _return;
-
-};
+    "H53.14":"1570",
+    "R11.10":"1570",
+    "R11.12":"1570",
+    "R14.2":"1570",
+    "R14.3":"1570",
+    "R15":"1570",
+    "R63.1":"1570",
+    "R63.3":"1570",
+    "R63.4":"1570",
+    "R63.5":"1570",
+    "R64":"1570",
+    "K92.0":"1570",
+    "R11.0":"1570",
+    "R14.0":"1570",
+    "R63.0":"1570",
+    "R68.2":"1570",
+    "R11.0":"1570",
+}
