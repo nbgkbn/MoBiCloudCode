@@ -507,436 +507,410 @@ var seteDisposition = function (businessObject)
             v2Array.push({ section: "E04", element: "E04_02", val: arr2.slice(0) });
             DestinationGroup["eDisposition.26"] =arr1.slice(0);
             DestinationGroup["DispositionInstructionsProvided"] =arr3.slice(0);
-    };
-
-
-    var setNotApplicableAll = function (businessObject)
-    {
-        v2Array.push({ section: "E20", element: "E20_01", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_03", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_04", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_05", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_06", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_07", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_09", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_11", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_12", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_13", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_14", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_15", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_16", val: v2NOT_APPLICABLE });
-        v2Array.push({ section: "E20", element: "E20_17", val: v2NOT_APPLICABLE });
-
-        _retArray.push("<eDisposition>" + '\n');
-        _retArray.push('\t' + "<eDisposition.DestinationGroup>" + '\n');
-
-        if (isRequiredStateElement("eDisposition.01") == true) {
-            _retArray.push('\t\t' + "<eDisposition.01>" + NIL_V3NOT_APPLICABLE + '\n');
-        }
-
-        if (isRequiredStateElement("eDisposition.02") == true) {
-            _retArray.push('\t\t' + "<eDisposition.02>" + NIL_V3NOT_APPLICABLE + '\n');
-        }
-
-        if (isRequiredStateElement("eDisposition.03") == true) {
-            _retArray.push('\t\t' + "<eDisposition.03>" + NIL_V3NOT_APPLICABLE + '\n');
-        }
-        if (isRequiredStateElement("eDisposition.04") == true) {
-            _retArray.push('\t\t' + "<eDisposition.04>" + NIL_V3NOT_APPLICABLE + '\n');
-        }
-
-        _retArray.push('\t' + "<eDisposition.05>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.06>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.07>" + NIL_V3NOT_APPLICABLE + '\n');
-
-        if (isRequiredStateElement("eDisposition.11") == true) {
-            _retArray.push('\t\t' + "<eDisposition.11>" + NIL_V3NOT_APPLICABLE + '\n');
-        }
-
-        _retArray.push('\t' + "<eDisposition.12>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.16>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.17>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.18>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.19>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.20>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.21>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.22>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.23>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.24>" + NIL_V3NOT_APPLICABLE + '\n');
-        _retArray.push('\t' + "<eDisposition.25>" + NIL_V3NOT_APPLICABLE + '\n');
-
-
-    };
-
-    function setD2(NEMSISElementNumber, valueArray) {
-        //    console.log(NEMSISElementNumber);
-        var _retArray = [];
-        //    console.log(valueArray);
-        switch (NEMSISElementNumber) {
-            case "eDisposition.12":
-
-                if (eDisposition12[valueArray[0]] == undefined) {
-                    _retArray.push(valueArray[0] + "UNDEFINED");
-                }
-                else {
-                    _retArray.push(eDisposition12[valueArray[0]]);
-                }
-                break;
-            case "eDisposition.13":
-                for (i = 0; i < valueArray.length; i++) {
-                    if (eDisposition13[valueArray[i]] == undefined) {
-                        _retArray.push(valueArray[i] + "UNDEFINED");
-                    }
-                    else {
-                        _retArray.push(eDisposition13[valueArray[i]]);
-                    }
-                }
-                break;
-            case "eDisposition.14":
-
-                if (eDisposition14[valueArray[0]] == undefined) {
-                    _retArray.push(valueArray[0] + "UNDEFINED");
-                }
-                else {
-                    _retArray.push(eDisposition14[valueArray[0]]);
-                }
-                break;
-
-            case "eDisposition.15":
-
-                if (eDisposition15[valueArray[0]] == undefined) {
-                    _retArray.push(valueArray[0] + "UNDEFINED");
-                }
-                else {
-                    _retArray.push(eDisposition15[valueArray[0]]);
-                }
-                break;
-                
-            case "eDisposition.17":
-
-                if (eDisposition17[valueArray[0]] == undefined) {
-                    _retArray.push(valueArray[0] + "UNDEFINED");
-                }
-                else {
-                    _retArray.push(eDisposition17[valueArray[0]]);
-                }
-                break;
-
-                
-            case "eDisposition.19":
-
-                if (eDisposition19[valueArray[0]] == undefined) {
-                    _retArray.push(valueArray[0] + "UNDEFINED");
-                }
-                else {
-                    _retArray.push(eDisposition19[valueArray[0]]);
-                }
-                break;
-
-            case "eDisposition.20":
-
-                if (eDisposition20[valueArray[0]] == undefined) {
-                    _retArray.push(valueArray[0] + "UNDEFINED");
-                }
-                else {
-                    _retArray.push(eDisposition20[valueArray[0]]);
-                }
-                break;
-
-                
-            case "eDisposition.21":
-
-                if (eDisposition21[valueArray[0]] == undefined) {
-                    _retArray.push(valueArray[0] + "UNDEFINED");
-                }
-                else {
-                    _retArray.push(eDisposition21[valueArray[0]]);
-                }
-                break;
-            default:
-                _retArray.push(NEMSISElementNumber = " version 2 not found");
-        }
-        return _retArray;
-    };
-    var eDisposition12 = {
-        "4212001":"4845",
-        "4212003":"4850",
-        "4212005":"4845",
-        "4212007":"4815",
-        "4212009":"4815",
-        "4212011":"4825",
-        "4212013":"4820",
-        "4212015":"4820",
-        "4212017":"4820",
-        "4212019":"4820",
-        "4212021":"4830",
-        "4212023":"4835",
-        "4212025":"4835",
-        "4212027":"4840",
-        "4212029":"4840",
-        "4212031":"4845",
-        "4212033":"4850",
-        "4212035":"4855",
-        "4212037":"4860",
-        "4212039":"4830",
-        "4212041":"4830",
-        "4212043":"4830"
-    };
-
-    var eDisposition13 = {
-        "9909001":"4865",
-        "9909003":"4885",
-        "9909005":"4885",
-        "9909007":"4870",
-        "9909009":"4885",
-        "9909011":"4875",
-        "9909013":"4880",
-        "9909015":"4885"
-    };
-
-    var eDisposition14 = {
-        "4214001":"4890",
-        "4214003":"4895",
-        "4214005":"4900",
-        "4214007":"4900",
-        "4214009":"4925",
-        "4214011":"4905",
-        "4214013":"4910",
-        "4214015":"4915",
-        "4214017":"4920",
-        "4214019":"4925"
-    };
-
-    var eDisposition15 = {
-        "9909001":"4930",
-        "9909003":"4950",
-        "9909005":"4950",
-        "9909007":"4935",
-        "9909009":"4950",
-        "9909011":"4940",
-        "9909013":"4945",
-        "9909015":"4950"
-
-    };
-
-    var eDisposition17 = {
-        "4217001":"4965",
-        "4217003":"4955",
-        "4217005":"4970",
-        "4217007":"4960"
-    };
-
-    var eDisposition19 = {
-        "9916001":"4975",
-        "9916003":"4980",
-        "9916005":"4985"
-    }
-
-    var eDisposition20 = {
-        "4220001":"4990",
-        "4220003":"4995",
-        "4220005":"5000",
-        "4220007":"5005",
-        "4220009":"5010",
-        "4220011":"5015",
-        "4220013":"5020",
-        "4220015":"5025",
-        "4220017":"5030",
-        "4220019":"5035",
-        "4220021":"5040"
-    };
-
-    var eDisposition21 = {
-        "4221001":"7270",
-        "4221003":"7280",
-        "4221005":"7290",
-        "4221007":"7290",
-        "4221009":"7300",
-        "4221011":"7310",
-        "4221013":"7330",
-        "4221015":"7340",
-        "4221017":"7350",
-        "4221019":"7360"
-    };
-
-    function setCodeText(NEMSISElementNumber, valueArray) {
-        var _return = [];
-        switch (NEMSISElementNumber) {
-            case "eDisposition.12":
-                if (eDisposition334_12[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_12[valueArray];
-                }
-                break;
-            case "eDisposition.13":
-                if (eDisposition334_13[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_13[valueArray];
-                }
-                break;
-
-            case "eDisposition.14":
-                if (eDisposition334_14[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_14[valueArray];
-                }
-                break;
-
-            case "eDisposition.15":
-                if (eDisposition334_15[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_15[valueArray];
-                }
-                break;
-
-            case "eDisposition.16":
-                if (eDisposition334_16[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_16[valueArray];
-                }
-                break;
-
-            case "eDisposition.17":
-                if (eDisposition334_17[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_17[valueArray];
-                }
-                break;
-
-            case "eDisposition.18":
-                if (eDisposition334_18[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_18[valueArray];
-                }
-                break;
-
-            case "eDisposition.19":
-                if (eDisposition334_19[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_19[valueArray];
-                }
-                break;
-
-            case "eDisposition.20":
-                if (eDisposition334_20[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_20[valueArray];
-                }
-                break;
-
-            case "eDisposition.21":
-                if (eDisposition334_21[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_21[valueArray];
-                }
-                break;
-
-            case "eDisposition.22":
-                if (eDisposition334_22[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_22[valueArray];
-                }
-                break;
-
-                
-            case "eDisposition.24":
-                if (eDisposition334_24[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_24[valueArray];
-                }
-                break;
-
-            case "eDisposition.26":
-                if (eDisposition334_26[valueArray] == undefined) {
-                    _return = valueArray + " UNDEFINED";
-                }
-                else {
-                    _return = eDisposition334_26[valueArray];
-                }
-                break;
-            default:
-                _return = " UNDEFINED";
-        }
-        return _return;
-
-    };
-
-    var eDisposition334_12 = {
-        "4212003" : "Assist; Public", 
-        "4212005" : "Assist; Unit", 
-        "4212007" : "Canceled (Prior to Arrival At Scene)", 
-        "4212009" : "No Patient Contact (Canceled on Scene)", 
-        "4212011" : "No Patient Found (Canceled on Scene)", 
-        "4212013" : "Patient Dead at Scene-No Resuscitation Attempted (With Transport)", 
-        "4212015" : "Patient Dead at Scene-No Resuscitation Attempted (Without Transport)", 
-        "4212017" : "Patient Dead at Scene-Resuscitation Attempted (With Transport)", 
-        "4212019" : "Patient Dead at Scene-Resuscitation Attempted (Without Transport)", 
-        "4212021" : "Patient Evaluated; No Treatment/Transport Required", 
-        "4212023" : "Patient Refused Evaluation/Care (With Transport)", 
-        "4212025" : "Patient Refused Evaluation/Care (Without Transport)", 
-        "4212027" : "Patient Treated; Released (AMA)", 
-        "4212029" : "Patient Treated; Released (per protocol)", 
-        "4212031" : "Patient Treated; Transferred Care to Another EMS Professional", 
-        "4212033" : "Patient Treated; Transported by EMS", 
-        "4212035" : "Patient Treated; Transported by Law Enforcement", 
-        "4212037" : "Patient Treated; Transported by Private Vehicle", 
-        "4212039" : "Standby-No Services or Support Provided", 
-        "4212041" : "Standby-Public Safety; Fire; or EMS Operational Support Provided", 
-        "4212043" : "Transport of Body Parts or Organs Only"
-    };
-
-    var eDisposition334_13 = {
-        "9909001" : "Assisted/Walk", 
-        "9909003" : "Backboard", 
-        "9909005" : "Chair", 
-        "9909007" : "Carried", 
-        "9909009" : "Other (Not Listed)", 
-        "9909011" : "Stairchair", 
-        "9909013" : "Stretcher", 
-        "9909015" : "Wheelchair"
-    };
-
-    var eDisposition334_14 = 
-        {
-            "4214001" : "Car Seat", 
-            "4214003" : "Fowlers (Semi-Upright Sitting)", 
-            "4214005" : "Lateral Left", 
-            "4214007" : "Lateral Right", 
-            "4214009" : "Other (Not Listed)", 
-            "4214011" : "Prone", 
-            "4214013" : "Semi-Fowlers", 
-            "4214015" : "Sitting", 
-            "4214017" : "Supine", 
-            "4214019" : "Trendelenburg"
         };
 
-    var eDisposition334_15 = 
+
+        var setNotApplicableAll = function (businessObject)
         {
+            v2Array.push({ section: "E20", element: "E20_01", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_03", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_04", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_05", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_06", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_07", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_09", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_11", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_12", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_13", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_14", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_15", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_16", val: v2NOT_APPLICABLE });
+            v2Array.push({ section: "E20", element: "E20_17", val: v2NOT_APPLICABLE });
+
+            _retArray.push("<eDisposition>" + '\n');
+            _retArray.push('\t' + "<eDisposition.DestinationGroup>" + '\n');
+
+            if (isRequiredStateElement("eDisposition.01") == true) {
+                _retArray.push('\t\t' + "<eDisposition.01>" + NIL_V3NOT_APPLICABLE + '\n');
+            }
+
+            if (isRequiredStateElement("eDisposition.02") == true) {
+                _retArray.push('\t\t' + "<eDisposition.02>" + NIL_V3NOT_APPLICABLE + '\n');
+            }
+
+            if (isRequiredStateElement("eDisposition.03") == true) {
+                _retArray.push('\t\t' + "<eDisposition.03>" + NIL_V3NOT_APPLICABLE + '\n');
+            }
+            if (isRequiredStateElement("eDisposition.04") == true) {
+                _retArray.push('\t\t' + "<eDisposition.04>" + NIL_V3NOT_APPLICABLE + '\n');
+            }
+
+            _retArray.push('\t' + "<eDisposition.05>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.06>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.07>" + NIL_V3NOT_APPLICABLE + '\n');
+
+            if (isRequiredStateElement("eDisposition.11") == true) {
+                _retArray.push('\t\t' + "<eDisposition.11>" + NIL_V3NOT_APPLICABLE + '\n');
+            }
+
+            _retArray.push('\t' + "<eDisposition.12>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.16>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.17>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.18>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.19>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.20>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.21>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.22>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.23>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.24>" + NIL_V3NOT_APPLICABLE + '\n');
+            _retArray.push('\t' + "<eDisposition.25>" + NIL_V3NOT_APPLICABLE + '\n');
+
+
+        };
+
+        function setD2(NEMSISElementNumber, valueArray) {
+            //    console.log(NEMSISElementNumber);
+            var _retArray = [];
+            //    console.log(valueArray);
+            switch (NEMSISElementNumber) {
+                case "eDisposition.12":
+
+                    if (eDisposition12[valueArray[0]] == undefined) {
+                        _retArray.push(valueArray[0] + "UNDEFINED");
+                    }
+                    else {
+                        _retArray.push(eDisposition12[valueArray[0]]);
+                    }
+                    break;
+                case "eDisposition.13":
+                    for (i = 0; i < valueArray.length; i++) {
+                        if (eDisposition13[valueArray[i]] == undefined) {
+                            _retArray.push(valueArray[i] + "UNDEFINED");
+                        }
+                        else {
+                            _retArray.push(eDisposition13[valueArray[i]]);
+                        }
+                    }
+                    break;
+                case "eDisposition.14":
+
+                    if (eDisposition14[valueArray[0]] == undefined) {
+                        _retArray.push(valueArray[0] + "UNDEFINED");
+                    }
+                    else {
+                        _retArray.push(eDisposition14[valueArray[0]]);
+                    }
+                    break;
+
+                case "eDisposition.15":
+
+                    if (eDisposition15[valueArray[0]] == undefined) {
+                        _retArray.push(valueArray[0] + "UNDEFINED");
+                    }
+                    else {
+                        _retArray.push(eDisposition15[valueArray[0]]);
+                    }
+                    break;
+                
+                case "eDisposition.17":
+
+                    if (eDisposition17[valueArray[0]] == undefined) {
+                        _retArray.push(valueArray[0] + "UNDEFINED");
+                    }
+                    else {
+                        _retArray.push(eDisposition17[valueArray[0]]);
+                    }
+                    break;
+
+                
+                case "eDisposition.19":
+
+                    if (eDisposition19[valueArray[0]] == undefined) {
+                        _retArray.push(valueArray[0] + "UNDEFINED");
+                    }
+                    else {
+                        _retArray.push(eDisposition19[valueArray[0]]);
+                    }
+                    break;
+
+                case "eDisposition.20":
+
+                    if (eDisposition20[valueArray[0]] == undefined) {
+                        _retArray.push(valueArray[0] + "UNDEFINED");
+                    }
+                    else {
+                        _retArray.push(eDisposition20[valueArray[0]]);
+                    }
+                    break;
+
+                
+                case "eDisposition.21":
+
+                    if (eDisposition21[valueArray[0]] == undefined) {
+                        _retArray.push(valueArray[0] + "UNDEFINED");
+                    }
+                    else {
+                        _retArray.push(eDisposition21[valueArray[0]]);
+                    }
+                    break;
+                default:
+                    _retArray.push(NEMSISElementNumber = " version 2 not found");
+            }
+            return _retArray;
+        };
+        var eDisposition12 = {
+            "4212001":"4845",
+            "4212003":"4850",
+            "4212005":"4845",
+            "4212007":"4815",
+            "4212009":"4815",
+            "4212011":"4825",
+            "4212013":"4820",
+            "4212015":"4820",
+            "4212017":"4820",
+            "4212019":"4820",
+            "4212021":"4830",
+            "4212023":"4835",
+            "4212025":"4835",
+            "4212027":"4840",
+            "4212029":"4840",
+            "4212031":"4845",
+            "4212033":"4850",
+            "4212035":"4855",
+            "4212037":"4860",
+            "4212039":"4830",
+            "4212041":"4830",
+            "4212043":"4830"
+        };
+
+        var eDisposition13 = {
+            "9909001":"4865",
+            "9909003":"4885",
+            "9909005":"4885",
+            "9909007":"4870",
+            "9909009":"4885",
+            "9909011":"4875",
+            "9909013":"4880",
+            "9909015":"4885"
+        };
+
+        var eDisposition14 = {
+            "4214001":"4890",
+            "4214003":"4895",
+            "4214005":"4900",
+            "4214007":"4900",
+            "4214009":"4925",
+            "4214011":"4905",
+            "4214013":"4910",
+            "4214015":"4915",
+            "4214017":"4920",
+            "4214019":"4925"
+        };
+
+        var eDisposition15 = {
+            "9909001":"4930",
+            "9909003":"4950",
+            "9909005":"4950",
+            "9909007":"4935",
+            "9909009":"4950",
+            "9909011":"4940",
+            "9909013":"4945",
+            "9909015":"4950"
+
+        };
+
+        var eDisposition17 = {
+            "4217001":"4965",
+            "4217003":"4955",
+            "4217005":"4970",
+            "4217007":"4960"
+        };
+
+        var eDisposition19 = {
+            "9916001":"4975",
+            "9916003":"4980",
+            "9916005":"4985"
+        }
+
+        var eDisposition20 = {
+            "4220001":"4990",
+            "4220003":"4995",
+            "4220005":"5000",
+            "4220007":"5005",
+            "4220009":"5010",
+            "4220011":"5015",
+            "4220013":"5020",
+            "4220015":"5025",
+            "4220017":"5030",
+            "4220019":"5035",
+            "4220021":"5040"
+        };
+
+        var eDisposition21 = {
+            "4221001":"7270",
+            "4221003":"7280",
+            "4221005":"7290",
+            "4221007":"7290",
+            "4221009":"7300",
+            "4221011":"7310",
+            "4221013":"7330",
+            "4221015":"7340",
+            "4221017":"7350",
+            "4221019":"7360"
+        };
+
+        function setCodeText(NEMSISElementNumber, valueArray) {
+            var _return = [];
+            switch (NEMSISElementNumber) {
+                case "eDisposition.12":
+                    if (eDisposition334_12[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_12[valueArray];
+                    }
+                    break;
+                case "eDisposition.13":
+                    if (eDisposition334_13[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_13[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.14":
+                    if (eDisposition334_14[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_14[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.15":
+                    if (eDisposition334_15[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_15[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.16":
+                    if (eDisposition334_16[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_16[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.17":
+                    if (eDisposition334_17[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_17[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.18":
+                    if (eDisposition334_18[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_18[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.19":
+                    if (eDisposition334_19[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_19[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.20":
+                    if (eDisposition334_20[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_20[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.21":
+                    if (eDisposition334_21[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_21[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.22":
+                    if (eDisposition334_22[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_22[valueArray];
+                    }
+                    break;
+
+                
+                case "eDisposition.24":
+                    if (eDisposition334_24[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_24[valueArray];
+                    }
+                    break;
+
+                case "eDisposition.26":
+                    if (eDisposition334_26[valueArray] == undefined) {
+                        _return = valueArray + " UNDEFINED";
+                    }
+                    else {
+                        _return = eDisposition334_26[valueArray];
+                    }
+                    break;
+                default:
+                    _return = " UNDEFINED";
+            }
+            return _return;
+
+        };
+
+        var eDisposition334_12 = {
+            "4212003" : "Assist; Public", 
+            "4212005" : "Assist; Unit", 
+            "4212007" : "Canceled (Prior to Arrival At Scene)", 
+            "4212009" : "No Patient Contact (Canceled on Scene)", 
+            "4212011" : "No Patient Found (Canceled on Scene)", 
+            "4212013" : "Patient Dead at Scene-No Resuscitation Attempted (With Transport)", 
+            "4212015" : "Patient Dead at Scene-No Resuscitation Attempted (Without Transport)", 
+            "4212017" : "Patient Dead at Scene-Resuscitation Attempted (With Transport)", 
+            "4212019" : "Patient Dead at Scene-Resuscitation Attempted (Without Transport)", 
+            "4212021" : "Patient Evaluated; No Treatment/Transport Required", 
+            "4212023" : "Patient Refused Evaluation/Care (With Transport)", 
+            "4212025" : "Patient Refused Evaluation/Care (Without Transport)", 
+            "4212027" : "Patient Treated; Released (AMA)", 
+            "4212029" : "Patient Treated; Released (per protocol)", 
+            "4212031" : "Patient Treated; Transferred Care to Another EMS Professional", 
+            "4212033" : "Patient Treated; Transported by EMS", 
+            "4212035" : "Patient Treated; Transported by Law Enforcement", 
+            "4212037" : "Patient Treated; Transported by Private Vehicle", 
+            "4212039" : "Standby-No Services or Support Provided", 
+            "4212041" : "Standby-Public Safety; Fire; or EMS Operational Support Provided", 
+            "4212043" : "Transport of Body Parts or Organs Only"
+        };
+
+        var eDisposition334_13 = {
             "9909001" : "Assisted/Walk", 
             "9909003" : "Backboard", 
             "9909005" : "Chair", 
@@ -947,95 +921,194 @@ var seteDisposition = function (businessObject)
             "9909015" : "Wheelchair"
         };
 
-    var eDisposition334_16 = 
-        {
-            "4216001" : "Air Medical-Fixed Wing", 
-            "4216003" : "Air Medical-Rotor Craft", 
-            "4216005" : "Ground-Ambulance", 
-            "4216007" : "Ground-ATV or Rescue Vehicle", 
-            "4216009" : "Ground-Bariatric", 
-            "4216011" : "Ground-Other Not Listed", 
-            "4216013" : "Ground-Mass Casualty Bus/Vehicle", 
-            "4216015" : "Ground-Wheelchair Van", 
-            "4216017" : "Water-Boat"
+        var eDisposition334_14 = 
+            {
+                "4214001" : "Car Seat", 
+                "4214003" : "Fowlers (Semi-Upright Sitting)", 
+                "4214005" : "Lateral Left", 
+                "4214007" : "Lateral Right", 
+                "4214009" : "Other (Not Listed)", 
+                "4214011" : "Prone", 
+                "4214013" : "Semi-Fowlers", 
+                "4214015" : "Sitting", 
+                "4214017" : "Supine", 
+                "4214019" : "Trendelenburg"
+            };
+
+        var eDisposition334_15 = 
+            {
+                "9909001" : "Assisted/Walk", 
+                "9909003" : "Backboard", 
+                "9909005" : "Chair", 
+                "9909007" : "Carried", 
+                "9909009" : "Other (Not Listed)", 
+                "9909011" : "Stairchair", 
+                "9909013" : "Stretcher", 
+                "9909015" : "Wheelchair"
+            };
+
+        var eDisposition334_16 = 
+            {
+                "4216001" : "Air Medical-Fixed Wing", 
+                "4216003" : "Air Medical-Rotor Craft", 
+                "4216005" : "Ground-Ambulance", 
+                "4216007" : "Ground-ATV or Rescue Vehicle", 
+                "4216009" : "Ground-Bariatric", 
+                "4216011" : "Ground-Other Not Listed", 
+                "4216013" : "Ground-Mass Casualty Bus/Vehicle", 
+                "4216015" : "Ground-Wheelchair Van", 
+                "4216017" : "Water-Boat"
+            };
+
+        var eDisposition334_17 = {
+            "4217001" : "Emergent (Immediate Response)", 
+            "4217003" : "Emergent Downgraded to Non-Emergent", 
+            "4217005" : "Non-Emergent", 
+            "4217007" : "Non-Emergent Upgraded to Emergent"
         };
 
-    var eDisposition334_17 = {
-        "4217001" : "Emergent (Immediate Response)", 
-        "4217003" : "Emergent Downgraded to Non-Emergent", 
-        "4217005" : "Non-Emergent", 
-        "4217007" : "Non-Emergent Upgraded to Emergent"
-    };
-
-    var eDisposition334_18 = {
-        "4218001" : "Intersection Navigation-Against Normal Light Patterns", 
-        "4218003" : "Intersection Navigation-With Automated Light Changing Technology", 
-        "4218005" : "Intersection Navigation-With Normal Light Patterns", 
-        "4218007" : "Speed-Enhanced per Local Policy", 
-        "4218009" : "Speed-Normal Traffic"
-    };
-
-    var eDisposition334_19 = {
-        "9916001" : "Improved", 
-        "9916003" : "Unchanged", 
-        "9916005" : "Worse" 
-    }
-    var eDisposition334_20 = {
-        "4220001" : "Closest Facility", 
-        "4220003" : "Diversion", 
-        "4220005" : "Family Choice", 
-        "4220007" : "Insurance Status/Requirement", 
-        "4220009" : "Law Enforcement Choice", 
-        "4220011" : "On-Line/On-Scene Medical Direction", 
-        "4220013" : "Other (Not Listed)", 
-        "4220015" : "Patient's Choice", 
-        "4220017" : "Patient's Physician's Choice", 
-        "4220019" : "Protocol", 
-        "4220021" : "Regional Specialty Center", 
-    };
-
-    var eDisposition334_21 = {
-        "4221001" : "Home", 
-        "4221003" : "Hospital-Emergency Department", 
-        "4221005" : "Hospital-Non-Emergency Department Bed", 
-        "4221007" : "Medical Office/Clinic", 
-        "4221009" : "Morgue/Mortuary", 
-        "4221011" : "Nursing Home/Assisted Living Facility", 
-        "4221013" : "Other (Not Listed)", 
-        "4221015" : "Other EMS Responder (air)", 
-        "4221017" : "Other EMS Responder (ground)", 
-        "4221019" : "Police/Jail", 
-    };
-    var eDisposition334_22 = {
-        "4222001" : "Hospital-Burn", 
-        "4222003" : "Hospital-Cath Lab", 
-        "4222005" : "Hospital-CCU", 
-        "4222007" : "Hospital-Endoscopy", 
-        "4222009" : "Hospital-Hospice", 
-        "4222011" : "Hospital-Hyperbaric Oxygen Treatment", 
-        "4222013" : "Hospital-ICU", 
-        "4222015" : "Hospital-Labor & Delivery", 
-        "4222017" : "Hospital-Med/Surg", 
-        "4222019" : "Hospital-Mental Health", 
-    };
-
-    var eDisposition334_24 = {
-        "4224003" : "Yes-Adult Trauma", 
-        "4224005" : "Yes-Cardiac Arrest", 
-        "4224007" : "Yes-Obstetrics", 
-        "4224009" : "Yes-Other", 
-        "4224011" : "Yes-Pediatric Trauma", 
-        "4224013" : "Yes-STEMI", 
-        "4224015" : "Yes-Stroke"
-    };
-
-    var eDisposition334_22 = 
-        {
-            "4226003" : "Contact 911 or see your Doctor if problem worsens", 
-            "4226005" : "Other Not Listed (Described in Narrative)", 
-            "4226007" : "Problem Specific Instructions Provided", 
-            "4226009" : "See Your Doctor or the Emergency Department immediately", 
-            "4226011" : "See Your Doctor or the Emergency Department in the next 24 hours", 
-            "4226013" : "See Your Doctor or the Emergency Department in the next 4 hours", 
-            "4226015" : "See Your Doctor within the next one week", 
+        var eDisposition334_18 = {
+            "4218001" : "Intersection Navigation-Against Normal Light Patterns", 
+            "4218003" : "Intersection Navigation-With Automated Light Changing Technology", 
+            "4218005" : "Intersection Navigation-With Normal Light Patterns", 
+            "4218007" : "Speed-Enhanced per Local Policy", 
+            "4218009" : "Speed-Normal Traffic"
         };
+
+        var eDisposition334_19 = {
+            "9916001" : "Improved", 
+            "9916003" : "Unchanged", 
+            "9916005" : "Worse" 
+        }
+        var eDisposition334_20 = {
+            "4220001" : "Closest Facility", 
+            "4220003" : "Diversion", 
+            "4220005" : "Family Choice", 
+            "4220007" : "Insurance Status/Requirement", 
+            "4220009" : "Law Enforcement Choice", 
+            "4220011" : "On-Line/On-Scene Medical Direction", 
+            "4220013" : "Other (Not Listed)", 
+            "4220015" : "Patient's Choice", 
+            "4220017" : "Patient's Physician's Choice", 
+            "4220019" : "Protocol", 
+            "4220021" : "Regional Specialty Center", 
+        };
+
+        var eDisposition334_21 = {
+            "4221001" : "Home", 
+            "4221003" : "Hospital-Emergency Department", 
+            "4221005" : "Hospital-Non-Emergency Department Bed", 
+            "4221007" : "Medical Office/Clinic", 
+            "4221009" : "Morgue/Mortuary", 
+            "4221011" : "Nursing Home/Assisted Living Facility", 
+            "4221013" : "Other (Not Listed)", 
+            "4221015" : "Other EMS Responder (air)", 
+            "4221017" : "Other EMS Responder (ground)", 
+            "4221019" : "Police/Jail", 
+        };
+        var eDisposition334_22 = {
+            "4222001" : "Hospital-Burn", 
+            "4222003" : "Hospital-Cath Lab", 
+            "4222005" : "Hospital-CCU", 
+            "4222007" : "Hospital-Endoscopy", 
+            "4222009" : "Hospital-Hospice", 
+            "4222011" : "Hospital-Hyperbaric Oxygen Treatment", 
+            "4222013" : "Hospital-ICU", 
+            "4222015" : "Hospital-Labor & Delivery", 
+            "4222017" : "Hospital-Med/Surg", 
+            "4222019" : "Hospital-Mental Health", 
+        };
+
+        var eDisposition334_24 = {
+            "4224003" : "Yes-Adult Trauma", 
+            "4224005" : "Yes-Cardiac Arrest", 
+            "4224007" : "Yes-Obstetrics", 
+            "4224009" : "Yes-Other", 
+            "4224011" : "Yes-Pediatric Trauma", 
+            "4224013" : "Yes-STEMI", 
+            "4224015" : "Yes-Stroke"
+        };
+
+        var eDisposition334_22 = 
+            {
+                "4226003" : "Contact 911 or see your Doctor if problem worsens", 
+                "4226005" : "Other Not Listed (Described in Narrative)", 
+                "4226007" : "Problem Specific Instructions Provided", 
+                "4226009" : "See Your Doctor or the Emergency Department immediately", 
+                "4226011" : "See Your Doctor or the Emergency Department in the next 24 hours", 
+                "4226013" : "See Your Doctor or the Emergency Department in the next 4 hours", 
+                "4226015" : "See Your Doctor within the next one week", 
+            };
+
+        /*
+          
+This pattern validates that certain elements are recorded, based on the Incident/Patient Disposition.
+Certain elements are recorded, based on eDisposition.12 Incident/Patient Disposition.
+If there is any data at all, this is invalid.
+    <!-- This rule fires if Disposition is "Canceled (Prior to Arrival at Scene)". Nothing is checked. -->
+
+    <!-- no_patient: No scene or Assist, No Patient, or Standby. -->
+    :eDisposition.12[. &lt;= 4212011 or . = (4212039, 4212041)]) then true() else false()"/>
+
+    <!-- no_treatment: No patient or No Resuscitation Attempted, No Treatment/Transport Required, or Transport of Body Parts or Organs only. -->
+
+    <sch:let name="no_treatment" value="if($no_patient or ancestor-or-self::nem:PatientCareReport/nem:eDisposition/nem:eDisposition.12[. = (4212013, 4212015, 4212021, 4212043)]) then true() else false()"/>
+
+    <!-- no_transport: No patient or Without Transport, No Treatment/Transport Required, Released, or Transferred. -->
+
+    <sch:let name="no_transport" value="if($no_patient or ancestor-or-self::nem:PatientCareReport/nem:eDisposition/nem:eDisposition.12[. = (4212015, 4212019, 4212021, 4212025, 4212027, 4212029, 4212031)]) then true() else false()"/>
+
+    <!-- Flag each of the following elements if it is empty, contingent upon a flag that was set based on the Disposition. -->
+
+    <sch:let name="eDisposition.17" value="if($no_transport or nem:eDisposition/nem:eDisposition.17 != '') then '' else key('nemSch_key_elements', 'eDisposition.17', $nemSch_elements)"/>
+
+    <sch:let name="eDisposition.20" value="if($no_transport or not(nem:eDisposition/nem:eDisposition.20 = '')) then '' else key('nemSch_key_elements', 'eDisposition.20', $nemSch_elements)"/>
+          
+  <sch:assert id="nemSch_consistency_eDisposition.12_all_present" role="[WARNING]" diagnostics="nemsisDiagnostic" test="not($eDisposition.17 or $eDisposition.20 or $ePatient.13 or $ePatient.15 or $eScene.09 or $eTimes.05 or $eTimes.06 or $eTimes.07 or $eTimes.09 or $eTimes.11 or $eTimes.12)">
+      Based on <sch:value-of select="key('nemSch_key_elements', 'eDisposition.12', $nemSch_elements)"/>, the following should be recorded:
+      <sch:value-of select="string-join(($eDisposition.17, $eDisposition.20, $ePatient.13, $ePatient.15, $eScene.09, $eTimes.05, $eTimes.06, $eTimes.07, $eTimes.09, $eTimes.11, $eTimes.12)[. != ''], ', ')"/>
+    </sch:assert>
+
+  </sch:rule>
+
+</sch:pattern><?DSDL_INCLUDE_END includes/pattern_consistency_eDisposition.12.xml?>
+  <?DSDL_INCLUDE_START includes/pattern_consistency_eDisposition.HospitalTeamActivationGroup.xml?><sch:pattern id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup">
+
+  <!-- This pattern validates that eDisposition.24 Destination Team Pre-Arrival Alert or Activation and eDisposition.25 Date/Time of Destination Prearrival Alert or Activation are both recorded when either one is recorded. -->
+
+  <sch:title>eDisposition.24 Destination Team Pre-Arrival Alert or Activation and eDisposition.25 Date/Time of Destination Prearrival Alert or Activation are both recorded when either one is recorded.</sch:title>
+
+  <sch:rule id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup_eDisposition.24" context="nem:eDisposition.HospitalTeamActivationGroup[nem:eDisposition.25 != '']">
+
+    <!-- This rule fires when eDisposition.25 Date/Time of Destination Prearrival Alert or Activation is recorded. -->
+
+    <sch:let name="nemsisElements" value="*"/>
+
+    <!-- Assert that eDisposition.24 Destination Team Pre-Arrival Alert or Activation is also recorded. -->
+
+    <sch:assert id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup_eDisposition.24_present" role="[WARNING]" diagnostics="nemsisDiagnostic" test="nem:eDisposition.24 != ''">
+      When <sch:value-of select="key('nemSch_key_elements', 'eDisposition.25', $nemSch_elements)"/> is recorded, <sch:value-of select="key('nemSch_key_elements', 'eDisposition.24', $nemSch_elements)"/> should also be recorded.
+    </sch:assert>
+
+  </sch:rule>
+
+  <sch:rule id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup_eDisposition.25" context="nem:eDisposition.HospitalTeamActivationGroup[not(nem:eDisposition.24 = ('', '4224001'))]">
+
+    <!-- This rule fires when eDisposition.25 Date/Time of Destination Prearrival Alert or Activation is not recorded and eDisposition.24 Destination Team Pre-Arrival Alert or Activation is recorded and is not "None". -->
+
+    <sch:let name="nemsisElements" value="*"/>
+
+    <!-- Assert that eDisposition.25 Date/Time of Destination Prearrival Alert or Activation is also recorded. -->
+
+    <sch:assert id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup_eDisposition.25_present" role="[WARNING]" diagnostics="nemsisDiagnostic" test="false()">
+      When <sch:value-of select="key('nemSch_key_elements', 'eDisposition.24', $nemSch_elements)"/> is recorded, <sch:value-of select="key('nemSch_key_elements', 'eDisposition.25', $nemSch_elements)"/> should also be recorded.
+    </sch:assert>
+
+  </sch:rule>
+
+</sch:pattern><?DSDL_INCLUDE_END includes/pattern_consistency_eDisposition.HospitalTeamActivationGroup.xml?>
+  <?DSDL_INCLUDE_START includes/pattern_consistency_eInjury.xml?><sch:pattern id="nemSch_consistency_eInjury">
+
+
+          
+         */    

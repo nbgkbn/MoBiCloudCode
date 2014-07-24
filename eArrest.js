@@ -16,10 +16,11 @@ var PN_FINDING_NOT_PRESENT_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801005\"/>";
 var eArrest = new Object;
 var E11 = new Object;
 var _retArray = [];
+
 var XMLString = ""
 var seteArrest = function (businessObject) {
 
-    var isNotApplicableFlag = true;  //once I have real data, set to False
+    var isApplicable = false;  //once I have real data, set to TRUE
     //Value Rules
     //////////////////////////////////////////////
     if (getValue(businessObject.elements, "eArrest.05") == null) {
@@ -36,179 +37,363 @@ var seteArrest = function (businessObject) {
     //////////////////////////////////////////////
 
     /////////////eArrest.01
+    var bArrest = false;
     _val = getValue(businessObject.elements, "eArrest.01");
     if (_val == null)
     {    
+        isApplicable= false;  //set Values to Not Applicable
         eArrest["eArrest.01"] = V3NOT_RECORDED
         eArrest["CardiacArrest"] = "NOT RECORDED";
         v2Array.push({ section: "E11", element: "E11_01", val: v2NOT_RECORDED });
     }
     else
     {
-        isNotApplicableFlag= true;
+        isApplicable= true;  //We have an eArrest 
+        if(_val[0] != "3001001")
+        {
+            bArrest =true;            
+        }
+        else
+        {  
+            bArrest=false;            
+        };
         eArrest["eArrest.01"] = _val[0];
         eArrest["CardiacArrest"] = setCodeText("eArrest.01", _val);
         v2Array.push({ section: "E11", element: "E11_01", val: setV2("eArrest.01", _val) });
     };
 
+
+    //When eArrest.01 Cardiac Arrest is "Yes...", other elements in the eArrest section are recorded, 
+    //When eArrest.01 Cardiac Arrest is not "Yes...", other elements in the eArrest section are not recorded
+
     /////////////eArrest.02
-    _val = getValue(businessObject.elements, "eArrest.02");
-    if (_val == null) 
+    _val = getValue(businessObject.elements, "eArrest.02");    
+        
+    if(isApplicable==true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        eArrest["eArrest.01"] = V3NOT_RECORDED
-        eArrest["CardiacArrest"] = "NOT RECORDED";   
+        if(bArrest == true)  //Yes value for eArrest.01
+        {
+            if (_val == null) 
+            {
+                eArrest["eArrest.01"] = V3NOT_RECORDED
+                eArrest["CardiacArrest"] = "NOT RECORDED";   
+                v2Array.push({ section: "E11", element: "E11_02", val: v2NOT_RECORDED });
+            }
+            else
+            {
+                eArrest["eArrest.02"] = _val[0];
+                eArrest["CardiacArrestEtiology"] = setCodeText("eArrest.02", _val[0]);
+                v2Array.push({ section: "E11", element: "E11_02", val: setV2("eArrest.02", _val) });
+            }
+        }                    
     }
     else 
     {
-        isNotApplicableFlag= true;
-        eArrest["eArrest.02"] = _val[0];
-        eArrest["CardiacArrestEtiology"] = setCodeText("eArrest.02", _val[0]);
-        v2Array.push({ section: "E11", element: "E11_02", val: setV2("eArrest.02", _val) });
-        
+        eArrest["eArrest.02"] = NIL_V3NOT_APPLICABLE;
+        eArrest["CardiacArrestEtiology"] = NOT_APPLICABLE;
+        v2Array.push({ section: "E11", element: "E11_02", val: v2NOT_APPLICABLE });
     };
+
 
 
     /////////////eArrest.03
+    //Resuscitation Attempted By EMS does not contain "Attempted/Initiated..." and "Not Attempted..." in the same record
+    var bResuscitationAttempted = false;
     _val = getValue(businessObject.elements, "eArrest.03");
-    if (_val == null) 
+    if(isApplicable!=true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        eArrest["eArrest.03"] = V3NOT_RECORDED;
-        eArrest["ResuscitationAttemptedByEMS"] = "NOT RECORDED";
-        v2Array.push({ section: "E11", element: "E11_02", val: v2NOT_RECORDED });
-    }
-    else
-    {
-        isNotApplicableFlag= true;
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];        
-        for (var i = 0; i < _val.length; i++) 
+        if (bArrest == true)  //Yes value for eArrest.01
         {
-            arr1.push(_val[i]);
-            arr2.push(setV2("eArrest.03", _val[i]));
-            arr3.push(setCodeText("eArrest.03", _val[i]));            
+            if (_val == null) 
+            {
+                eArrest["eArrest.03"] = V3NOT_RECORDED;
+                eArrest["ResuscitationAttemptedByEMS"] = "NOT RECORDED";
+                v2Array.push({ section: "E11", element: "E11_02", val: v2NOT_RECORDED });
+            }
+            else
+            {
+                if(bArrest == true)
+                {
+                    var arrAttempt = ["3003001", "3003003", "3003005"];
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];        
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        //Find Attempted Resuscitation
+                        if(arrAttempt.indexOf(_val[i]) != -1)
+                        {
+                            var bResuscitationAttempted = true;
+                        };
+                        arr1.push(_val[i]);
+                        arr2.push(setV2("eArrest.03", _val[i]));
+                        arr3.push(setCodeText("eArrest.03", _val[i]));            
+                    }
+                    eArrest["eArrest.03"] = arr1.slice(0);
+                    eArrest["ResuscitationAttemptedByEMS"] = arr3.slice(0);
+                    v2Array.push({ section: "E11", element: "E11_03", val:arr3.slice(0) });        
+                }
+            }
         }
-        eArrest["eArrest.03"] = arr1.slice(0);
-        eArrest["ResuscitationAttemptedByEMS"] = arr3.slice(0);
-        v2Array.push({ section: "E11", element: "E11_03", val:arr3.slice(0) });        
-    };
-
-    /////////////eArrest.04
-    _val = getValue(businessObject.elements, "eArrest.04");
-    if (_val == null) 
-    {
-        eArrest["eArrest.04"] = V3NOT_RECORDED;
-        eArrest["ArrestWitnessedBy"] = "NOT RECORDED";
-        v2Array.push({ section: "E11", element: "E11_04", val: v2NOT_RECORDED });        
-    }
-    else
-    {
-        isNotApplicableFlag= true;
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];        
-        for (var i = 0; i < _val.length; i++) 
+        else
         {
-            arr1.push(_val[i]);
-            arr2.push(setV2("eArrest.04", _val[i]));
-            arr3.push(setCodeText("eArrest.04", _val[i]));            
-        };
-    eArrest["eArrest.04"] = arr1.slice(0);        
-    eArrest["ArrestWitnessedBy"] = arr3.slice(0);        
-    v2Array.push({ section: "E11", element: "E11_04", val: arr2.slice(0) });
-    };
+            //Check for an Attempt a list of No Attempts
+            var arrNotAttempt = ["3003007", "3003009", "3003011"]; 
+            if(bResuscitationAttempted == true)
+            {
+                if(arrNotAttempt.indexOf(_val[i]) != -1)
+                {
+                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.03", Description: "Conflicting values:  Attempted/Not Attempted" })
 
-    /////////////eArrest.05
-    _val = getValue(businessObject.elements, "eArrest.05");
-    if (_val == null)
-    {        
-        eArrest["eArrest.05"] = V3NOT_RECORDED;
-        eArrest["CPRCareProvidedPriortoEMSArrival"] = "NOT RECORDED";
-    }
-    else 
-    {
-        isNotApplicableFlag= true;
-        var arr1 = [];       
-        var arr3 = [];        
-        for (var i = 0; i < _val.length; i++) 
-        {
-            arr1.push(_val[i]);            
-            arr3.push(setCodeText("eArrest.04", _val[i]));            
+                }
+            };
+            eArrest["eArrest.03"] = NIL_V3NOT_APPLICABLE;
+            eArrest["ResuscitationAttemptedByEMS"] = NOT_APPLICABLE;
+            v2Array.push({ section: "E11", element: "E11_03", val:v2NOT_APPLICABLE });     
         };
-        eArrest["eArrest.05"] = arr1.slice(0);
-        eArrest["CPRCareProvidedPriortoEMSArrival"]  = arr3.slice(0);
-    };
+
+        /////////////eArrest.04
+        var bArrestWitnessedBy = false;
+        _val = getValue(businessObject.elements, "eArrest.04");
+        if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
+        {
+            if (isArrest == true)  //Yes value for eArrest.01
+            {
+                if (_val == null) 
+                {
+                    eArrest["eArrest.04"] = V3NOT_RECORDED;
+                    eArrest["ArrestWitnessedBy"] = "NOT RECORDED";
+                    v2Array.push({ section: "E11", element: "E11_04", val: v2NOT_RECORDED });        
+                }
+                else
+                {
+                    var arrAttempt = ["3004003", "3004005", "3004007"];
+                    if(bResuscitationAttempted == true)
+                    {
+                        if(arrNotAttempt.indexOf(_val[i]) != -1)
+                        {
+                            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.03", Description: "Conflicting values:  Attempted/Not Attempted" })
+                        }
+                    };
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];        
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        arr1.push(_val[i]);
+                        arr2.push(setV2("eArrest.04", _val[i]));
+                        arr3.push(setCodeText("eArrest.04", _val[i]));            
+                    };
+                    eArrest["eArrest.04"] = arr1.slice(0);        
+                    eArrest["ArrestWitnessedBy"] = arr3.slice(0);        
+                    v2Array.push({ section: "E11", element: "E11_04", val: arr2.slice(0) });
+                }
+            }
+        }
+        else
+        {
+            eArrest["eArrest.04"] = NIL_V3NOT_APPLICABLE;
+            eArrest["ArrestWitnessedBy"] = NOT_APPLICABLE;
+            v2Array.push({ section: "E11", element: "E11_04", val: v2NOT_APPLICABLE });        
+
+        };
+        /////////////eArrest.05
+        var CPRProvide=false; //can only be True when isArrest is True
+        _val = getValue(businessObject.elements, "eArrest.05");
+        if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
+        {
+            if (isArrest == true)  //Yes value for eArrest.01
+            {
+                if (_val == null) {
+                    eArrest["eArrest.05"] = V3NOT_RECORDED;
+                    eArrest["CPRCareProvidedPriortoEMSArrival"] = "NOT RECORDED";
+                }
+                else 
+                {
+                    if(_val[0]=="9923003")
+                    {
+                        CPRProvide=true;
+                    }
+                    eArrest["eArrest.05"] = _val[0];
+                    eArrest["CPRCareProvidedPriortoEMSArrival"]  = _val[0];
+                }   
+            }
+        }
+        else
+        {
+            eArrest["eArrest.05"] = NIL_V3NOT_APPLICABLE;
+            eArrest["CPRCareProvidedPriortoEMSArrival"]  = NOT_APPLICABLE;
+        };
 
     /////////////eArrest.06
     _val = getValue(businessObject.elements, "eArrest.06");
-    
-    if (_val == null)
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        eArrest["eArrest.06"] = null;
-        eArrest["WhoProvidedCPRPriortoEMSArrival"] = "NOT RECORDED";        
-    }
-    else
-    {
-        isNotApplicableFlag= true;
-        var arr1 = [];       
-        var arr3 = [];        
-        for (var i = 0; i < _val.length; i++) 
+        if (CPRProvide == true)  //Yes value for eArrest.01
         {
-            arr1.push(_val[i]);            
-            arr3.push(setCodeText("eArrest.06", _val[i]));            
-        };
-        dAgency["eArrest.06"] = arr1.slice(0);
-        eArrest["WhoProvidedCPRPriortoEMSArrival"] =arr3.slice(0)    
+            if (_val == null) {
+                eArrest["eArrest.06"] = null;
+                eArrest["WhoProvidedCPRPriortoEMSArrival"] = null;                
+            }
+            else
+            {             
+                var arr1 = [];       
+                var arr3 = [];        
+                for (var i = 0; i < _val.length; i++) 
+                {
+                    arr1.push(_val[i]);            
+                    arr3.push(setCodeText("eArrest.06", _val[i]));            
+                };
+                dAgency["eArrest.06"] = arr1.slice(0);
+                eArrest["WhoProvidedCPRPriortoEMSArrival"] =arr3.slice(0)    
+            }
+        }
+    }
+    else// Else included as rule documentation,... and I may have use for it later
+    { 
+        eArrest["eArrest.06"] = null;
+        eArrest["WhoProvidedCPRPriortoEMSArrival"] = null;                
     };
 
 
-    /////////////eArrest.07
-    _val = getValue(businessObject.elements, "eArrest.07");
-    if (_val == null)
+        /////////////eArrest.07
+    var AEDProvided = false;
+    _val = getValue(businessObject.elements, "eArrest.07");        
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        eArrest["eArrest.07"] = V3NOT_RECORDED;
-        eArrest["WhoProvidedCPRPriortoEMSArrival"] = V3NOT_RECORDED;
+        if (isArrest == true)  //Yes value for eArrest.01
+        {
+            if (_val == null) 
+            {
+                eArrest["eArrest.07"] = V3NOT_RECORDED;
+                eArrest["WhoProvidedCPRPriortoEMSArrival"] = V3NOT_RECORDED;
+            }
+            else
+            {    
+                if(_val[0] != "3007001")
+                {
+                    AEDProvided == true;
+                };
+                eArrest["eArrest.07"] = _val[0];
+                eArrest["WhoProvidedCPRPriortoEMSArrival"] = setCodeText("eArrest.07", _val[0]);
+            }
+        }
     }
-    else
-    {
-        isNotApplicableFlag= true;
-        eArrest["eArrest.07"] = _val[0];
-        eArrest["WhoProvidedCPRPriortoEMSArrival"] = setCodeText("eArrest.07", _val[0]);
+    else 
+    { //set to NOT APPLICABLE
+        eArrest["eArrest.07"] = NIL_V3NOT_APPLICABLE;
+        eArrest["WhoProvidedCPRPriortoEMSArrival"] = NOT_APPLICABLE;
     };
 
     /////////////eArrest.08
     _val = getValue(businessObject.elements, "eArrest.08");
-    if (_val == null)
+        
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        eArrest["eArrest.08"] = null;
-        eArrest["WhoUsedAEDPriortoEMSArrival"] = null;
+        if (AEDProvided == true)  //
+        {
+            if (_val == null) 
+            {
+                eArrest["eArrest.08"] = null;
+                eArrest["WhoUsedAEDPriortoEMSArrival"] = null;
+            }
+            else
+            {
+                eArrest["eArrest.08"] = _val[0];
+                eArrest["WhoUsedAEDPriortoEMSArrival"] = setCodeText("eArrest.08", _val[0]);
+            }
+        }
     }
     else
-    {
-        isNotApplicableFlag= true;
-        eArrest["eArrest.08"] = _val[0];
-        eArrest["WhoUsedAEDPriortoEMSArrival"] = setCodeText("eArrest.08", _val[0]);
+    {   
+        eArrest["eArrest.08"] = null;
+        eArrest["WhoUsedAEDPriortoEMSArrival"] = null;
     };
+
+    //eArrest.03 Resuscitation Attempted By EMS should contain "Initiated Chest Compressions" 
+        //when eArrest.09 Type of CPR Provided contains "Compressions..." and should contain "Attempted Ventilation" 
+    //when eArrest.09 Type of CPR Provided contains "Ventilation...".</sch:title>
+    // This rule fires when there are non-empty instances of eArrest.09 within eArrest. -->  
+     //:eArrest.03 = '3003005' or not(nem:eArrest.09 = ('3009001', '3009003', '3009005', '3009007', 
+    //'3009009', '3009011'))">
+   
+
+    //Assert that eArrest.03 Resuscitation Attempted by EMS should contain "Attempted Ventilation" when eArrest.09 
+    //Type of CPR Provided contains "Ventilation...".  -->
+
+        //eArrest.03 = '3003003' or not(nem:eArrest.09 = ('3009013', '3009015', '3009017', '3009019'))">
+        //should contain "Attempted Ventilation" when .
+  </sch:assert>
+
 
     /////////////eArrest.09
     _val = getValue(businessObject.elements, "eArrest.09");
-    if (_val == null)
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        eArrest["eArrest.09"] = null;
-        eArrest["TypeofCPRProvided"] = null;
+        if (CPRProvide == true)  //Yes value for eArrest.01
+        {
+            if (_val == null) 
+            {
+                eArrest["eArrest.09"] = null;
+                eArrest["TypeofCPRProvided"] = null;
+            }
+            else
+            {        
+        
+                var arr1 = [];
+                var arr3 = [];
+                for (var i = 0; i < _val.length; i++)
+                {
+                    arr1.push(_val[i]);
+                    arr3.push(setCodeText("eArrest.09", _val[i]));
+                };
+
+                bError = false;
+                //Check for Compression 3003005, if eArrest.03 values = Compression
+                arrCompression = ["3009001", "3009003", "3009005", "3009007", "3009009", "3009011"]; //Compression values
+                if(eArrest["eArrest.03"] = "3003005") //Compression
+                {
+                    if(arrCompression.indexOf(_val[i]) != -1)
+                    {
+                        bError=true;
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain "/"Initiated Chest Compressions"/"" })
+                    }
+                };
+
+                //Check for Compression 3003005, if eArrest.03 values = Ventilation
+                arrVent = ["3009013", "3009015", "3009017", "3009019"]; //Ventilation values
+                if(eArrest["eArrest.03"] = "3003003") //Ventilation
+                {
+                    if(arrVent.indexOf(_val[i]) != -1)
+                    {
+                        bError=true;
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain "/"Attempted Ventilation"/"" })
+                    }
+                };
+
+                //Check for VENTILATION 3003005, if eArrest.03 values = Compression
+                arrCompression = ["3009001", "3009003", "3009005", "3009007", "3009009", "3009011"]; //Compression values
+                if(eArrest["eArrest.03"] = "3003005") //Compression
+                {
+                    if(arrNotAttempt.indexOf(_val[i]) != -1)
+                    {
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain "/"Initiated Chest Compressions"/"" })
+                    }
+                }
+
+
+                if(bError == true)
+                {
+                    dAgency["eArrest.09"] = arr1.slice(0);
+                    dAgency["TypeofCPRProvided"] = arr1.slice(0);   
+                }
+            }
+        }
     }
     else
-    {        
-        isNotApplicableFlag= true;
-        var arr1 = [];
-        var arr3 = [];
-        for (var i = 0; i < _val.length; i++)
-        {
-            arr1.push(_val[i]);
-            arr3.push(setCodeText("eArrest.09", _val[i]));
-        }
-        dAgency["eArrest.09"] = arr1.slice(0);
-        dAgency["TypeofCPRProvided"] = arr1.slice(0);   
+    {
+        eArrest["eArrest.09"] = NIL_V3NOT_APPLICABLE;
+        dAgency["TypeofCPRProvided"] = NOT_APPLICABLE   
     };
 
     /////////////eArrest.10
@@ -1096,3 +1281,42 @@ function setCodeText(NEMSISElementNumber, valueArray)
     return _return;
 
 };
+
+        /*
+         This pattern validates consistency between the presence of cardiac arrest and the presence  of elements that are only collected in cardiac arrest cases. The elements in the eArrest section should be recorded when (and only when) eArrest.01 Cardiac Arrest is "Yes...". 
+
+When eArrest.01 Cardiac Arrest is "Yes...", other elements in the eArrest section are recorded, and when eArrest.01 Cardiac Arrest is not "Yes...", other elements in the eArrest section are not recorded.
+
+nem:eArrest.01 = ('3001003', '3001005')]">
+This rule fires when eArrest.01 Cardiac Arrest is "Yes...".   Flag each of the following elements if it is empty.
+eArrest.02" value="if(nem:eArrest.02 != '') then '' else key('nemSch_key_elements', 'eArrest.02', $nemSch_elements)"/>
+eArrest.03" value="if(not(nem:eArrest.03 = '')) then '' else key('nemSch_key_elements', 'eArrest.03', $nemSch_elements)"/>
+"eArrest.04" value="if(not(nem:eArrest.04 = '')) then '' else key('nemSch_key_elements', 'eArrest.04', $nemSch_elements)"/>
+
+Do not flag eArrest.05 CPR Care Provided Prior to EMS Arrival or eArrest.07 AED Use Prior to EMS Arrival if Cardiac Arrest is not "Yes, Prior to EMS Arrival". 
+eArrest.05" value="if(nem:eArrest.05 != '' or nem:eArrest.01 != '3001003') then '' else key('nemSch_key_elements', 'eArrest.05', $nemSch_elements)"/>
+eArrest.07" value="if(nem:eArrest.07 != '' or nem:eArrest.01 != '3001003') then '' else key('nemSch_key_elements', 'eArrest.07', $nemSch_elements)"/>
+ When <sch:value-of select="key('nemSch_key_elements', 'eArrest.01', $nemSch_elements)"/> is "Yes", the following information related to cardiac arrest and resuscitation should be recorded:
+      <sch:value-of select="string-join(($eArrest.02, $eArrest.03, $eArrest.04, $eArrest.05, $eArrest.07)[. != ''], ', ')"/>
+  </sch:rule>
+
+  <sch:rule id="nemSch_consistency_eArrest.01" context="nem:eArrest[some $element in .//*[local-name() != 'eArrest.01'] satisfies normalize-space($element) != '']">
+
+ This rule fires when eArrest.01 Cardiac Arrest is not "Yes..." and the eArrest section has a value recorded in any element other than eArrest.01. 
+ Information related to cardiac arrest and resuscitation should be recorded only when <sch:value-of select="key('nemSch_key_elements', 'eArrest.01', $nemSch_elements)"/> is "Yes".
+This pattern validates consistency in eArrest.03 Resuscitation Attempted by EMS. 
+ eArrest.03 Resuscitation Attempted By EMS does not contain "Attempted/Initiated..." and "Not Attempted..." in the same record.
+This rule fires when there are non-empty instances of eArrest.03 within eArrest. 
+Assert that eArrest.03 Resuscitation Attempted by EMS should not contain both "Attempted/Initiated..." and "Not Attempted..." in the same record.  
+test="not(nem:eArrest.03 = ('3003001', '3003003', '3003005') and nem:eArrest.03 = ('3003007', '3003009', '3003011'))">
+
+This pattern validates consistency between eArrest.03 Resuscitation Attempted by EMS and eArrest.09 Type of CPR Provided. 
+
+eArrest.03 Resuscitation Attempted By EMS should contain "Initiated Chest Compressions" when eArrest.09 Type of CPR Provided contains "Compressions..." and should contain "Attempted Ventilation" when eArrest.09 Type of CPR Provided contains "Ventilation..."
+ Assert that eArrest.03 Resuscitation Attempted by EMS should contain "Initiated Chest Compressions" when eArrest.09 Type of CPR Provided contains "Compressions...".  -->
+test="nem:eArrest.03 = '3003005' or not(nem:eArrest.09 = ('3009001', '3009003', '3009005', '3009007', '3009009', '3009011'))"
+Assert that eArrest.03 Resuscitation Attempted by EMS should contain "Attempted Ventilation" when eArrest.09 Type of CPR Provided contains "Ventilation...".  
+
+test="nem:eArrest.03 = '3003003' or not(nem:eArrest.09 = ('3009013', '3009015', '3009017', '3009019'))"
+
+         */

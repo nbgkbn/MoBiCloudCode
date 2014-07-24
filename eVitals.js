@@ -1371,3 +1371,17 @@ eVitals31Map = {
     "3331003":"3310",
     "3331005":"3315"};
 
+/*  <sch:rule id="nemSch_consistency_eVitals.VitalGroup" context="nem:eVitals.VitalGroup[some $element in .//* satisfies normalize-space($element) != '']">
+
+    <!-- Flag each of the following elements if it is empty. -->
+
+    <sch:let name="eVitals.01" value="if(nem:eVitals.01 != '' or nem:eVitals.02 = '9923003') then '' else key('nemSch_key_elements', 'eVitals.01', $nemSch_elements)"/>
+
+    <sch:let name="nemsisElements" value="(nem:eVitals.02, (nem:eVitals.01)[. = ''])"/>
+
+    <!-- Assert that none of the elements above should be flagged. If the assert fails, list the flagged elements.  -->
+
+    <sch:assert id="nemSch_consistency_eVitals.VitalGroup_all" role="[WARNING]" diagnostics="nemsisDiagnostic" test="not($eVitals.01)">
+      When a set of vital signs is obtained, the following should be recorded:
+      <sch:value-of select="string-join(($eVitals.01)[. != ''], ', ')"/>
+*/

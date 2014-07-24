@@ -18,6 +18,7 @@ var seteResponseGroup = function (businessObject) {
     var isNotApplicableFlag = true;  //once I have real data, set to False    
 
     //////////////////////eResponse.01
+    //<!-- This pattern verifies that the EMS Agency Number in eResponse.01 matches the EMS Agency Number in dAgency.02. -->
     _val = getValue(businessObject.elements, "eResponse.01");
     if (_val == null)
     {
@@ -143,6 +144,10 @@ var seteResponseGroup = function (businessObject) {
 
     alert("A dispatch delay is any time delay that occurs from the time of PSAP call (eTimes.01) to the time the unit is notified by dispatch (eTimes.03).")
     //////////////////////eResponse.08
+    //When a delay for a particular phase of a response is "None/No Delay", no other 
+    //delays should be recorded for that phase.
+    //eResponse.08[. = '2208013'
+
     _val = getValue(businessObject.elements, "eResponse.08");
     if (_val == null)
     {
@@ -165,7 +170,11 @@ var seteResponseGroup = function (businessObject) {
         v2Array.push({ section: "E02", element: "E02_05", val: arr2.slice(0) });
         eResponse["eResponse.08"] = arr1.slice(0);
 
-    //////////////////////eResponse.09
+        //////////////////////eResponse.09
+        //context="nem:eResponse.09[. = '2209011']">
+        //This rule fires when there is an instance of eResponse.09 Type of Response Delay 
+        //set to "None/No Delay".
+
     alert("A response delay is any time delay that occurs from the time the unit is notified by dispatch (eTimes.03) to the time the unit arrived on scene (eTimes.06).")
     _val = getValue(businessObject.elements, "eResponse.09");
     if (_val == null)
@@ -193,6 +202,10 @@ var seteResponseGroup = function (businessObject) {
 
     alert("A scene delay is any time delay that occurs from the time the unit arrived on scene (eTimes.06) to the time the unit left the scene (eTimes.09).")
     //////////////////////eResponse.10
+    //eResponse.10" context="nem:eResponse.10[. = '2210017']">
+    //This rule fires when there is an instance of eResponse.10 Type of Scene Delay set to 
+    //"None/No Delay". -->
+
     _val = getValue(businessObject.elements, "eResponse.10");
     if (_val == null)
     {
@@ -217,6 +230,10 @@ var seteResponseGroup = function (businessObject) {
     };
 
     //////////////////////eResponse.11
+    //nem:eResponse.11[. = '2211011']">
+    //This rule fires when there is an instance of eResponse.11 Type of Transport Delay set to 
+    //"None/No Delay".
+
     alert("A transport delay is any time delay that occurs from the time the unit left the scene (eTimes.09) to the time the patient arrived at the destination (eTimes.10).")
     _val = getValue(businessObject.elements, "eResponse.11");
     if (_val == null)
@@ -242,6 +259,9 @@ var seteResponseGroup = function (businessObject) {
     };
 
     //////////////////////eResponse.12
+    
+        //nem:eResponse.12[. = '2212015']">
+    //This rule fires when there is an instance of eResponse.12 Type of Turn-Around Delay set to "None/No Delay". -->
     alert("If a patient is being transported by the unit, turn-around delay is any time delay that occurs from the time the patient arrived at the destination (eTimes.10) until the time the unit is back in service (eTimes.13) or unit back at the home location (eTimes15) [whichever is the greater of the two times]");
     //If no patient is being transported by the unit, turn-around delay is any time delay that occurs from the time the unit arrived on scene (eTimes.06) until the unit is back in service (eTimes.13) or the unit back at the home location (eTimes.15) [whichever is the greater of the two times].")
     
@@ -498,8 +518,6 @@ var seteResponseGroup = function (businessObject) {
         isNotApplicableFlag = false;
     };
 
-   
-
 
 };
 
@@ -700,4 +718,22 @@ var eResponse23 = {
     "2223007": "385",
     "2223001": "390",
     "2223005": "395"
-}
+};
+
+    /*
+     
+When a delay for a particular phase of a response is "None/No Delay", no other delays should be recorded for that phase.</sch:title>
+"None/No Delay" should be the only value recorded for the delay. 
+nem:eResponse.08[. = '2208013']"
+This rule fires when there is an instance of eResponse.08 Type of Dispatch Delay set to "None/No Delay". 
+nem:eResponse.09[. = '2209011']"
+This rule fires when there is an instance of eResponse.09 Type of Response Delay set to "None/No Delay". 
+nem:eResponse.10[. = '2210017']"
+This rule fires when there is an instance of eResponse.10 Type of Scene Delay set to "None/No Delay".
+nem:eResponse.11[. = '2211011']">
+This rule fires when there is an instance of eResponse.11 Type of Transport Delay set to "None/No Delay". 
+nem:eResponse.12[. = '2212015']"
+
+This rule fires when there is an instance of eResponse.12 Type of Turn-Around Delay set to "None/No Delay". -
+
+     */

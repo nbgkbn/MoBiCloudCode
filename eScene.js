@@ -659,3 +659,80 @@ var eScene09 = {
     "Y92.538":"1175",
 
 }
+/*
+ * 
+     <sch:let name="eScene.09" value="if($no_scene or nem:eScene/nem:eScene.09 != '') then '' else key('nemSch_key_elements', 'eScene.09', $nemSch_elements)"/>
+       <!-- This pattern validates consistency between eScene.06 Number of Patients at Scene and eScene.07 Mass Casualty Incident. -->
+
+  <sch:title>eScene.06 Number of Patients at Scene should be "Multiple" when eScene.07 Mass Casualty Incident is "Yes".</sch:title>
+
+  <sch:rule id="nemSch_consistency_eScene.07_mci" context="nem:eScene.07[. = '9923003']">
+
+    <!-- This rule fires when eScene.07 Mass Casualty Incident is "Yes". -->
+
+    <sch:let name="nemsisElements" value="(../nem:eScene.06, .)"/>
+
+    <!-- Assert that eScene.06 Number of Patients at Scene should be "Multiple".  -->
+
+    <sch:assert id="nemSch_consistency_eScene.06_multiple" role="[WARNING]" diagnostics="nemsisDiagnostic" test="../nem:eScene.06 = '2707001'">
+      When <sch:value-of select="key('nemSch_key_elements', 'eScene.07', $nemSch_elements)"/> is "Yes", <sch:value-of select="key('nemSch_key_elements', 'eScene.06', $nemSch_elements)"/> should be "Multiple".
+    </sch:assert>
+
+  </sch:rule>
+
+</sch:pattern><?DSDL_INCLUDE_END includes/pattern_consistency_eScene.xml?>
+  <?DSDL_INCLUDE_START includes/pattern_consistency_eSituation.xml?><sch:pattern id="nemSch_consistency_eSituation">
+
+    <!-- This pattern validates consistency between eScene.06 Number of Patients at Scene and eScene.07 Mass Casualty Incident. -->
+
+  <sch:title>eScene.06 Number of Patients at Scene should be "Multiple" when eScene.07 Mass Casualty Incident is "Yes".</sch:title>
+
+  <sch:rule id="nemSch_consistency_eScene.07_mci" context="nem:eScene.07[. = '9923003']">
+
+    <!-- This rule fires when eScene.07 Mass Casualty Incident is "Yes". -->
+
+    <sch:let name="nemsisElements" value="(../nem:eScene.06, .)"/>
+
+    <!-- Assert that eScene.06 Number of Patients at Scene should be "Multiple".  -->
+
+    <sch:assert id="nemSch_consistency_eScene.06_multiple" role="[WARNING]" diagnostics="nemsisDiagnostic" test="../nem:eScene.06 = '2707001'">
+      When <sch:value-of select="key('nemSch_key_elements', 'eScene.07', $nemSch_elements)"/> is "Yes", <sch:value-of select="key('nemSch_key_elements', 'eScene.06', $nemSch_elements)"/> should be "Multiple".
+    </sch:assert>
+
+  </sch:rule>
+
+</sch:pattern><?DSDL_INCLUDE_END includes/pattern_consistency_eScene.xml?>
+  <?DSDL_INCLUDE_START includes/pattern_consistency_eSituation.xml?><sch:pattern id="nemSch_consistency_eSituation">
+
+  <!-- This pattern validates consistency within elements in eSituation. -->
+
+  <sch:title>When a Primary Symptom or Impression is empty, Other Symptoms or Impressions should be empty.</sch:title>
+
+  <sch:rule id="nemSch_consistency_eSituation.09" context="nem:eSituation.09[. = '']">
+
+    <!-- This rule fires when eSituation.09 Primary Symptom is empty. -->
+
+    <sch:let name="nemsisElements" value="(., ../nem:eSituation.10)"/>
+
+    <!-- Assert that there should be no non-empty instances of eSituation.10 Other Associated Symptoms.  -->
+
+    <sch:assert id="nemSch_consistency_eSituation.09_eSituation.10" role="[WARNING]" diagnostics="nemsisDiagnostic" test="not(../nem:eSituation.10 != '')">
+      When <sch:value-of select="key('nemSch_key_elements', 'eSituation.09', $nemSch_elements)"/> is empty, <sch:value-of select="key('nemSch_key_elements', 'eSituation.10', $nemSch_elements)"/> should be not be recorded.
+    </sch:assert>
+
+  </sch:rule>
+
+  <sch:rule id="nemSch_consistency_eSituation.11" context="nem:eSituation.11[. = '']">
+
+    <!-- This rule fires when eSituation.11 Provider's Primary Impression is empty. -->
+
+    <sch:let name="nemsisElements" value="(., ../nem:eSituation.12)"/>
+
+    <!-- Assert that there should be no non-empty instances of eSituation.12 Proviers's Secondary Impressions.  -->
+
+    <sch:assert id="nemSch_consistency_eSituation.11_eSituation.12" role="[WARNING]" diagnostics="nemsisDiagnostic" test="not(../nem:eSituation.12 != '')">
+      When <sch:value-of select="key('nemSch_key_elements', 'eSituation.11', $nemSch_elements)"/> is empty, <sch:value-of select="key('nemSch_key_elements', 'eSituation.12', $nemSch_elements)"/> should be not be recorded.
+
+
+
+     */

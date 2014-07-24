@@ -776,4 +776,18 @@ var eSituation10 = {
     "R63.0":"1570",
     "R68.2":"1570",
     "R11.0":"1570",
-}
+};
+/*
+
+  <!-- This pattern validates consistency between the presence of possible injury and the 
+       presence of elements that are only collected in possible injury cases. The elements in 
+       the eInjury section should only be recorded when (and only when) eSituation.02 Possible 
+       Injury is "Yes". -->
+
+  <sch:title>When eSituation.02 Possible Injury is "Yes", elements in the eInjury section are recorded, and when eSituation.02 Possible Injury is not "Yes", elements in the eInjury section are not recorded.</sch:title>
+
+  <sch:rule id="nemSch_consistency_eInjury_all" context="nem:eInjury[../nem:eSituation/nem:eSituation.02 = '9922005']">
+
+    <!-- This rule fires when eSituation.02 Possible Injury is "Yes". -->
+
+ */

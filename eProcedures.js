@@ -170,7 +170,7 @@ var seteProcedures = function (businessObject)
                 arr3.push(setCodeText("eProcedures.07", _val[i]));               
             };
               
-        ProcedureGroup["eProcedures.07"] =  arr1.slice(0);
+            ProcedureGroup["eProcedures.07"] =  arr1.slice(0);
         ProcedureGroup["ProcedureComplication"] =  arr3.slice(0);
         v2Array.push({ section: "E06", element: "E06_12", val: arr2.slice(0) });
 
@@ -427,3 +427,16 @@ var eProcedures13 = {
     "3913049": "4725",
     "3913065": "4730"
 }
+
+    /*    <sch:let name="eProcedures.01" value="if(nem:eProcedures.01 != '' or nem:eProcedures.02 = '9923003' or nem:eProcedures.03/@PN) then '' else key('nemSch_key_elements', 'eProcedures.01', $nemSch_elements)"/>
+
+    <sch:let name="eProcedures.03" value="if(nem:eProcedures.03 != '') then '' else key('nemSch_key_elements', 'eProcedures.03', $nemSch_elements)"/>
+
+    <sch:let name="nemsisElements" value="(nem:eProcedures.02, nem:eProcedures.03, (nem:eProcedures.01)[. = ''])"/>
+
+    <!-- Assert that none of the elements above should be flagged. If the assert fails, list the flagged elements.  -->
+
+    <sch:assert id="nemSch_consistency_eProcedures.ProcedureGroup_all" role="[WARNING]" diagnostics="nemsisDiagnostic" test="not($eProcedures.01 or $eProcedures.03)">
+      When a procedure is performed, the following should be recorded:
+      <sch:value-of select="string-join(($eProcedures.01, $eProcedures.03)[. != ''], ', ')"/>
+*/

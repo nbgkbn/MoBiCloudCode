@@ -20,8 +20,7 @@ var OLAPArray = [];
 _retArray.push("<dAgency>" + '\n');
 OLAPArray.push("<dAgency>" + '\n');
 
-var seteTimes = function (businessObject) 
-{
+var seteTimes = function (businessObject) {
     if(typeof businessObject == undefined)
     {
         SetNotApplicable();
@@ -71,7 +70,7 @@ var seteTimes = function (businessObject)
         _val = getValue(businessObject.elements, "dTimes.03");
         if (_val == null)
         {
-            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dTimes.03", Description: "Unit Notified by Dispatch Date/Time Mandatory value. " })            
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "dTimes.03", Description: "Unit Notified by Dispatch Date/Time Mandatory value. " })
             eTimes["dTimes.03"] = null;
             eTimes["UnitNotifiedbyDispatchDateTime"] = null;
             v2Array.push({ section: "E05", element: "E05_04", val: null });
@@ -347,3 +346,15 @@ var getValue = function (payload, valueObject) {
     return _retVal;
 };
 
+/*   <sch:let name="eTimes.05" value="if($no_scene or nem:eTimes/nem:eTimes.05 != '') then '' else key('nemSch_key_elements', 'eTimes.05', $nemSch_elements)"/>
+
+    <sch:let name="eTimes.06" value="if($no_scene or nem:eTimes/nem:eTimes.06 != '') then '' else key('nemSch_key_elements', 'eTimes.06', $nemSch_elements)"/>
+
+    <sch:let name="eTimes.07" value="if($no_patient or nem:eTimes/nem:eTimes.07 != '') then '' else key('nemSch_key_elements', 'eTimes.07', $nemSch_elements)"/>
+
+    <sch:let name="eTimes.09" value="if($no_scene or nem:eTimes/nem:eTimes.09 != '') then '' else key('nemSch_key_elements', 'eTimes.09', $nemSch_elements)"/>
+
+    <sch:let name="eTimes.11" value="if($no_transport or nem:eTimes/nem:eTimes.11 != '') then '' else key('nemSch_key_elements', 'eTimes.11', $nemSch_elements)"/>
+
+    <sch:let name="eTimes.12" value="if($no_transport or nem:eTimes/nem:eTimes.12 != '') then '' else key('nemSch_key_elements', 'eTimes.12', $nemSch_elements)"/>
+*/
