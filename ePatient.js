@@ -1,6 +1,7 @@
 var ErrorList = [];
-var v3NOT_REPORTING = " NV=\"7701005\"";
-var v3NOT_RECORDED = " NV=\"7701003\"";
+var v3NOT_REPORTING = "7701005";
+var v3NOT_RECORDED = "7701003";
+var v3NOT_APPLICABLE = "7701001";
 var v2NOT_AVAILABLE = "-5";
 var v2NOT_REPORTING = "-15";
 var v2NOT_APPLICABLE = "-25"
@@ -21,21 +22,51 @@ var PERSONALEMAIL = "EmailAddressType=\"9904001\"";
 var WORKEMAIL = "EmailAddressType=\"9904003\"";
 
 
+var getSectionIndex = function (sectionObject, sectionName)
+    //Returns an array of index values for a given sectionName within a sectionObject
+    // if sectionName does not exist within the sectionObject, return -1
+{
+    var _retValue = [];
+    for (var d = 0; d < sectionObject.sections.length; d++) {
+        if (sectionObject.sections[d].attributes.name == sectionName) {
+            _retValue.push(d);
+        }
+    }
+    if (_retValue.length == 0) {
+        _retValue.push(-1);
+    }
+    return _retValue;
+};
+
+var getNEMSISSection = function (businessObject, sectionName)
+    //Returns an array of index values for a given sectionName within a sectionObject
+    // if sectionName does not exist within the sectionObject, return -1
+{
+    var _retValue = new Object();
+    _retValue = "undefined"
+    for (var d = 0; d < businessObject.length ; d++) {
+        if (businessObject[d].attributes.name == sectionName) {
+            _retValue = businessObject[d];
+        }
+    };
+    return _retValue;
+};
+
+
 var setePatient = function (businessObject)
 {
-    var _retArray = [];
-    var OLAPArray = [];
+    var v2Array = [];
+    var ePatient = new Object()
 
-    if (typeof businessObject == undefined)
-    {
-        SetNotApplicable();
-        return _retArray;
-    }
-    var elementList = businessObject.attributes.elements;
+    var ePatientObject = new Object()
+    ePatientObject = getNEMSISSection(businessObject, "ePatient")
+    console.log(ePatientObject)
 
 
-    console.log(businessObject);
+    var elementList = ePatientObject.attributes.elements;
+    console.log(elementList)
 
+/*
     
     //////////////////////ePatient.01
     _val = getValue(elementList, "ePatient.01");
@@ -406,73 +437,61 @@ var setePatient = function (businessObject)
         v2Array.push({ section: "E06", element: "E06_16", val: _val[0] });
     };
 
-
+    */
     //ePatient.18////////////
-    _val = getValue(elementList, "ePatient.18");
-    if (_val == null)
-    {
+    var _PhoneNumberObject = new Array();
+    _PhoneNumberObject = getPhoneNumber(elementList, "ePatient.18");
+   // console.log(_PhoneNumberObject.length);
+   
+    if (_PhoneNumberObject == null) {
         ePatient["ePatient.18"] = null;
         ePatient["PatientPhoneNumber"] = null;
         v2Array.push({ section: "E06", element: "E06_17", val: v2NOT_KNOWN });
     }
-    else
-    {
-        sPatHomeNum ="";
+    else {
+        sPatHomeNum = "";
         var arr1 = [];
         var arr2 = [];
-        for (var i = 0; i < _val.length; i++) {
-            var PhoneNumberType = setPhoneNumberType("ePatient.18", _val[i]);
-           
-            if (PhoneNumberType == "9913001")
-            {
-                arr1.push("FAX  " + _val[i]);
-                arr2.push("9913001  " + _val[i]);
-            }
-            else if (PhoneNumberType == "9913003")
-            {
-                arr1.push("HOME  " + _val[i]);
-                arr1.push("9913003  " + _val[i]);
-                sPatNum = _val[i];
-             
-            }
-            else if (PhoneNumberType == "9913005")
-            {
-                arr1.push("MOBILE  " + _val[i]);
-                arr2.push("9913005  " + _val[i]);               
-            }
-            else if (PhoneNumberType == "9913007")
-            {
-                arr1.push("PAGER " + _val[i]);
-                arr2.push("9913007 " + _val[i]);
-            }
-            else if (PhoneNumberType == "9913009")
-            {
-                arr1.push("WORK " + _val[i]);
-                arr2.push("9913009 " + _val[i]);
-            }
-            else
-            {
-                arr1.push(_val[i]);
-
-                arr2.push(_val[i]);               
-            }
-        }       
-        if(sPatHomeNum == null)
+        for (var i = 0; i < _PhoneNumberObject.length; i++)
         {
-            for (var i = 0; i < _val.length; i++) {
-                if(val[i] !=null)
-                {
-                    sPatHomeNum = _val[i]
-
-                }
+            console.log(_PhoneNumberObject[i].PhoneNumberType)
+            if (_PhoneNumberObject[i].PhoneNumberType == "9913001") {
+                arr1.push("FAX  " + _PhoneNumberObject[i].value);
+                arr2.push("9913001  " + _PhoneNumberObject[i].value);
             }
-        };            
+            else if (_PhoneNumberObject[i].PhoneNumberType == "9913003") {
+                arr1.push("HOME  " + _PhoneNumberObject[i].value);
+                arr2.push("9913003  " + _PhoneNumberObject[i].value);
+                var sPatNum = _PhoneNumberObject[i].value;
+            }
+            else if (_PhoneNumberObject[i].PhoneNumberType == "9913005") {
+                arr1.push("MOBILE  " + _PhoneNumberObject[i].value);
+                arr2.push("9913005  " + _PhoneNumberObject[i].value);
+            }
+            else if (_PhoneNumberObject[i].PhoneNumberType == "9913007") {
+                arr1.push("PAGER " + _PhoneNumberObject[i].value);
+                arr2.push("9913007 " + _PhoneNumberObject[i].value);
+            }
+            else if (_PhoneNumberObject[i].PhoneNumberType == "9913009") {
+                arr1.push("WORK " + _PhoneNumberObject[i].value);
+                arr2.push("9913009 " + _PhoneNumberObject[i].value);
+            }
+            else {
+                arr1.push(_PhoneNumberObject[i].value);
+                arr2.push(_PhoneNumberObject[i].value);
+            }
+        }
+    };
         ePatient["ePatient.18"] = arr1.slice(0);
         ePatient["PatientPhoneNumber"] = arr2.slice(0);
-        v2Array.push({ section: "E06", element: "E06_17", val: sPatHomeNum });
-    };
+        v2Array.push({ section: "E06", element: "E06_17", val: sPatNum });
+        
+   console.log(ePatient)
+    
 
+    
 
+    /*
     //ePatient.19////////////
     _val = getValue(elementList, "ePatient.19");
     if (_val == null)
@@ -541,10 +560,39 @@ var setePatient = function (businessObject)
         v2Array.push({ section: "E06", element: "E06_19", val: _val[0]});
     };
 
-    
+    */
 };
 
+var getPhoneNumber = function (businessObject, valueObject)
+{
+    var _retPhoneObject = new Object()
+    var _PhoneObject = new Object();
+    var _retArray = [];
 
+    for (var i = 0; i < businessObject.length; i++)
+     {
+        if (businessObject[i].attributes.title == valueObject)
+        {
+            _PhoneObject = businessObject[i];
+            console.log(_PhoneObject)
+            if (businessObject[i].attributes.value == "undefined")
+            {
+                _retPhoneObject = null;
+            }
+            else
+            {                
+                if (_PhoneObject.attributes.params != undefined)
+                {
+                    _retPhoneObject.PhoneNumberType = _PhoneObject.attributes.params.PhoneNumberType.value;
+                    _retPhoneObject.value = _PhoneObject.attributes.value;
+                    _retArray.push({ PhoneNumberType: _retPhoneObject.PhoneNumberType, value: _retPhoneObject.value });
+                  
+                };
+            }
+        }
+     }
+     return _retArray;
+};
 ////////////////////////////////////////////////////
 var isRequiredStateElement = function (elementID) {
     return true;
@@ -564,6 +612,7 @@ var getValue = function (businessObject, valueObject) {
                 }
                 else {
                     _retVal = businessObject[i].attributes.value;
+
                 }
             }
         }
@@ -692,8 +741,3 @@ function setCodeText(NEMSISElementNumber, valueArray) {
     return _return;
 
 };
-
-/*    <sch:let name="ePatient.13" value="if($no_patient or nem:ePatient/nem:ePatient.13 != '') then '' else key('nemSch_key_elements', 'ePatient.13', $nemSch_elements)"/>
-
-    <sch:let name="ePatient.15" value="if($no_patient or nem:ePatient/nem:ePatient.AgeGroup/nem:ePatient.15 != '') then '' else key('nemSch_key_elements', 'ePatient.15', $nemSch_elements)"/>
-*/

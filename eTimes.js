@@ -77,6 +77,21 @@ var seteTimes = function (businessObject) {
         }
         else 
         {
+            // Time Rules:
+            //eAirway.10: Date/Time Decision to Manage the Patient with an Invasive Airway should not occur prior 
+            //to: Unit Notified by Dispatch Date/Time
+
+            if (eAirwayGroup["eAirway.10"] != null) {
+                if (eAirwayGroup["eAirway.10"] >= _val[0]) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "dTimes.03", Description: "Validation Error: eAirway.10 Date/Time Decision to Manage the Patient with an Invasive Airway should not occur prior to: Unit Notified by Dispatch Date/Time" })
+                }
+            };
+
+            if (eAirwayGroup["eAirway.11"] != null) {
+                if (eAirwayGroup["eAirway.11"] >= _val[0]) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "dTimes.03", Description: "Validation Error: eAirway.11: Date/Time Invasive Airway Placement Attempts Abandoned should not occur prior to: Date/Time Decision to Manage the Patient with an Invasive Airway, Unit Notified by Dispatch Date/Time" })
+                }
+            };
             v2Array.push({ section: "E05", element: "E05_04", val: _val[0] });
             eTimes["dTimes.03"] = _val[0];
             eTimes["UnitNotifiedbyDispatchDateTime"] = _val[0];
@@ -91,6 +106,13 @@ var seteTimes = function (businessObject) {
         }
         else 
         {
+
+            if (eAirwayGroup["eAirway.11"] != null) {
+                if (eAirwayGroup["eAirway.11"] >= _val[0]) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "dTimes.04", Description: "Validation Error: eAirway.11: eAirway.11: Date/Time Invasive Airway Placement Attempts Abandoned should not occur prior to: Dispatch Acknowledged Date/Time" })
+                }
+            };
+
             eTimes["dTimes.04"] = _val[0];
             eTimes["DispatchAcknowledgedDateTime"] = _val[0];
         }; 
@@ -135,6 +157,8 @@ var seteTimes = function (businessObject) {
         }; 
 
         //eTimes.07//////////////////
+        //eAirway.11: Date/Time Invasive Airway Placement Attempts Abandoned should not occur prior to: Date/Time 
+        //Arrived at Patient Date/Time. 
         console.log("Business Rule not Applicable")
         _val = getValue(businessObject.elements, "eTimes.07");
         if (_val == null)
@@ -148,6 +172,12 @@ var seteTimes = function (businessObject) {
         }
         else 
         {
+            if (eAirwayGroup["eAirway.11"] != null) {
+                if (eAirwayGroup["eAirway.11"] >= _val[0]) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "dTimes.07", Description: "Validation Error: eAirway.11: Date/Time Invasive Airway Placement Attempts Abandoned should not occur prior to: Date/Time Arrived at Patient Date/Time."  })
+                }
+            };
+
             v2Array.push({ section: "E05", element: "E05_07", val: _val[0] });
             eTimes["ArrivedatPatientDateTime"] = _val[0];
             eTimes["dTimes.07"] = _val[0];

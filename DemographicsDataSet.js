@@ -3661,26 +3661,41 @@ var setdVehicle = function (dVehicleObject) {
 var isRequiredStateElement = function (elementID) {
     return true;
 };
-var getValue = function (elementList, valueObject) {
+var getValue = function (elementList, valueObject)
+{
     var _arr = [];
-    for (var i = 0; i < elementList.length; i++) {
-        if (elementList[i].attributes.title == valueObject) {
-            if (elementList[i].attributes.value == undefined) {
+    for (var i = 0; i < elementList.length; i++)
+    {
+        if (elementList[i].attributes.title == valueObject)
+        {
+            if (elementList[i].attributes.value == undefined)
+            {
                 return null;
             }
-            else {
-                _arr.push(elementList[i].attributes.value);
+            else
+            {
+                if (elementList[i].attributes.value.trim().length != 0)  //Can't trust data.  
+                {
+                    _arr.push(elementList[i].attributes.value);
+                }
             }
         }
     };
-    return _arr;
+    if (_arr.length == 0)
+    {
+        return null;  //handle nulls on an attribute-by attribute level
+    }
+    else
+    {
+        return _arr;
+    }
 };
 function setV2(NEMSISElementNumber, v3Val) {
 
     var returnValue = "";
     switch (NEMSISElementNumber) {
         case "dAgency.09":
-            if (dAgency09 == undefined) {
+            if (dAgency09[v3Val] == undefined) {
                 returnValue = "UNDEFINED";
             }
             else {
@@ -3846,7 +3861,7 @@ function setV2(NEMSISElementNumber, v3Val) {
 
 }
 function setCodeText(NEMSISElementNumber, codeVal) {
-    var _return = [];
+    var _return = "";
     switch (NEMSISElementNumber) {
         case "dAgency.09":
             if (dAgency334_09[codeVal] == undefined) {

@@ -1,4 +1,4 @@
-﻿var ErrorList = [];
+var ErrorList = [];
 var v3NOT_REPORTING = " NV=\"7701005\"";
 var v3NOT_RECORDED = " NV=\"7701003\"";
 var v2NOT_AVAILABLE = "-5";
@@ -36,1015 +36,862 @@ var getSectionIndex = function (businessObject, sectionName) {
 }
 
 var setePayment = function (businessObject) {
-    _retArray.push = "<ePayment>+ '\n'";
-    OLAPArray.push("<ePayment>+ '\n'")
 
     //////////////////ePayment.01
     _val = getValue(businessObject.elements, "ePayment.01");
     if (_val == null)
-    {
-        OLAPArray.push('/t' + "<PrimaryMethodofPayment>" + "NOT RECORDED" + "</PrimaryMethodofPayment>" + '\n');
-        _retArray.push("<ePayment.01" + NIL_V3NOT_RECORDED + '\n');
+    {     
         v2Array.push({ section: "E07", element: "E07_01", val: v2NOT_RECORDED });
-        ePayment["ePayment.01"] = v3NOT_RECORDED
+        ePayment["ePayment.01"] = NIL_V3NOT_RECORDED
+        ePayment["PrimaryMethodofPayment"] = NOT_RECORDED
     }
     else
     {
-        OLAPArray.push('/t' + "<PrimaryMethodofPayment>" + setCodeText("ePayment.01", _val) + "</PrimaryMethodofPayment>" + '\n');
-        _retArray.push('/t' + "<ePayment.01>" + _val + "</ePayment.01>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_01", val: setV2("ePayment.01", _val) });
-        ePayment["ePayment.01"] = _val;
+        v2Array.push({ section: "E07", element: "E07_01", val: setV2("ePayment.01", _val[0]) });
+        ePayment["ePayment.01"] = _val[0];
+        ePayment["PrimaryMethodofPayment"] = setCodeText("ePayment.01", _val[0])
     };
-    ///////////////////////////////////////////////////////////////
-    _retArray.push('/t' + "<ePayment.CertificateGroup>" + '\n');
 
     //////////////////ePayment.02
     _val = getValue(businessObject.elements, "ePayment.02");
     if (_val == null)
     {
-        OLAPArray.push('/t' + "<PhysicianCertificationStatement>" + null + "</PhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t' + "<ePayment.02>" + null + "</ePayment.02>" + '\n');
         v2Array.push({ section: "E07", element: "E07_02", val: v2NOT_KNOWN });
         ePayment["ePayment.02"] = null;
+        ePayment["PhysicianCertificationStatement"] = null;
     }
-    else 
+    else
     {
-        OLAPArray.push('/t' + "<PhysicianCertificationStatement>" + setCodeText("ePayment.02", _val) + "</PhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t/t' + "<ePayment.02>" + _val + "</ePayment.02>" + '\n')
-        v2Array.push({ section: "E07", element: "E07_02", val: setV2("ePayment.02", _val) });
-        ePayment["ePayment.02"] = _val;
+        ePayment["PhysicianCertificationStatement"] = setCodeText("ePayment.02", _val[0]);
+        v2Array.push({ section: "E07", element: "E07_02", val: setV2("ePayment.02", _val[0]) });
+        ePayment["ePayment.02"] = _val[0];
     };
 
     //////////////////ePayment.03
     _val = getValue(businessObject.elements, "ePayment.03");
     if (_val == null)
     {
-        OLAPArray.push('/t' + "<DatePhysicianCertificationStatementSigned>" + null + "</DatePhysicianCertificationStatementSigned>" + '\n');
-        _retArray.push('/t' + "<ePayment.03>" + null + "</ePayment.03>" + '\n');
         ePayment["ePayment.03"] = null;
+        ePayment["DatePhysicianCertificationStatementSigned"] = null;
+
     }
     else
     {
-        OLAPArray.push('/t' + "<DatePhysicianCertificationStatementSigned>" + _val + "</DatePhysicianCertificationStatementSigned>" + '\n');
-        _retArray.push('/t/t' + "<ePayment.03>" + _val + "</ePayment.03>" + '\n')
-        ePayment["ePayment.03"] = _val;
+        ePayment["ePayment.03"] = _val[0];
+        ePayment["ePayment.DatePhysicianCertificationStatementSigned"] = _val[0];
     };
 
 
     //ePayment.04////////////
     _val = getValue(elementList, "ePayment.04");
-    if (_val == null)
-    {
+    if (_val == null) {
 
-        OLAPArray.push('/t' + "<ReasonforPhysicianCertificationStatement>" + null + "</ReasonforPhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t' + "<ePayment.04>" + null + "</ePayment.04>" + '\n');
         ePayment["ePayment.04"] = null;
+        ePayment["ReasonforPhysicianCertificationStatement"] = null;
     }
     else {
         var arr1 = [];
-        var arr2 = [];
-        for (var i = 0; i < _val.length; i++) {
-            arr1[i] = _val[i];
-
-            OLAPArray.push('/t' + "<ReasonforPhysicianCertificationStatement>" + setCodeText("ePayment.04", _val) + "</ReasonforPhysicianCertificationStatement>" + '\n');
-            _retArray.push('/t/t' + "<ePayment.04>" + _val[i] + "</ePayment.04>" + '\n');
+        var arr3 = [];
+        for (var i = 0; i < _val.length; i++)
+        {
+            arr1.push(_val[i]);
+            arr3.push(setCodeText("ePayment.04", _val[i]));
         }
         ePayment["ePayment.04"] = arr1.slice(0);
+        ePayment["ReasonforPhysicianCertificationStatement"] = arr3.slice(0);
     };
 
     //////////////////ePayment.05
     _val = getValue(businessObject.elements, "ePayment.05");
     if (_val == null)
     {
-        OLAPArray.push('/t' + "<HealthcareProviderTypeSigningPhysicianCertificationStatement>" + null + "</HealthcareProviderTypeSigningPhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t' + "<ePayment.05>" + null + "</ePayment.05>" + '\n');
         ePayment["ePayment.05"] = null;
+        ePayment["HealthcareProviderTypeSigningPhysicianCertificationStatement"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<HealthcareProviderTypeSigningPhysicianCertificationStatement>" + _val + "</HealthcareProviderTypeSigningPhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t/t' + "<ePayment.05>" + _val + "</ePayment.05>" + '\n')
-        ePayment["ePayment.05"] = _val;
+    else {
+        ePayment["HealthcareProviderTypeSigningPhysicianCertificationStatement"] = setCodeText("ePayment.05", _val[i]);
+        ePayment["ePayment.05"] = _val[0];
     };
 
     //////////////////ePayment.06
     _val = getValue(businessObject.elements, "ePayment.06");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<LastNameofIndividualSigningPhysicianCertificationStatement>" + null + "</LastNameofIndividualSigningPhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t' + "<ePayment.06>" + null + "</ePayment.06>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.06"] = null;
+        ePayment["LastNameofIndividualSigningPhysicianCertificationStatement"] = null;
     }
     else
     {
-        OLAPArray.push('/t' + "<LastNameofIndividualSigningPhysicianCertificationStatement>" + _val + "</LastNameofIndividualSigningPhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t/t' + "<ePayment.06>" + _val + "</ePayment.06>" + '\n');
-        ePayment["ePayment.06"] = _val;
+        ePayment["LastNameofIndividualSigningPhysicianCertificationStatement"] = _val[0];
+        ePayment["ePayment.06"] = _val[0];
     };
 
     //////////////////ePayment.07
     _val = getValue(businessObject.elements, "ePayment.07");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<FirstNameofIndividualSigningPhysicianCertificationStatement>" + null + "</FirstNameofIndividualSigningPhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t' + "<ePayment.07>" + null + "</ePayment.07>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.07"] = null;
+        ePayment["FirstNameofIndividualSigningPhysicianCertificationStatement"] = null;
 
     }
-    else
-    {
-        OLAPArray.push('/t' + "<FirstNameofIndividualSigningPhysicianCertificationStatement>" + _val + "</FirstNameofIndividualSigningPhysicianCertificationStatement>" + '\n');
-        _retArray.push('/t/t' + "<ePayment.07>" + _val + "</ePayment.07>" + '\n')
-        ePayment["ePayment.07"] = _val;
+    else {
+        ePayment["ePayment.07"] = _val[0];
+        ePayment["FirstNameofIndividualSigningPhysicianCertificationStatement"] = _val[0];
     };
-    _retArray.push('/t' + "</ePayment.CertificateGroup>" + '\n');
-    OLAPArray.push('/t' + "</ePayment.CertificateGroup>" + '\n');
 
-    //////////////////////////////////////////
     //////////////////ePayment.08
     _val = getValue(businessObject.elements, "ePayment.08");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<PatientResidesinServiceArea>" + null + "</PatientResidesinServiceArea>" + '\n');
-        _retArray.push('/t' + "<ePayment.08>" + null + "</ePayment.08>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.08"] = null;
+        ePayment["PatientResidesinServiceArea"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<PatientResidesinServiceArea>" + _val + "</PatientResidesinServiceArea>" + '\n');
-        _retArray.push('/t' + "<ePayment.08>" + _val + "</ePayment.08>" + '\n')
-        ePayment["ePayment.08"] = _val;
+    else {
+        ePayment["ePayment.08"] = _val[0];
+        ePayment["PatientResidesinServiceArea"] = _val[0];
     };
 
+    IF NOT INSURED, SET TO NA!~
     ///////////////////////////////////////////////ePayment.InsuranceGroup
     _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "ePayment.InsuranceGroup");
     for (var x = 0; x < _sectionIndex.length; x++) {
         var listOfElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.elements
-        _retArray.push('/t/t' + "<ePayment.InsuranceGroup>" + '\n');
-        OLAPArray.push('/t/t' + "<ePayment.InsuranceGroup>" + '\n');
 
         //////////////////ePayment.09
         _val = getValue(listOfElements, "ePayment.09");
         if (_val == null)
         {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyID>" + null + "</InsuranceCompanyID>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.09>" + null + "</ePayment.09>" + '\n');
-            ePayment["ePayment.09"] = null;
+            InsuranceGroupArray["ePayment.09"] = null;
+            InsuranceGroupArray["InsuranceCompanyID"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyID>" + _val + "</InsuranceCompanyID>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.09>" + _val + "</ePayment.09>" + '\n')
-            InsuranceGroup["ePayment.09"] = _val;
+        else {
+            InsuranceGroupArray["ePayment.09"] = _val[0];
+            InsuranceGroupArray["InsuranceCompanyID"] = _val[0];
         };
 
         //////////////////ePayment.10
         _val = getValue(listOfElements, "ePayment.10");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyName>" + null + "</InsuranceCompanyName>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.10>" + null + "</ePayment.10>" + '\n');
-            ePayment["ePayment.10"] = null;
+        if (_val == null) {
+            InsuranceGroupArray["ePayment.10"] = null;
+            InsuranceGroupArray["InsuranceCompanyName"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyName>" + _val + "</InsuranceCompanyName>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.10>" + _val + "</ePayment.10>" + '\n')
-            InsuranceGroup["ePayment.10"] = _val;
+        else {
+            InsuranceGroupArray["ePayment.10"] = _val[0];
+            InsuranceGroupArray["InsuranceCompanyName"] = _val[0];
         };
 
         //////////////////ePayment.11
         _val = getValue(listOfElements, "ePayment.11");
         if (_val == null)
         {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyBillingPriority>" + null + "</InsuranceCompanyBillingPriority>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.11>" + null + "</ePayment.11>" + '\n');
             v2Array.push({ section: "E07", element: "E07_04", val: v2NOT_KNOWN });
-            ePayment["ePayment.11"] = null;
+            InsuranceGroupArrayePayment["ePayment.11"] = null;
+            InsuranceGroupArray["InsuranceCompanyBillingPriority"] = null;
 
         }
         else
         {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyBillingPriority>" + setCodeText("ePayment.11", _val) + "</InsuranceCompanyBillingPriority>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.11>" + _val + "</ePayment.11>" + '\n');
             v2Array.push({ section: "E07", element: "E07_04", val: SetD2("ePayment.11", _val[0]) });
-            InsuranceGroup["ePayment.11"] = _val;
+            InsuranceGroupArray["ePayment.11"] = _val[0];
+            InsuranceGroupArray["InsuranceCompanyBillingPriority"] = setCodeText("ePayment.11", _val[0]);
         };
 
 
         //////////////////ePayment.12
         _val = getValue(listOfElements, "ePayment.12");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyAddress>" + null + "</InsuranceCompanyAddress>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.12>" + null + "</ePayment.12>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_05", val: v2NOT_KNOWN });
-            ePayment["ePayment.12"] = null;
+            InsuranceGroupArray["ePayment.12"] = null;
+            InsuranceGroupArray["InsuranceCompanyAddress"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyAddress>" + _val + "</InsuranceCompanyAddress>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.12>" + _val + "</ePayment.12>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_05", val: _val });
-            InsuranceGroup["ePayment.12"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_05", val: _val[0] });
+            InsuranceGroupArray["ePayment.12"] = _val[0];
+            InsuranceGroupArray["InsuranceCompanyAddress"] = _val[0];
         };
 
         //////////////////ePayment.13
         _val = getValue(listOfElements, "ePayment.13");
         if (_val == null)
         {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyCity>" + null + "</InsuranceCompanyCity>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.13>" + null + "</ePayment.13>" + '\n');
             v2Array.push({ section: "E07", element: "E07_06", val: v2NOT_KNOWN });
-            ePayment["ePayment.13"] = null;
+            InsuranceGroupArray["ePayment.13"] = null;
+            InsuranceGroupArray["InsuranceCompanyCity"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyCity>" + _val + "</InsuranceCompanyCity>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.13>" + _val + "</ePayment.13>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_06", val: _val });
-            InsuranceGroup["ePayment.13"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_06", val: setV2("ePayment.13", _val[0]) });
+            InsuranceGroupArray["ePayment.13"] = _val[0];
+            InsuranceGroupArray["InsuranceCompanyCity"] = setCodeText("ePayment.13", _val[0]);
         };
 
 
         //////////////////ePayment.14
         _val = getValue(listOfElements, "ePayment.14");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyState>" + null + "</InsuranceCompanyState>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.14>" + null + "</ePayment.14>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_07", val: v2NOT_KNOWN });
-            ePayment["ePayment.14"] = null;
+            InsuranceGroupArray["ePayment.14"] = null;
+            InsuranceGroupArray["InsuranceCompanyState"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyState>" + _val + "</InsuranceCompanyState>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.14>" + _val + "</ePayment.14>" + '\n')
-            v2Array.push({ section: "E07", element: "E07_07", val: _val });
-            InsuranceGroup["ePayment.14"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_07", val: setV2("ePayment.14", _val[0]) });
+            InsuranceGroupArray["ePayment.14"] = _val[0];
+            InsuranceGroupArray["InsuranceCompanyState"] = setCodeText("ePayment.14", _val[0]);
         };
 
         //////////////////ePayment.15
         _val = getValue(listOfElements, "ePayment.15");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyZip>" + null + "</InsuranceCompanyZip>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.15>" + null + "</ePayment.15>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_08", val: v2NOT_KNOWN });
-            ePayment["ePayment.15"] = null;
+            InsuranceGroupArray["ePayment.15"] = null;
+            InsuranceGroupArray["InsuranceCompanyZip"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyZip>" + _val + "</InsuranceCompanyZip>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.15>" + _val + "</ePayment.15>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_08", val: _val });
-            InsuranceGroup["ePayment.15"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_08", val: _val[0] });
+            InsuranceGroupArray["ePayment.15"] = _val[0];
+            InsuranceGroupArray["InsuranceCompanyZip"] = _val[0];
         };
 
         //////////////////ePayment.16
         _val = getValue(listOfElements, "ePayment.16");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyCountry>" + null + "</InsuranceCompanyCountry>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.16>" + null + "</ePayment.16>" + '\n');
-            ePayment["ePayment.16"] = null;
+        if (_val == null) {
+            InsuranceGroupArray["ePayment.16"] = null;
+            InsuranceGroupArray["InsuranceCompanyCountry"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceCompanyCountry>" + _val + "</InsuranceCompanyCountry>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.16>" + _val + "</ePayment.16>" + '\n')
-            InsuranceGroup["ePayment.16"] = _val;
+        else {
+            InsuranceGroupArray["ePayment.16"] = setCodeText("ePayment.16", _val[0]);
+            InsuranceGroupArray["InsuranceCompanyCountry"] = null;
+
         };
 
 
         //////////////////ePayment.17
         _val = getValue(listOfElements, "ePayment.17");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceGroupIDName>" + null + "</InsuranceGroupIDName>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.17>" + null + "</ePayment.17>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_09", val: v2NOT_KNOWN });
-            ePayment["ePayment.17"] = null;
+            InsuranceGroupArray["ePayment.17"] = null;
+            InsuranceGroupArray["InsuranceGroupIDName"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsuranceGroupIDName>" + _val + "</InsuranceGroupIDName>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.17>" + _val + "</ePayment.17>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_09", val: _val });
-            InsuranceGroup["ePayment.17"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_09", val: _val[0] });
+            InsuranceGroupArray["ePayment.17"] = _val[0];
+            InsuranceGroupArray["InsuranceGroupIDName"] = _val[0];
         };
 
         //////////////////ePayment.18
         _val = getValue(listOfElements, "ePayment.18");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<InsurancePolicyIDNumber>" + null + "</InsurancePolicyIDNumber>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.18>" + null + "</ePayment.18>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_10", val: v2NOT_KNOWN });
-            ePayment["ePayment.18"] = null;
+            InsuranceGroupArray["ePayment.18"] = null;
+            InsuranceGroupArray["ePayment.18"] = InsurancePolicyIDNumber;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<InsurancePolicyIDNumber>" + _val + "</InsurancePolicyIDNumber>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.18>" + _val + "</ePayment.18>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_10", val: _val });
-            InsuranceGroup["ePayment.18"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_10", val: _val[0] });
+            InsuranceGroupArray["ePayment.18"] = _val[0];
+            InsuranceGroupArray["InsurancePolicyIDNumber"] = _val[0];
         };
 
         //////////////////ePayment.19
         _val = getValue(listOfElements, "ePayment.19");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<LastNameoftheInsured>" + null + "</LastNameoftheInsured>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.19>" + null + "</ePayment.19>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_11", val: v2NOT_KNOWN });
-            ePayment["ePayment.19"] = null;
+            InsuranceGroupArray["ePayment.19"] = null;
+            InsuranceGroupArray["LastNameoftheInsured"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<LastNameoftheInsured>" + _val + "</LastNameoftheInsured>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.19>" + _val + "</ePayment.19>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_11", val: _val });
-            InsuranceGroup["ePayment.19"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_11", val: _val[0] });
+            InsuranceGroupArray["ePayment.19"] = _val[0];
+            InsuranceGroupArray["LastNameoftheInsured"] = _val[0];
         };
 
         //////////////////ePayment.20
         _val = getValue(listOfElements, "ePayment.20");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<FirstNameoftheInsured>" + null + "</FirstNameoftheInsured>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.20>" + null + "</ePayment.20>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_12", val: v2NOT_KNOWN });
-            ePayment["ePayment.20"] = null;
+            InsuranceGroupArray["ePayment.20"] = null;
+            InsuranceGroupArray["FirstNameoftheInsured"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<FirstNameoftheInsured>" + _val + "</FirstNameoftheInsured>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.20>" + _val + "</ePayment.20>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_12", val: _val });
-            InsuranceGroup["ePayment.20"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_12", val: _val[0] });
+            InsuranceGroupArray["ePayment.20"] = _val[0];
+            InsuranceGroupArray["FirstNameoftheInsured"] = _val[0];
         };
 
         //////////////////ePayment.21
         _val = getValue(listOfElements, "ePayment.21");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t/t' + "<MiddleNameoftheInsured>" + null + "</MiddleNameoftheInsured>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.21>" + null + "</ePayment.21>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_13", val: v2NOT_KNOWN });
-            ePayment["ePayment.21"] = null;
+            InsuranceGroupArray["ePayment.21"] = null;
+            InsuranceGroupArray["MiddleNameoftheInsured"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t/t' + "<MiddleNameoftheInsured>" + _val + "</MiddleNameoftheInsured>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.21>" + _val + "</ePayment.21>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_13", val: _val });
-            InsuranceGroup["ePayment.21"] = _val;
+        else {
+            v2Array.push({ section: "E07", element: "E07_13", val: _val[0]});
+            InsuranceGroupArray["ePayment.21"] = _val[0];
+            InsuranceGroupArray["MiddleNameoftheInsured"] = _val[0];
         };
 
         //////////////////ePayment.22
         _val = getValue(listOfElements, "ePayment.22");
-        if (_val == null) 
-        {
-            OLAPArray.push('/t/t/t' + "<RelationshiptotheInsured>" + null + "</RelationshiptotheInsured>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.22>" + null + "</ePayment.22>" + '\n');
+        if (_val == null) {
             v2Array.push({ section: "E07", element: "E07_14", val: v2NOT_KNOWN });
-            ePayment["ePayment.22"] = null;
+            InsuranceGroupArray["RelationshiptotheInsured"] = null;
+            InsuranceGroupArray["ePayment.22"] = null;
         }
-        else 
-        {
-            OLAPArray.push('/t/t/t' + "<RelationshiptotheInsured>" + setCodeText("ePayment.22>", _val) + "</RelationshiptotheInsured>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.22>" + _val + "</ePayment.22>" + '\n');
+        else {
             v2Array.push({ section: "E07", element: "E07_14", val: SetD2("ePayment.22", _val[0]) });
-            InsuranceGroup["ePayment.22"] = _val;
+            InsuranceGroupArray["ePayment.22"] = _val[0];
+            InsuranceGroupArray["RelationshiptotheInsured"] = setCodeText("ePayment.22>", _val[0]);
         };
 
-        OLAPArray.push('/t/t' + "</ePayment.InsuranceGroup>" + '\n');
-        _retArray.push('/t/t' + "</ePayment.InsuranceGroup>" + '\n');
     };
-    ///////////////////////////////////
 
-    _retArray.push('/t/t' + "<ePayment.ClosestRelativeGroup>" + '\n');
-    OLAPArray.push('/t/t' + "<ePayment.ClosestRelativeGroup>" + '\n');
-
+    var hasClosestLivingRelative = false;
     //////////////////ePayment.23
     _val = getValue(businessObject.elements, "ePayment.23");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianLastName>" + null + "</ClosestRelativeGuardianLastName>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.23>" + null + "</ePayment.23>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_18", val: v2NOT_KNOWN });
         ePayment["ePayment.23"] = null;
+        ePayment["ClosestRelativeGuardianLastName"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianLastName>" + _val + "</ClosestRelativeGuardianLastName>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.23>" + _val[0] + "</ePayment.23>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_18", val: _val });
-        ePayment["ePayment.23"] = _val;
+    else {
+        hasClosestLivingRelative = true;
+        v2Array.push({ section: "E07", element: "E07_18", val: _val[0] });
+        ePayment["ePayment.23"] = _val[0];
+        ePayment["ClosestRelativeGuardianLastName"] = _val[0];
     };
 
 
     //////////////////ePayment.24
     _val = getValue(businessObject.elements, "ePayment.24");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianFirstName>" + null + "</ClosestRelativeGuardianFirstName>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.24>" + null + "</ePayment.24>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_19", val: null });
         ePayment["ePayment.24"] = null;
+        ePayment["ClosestRelativeGuardianFirstName"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianFirstName>" + _val + "</ClosestRelativeGuardianFirstName>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.24>" + _val + "</ePayment.24>" + '\n')
-        v2Array.push({ section: "E07", element: "E07_19", val: _val });
-        ePayment["ePayment.24"] = _val;
+    else {
+        hasClosestLivingRelative = true;
+        v2Array.push({ section: "E07", element: "E07_19", val: _val[0] });
+        ePayment["ePayment.24"] = _val[0];
+        ePayment["ClosestRelativeGuardianFirstName"] = _val[0];;
     };
 
     //////////////////ePayment.25
     _val = getValue(businessObject.elements, "ePayment.25");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianMiddleName>" + null + "</ClosestRelativeGuardianMiddleName>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.25>" + null + "</ePayment.25>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_20", val: null });
         ePayment["ePayment.25"] = null;
+        ePayment["ClosestRelativeGuardianMiddleName"] = null;
     }
-    else
+    else 
     {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianMiddleName>" + _val + "</ClosestRelativeGuardianMiddleName>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.25>" + _val + "</ePayment.25>" + '\n')
-        v2Array.push({ section: "E07", element: "E07_20", val: _val })
-        ePayment["ePayment.25"] = _val;
+        v2Array.push({ section: "E07", element: "E07_20", val: _val[0] })
+        ePayment["ePayment.25"] = _val[0];
+        ePayment["ClosestRelativeGuardianMiddleName"]= _val[0];
     };
 
     //////////////////ePayment.26
     _val = getValue(businessObject.elements, "ePayment.26");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianStreetAddress>" + null + "</ClosestRelativeGuardianStreetAddress>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.26>" + null + "</ePayment.26>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_21", val: null });
         ePayment["ePayment.26"] = null;
+        ePayment["ClosestRelativeGuardianStreetAddress"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianStreetAddress>" + _val + "</ClosestRelativeGuardianStreetAddress>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.26>" + _val + "</ePayment.26>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_21", val: _val });
-        ePayment["ePayment.26"] = _val;
+    else {        
+        v2Array.push({ section: "E07", element: "E07_21", val: _val[0] });
+        ePayment["ePayment.26"] = _val[0];
+        ePayment["ClosestRelativeGuardianStreetAddress"] = _val[0];
     };
 
     //////////////////ePayment.27
     _val = getValue(businessObject.elements, "ePayment.27");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianCity>" + null + "</ClosestRelativeGuardianCity>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.27>" + null + "</ePayment.27>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_22", val: null });
         ePayment["ePayment.27"] = null;
+        ePayment["ClosestRelativeGuardianCity"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianCity>" + _val + "</ClosestRelativeGuardianCity>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.27>" + _val + "</ePayment.27>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_22", val: _val });
-        ePayment["ePayment.27"] = _val;
+    else {        
+        v2Array.push({ section: "E07", element: "E07_22", val: setV2("ePayment.27", _val[0]) });
+        ePayment["ePayment.27"] = _val[0];
+        ePayment["ClosestRelativeGuardianCity"] = setCodeText("ePayment.27", _val[0]);
     };
 
     //////////////////ePayment.28
     _val = getValue(businessObject.elements, "ePayment.28");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianState>" + null + "</ClosestRelativeGuardianState>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.28>" + null + "</ePayment.28>" + '\n');
+    if (_val == null) {
+
         v2Array.push({ section: "E07", element: "E07_23", val: null });
         ePayment["ePayment.28"] = null;
+        ePayment["ClosestRelativeGuardianState"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianState>" + _val + "</ClosestRelativeGuardianState>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.28>" + _val + "</ePayment.28>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_23", val: _val });
+    else {
+        ePayment["ClosestRelativeGuardianState"] = setCodeText("ePayment.28", _val[0]);
+        v2Array.push({ section: "E07", element: "E07_23", val:  setV2("ePayment.28", _val[0]) });
         ePayment["ePayment.28"] = _val;
     };
 
     //////////////////ePayment.29
     _val = getValue(businessObject.elements, "ePayment.29");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianZIPCode>" + null + "</ClosestRelativeGuardianZIPCode>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.29>" + null + "</ePayment.29>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_24", val: null });
         ePayment["ePayment.29"] = null;
+        ePayment["ClosestRelativeGuardianZIPCode"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianZIPCode>" + _val + "</ClosestRelativeGuardianZIPCode>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.29>" + _val[0] + "</ePayment.29>" + '\n')
-        v2Array.push({ section: "E07", element: "E07_24", val: _val });
-        ePayment["ePayment.29"] = _val;
+    else {
+        v2Array.push({ section: "E07", element: "E07_24", val: _val[0] });
+        ePayment["ePayment.29"] = _val[0];
+        ePayment["ClosestRelativeGuardianZIPCode"] = _val[0];
     };
 
     //////////////////ePayment.30
     _val = getValue(businessObject.elements, "ePayment.30");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianCountry>" + null + "</ClosestRelativeGuardianCountry>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.30>" + null + "</ePayment.30>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.30"] = null;
+        ePayment["ClosestRelativeGuardianCountry"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianCountry>" + _val + "</ClosestRelativeGuardianCountry>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.30>" + _val + "</ePayment.30>" + '\n')
-        ePayment["ePayment.30"] = _val;
+    else {
+        ePayment["ClosestRelativeGuardianCountry"] = setCodeText("ePayment.30", _val[0]);;
+        ePayment["ePayment.30"] = _val[0];
+        
     };
     alert("PN Values")
     _val = getValue(businessObject.elements, "ePayment.31");
-    if (_val == null) {
-    }
-    else {
-        if (PhoneNumberType[i] == 9913001) {
-            _phoneType = FAX;
-        }
-        else if (PhoneNumberType[i] == 9913003) {
-            _phoneType = HOME;
-        }
-        else if (PhoneNumberType[i] == 9913005) {
-            _phoneType = MOBILE;
-        }
-        else if (PhoneNumberType[i] == 9913007) {
-            _phoneType = PAGER;
-        }
-        else if (PhoneNumberType[i] == 9913009) {
-            _phoneType = WORK;
-        }
+    if (_val == null) 
+    {
+        ePayment["ePayment.31"] = null;
+        ePayment["ClosestRelativeGuardianPhoneNumber"] = null;
 
-        _retArray.push('/t/t/t' + "<ePayment.31 " + _phoneType + ">" + _val[0] + "</ePayment.31>")
-        E07.E07_25 = _val[0];
-        ePayment["ePayment.31"] = _val;
+    }
+    else 
+    {
+        sPatHomeNum ="";
+        var arr1 = [];
+        var arr2 = [];
+        for (var i = 0; i < _val.length; i++) 
+        {
+            var PhoneNumberType = setPhoneNumberType("ePatient.18", _val[i]);
+           
+            if (PhoneNumberType == "9913001")
+            {
+                arr1.push("FAX  " + _val[i]);
+                arr2.push("9913001  " + _val[i]);
+            }
+            else if (PhoneNumberType == "9913003")
+            {
+                arr1.push("HOME  " + _val[i]);
+                arr1.push("9913003  " + _val[i]);
+                sPatNum = _val[i];
+             
+            }
+            else if (PhoneNumberType == "9913005")
+            {
+                arr1.push("MOBILE  " + _val[i]);
+                arr2.push("9913005  " + _val[i]);               
+            }
+            else if (PhoneNumberType == "9913007")
+            {
+                arr1.push("PAGER " + _val[i]);
+                arr2.push("9913007 " + _val[i]);
+            }
+            else if (PhoneNumberType == "9913009")
+            {
+                arr1.push("WORK " + _val[i]);
+                arr2.push("9913009 " + _val[i]);
+            }
+            else
+            {
+                arr1.push(_val[i]);
+                arr2.push(_val[i]);               
+            }
+        };
+
+        ePayment["ePayment.31"] = null;
+        ePayment["ClosestRelativeGuardianPhoneNumber"] = null;
+
+        if(sPatHomeNum == null)
+        {
+            for (var i = 0; i < _val.length; i++) {
+                if(val[i] !=null)
+                {
+                    sPatHomeNum = _val[i]
+
+                }
+            }
+        };   
+        v2Array.push({ section: "E07", element: "E07_25", val: sPatHomeNum });
+
     };
 
     //////////////////ePayment.32
     _val = getValue(businessObject.elements, "ePayment.32");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianRelationship>" + null + "</ClosestRelativeGuardianRelationship>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.32>" + null + "</ePayment.32>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_26", val: null });
         ePayment["ePayment.32"] = null;
+        ePayment["ClosestRelativeGuardianRelationship"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<ClosestRelativeGuardianRelationship>" + setCodeText("ePayment.32", _val) + "</ClosestRelativeGuardianRelationship>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.32>" + _val + "</ePayment.32>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_26", val: SetD2("ePayment.32", _val) });
-        ePayment["ePayment.32"] = _val;
+    else {
+        ePayment["ClosestRelativeGuardianRelationship"] = setCodeText("ePayment.32", _val[0]);
+        v2Array.push({ section: "E07", element: "E07_26", val: SetD2("ePayment.32", _val[0]) });
+        ePayment["ePayment.32"] = _val[0];
     };
-
-    OLAPArray.push('/t/t' + "</ePayment.ClosestRelativeGroup>" + '\n');
-    OLAPArray.push('/t/t' + "<ePayment.EmployerGroup>" + '\n');
-    _retArray.push('/t/t' + "</ePayment.ClosestRelativeGroup>" + '\n');
-    _retArray.push('/t/t' + "<ePayment.EmployerGroup>" + '\n');
 
 
     //////////////////ePayment.33
     _val = getValue(businessObject.elements, "ePayment.33");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<PatientEmployer>" + null + "</PatientEmployer>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.33>" + null + "</ePayment.33>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_27", val: null });
         ePayment["ePayment.33"] = null;
+        ePayment["PatientEmployer"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<PatientEmployer>" + _val + "</PatientEmployer>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.33>" + _val + "</ePayment.33>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_27", val: _val });
-        ePayment["ePayment.33"] = _val;
+    else {
+
+        ePayment["PatientEmployer"] = _val[0];
+        v2Array.push({ section: "E07", element: "E07_27", val: _val[0] });
+        ePayment["ePayment.33"] = _val[0];
     };
 
     //////////////////ePayment.34
     _val = getValue(businessObject.elements, "ePayment.34");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerAddress>" + null + "</EmployerAddress>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.34>" + null + "</ePayment.34>" + '\n');
+    if (_val == null) {
+
         v2Array.push({ section: "E07", element: "E07_28", val: null });
         ePayment["ePayment.34"] = null;
+        ePayment["EmployerAddress"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerAddress>" + _val + "</EmployerAddress>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.34>" + _val + "</ePayment.34>" + '\n')
-        v2Array.push({ section: "E07", element: "E07_28", val: _val });
-        ePayment["ePayment.34"] = _val;
+    else {
+        ePayment["EmployerAddress"] = _val[0];
+        v2Array.push({ section: "E07", element: "E07_28", val: _val[0] });
+        ePayment["ePayment.34"] = _val[0];
     };
 
     //////////////////ePayment.35
     _val = getValue(businessObject.elements, "ePayment.35");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerCity>" + null + "</EmployerCity>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.35>" + null + "</ePayment.35>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_29", val: null });
         ePayment["ePayment.35"] = null;
+        ePayment["EmployerCity"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerCity>" + _val + "</EmployerCity>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.35>" + _val + "</ePayment.35>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_29", val: _val });
-        ePayment["ePayment.35"] = _val;
+    else {
+
+        ePayment["EmployerCity"]= setCodeText("ePayment.35", _val[0]);
+        v2Array.push({ section: "E07", element: "E07_29", val: SetD2("ePayment.35", _val[0]) });
+        ePayment["ePayment.35"] = _val[0];
     };
 
     //////////////////ePayment.36
     _val = getValue(businessObject.elements, "ePayment.36");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerState>" + null + "</EmployerState>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.36>" + null + "</ePayment.36>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_30", val: null });
         ePayment["ePayment.36"] = null;
+        ePayment["EmployerState"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerState>" + _val + "</EmployerState>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.36>" + _val + "</ePayment.36>" + '\n')
-        v2Array.push({ section: "E07", element: "E07_30", val: _val });
-        ePayment["ePayment.36"] = _val;
+    else {
+        ePayment["EmployerState"] = setCodeText("ePayment.36", _val[0]);
+        v2Array.push({ section: "E07", element: "E07_30", val: SetD2("ePayment.35", _val[0]) });
+        ePayment["ePayment.36"] = _val[0];
     };
 
     //////////////////ePayment.37
     _val = getValue(businessObject.elements, "ePayment.37");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerZip>" + null + "</EmployerZip>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.37>" + null + "</ePayment.37>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_31", val: null });
         ePayment["ePayment.37"] = null;
+        ePayment["EmployerZip"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerZip>" + _val + "</EmployerZip>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.37>" + _val + "</ePayment.37>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_31", val: _val });
-        ePayment["ePayment.37"] = _val;
+    else {
+        v2Array.push({ section: "E07", element: "E07_31", val: _val[0] });
+        ePayment["ePayment.37"] = _val[0];
+        ePayment["EmployerZip"] = _val[0];
     };
 
     //////////////////ePayment.38
     _val = getValue(businessObject.elements, "ePayment.38");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerCountry>" + null + "</EmployerCountry>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.38>" + null + "</ePayment.38>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.38"] = null;
+        ePayment["EmployerCountry"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t/t/t' + "<EmployerCountry>" + _val + "</EmployerCountry>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.38>" + _val + "</ePayment.38>" + '\n')
-        ePayment["ePayment.38"] = _val;
+    else {
+        ePayment["EmployerCountry"]  = setCodeText("ePayment.38", _val[0]);        
+        ePayment["ePayment.38"] = _val[0];
     };
 
 
     //////////////////ePayment.39
     _val = getValue(businessObject.elements, "ePayment.39");
-    if (_val == null)
-    {
-        OLAPArray.push('/t/t/t' + "<PatientEmployerPrimaryPhoneNumber>" + null + "</PatientEmployerPrimaryPhoneNumber>" + '\n');
-        _retArray.push('/t/t/t' + "<ePayment.38>" + null + "</ePayment.38>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_32", val: null });
-        ePayment["ePayment.38"] = null;
+        ePayment["ePayment.39"] = null;
+        ePayment["PatientEmployerPrimaryPhoneNumber"] = null;
     }
     else
     {
-        if (PhoneNumberType[i] == "9913001") 
+        sPatHomeNum ="";
+        var arr1 = [];
+        var arr2 = [];
+        for (var i = 0; i < _val.length; i++) 
         {
-            OLAPArray.push('/t/t/t' + "<PatientEmployerPrimaryPhoneNumber" + FAX + ">" + _val[i] + "</PatientEmployerPrimaryPhoneNumber>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.38" + FAX + ">" + _val[i] + "</ePayment.38>" + '\n');
-            ePayment["ePayment.38"] = _val[i];
-        }
-        else if (PhoneNumberType[i] == 9913003) {
-            OLAPArray.push('/t/t/t' + "<PatientEmployerPrimaryPhoneNumber" + HOME + ">" + _val[i] + "</PatientEmployerPrimaryPhoneNumber>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.38" + HOME + ">" + _val[i] + "</ePayment.38>" + '\n');
-            ePayment["ePayment.38"] = _val[i];
-        }
-        else if (PhoneNumberType[i] == 9913005) {
-            OLAPArray.push('/t/t/t' + "<PatientEmployerPrimaryPhoneNumber" + MOBILE + ">" + _val[i] + "</PatientEmployerPrimaryPhoneNumber>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.38" + MOBILE + ">" + _val[i] + "</ePayment.38>" + '\n');
-            ePayment["ePayment.38"] = _val[i];
-        }
-        else if (PhoneNumberType[i] == 9913007) {
-            OLAPArray.push('/t/t/t' + "<PatientEmployerPrimaryPhoneNumber" + PAGER + ">" + _val[i] + "</PatientEmployerPrimaryPhoneNumber>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.38" + PAGER + ">" + _val[i] + "</ePayment.38>" + '\n');
-            ePayment["ePayment.38"] = _val[i];
-        }
-        else if (PhoneNumberType[i] == 9913009) {
-            OLAPArray.push('/t/t/t' + "<PatientEmployerPrimaryPhoneNumber" + WORK + ">" + _val[i] + "</PatientEmployerPrimaryPhoneNumber>" + '\n');
-            _retArray.push('/t/t/t' + "<ePayment.38" + WORK + ">" + _val[i] + "</ePayment.38>" + '\n');
-            ePayment["ePayment.38"] = _val[i];
-        }
-        else {
-            _retArray.push('/t/t/t' + "<ePayment.39>" + _val + "</ePayment.39>" + '\n');
-            OLAPArray.push('/t/t/t' + "<PatientEmployerPrimaryPhoneNumber>" + _val + "</PatientEmployerPrimaryPhoneNumber>" + '\n');
-            v2Array.push({ section: "E07", element: "E07_32", val: _val });
-            ePayment["ePayment.39"] = _val;
-        }
+            var PhoneNumberType = setPhoneNumberType("ePatient.18", _val[i]);
+           
+            if (PhoneNumberType == "9913001")
+            {
+                arr1.push("FAX  " + _val[i]);
+                arr2.push("9913001  " + _val[i]);
+            }
+            else if (PhoneNumberType == "9913003")
+            {
+                arr1.push("HOME  " + _val[i]);
+                arr1.push("9913003  " + _val[i]);                
+             
+            }
+            else if (PhoneNumberType == "9913005")
+            {
+                arr1.push("MOBILE  " + _val[i]);
+                arr2.push("9913005  " + _val[i]);               
+            }
+            else if (PhoneNumberType == "9913007")
+            {
+                arr1.push("PAGER " + _val[i]);
+                arr2.push("9913007 " + _val[i]);
+            }
+            else if (PhoneNumberType == "9913009")
+            {
+                arr1.push("WORK " + _val[i]);
+                arr2.push("9913009 " + _val[i]);
+                sPatNum = _val[i];
+            }
+            else
+            {
+                arr1.push(_val[i]);
+                arr2.push(_val[i]);               
+            }
+        };
+        if(sPatHomeNum == null)
+        {
+            for (var i = 0; i < _val.length; i++) {
+                if(val[i] !=null)
+                {
+                    sPatHomeNum = _val[i]
+
+                }
+            }
+        };            
+        v2Array.push({ section: "E07", element: "E07_32", val: sPatHomeNum });
+        ePayment["ePayment.39"]  = arr1.slice(0);
+        ePayment["PatientEmployerPrimaryPhoneNumber"] = arr2.slice(0);
     };
-    _retArray.push('/t/t' + "</ePayment.EmployerGroup>" + '\n');
-    OLAPArray.push('/t/t' + "</ePayment.EmployerGroup>" + '\n');
 
     //////////////////ePayment.40
     _val = getValue(businessObject.elements, "ePayment.40");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<ResponseUrgency>" + null + "</ResponseUrgency>" + '\n');
-        _retArray.push('/t' + "<ePayment.40>" + null + "</ePayment.40>" + '\n');
+    if (_val == null) {
         v2Array.push({ section: "E07", element: "E07_33", val: null });
         ePayment["ePayment.40"] = null;
+        ePayment["ResponseUrgency"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<ResponseUrgency>" + setCodeText("ePayment.40", _val) + "</ResponseUrgency>" + '\n');
-        _retArray.push('/t' + "<ePayment.40>" + _val + "</ePayment.40>" + '\n');
-        v2Array.push({ section: "E07", element: "E07_33", val: SetD2("ePayment.40", _val) });
-        ePayment["ePayment.40"] = _val;
+    else {
+        v2Array.push({ section: "E07", element: "E07_33", val: SetD2("ePayment.40", _val[0]) });
+        ePayment["ePayment.40"] = _val[0];
+        ePayment["ResponseUrgency"] = setCodeText("ePayment.40", _val[0]);
     };
 
     //////////////////ePayment.41
     _val = getValue(businessObject.elements, "ePayment.41");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<PatientTransportAssessment>" + null + "</PatientTransportAssessment>" + '\n');
-        _retArray.push('/t' + "<ePayment.41>" + null + "</ePayment.41>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.41"] = null;
+        ePayment["PatientTransportAssessment"] = null;
     }
-    else
-    {
+    else {
         var arr1 = [];
+        var arr3 = [];
         for (var i = 0; i < _val.length; i++) {
-            OLAPArray.push('/t' + "<PatientTransportAssessment>" + setCodeText("ePayment.41", _val) + "</PatientTransportAssessment>" + '\n');
-            _retArray.push('/t' + "<ePayment.41>" + _val[i] + "</ePayment.41>" + '\n');
             arr1.push(_val[i]);
+            arr3.push(setCodeText("ePayment.41", _val[i]));
         }
-        ePayment["ePayment.41"] = arr1.slice(0);;
+        ePayment["ePayment.41"] = arr1.slice(0);
+        ePayment["PatientTransportAssessment"] = arr3.slice(0);
     };
 
 
     //////////////////ePayment.42
     _val = getValue(businessObject.elements, "ePayment.42");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<SpecialtyCareTransportCareProvider>" + null + "</SpecialtyCareTransportCareProvider>" + '\n');
-        _retArray.push('/t' + "<ePayment.42>" + null + "</ePayment.42>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.42"] = null;
+        ePayment["SpecialtyCareTransportCareProvider"] = null;
     }
-    else
-    {
+    else {        
         var arr1 = [];
+        var arr3 = [];
         for (var i = 0; i < _val.length; i++) {
-            OLAPArray.push('/t' + "<SpecialtyCareTransportCareProvider>" + setCodeText("ePayment.42", _val) + "</SpecialtyCareTransportCareProvider>" + '\n');
-            _retArray.push('/t' + "<ePayment.42>" + _val[i] + "</ePayment.42>" + '\n');
             arr1.push(_val[i]);
+            arr3.push(setCodeText("ePayment.42", _val[i]));
         }
-        ePayment["ePayment.42"] = arr1.slice(0);;
+        ePayment["ePayment.42"] = arr1.slice(0);
+        ePayment["SpecialtyCareTransportCareProvider"] =arr3.slice(0);
+
     };
 
     //////////////////ePayment.43
     _val = getValue(businessObject.elements, "ePayment.43");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<AmbulanceTransportCode>" + null + "</AmbulanceTransportCode>" + '\n');
-        _retArray.push('/t' + "<ePayment.43>" + null + "</ePayment.43>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.43"] = null;
+        ePayment["AmbulanceTransportCode"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<AmbulanceTransportCode>" + _val + "</AmbulanceTransportCode>" + '\n');
-        _retArray.push('/t' + "<ePayment.43>" + _val + "</ePayment.43>" + '\n');
-        ePayment["ePayment.43"] = _val;
+    else {
+        ePayment["ePayment.43"] = _val[0];
+        ePayment["AmbulanceTransportCode"] = _val[0];
     };
 
     //////////////////ePayment.44
     _val = getValue(businessObject.elements, "ePayment.44");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<AmbulanceTransportReasonCode>" + null + "</AmbulanceTransportReasonCode>" + '\n');
-        _retArray.push('/t' + "<ePayment.44>" + null + "</ePayment.44>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.44"] = null;
+        ePayment["AmbulanceTransportReasonCode"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<AmbulanceTransportReasonCode>" + setCodeText("ePayment.44", _val) + "</AmbulanceTransportReasonCode>" + '\n');
-        _retArray.push('/t' + "<ePayment.44>" + _val + "</ePayment.44>" + '\n');
-        ePayment["ePayment.44"] = _val;
+    else {
+        ePayment["AmbulanceTransportReasonCode"] = setCodeText("ePayment.44", _val[0]) ;       
+        ePayment["ePayment.44"] = _val[0];
     };
 
     //////////////////ePayment.45
     _val = getValue(businessObject.elements, "ePayment.45");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<RoundTripPurposeDescription>" + null + "<RoundTripPurposeDescription>" + '\n');
-        _retArray.push('/t' + "<ePayment.45>" + null + "</ePayment.45>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.45"] = null;
+        ePayment["RoundTripPurposeDescription"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<RoundTripPurposeDescription>" + null + "<RoundTripPurposeDescription>" + '\n');
-        _retArray.push('/t' + "<ePayment.45>" + _val + "</ePayment.45>" + '\n');
-        ePayment["ePayment.45"] = _val;
+    else {
+        ePayment["ePayment.45"] = _val[0];
+        ePayment["RoundTripPurposeDescription"] = _val[0];
     };
 
     //////////////////ePayment.46
     _val = getValue(businessObject.elements, "ePayment.46");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<StretcherPurposeDescription>" + null + "<StretcherPurposeDescription>" + '\n');
-        _retArray.push('/t' + "<ePayment.46>" + null + "</ePayment.46>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.46"] = null;
+        ePayment["StretcherPurposeDescription"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<StretcherPurposeDescription>" + _val + "<StretcherPurposeDescription>" + '\n');
-        _retArray.push('/t' + "<ePayment.46>" + _val + "</ePayment.46>" + '\n');
-        ePayment["ePayment.46"] = _val;
+    else {
+        ePayment["StretcherPurposeDescription"] = _val[0];
+        ePayment["ePayment.46"] = _val[0];
     };
 
     //////////////////ePayment.47
     _val = getValue(businessObject.elements, "ePayment.47");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<AmbulanceConditionsIndicator>" + null + "<AmbulanceConditionsIndicator>" + '\n');
-        _retArray.push('/t' + "<ePayment.47>" + null + "</ePayment.47>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.47"] = null;
+        ePayment["AmbulanceConditionsIndicator"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<AmbulanceConditionsIndicator>" + _val + "<AmbulanceConditionsIndicator>" + '\n');
-        _retArray.push('/t' + "<ePayment.47>" + _val + "</ePayment.47>" + '\n');
-        ePayment["ePayment.47"] = _val;
+    else {
+        ePayment["ePayment.47"] = _val[0];
+        ePayment["AmbulanceConditionsIndicator"] = _val[0];
     };
 
     //////////////////ePayment.48
     _val = getValue(businessObject.elements, "ePayment.48");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<MileagetoClosestHospitalFacility>" + null + "<MileagetoClosestHospitalFacility>" + '\n');
-        _retArray.push('/t' + "<ePayment.48>" + null + "</ePayment.48>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.48"] = null;
+        ePayment["MileagetoClosestHospitalFacility"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<MileagetoClosestHospitalFacility>" + _val + "<MileagetoClosestHospitalFacility>" + '\n');
-        _retArray.push('/t' + "<ePayment.48>" + _val + "</ePayment.48>" + '\n');
-        ePayment["ePayment.48"] = _val;
+    else {
+        ePayment["ePayment.48"] = _val[0];
+        ePayment["MileagetoClosestHospitalFacility"] = _val[0];
     };
 
     //////////////////ePayment.49
     _val = getValue(businessObject.elements, "ePayment.49");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<ALSAssessmentPerformedandWarranted>" + null + "<ALSAssessmentPerformedandWarranted>" + '\n');
-        _retArray.push('/t' + "<ePayment.49>" + null + "</ePayment.49>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.49"] = null;
+        ePayment["ALSAssessmentPerformedandWarranted"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<ALSAssessmentPerformedandWarranted>" + setCodeText("ePayment.49", _val) + "</ALSAssessmentPerformedandWarranted>" + '\n');
-        _retArray.push('/t' + "<ePayment.49>" + _val + "</ePayment.49>" + '\n');
-        ePayment["ePayment.49"] = _val;
+    else {
+        ePayment["ePayment.49"] = _val[0];
+        ePayment["ALSAssessmentPerformedandWarranted"] = _val[0];
     };
 
     //////////////////ePayment.50
     _val = getValue(businessObject.elements, "ePayment.50");
-    if (_val == null)
-    {
-        if (isRequiredStateElement("ePayment.50"))
-        {
-            OLAPArray.push('/t' + "<CMSServiceLevel>" + "NOT RECORDED" + "<CMSServiceLevel>" + '\n');
-            _retArray.push('/t' + "<ePayment.50" + NIL_V3NOT_RECORDED + '\n');
+    if (_val == null) {
+        if (isRequiredStateElement("ePayment.50")) {
             v2Array.push({ section: "E05", element: "E5_34", val: v2NOT_RECORDED });
-            ePayment["ePayment.50"] = V3NOT_RECORDED;
+            ePayment["ePayment.50"] = NIL_V3NOT_RECORDED;
+            ePayment["CMSServiceLevel"] = V3NOT_RECORDED;
         }
     }
-    else
-    {
-        OLAPArray.push('/t' + "<CMSServiceLevel>" + setCodeText("ePayment.50", _val) + "<CMSServiceLevel>" + '\n');
-        v2Array.push({ section: "E05", element: "E5_34", val: setV2("ePayment.50", _val) });
-        _retArray.push('/t' + "<ePayment.50>" + _val + "</ePayment.50>" + '\n');
-        ePayment["ePayment.50"] = _val;
+    else {
+        v2Array.push({ section: "E05", element: "E5_34", val: setV2("ePayment.50", _val[0]) });
+        ePayment["ePayment.50"] = _val[0];
+        ePayment["CMSServiceLevel"] = setCodeText("ePayment.50", _val[0]) ;
     };
 
     //////////////////ePayment.51
     _val = getValue(businessObject.elements, "ePayment.51");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<EMSConditionCode>" + null + "<EMSConditionCode>" + '\n');
-        _retArray.push('/t' + "<ePayment.51>" + null + "</ePayment.51>" + '\n');
+    if (_val == null) {
+        ePayment["EMSConditionCode"] = null;
         ePayment["ePayment.51"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<EMSConditionCode>" + _val + "<EMSConditionCode>" + '\n');
-        _retArray.push('/t' + "<ePayment.51>" + _val + "</ePayment.51>" + '\n');
-        ePayment["ePayment.51"] = _val;
+    else {
+        ePayment["ePayment.51"] = _val[0];
+        ePayment["EMSConditionCode"] = _val[0];
     };
 
     //////////////////ePayment.52
     _val = getValue(businessObject.elements, "ePayment.52");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<CMSTransportationIndicator>" + null + "<CMSTransportationIndicator>" + '\n');
-        _retArray.push('/t' + "<ePayment.52>" + null + "</ePayment.52>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.52"] = null;
+        ePayment["CMSTransportationIndicator"] = null;
+        v2Array.push({ section: "E05", element: "E5_37", val: null});
     }
-    else
-    {
-        OLAPArray.push('/t' + "<CMSTransportationIndicator>" + setCodeText("ePayment.52", _val) + "<CMSTransportationIndicator>" + '\n');
-        _retArray.push('/t' + "<ePayment.52>" + _val + "</ePayment.52>" + '\n');
-        E07.E07_37 = SetD2("ePayment.52", _val);
-        ePayment["ePayment.52"] = _val;
+    else {
+        v2Array.push({ section: "E05", element: "E5_37", val: setV2("ePayment.52", _val[0]) });        
+        ePayment["ePayment.52"] = _val[0];
+        ePayment["CMSTransportationIndicator"] = setCodeText("ePayment.52", _val[0]);
     };
 
     //////////////////ePayment.53
     _val = getValue(businessObject.elements, "ePayment.53");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<TransportAuthorizationCode>" + null + "<TransportAuthorizationCode>" + '\n');
-        _retArray.push('/t' + "<ePayment.53>" + null + "</ePayment.53>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.53"] = null;
-
+        ePayment["TransportAuthorizationCode"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<TransportAuthorizationCode>" + _val + "<TransportAuthorizationCode>" + '\n');
-        _retArray.push('/t' + "<ePayment.53>" + _val + "</ePayment.53>" + '\n');
-        ePayment["ePayment.53"] = _val;
+    else {
+        ePayment["ePayment.53"] = _val[0];
+        ePayment["TransportAuthorizationCode"] = _val[0];
     };
 
     //////////////////ePayment.54
     _val = getValue(businessObject.elements, "ePayment.54");
-    if (_val == null)
-    {
-        OLAPArray.push('/t' + "<PriorAuthorizationCodePayer>" + null + "<PriorAuthorizationCodePayer>" + '\n');
-        _retArray.push('/t' + "<ePayment.54>" + null + "</ePayment.54>" + '\n');
+    if (_val == null) {
         ePayment["ePayment.54"] = null;
+        ePayment["PriorAuthorizationCodePayer"] = null;
     }
-    else
-    {
-        OLAPArray.push('/t' + "<PriorAuthorizationCodePayer>" + _val + "<PriorAuthorizationCodePayer>" + '\n');
-        _retArray.push('/t' + "<ePayment.54>" + _val + "</ePayment.54>" + '\n');
-        ePayment["ePayment.54"] = _val;
+    else {
+        ePayment["ePayment.54"] = _val[0];
+        ePayment["PriorAuthorizationCodePayer"] = _val[0];
     };
 
 
     ///////////////////LabResultGroup
     _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "ePayment.SupplyItemGroup");
-    for (var x = 0; x < _sectionIndex.length; x++) {
+    for (var x = 0; x < _sectionIndex.length; x++) 
+    {
         var listOfElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.elements
-        _retArray.push('/t' + "<ePayment.SupplyItemGroup>" + '\n');
-        OLAPArray.push('/t' + "<ePayment.SupplyItemGroup>" + '\n');
-
-
+    
         //////////////////ePayment.55
         _val = getValue(listOfElements, "ePayment.55");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t' + "<SupplyItemUsedName>" + null + "<SupplyItemUsedName>" + '\n');
-            _retArray.push('/t/t' + "<ePayment.55>" + null + "</ePayment.55>" + '\n');
-            ePayment["ePayment.55"] = null;
+        if (_val == null) {
+            SupplyItemGroup["ePayment.55"] = null;
+            SupplyItemGroup["SupplyItemUsedName"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t' + "<SupplyItemUsedName>" + _val + "<SupplyItemUsedName>" + '\n');
-            _retArray.push('/t/t' + "<ePayment.55>" + _val + "</ePayment.55>" + '\n');
-            SupplyItemGroup["ePayment.55"] = _val;
+        else {
+            SupplyItemGroup["ePayment.55"] = _val[0];
+            SupplyItemGroup["SupplyItemUsedName"] = _val[0];
         };
 
         //////////////////ePayment.56
         _val = getValue(listOfElements, "ePayment.56");
-        if (_val == null)
-        {
-            OLAPArray.push('/t/t' + "<NumberofSupplyItemsUsed>" + null + "<NumberofSupplyItemsUsed>" + '\n');
-            _retArray.push('/t/t' + "<ePayment.56>" + null + "</ePayment.56>" + '\n');
+        if (_val == null) {
             ePayment["ePayment.56"] = null;
+            ePayment["NumberofSupplyItemsUsed"] = null;
         }
-        else
-        {
-            OLAPArray.push('/t/t' + "<NumberofSupplyItemsUsed>" + _val + "<NumberofSupplyItemsUsed>" + '\n');
-            _retArray.push('/t/t' + "<ePayment.56>" + _val + "</ePayment.56>" + '\n');
-            ePayment["ePayment.56"] = _val;
+        else {
+            ePayment["ePayment.56"] = _val[0];
+            ePayment["NumberofSupplyItemsUsed"] = _val[0];
         };
-        _retArray.push('/t' + "</ePayment.SupplyItemGroup>" + '\n');
-        OLAPArray.push('/t' + "</ePayment.SupplyItemGroup>" + '\n');
     };
 
-    _retArray.push("</ePayment>" + '\n');
-    OLAPArray.push("</ePayment>" + '\n');
 };
 
 
@@ -1132,13 +979,55 @@ var ePayment01 = {
     "2601023": "-10",
 
 };
-var ePayment01 = {
+var ePayment02 = {
     "9922001": "0",
     "9922003": "-10",
     "9922005": "1"
 };
+var ePayment11 = {
+    "2611001":"765",
+    "2611003":"755",
+    "2611005":"760",
+    "2611007":"765",
+    "2611009":"765",
+    "2611011":"765",
+    "2611013":"765",
+    "2611015":"765",
+    "2611017":"765",
+    "2611019":"765",
+    "2611021":"765",
+    "2611023":"765",
+    "2611025":"-10"
+};
+var ePayment40 = {
+    "2640001":"980",
+    "2640003":"985"
+};
+var ePayment50 = {
+    "2650001":"1000",
+    "2650003":"1005",
+    "2650005":"1010",
+    "2650007":"990",
+    "2650009":"995",
+    "2650011":"1025",
+    "2650013":"1015",
+    "2650015":"1020",
+    "2650017":"1030"
+};
 
-
+var ePayment52 = {
+    "C1":"1035",
+    "C2":"1036",
+    "C3":"1039",
+    "C4":"1038",
+    "C5":"1039",
+    "C6":"1037",
+    "C7":"-10",
+    "D1":"1041",
+    "D2":"1043",
+    "D3":"1043",
+    "D4":"1044",
+};
 var ePayment334_01 = {
 
     "2601001": "Insurance",

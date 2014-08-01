@@ -1,6 +1,7 @@
 var ErrorList = [];
-var v3NOT_REPORTING = " NV=\"7701005\"";
-var v3NOT_RECORDED = " NV=\"7701003\"";
+var v3NOT_REPORTING = "7701005";
+var v3NOT_RECORDED = "7701003";
+var v3NOT_APPLICABLE= "7701001";
 var v2NOT_AVAILABLE = "-5";
 var v2NOT_REPORTING = "-15";
 var v2NOT_APPLICABLE = "-25"
@@ -14,11 +15,53 @@ var PN_UNABLE_TO_COMPLETE_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801023\"/>";
 var PN_FINDING_NOT_PRESENT_IS_NILLABLE = "xsi:nil=\"true\" PN=\"8801005\"/>";
 
 var eResponse = new Object();
-var seteResponseGroup = function (businessObject) {
-    var isNotApplicableFlag = true;  //once I have real data, set to False    
+var seteResponseGroup = function (businessObject, eDisposition) 
+{
+    //////////////////////eResponse.05
+    _val = getValue(businessObject.elements, "eResponse.05");
+    if (_val == null)
+    {
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.05", Description: "Type of Service Request  MANDATORY" })
+        eResponse["eResponse.05"] = null;
+        eResponse["TypeofServiceRequested"] = null;
+        v2Array.push({ section: "E02", element: "E02_04", val: null });
+    }
+    else
+    {
+        v2Array.push({ section: "E02", element: "E02_04", val: setV2("eResponse.05", _val[0]) });
+        eResponse["eResponse.05"] = _val[0];
+        eResponse["TypeofServiceRequested"] = setCodeText("eResponse.05", _val[0]); 
+        if(_val[0] in ["2205011","2205013"]) 
+        {
+            eResponse["StandBy"] = true;
+        };
+    };
+
+    //////////////////////eResponse.06
+    _val = getValue(businessObject.elements, "eResponse.06");
+    if (_val == null)
+    {
+        eResponse["eResponse.06"] = null;
+        eResponse["StandbyPurpose"] = null;
+    }
+    else
+    {
+        if(eResponse.StatndBy == false)
+        {            
+            eResponse["eResponse.06"] = _val[0];
+            eResponse["StandbyPurpose"] = setCodeText("eResponse.06", _val[0]);
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.06", Description: "Stand By Purpose/Type of Service Conflict " })
+            eResponse["eResponse.06"] = null;
+            eResponse["StandbyPurpose"] =  null;
+        }
+    };
+
 
     //////////////////////eResponse.01
-    //<!-- This pattern verifies that the EMS Agency Number in eResponse.01 matches the EMS Agency Number in dAgency.02. -->
+    //This pattern verifies that the EMS Agency Number in eResponse.01 matches the EMS Agency Number in dAgency.02.
     _val = getValue(businessObject.elements, "eResponse.01");
     if (_val == null)
     {
@@ -31,48 +74,72 @@ var seteResponseGroup = function (businessObject) {
         v2Array.push({ section: "E02", element: "E02_01", val: _val[0] });
         eResponse["eResponse.01"] = _val[0];
         eResponse["EMSAgencyNumber"] = _val[0];
-        isNotApplicableFlag = false;
     };
 
     //////////////////////eResponse.02
     _val = getValue(elementList, "eResponse.02");
     if (_val == null)
     {
-        if (isRequiredStateElement("eResponse.02"))
-        {
-            eResponse["eResponse.02"] = V3NOT_RECORDED;
-            eResponse["EMSAgencyName"] = NOT_RECORDED;
+        if(eResponse.StandBy == false)
+        {            
+            if (isRequiredStateElement("eResponse.02"))
+            {
+                eResponse["eResponse.02"] = V3NOT_RECORDED;
+                eResponse["EMSAgencyName"] = NOT_RECORDED;
+            }
+            else
+            {
+                eResponse["EMSAgencyName"] = NOT_REPORTING;
+                eResponse["eResponse.02"] = v3NOT_REPORTING;
+            }
         }
         else
         {
-            eResponse["EMSAgencyName"] = NOT_REPORTING;
-            eResponse["eResponse.02"] = v3NOT_REPORTING;
+            eResponse["EMSAgencyName"] = v3NOT_APPLICABLE
+            eResponse["eResponse.02"] = v3NOT_APPLICABLE;
         }
     }
     else
     {
         eResponse["eResponse.02"] = _val[0];
-        eResponse["EMSAgencyName"] = _val[0];
-        isNotApplicableFlag = false;
+        eResponse["EMSAgencyName"] = _val[0];      
     };
 
     //////////////////////eResponse.03
     _val = getValue(businessObject.elements, "eResponse.03");
     if (_val == null)
     {
-        if (isRequiredStateElement("eResponse.02") == true)
-        {
-            v2Array.push({ section: "E02", element: "E02_02", val: v2NOT_RECORDED });
-            eResponse["eResponse.03"] = V3NOT_RECORDED;
-            eResponse["IncidentNumber"] = NOT_RECORDED;
+        if(eResponse.StandBy == false)
+        {            
+            if (isRequiredStateElement("eResponse.02") == true)
+            {
+                v2Array.push({ section: "E02", element: "E02_02", val: v2NOT_RECORDED });
+                eResponse["eResponse.03"] = V3NOT_RECORDED;
+                eResponse["IncidentNumber"] = V3NOT_RECORDED;
+            }
+            else
+            {
+                v2Array.push({ section: "E02", element: "E02_02", val: v2NOT_APPLICABLE});
+                eResponse["eResponse.03"] = v3NOT_APPLICABLE;
+                eResponse["IncidentNumber"] = v3NOT_APPLICABLE;
+            }
         }
     }
     else
     {
-        v2Array.push({ section: "E02", element: "E02_02", val: _val[0] });
-        eResponse["eResponse.03"] = _val[0];
-        eResponse["IncidentNumber"] = _val[0];
-        isNotApplicableFlag = false;
+        if(eResponse.StandBy == false)
+        {            
+            v2Array.push({ section: "E02", element: "E02_02", val: _val[0] });
+            eResponse["eResponse.03"] = _val[0];
+            eResponse["IncidentNumber"] = _val[0];        
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.03", Description: "Stand By IncidentNumber/Type of Service Conflict " })
+            v2Array.push({ section: "E02", element: "E02_02", val: v2NOT_APPLICABLE });
+            eResponse["eResponse.03"] = v3NOT_APPLICABLE;
+            eResponse["IncidentNumber"] = v3NOT_APPLICABLE;        
+        }
     };
 
 
@@ -80,49 +147,37 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.04");
     if (_val == null)
     {
-        v2Array.push({ section: "E02", element: "E02_03", val: v2NOT_RECORDED });
-        eResponse["eResponse.04"] = v3NOT_RECORDED;
-        eResponse["ResponseNumber"] = NOT_RECORDED;
+        if(eResponse.StandBy == false)
+        {         
+            if (isRequiredStateElement("eResponse.04") == true)
+            {
+                v2Array.push({ section: "E02", element: "E02_03", val: v2NOT_RECORDED });
+                eResponse["eResponse.04"] = v3NOT_RECORDED;
+                eResponse["ResponseNumber"] = NOT_RECORDED;
+            }
+            else
+            {
+                v2Array.push({ section: "E02", element: "E02_03", val: v2NOT_APPLICABLE });
+                eResponse["eResponse.04"] = v3NOT_APPLICABLE;
+                eResponse["ResponseNumber"] = v3NOT_APPLICABLE;
+            }
+        }
     }
     else
     {
-        v2Array.push({ section: "E02", element: "E02_03", val: _val[0] });
-        eResponse["eResponse.04"] = _val[0];
-        eResponse["eResponse.04"] = _val[0];
-        isNotApplicableFlag = false;
-    };
-
-    //////////////////////eResponse.05
-
-    _val = getValue(businessObject.elements, "eResponse.05");
-    if (_val == null)
-    {
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.05", Description: "Type of Service Request  MANDATORY" })
-
-        eResponse["eResponse.05"] = null;
-        eResponse["TypeofServiceRequested"] = null;
-        v2Array.push({ section: "E02", element: "E02_04", val: null });
-    }
-    else
-    {
-        v2Array.push({ section: "E02", element: "E02_04", val: setV2("eResponse.05", _val) });
-        eResponse["eResponse.05"] = _val[0];
-        eResponse["TypeofServiceRequested"] = setCodeText("eResponse.05", _val[0]);
-        isNotApplicableFlag = false;
-    };
-
-    //////////////////////eResponse.06
-    _val = getValue(businessObject.elements, "eResponse.06");
-    if (_val == null)
-    {
-        eResponse["eResponse.06"] = null;
-        eResponse["StandbyPurpose"] = null;
-    }
-    else
-    {
-        isNotApplicableFlag = false;
-        eResponse["eResponse.06"] = _val[0];
-        eResponse["StandbyPurpose"] = setCodeText("eResponse.06", _val[0]);
+        if(eResponse.StandBy == false)
+        {         
+            v2Array.push({ section: "E02", element: "E02_03", val: _val[0] });
+            eResponse["eResponse.04"] = _val[0];
+            eResponse["ResponseNumber"] = _val[0];
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.04", Description: "Stand By Response Number/Type of Service Conflict " })
+            v2Array.push({ section: "E02", element: "E02_03", val: v2NOT_APPLICABLE });
+            eResponse["eResponse.04"] = v3NOT_APPLICABLE;
+            eResponse["ResponseNumber"] = v3NOT_APPLICABLE;
+        }
     };
 
 
@@ -131,13 +186,13 @@ var seteResponseGroup = function (businessObject) {
     if (_val == null)
     {
         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.07", Description: "Primary Role of the Unit MANDATORY" })
-        v2Array.push({ section: "E02", element: "E02_05", val: SetV2("eResponse.07", null) });
+        v2Array.push({ section: "E02", element: "E02_05", val: null });
         eResponse["eResponse.07"] = null;
         eResponse["PrimaryRoleoftheUnit"] = null;
     }
     else
     {
-        isNotApplicableFlag = false;
+        v2Array.push({ section: "E02", element: "E02_05", val: SetV2("eResponse.07", _val[0]) });
         eResponse["PrimaryRoleoftheUnit"] = setCodeText("eResponse.07", _val[0]);
         eResponse["eResponse.07"] = _val[0];
     };
@@ -151,24 +206,64 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.08");
     if (_val == null)
     {
-        v2Array.push({ section: "E02", element: "E02_05", val: v2NOT_RECORDED });
-        eResponse["eResponse.08"] = v3NOT_RECORDED;
-        eResponse["TypeofDispatchDelay"] = NOT_RECORDED;
+        if(eResponse.StandBy == false)
+        {         
+            if (isRequiredStateElement("eResponse.09") == true)
+            {
+                v2Array.push({ section: "E02", element: "E02_06", val: v2NOT_RECORDED });
+                eResponse["eResponse.08"] = v3NOT_RECORDED;
+                eResponse["TypeofDispatchDelay"] = NOT_RECORDED;
+            }
+            else
+            {
+                v2Array.push({ section: "E02", element: "E02_06", val: v2NOT_APPLICABLE });
+                eResponse["eResponse.08"] = v3NOT_APPLICABLE;
+                eResponse["TypeofDispatchDelay"] = v3NOT_APPLICABLE;
+            }
+        }
     }
     else
     {
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        for (var i = 0; i < _val.length; i++) {
-            arr1.push(_val[i]);
-            arr2.push(setD2("eResponse.08", _val[i]));
-            arr3.push(setCodeText("eResponse.08", _val[i]));
-        };
-        isNotApplicableFlag = false;
-        eResponse["TypeofDispatchDelay"] =arr3.slice(0);
-        v2Array.push({ section: "E02", element: "E02_05", val: arr2.slice(0) });
-        eResponse["eResponse.08"] = arr1.slice(0);
+        if(eResponse.StandBy == false)
+        {         
+            var bDelay = false;
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++) 
+            {
+                if (_val[i].trim().length != 0) 
+                {
+                    if(_val[i] == '2208013')
+                    { 
+                        bDelay == true
+                    }
+                    arr1.push(_val[i]);
+                    arr2.push(setD2("eResponse.08", _val[i]));
+                    arr3.push(setCodeText("eResponse.08", _val[i]));
+                }
+            };
+            if (arr1.length > 0) 
+            {
+                if('2208013' in arr1) //if None, than None only
+                {
+                    if(arr1.length >1)
+                    {
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.08", Description: "Dispatch Delay Type Conflict" })
+                    }
+                };
+                eResponse["TypeofDispatchDelay"] =arr3.slice(0);
+                v2Array.push({ section: "E02", element: "E02_06", val: arr2.slice(0) });
+                eResponse["eResponse.08"] = arr1.slice(0);
+            }
+        }
+        else
+        {         
+            v2Array.push({ section: "E02", element: "E02_06", val: v2NOT_APPLICABLE });
+            eResponse["eResponse.08"] = v3NOT_APPLICABLE;
+            eResponse["TypeofDispatchDelay"] = v3NOT_APPLICABLE;
+        }
+    };
 
         //////////////////////eResponse.09
         //context="nem:eResponse.09[. = '2209011']">
@@ -179,26 +274,54 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.09");
     if (_val == null)
     {
-        v2Array.push({ section: "E02", element: "E02_07", val: v2NOT_RECORDED });
-        eResponse["eResponse.09"] = v3NOT_RECORDED;
-        eResponse["TypeofResponseDelay"] = NOT_RECORDED;
+        if (eResponse.StandBy == false) {
+            if (isRequiredStateElement("eResponse.09") == true) {
+                v2Array.push({ section: "E02", element: "E02_07", val: v2NOT_RECORDED });
+                eResponse["eResponse.09"] = v3NOT_RECORDED;
+                eResponse["TypeofResponseDelay"] = NOT_RECORDED;
+            }
+            else {
+                v2Array.push({ section: "E02", element: "E02_07", val: v2NOT_APPLICABLE });
+                eResponse["eResponse.09"] = v3NOT_APPLICABLE;
+                eResponse["TypeofResponseDelay"] = v3NOT_APPLICABLE;
+            }
+        }
     }
-    else
-    {
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        for (var i = 0; i < _val.length; i++) {
-            arr1.push(_val[i]);
-            arr2.push(setD2("eResponse.09", _val[i]));
-            arr3.push(setCodeText("eResponse.09", _val[i]));
-        };
-        v2Array.push({ section: "E02", element: "E02_07", val:  arr1.slice(0) });
-        eResponse["eResponse.09"] = arr1.slice(0);
-        eResponse["TypeofResponseDelay"]  =arr3.slice(0);
-        isNotApplicableFlag = false;
-    };
+    else {
+        if (eResponse.StandBy == false) {
+            var bDelay = false;
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++) {
+                if (_val[i].trim().length != 0) {
+                    if (_val[i] == '2209011') {
+                        bDelay == true
+                    }
+                    arr1.push(_val[i]);
+                    arr2.push(setD2("eResponse.09", _val[i]));
+                    arr3.push(setCodeText("eResponse.09", _val[i]));
+                }
+            };
+            if (arr1.length > 0) {
+                if ('2209011' in arr1) //if None, than None only
+                {
+                    if (arr1.length > 1) {
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.09", Description: "Response Delay Type Conflict" })
+                    }
+                };
+                eResponse["TypeofResponseDelay"] = arr3.slice(0);
+                v2Array.push({ section: "E02", element: "E02_07", val: arr2.slice(0) });
+                eResponse["eResponse.09"] = arr1.slice(0);
+            }
+        }
+        else {
 
+            v2Array.push({ section: "E02", element: "E02_07", val: v2NOT_APPLICABLE });
+            eResponse["eResponse.09"] = v3NOT_APPLICABLE;
+            eResponse["TypeofResponseDelay"] = v3NOT_APPLICABLE;
+        }
+    };
 
     alert("A scene delay is any time delay that occurs from the time the unit arrived on scene (eTimes.06) to the time the unit left the scene (eTimes.09).")
     //////////////////////eResponse.10
@@ -209,24 +332,53 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.10");
     if (_val == null)
     {
-        v2Array.push({ section: "E02", element: "E02_08", val: v2NOT_RECORDED });
-        eResponse["eResponse.10"] = v3NOT_RECORDED;
-        eResponse["TypeofSceneDelay"] = NOT_RECORDED;
+        if (eResponse.StandBy == false) {
+            if (isRequiredStateElement("eResponse.10") == true) {
+                v2Array.push({ section: "E02", element: "E02_08", val: v2NOT_RECORDED });
+                eResponse["eResponse.10"] = v3NOT_RECORDED;
+                eResponse["TypeofSceneDelay"] = NOT_RECORDED;
+            }
+            else {
+                v2Array.push({ section: "E02", element: "E02_08", val: v2NOT_APPLICABLE });
+                eResponse["eResponse.10"] = v3NOT_APPLICABLE;
+                eResponse["TypeofSceneDelay"] = v3NOT_APPLICABLE;
+            }
+        }
     }
-    else
-    {
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        for (var i = 0; i < _val.length; i++) {
-            arr1.push(_val[i]);
-            arr2.push(setD2("eResponse.10", _val[i]));
-            arr3.push(setCodeText("eResponse.10", _val[i]));
-        };
-        v2Array.push({ section: "E02", element: "E02_08", val:  arr1.slice(0) });
-        eResponse["eResponse.10"] = arr1.slice(0);
-        eResponse["TypeofSceneDelay"]  =arr3.slice(0);       
-        isNotApplicableFlag = false;
+    else {
+        if (eResponse.StandBy == false) {
+            var bDelay = false;
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++) {
+                if (_val[i].trim().length != 0) {
+                    if (_val[i] == '2210017') {
+                        bDelay == true
+                    }
+                    arr1.push(_val[i]);
+                    arr2.push(setD2("eResponse.10", _val[i]));
+                    arr3.push(setCodeText("eResponse.10", _val[i]));
+                }
+            };
+            if (arr1.length > 0) {
+                if ('2210017' in arr1) //if None, than None only
+                {
+                    if (arr1.length > 1) {
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.18", Description: "Scene Delay Type Conflict" })
+                    }
+                };
+                eResponse["TypeofSceneDelay"] = arr3.slice(0);
+                v2Array.push({ section: "E02", element: "E02_08", val: arr2.slice(0) });
+                eResponse["eResponse.10"] = arr1.slice(0);
+            }
+        }
+        else {
+
+            v2Array.push({ section: "E02", element: "E02_08", val: v2NOT_APPLICABLE });
+            eResponse["eResponse.10"] = v3NOT_APPLICABLE;
+            eResponse["TypeofSceneDelay"] = v3NOT_APPLICABLE;
+        }
     };
 
     //////////////////////eResponse.11
@@ -238,24 +390,56 @@ var seteResponseGroup = function (businessObject) {
     _val = getValue(businessObject.elements, "eResponse.11");
     if (_val == null)
     {
-        v2Array.push({ section: "E02", element: "E02_09", val: v2NOT_RECORDED });
-        eResponse["eResponse.11"] = v2NOT_RECORDED;
-        eResponse["TypeofTransportDelay"] = NOT_RECORDED;
+        if (eResponse.StandBy == false)
+        {
+            if (isRequiredStateElement("eResponse.11") == true) {
+                v2Array.push({ section: "E02", element: "E02_09", val: v2NOT_RECORDED });
+                eResponse["eResponse.11"] = v3NOT_RECORDED;
+                eResponse["TypeofTransportDelay"] = NOT_RECORDED;
+            }
+            else {
+                v2Array.push({ section: "E02", element: "E02_09", val: v2NOT_APPLICABLE });
+                eResponse["eResponse.11"] = v3NOT_APPLICABLE;
+                eResponse["TypeofTransportDelay"] = v3NOT_APPLICABLE;
+            }
+        }
     }
-    else
-    {        
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        for (var i = 0; i < _val.length; i++) {
-            arr1.push(_val[i]);
-            arr2.push(setD2("eResponse.11", _val[i]));
-            arr3.push(setCodeText("eResponse.11", _val[i]));
-        };
-        isNotApplicableFlag = false;
-        v2Array.push({ section: "E02", element: "E02_09", val:  arr1.slice(0) });
-        eResponse["eResponse.11"] = arr1.slice(0);
-        eResponse["TypeofTransportDelay"]  =arr3.slice(0);       
+    else {
+        if (eResponse.StandBy == false) {
+            var bDelay = false;
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++) {
+                if (_val[i].trim().length != 0) {
+                    if (_val[i] == '2211011') {
+                        bDelay == true
+                    }
+                    arr1.push(_val[i]);
+                    arr2.push(setD2("eResponse.11", _val[i]));
+                    arr3.push(setCodeText("eResponse.11", _val[i]));
+                }
+            };
+            if (arr1.length > 0) {
+                if ('2211011' in arr1) //if None, than None only
+                {
+                    if (arr1.length > 1)
+                    {
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.11", Description: "Transport Delay Type Conflict" })
+                    }
+                };
+                eResponse["TypeofTransportDelay"] = arr3.slice(0);
+                v2Array.push({ section: "E02", element: "E02_09", val: arr2.slice(0) });
+                eResponse["eResponse.11"] = arr1.slice(0);
+            }
+        }
+        else
+        {
+
+            v2Array.push({ section: "E02", element: "E02_09", val: v2NOT_APPLICABLE });
+            eResponse["eResponse.11"] = v3NOT_APPLICABLE;
+            eResponse["TypeofTransportDelay"] = v3NOT_APPLICABLE;
+        }
     };
 
     //////////////////////eResponse.12
@@ -267,26 +451,56 @@ var seteResponseGroup = function (businessObject) {
     
     alert("A transport delay is any time delay that occurs from the time the unit left the scene (eTimes.09) to the time the patient arrived at the destination (eTimes.10).")
     _val = getValue(businessObject.elements, "eResponse.12");
-    if (_val == null) {
-        v2Array.push({ section: "E02", element: "E02_10", val: v2NOT_RECORDED });
-        eResponse["eResponse.12"] = v2NOT_RECORDED;
-        eResponse["TypeofTurnAroundDelay"] = NOT_RECORDED;
+    if (_val == null)
+    {
+        if (eResponse.StandBy == false) {
+            if (isRequiredStateElement("eResponse.12") == true) {
+                v2Array.push({ section: "E02", element: "E02_10", val: v2NOT_RECORDED });
+                eResponse["eResponse.12"] = v3NOT_RECORDED;
+                eResponse["TypeofTurnAroundDelay"] = NOT_RECORDED;
+            }
+            else {
+                v2Array.push({ section: "E02", element: "E02_10", val: v2NOT_APPLICABLE });
+                eResponse["eResponse.12"] = v3NOT_APPLICABLE;
+                eResponse["TypeofTurnAroundDelay"] = v3NOT_APPLICABLE;
+            }
+        }
     }
     else {
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        for (var i = 0; i < _val.length; i++) {
-            arr1.push(_val[i]);
-            arr2.push(setD2("eResponse.12", _val[i]));
-            arr3.push(setCodeText("eResponse.12", _val[i]));
-        };
-        isNotApplicableFlag = false;
-        v2Array.push({ section: "E02", element: "E02_10", val:  arr1.slice(0) });
-        eResponse["eResponse.12"] = arr1.slice(0);
-        eResponse["TypeofTurnAroundDelay"]  =arr3.slice(0);       
-    };
+        if (eResponse.StandBy == false) {
+            var bDelay = false;
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++) {
+                if (_val[i].trim().length != 0) {
+                    if (_val[i] == "2212015") {
+                        bDelay == true
+                    }
+                    arr1.push(_val[i]);
+                    arr2.push(setD2("eResponse.12", _val[i]));
+                    arr3.push(setCodeText("eResponse.12", _val[i]));
+                }
+            };
+            if (arr1.length > 0) {
+                if ("2212015" in arr1) //if None, than None only
+                {
+                    if (arr1.length > 1) {
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.12", Description: "Turn Around Delay Type Conflict" })
+                    }
+                };
+                eResponse["TypeofTurnAroundDelay"] = arr3.slice(0);
+                v2Array.push({ section: "E02", element: "E02_10", val: arr2.slice(0) });
+                eResponse["eResponse.12"] = arr1.slice(0);
+            }
+        }
+        else {
 
+            v2Array.push({ section: "E02", element: "E02_10", val: v2NOT_APPLICABLE });
+            eResponse["eResponse.12"] = v3NOT_APPLICABLE;
+            eResponse["TypeofTurnAroundDelay"] = v3NOT_APPLICABLE;
+        }
+    };
 
     //////////////////////eResponse.13
     _val = getValue(businessObject.elements, "eResponse.13");
@@ -298,8 +512,7 @@ var seteResponseGroup = function (businessObject) {
         eResponse["EMSVehicleUnitNumber"] = null;
     }
     else
-    {
-        isNotApplicableFlag = false;
+    {        
         v2Array.push({ section: "E02", element: "E02_11", val: _val[0] });
         eResponse["EMSVehicleUnitNumber"] = _val[0];
         eResponse["eResponse.13"] = _val[0];
@@ -313,8 +526,7 @@ var seteResponseGroup = function (businessObject) {
         eResponse["EMSUnitCallSign"] = null;
     }
     else
-    {
-        isNotApplicableFlag = false;
+    {        
         v2Array.push({ section: "E02", element: "E02_12", val: _val[0] });
         eResponse["eResponse.14"] = _val[0];
         eResponse["EMSUnitCallSign"] = _val[0];
@@ -329,8 +541,8 @@ var seteResponseGroup = function (businessObject) {
         eResponse["eResponse.15"] = null;
         eResponse["LevelofCareofThisUnit"] = null;
     }
-    else {
-        isNotApplicableFlag = false;
+    else
+    {
         eResponse["LevelofCareofThisUnit"] = setCodeText("eResponse.15", _val[0]);;
         eResponse["eResponse.15"] = _val[0];
     };
@@ -345,8 +557,7 @@ var seteResponseGroup = function (businessObject) {
         eResponse["VehicleDispatchLocation"] = null;
     }
     else
-    {
-        isNotApplicableFlag = false;
+    {     
         v2Array.push({ section: "E02", element: "E02_13", val: _val[0] });
         eResponse["VehicleDispatchLocation"] = _val[0];
         eResponse["eResponse.16"] = _val[0];
@@ -363,7 +574,6 @@ var seteResponseGroup = function (businessObject) {
     }
     else
     {        
-        isNotApplicableFlag = false;
         eResponse["VehicleDispatchGPSLocation"] = _val[0];
         eResponse["eResponse.17"] = _val[0];
     };
@@ -376,8 +586,7 @@ var seteResponseGroup = function (businessObject) {
         eResponse["VehicleDispatchUSNationalGridLocation"] = null;
     }
     else
-    {
-        isNotApplicableFlag = false;
+    {       
         eResponse["VehicleDispatchUSNationalGridLocation"] = _val[0];
         eResponse["eResponse.18"] = _val[0];
     };
@@ -392,8 +601,8 @@ var seteResponseGroup = function (businessObject) {
             eResponse["eResponse.19"] = null;
             eResponse["BeginningOdometerReadingofRespondingVehicle"] = null;
         }
-        else {
-
+        else
+        {
             v2Array.push({ section: "E02", element: "E02_16", val: null });
             eResponse["eResponse.19"] = null;
             eResponse["BeginningOdometerReadingofRespondingVehicle"] = null;
@@ -425,8 +634,8 @@ var seteResponseGroup = function (businessObject) {
             eResponse["eResponse.20"] = null;
         }
     }
-    else {
-        isNotApplicableFlag = false;
+    else
+    {
         v2Array.push({ section: "E02", element: "E02_16", val: _val[0] });
         eResponse["eResponse.20"] = _val[0];
         eResponse["OnSceneOdometerReadingofRespondingVehicle"] = _val[0];
@@ -435,26 +644,31 @@ var seteResponseGroup = function (businessObject) {
 
     //////////////////////eResponse.21
     _val = getValue(businessObject.elements, "eResponse.21");
-    if (_val == null) {
-        if (isRequiredStateElement("eResponse.21") == true) {
+    if (_val == null)
+    {
+        if (isRequiredStateElement("eResponse.21") == true)
+        {
             ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.21", Description: "On-scene Odometer MANDATORY" })
             eResponse["eResponse.21"] = null;
             eResponse["PatientDestinationOdometerReadingofRespondingVehicle"] = null;
             v2Array.push({ section: "E02", element: "E02_18", val: null });
         }
-        else {
+        else
+        {
             eResponse["PatientDestinationOdometerReadingofRespondingVehicle"] = null;
             v2Array.push({ section: "E02", element: "E02_18", val: null });           
             eResponse["eResponse.21"] = null;
         }
     }
-    else {
-        isNotApplicableFlag = false;
+    else
+    {        
         v2Array.push({ section: "E02", element: "E02_18", val: _val[0] });
         eResponse["eResponse.21"] = _val[0];
         eResponse["PatientDestinationOdometerReadingofRespondingVehicle"] = _val[0];
     };
 
+
+    ///NEIL
     //////////////////////eResponse.22
     _val = getValue(businessObject.elements, "eResponse.22");
     if (_val == null) {

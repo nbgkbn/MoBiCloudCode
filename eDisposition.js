@@ -1,6 +1,7 @@
 var ErrorList = [];
-var v3NOT_REPORTING = " NV=\"7701005\"";
-var v3NOT_RECORDED = " NV=\"7701003\"";
+var v3NOT_REPORTING = "7701005";
+var v3NOT_RECORDED = "7701003";
+var v3NOT_APPLICABLE= "7701001";
 var v2NOT_AVAILABLE = "-5";
 var v2NOT_REPORTING = "-15";
 var v2NOT_APPLICABLE = "-25"
@@ -14,17 +15,196 @@ var PN_UNABLE_TO_COMPLETE_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801023\"/>";
 var PN_FINDING_NOT_PRESENT_IS_NILLABLE = " xsi:nil=\"true\" PN=\"8801005\"/>";
 
 var eDisposition = new Object;
-var DestinationGroup = [];
+var eDisposition = [];
 var HospitalTeamActivationGroup = [];
 var HospitalTeamActivationGroupArray = [];
 var AgencyYearGroupArray = [];
-var E20 = new Object;
-var _retArray = [];
+
+
 var XMLString = ""
-var OLAPArray = [];
+
+
+/*
+ *  <sch:rule id="nemSch_consistency_eDisposition.12_all" context="nem:PatientCareReport">
+     <!-- This rule fires on each PatientCareReport. -->
+     <!-- Set flags based on eDisposition.12 Incident/Patient Disposition. -->
+    <!-- no_scene: Canceled (Prior to Arrival at Scene). -->
+    <sch:let name="no_scene" value="if(ancestor-or-self::nem:PatientCareReport/nem:eDisposition/nem:eDisposition.12[. = 4212007]) then true() else false()"/>
+    <!-- no_patient: No scene or Assist, No Patient, or Standby. -->
+    <sch:let name="no_patient" value="if($no_scene or ancestor-or-self::nem:PatientCareReport/nem:eDisposition/nem:eDisposition.12[. &lt;= 4212011 or . = (4212039, 4212041)]) then true() else false()"/>
+    <!-- no_treatment: No patient or No Resuscitation Attempted, No Treatment/Transport Required, or Transport of Body Parts or Organs only. -->
+    <sch:let name="no_treatment" value="if($no_patient or ancestor-or-self::nem:PatientCareReport/nem:eDisposition/nem:eDisposition.12[. = (4212013, 4212015, 4212021, 4212043)]) then true() else false()"/>
+    <!-- no_transport: No patient or Without Transport, No Treatment/Transport Required, Released, or Transferred. -->
+    <sch:let name="no_transport" value="if($no_patient or ancestor-or-self::nem:PatientCareReport/nem:eDisposition/nem:eDisposition.12[. = (4212015, 4212019, 4212021, 4212025, 4212027, 4212029, 4212031)]) then true() else false()"/>
+    <!-- Flag each of the following elements if it is empty, contingent upon a flag that was set based on the Disposition. -->
+    <sch:let name="eDisposition.17" value="if($no_transport or nem:eDisposition/nem:eDisposition.17 != '') then '' else key('nemSch_key_elements', 'eDisposition.17', $nemSch_elements)"/>
+    <sch:let name="eDisposition.20" value="if($no_transport or not(nem:eDisposition/nem:eDisposition.20 = '')) then '' else key('nemSch_key_elements', 'eDisposition.20', $nemSch_elements)"/>
+
+    </sch:pattern><?DSDL_INCLUDE_END includes/pattern_consistency_eDisposition.12.xml?>
+  <?DSDL_INCLUDE_START includes/pattern_consistency_eDisposition.HospitalTeamActivationGroup.xml?><sch:pattern id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup">
+    <!-- This pattern validates that eDisposition.24 Destination Team Pre-Arrival Alert or Activation and eDisposition.25 Date/Time of Destination Prearrival Alert or Activation are both recorded when either one is recorded. -->
+      <sch:title>eDisposition.24 Destination Team Pre-Arrival Alert or Activation and eDisposition.25 Date/Time of Destination Prearrival Alert or Activation are both recorded when either one is recorded.</sch:title>
+        <sch:rule id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup_eDisposition.24" context="nem:eDisposition.HospitalTeamActivationGroup[nem:eDisposition.25 != '']">
+
+    <!-- This rule fires when eDisposition.25 Date/Time of Destination Prearrival Alert or Activation is recorded. -->
+
+    <sch:let name="nemsisElements" value="*"/>
+
+    <!-- Assert that eDisposition.24 Destination Team Pre-Arrival Alert or Activation is also recorded. -->
+
+    <sch:assert id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup_eDisposition.24_present" role="[WARNING]" diagnostics="nemsisDiagnostic" test="nem:eDisposition.24 != ''">
+      When <sch:value-of select="key('nemSch_key_elements', 'eDisposition.25', $nemSch_elements)"/> is recorded, <sch:value-of select="key('nemSch_key_elements', 'eDisposition.24', $nemSch_elements)"/> should also be recorded.
+    </sch:assert>
+
+  </sch:rule>
+
+  <sch:rule id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup_eDisposition.25" context="nem:eDisposition.HospitalTeamActivationGroup[not(nem:eDisposition.24 = ('', '4224001'))]">
+
+    <!-- This rule fires when eDisposition.25 Date/Time of Destination Prearrival Alert or Activation is not recorded and eDisposition.24 Destination Team Pre-Arrival Alert or Activation is recorded and is not "None". -->
+
+    <sch:let name="nemsisElements" value="*"/>
+
+    <!-- Assert that eDisposition.25 Date/Time of Destination Prearrival Alert or Activation is also recorded. -->
+
+    <sch:assert id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup_eDisposition.25_present" role="[WARNING]" diagnostics="nemsisDiagnostic" test="false()">
+      When <sch:value-of select="key('nemSch_key_elements', 'eDisposition.24', $nemSch_elements)"/> is recorded, <sch:value-of select="key('nemSch_key_elements', 'eDisposition.25', $nemSch_elements)"/> should also be recorded.
+    </sch:assert>
+
+  </sch:rule>
+
+
+
+ */
+var getNEMSISSection = function (businessObject, sectionName)
+    //Returns an array of index values for a given sectionName within a sectionObject
+    // if sectionName does not exist within the sectionObject, return -1
+{
+    var _retValue = new Object();
+    _retValue = "undefined"
+    for (var d = 0; d < businessObject.length; d++) {
+        if (businessObject[d].attributes.name == sectionName) {
+            _retValue = businessObject[d];
+        }
+    };
+    return _retValue;
+};
+
+var getSectionIndex = function (sectionObject, sectionName)
+    //Returns an array of index values for a given sectionName within a sectionObject
+    // if sectionName does not exist within the sectionObject, return -1
+{
+    var _retValue = [];
+    for (var d = 0; d < sectionObject.sections.length; d++) {
+        if (sectionObject.sections[d].attributes.name == sectionName) {
+            _retValue.push(d);
+        }
+    }
+    if (_retValue.length == 0) {
+        _retValue.push(-1);
+    }
+    return _retValue;
+};
+//////////////////////////////////////////////////
+
+
 
 var seteDisposition = function (businessObject)
 {
+    var v2Array = [];
+    var HospitalTeamActivationGroupArray = new Array();
+    var eDisposition = new Object();
+    var eHospitalTeamActivationGroup = new Object();
+    var HospitalTeamActivationGroup = new Object();
+
+    var eDispositionObject = new Object()
+    eDispositionObject = getNEMSISSection(businessObject, "eDisposition")
+
+    if (eDispositionObject != "undefined")
+    {
+        console.log(eDispositionObject)
+        _sectionIndex = getSectionIndex(eDispositionObject.attributes, "eDisposition.HospitalTeamActivationGroup");
+        console.log(_sectionIndex)
+    }
+
+    var bHasData = false;  //once I have real data, set to False
+
+    //Determine DispositionType.  Entire EMS Transport process driven by eDisposition.12
+    //eDisposition.12////
+
+    //If there is any data at all, this is invalid.
+    //This rule fires if Disposition is "Canceled (Prior to Arrival at Scene)". Nothing is checked. 
+    //no_patient: No scene or Assist, No Patient, or Standby.
+    //NO_PATIENT eDisposition.12[. &lt;= 4212011 or . = (4212039, 4212041)]) then true() else false()"
+    //NO_TREATMENT No patient or No Resuscitation Attempted, No Treatment/Transport Required, or Transport of Body Parts 
+    //or Organs only. eDisposition.12[. = (4212013, 4212015, 4212021, 4212043)]) then true() else false()"/>
+
+    //NO_TRANSPORT: No patient or Without Transport, No Treatment/Transport Required, Released, or Transferred. 
+    //eDisposition.12[. = (4212015, 4212019, 4212021, 4212025, 4212027, 4212029, 4212031)]) then true() else false()"/>
+
+    //Flag each of the following elements if it is empty, contingent upon a flag that was set based on the Disposition. -->
+
+    //NO_TRANSPORT eDisposition.17 != '') then '' else key('nemSch_key_elements', 'eDisposition.17', $nemSch_elements)"/>
+
+    //NO_TRANSPORT "eDisposition.20" value="if($no_transport or not(nem:eDisposition/nem:eDisposition.20 = '')) then '' else key('nemSch_key_elements', 'eDisposition.20', $nemSch_elements)"/>
+          
+    //test="not($eDisposition.17 or $eDisposition.20 or $ePatient.13 or $ePatient.15 or $eScene.09 or $eTimes.05 or $eTimes.06 or $eTimes.07 or $eTimes.09 or $eTimes.11 or $eTimes.12)">
+    // Based on <sch:value-of select="key('nemSch_key_elements', 'eDisposition.12', $nemSch_elements)"/>, the following should be recorded:
+    //<sch:value-of select="string-join(($eDisposition.17, $eDisposition.20, $ePatient.13, $ePatient.15, $eScene.09, $eTimes.05, $eTimes.06, $eTimes.07, $eTimes.09, $eTimes.11, $eTimes.12)[. != ''], ', ')"/>
+
+    _val = getValue(_elementList, "eDisposition.12");
+    if (_val == null) 
+    {
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eDisposition.12", Description: "Incident/Patient Disposition Mandatory" })
+    }
+    else 
+    {
+        eDisposition["eDisposition.12"] = _val[0];
+        eDisposition["IncidentPatientDisposition"] = setCodeText("eDisposition.12", _val[0]);
+        v2Array.push({ section: "E20", element: "E20_10", val: setV2("eDisposition.12", _val[0]) });
+
+        
+        //bHasPatient?
+        //NO_PATIENT eDisposition.12[. &lt;= 4212011 or . = (4212039, 4212041)]) then true() else false()
+        if(_val[0] in ["4212001","4212003","4212005","4212007","4212001", "4212011","4212039","4212041"])
+        {        
+            eDisposition["HasPatient"] = true;
+        }
+        else
+        {  
+            eDisposition["HasPatient"] = false;
+            eDisposition["HasTreatment"] = false;
+            eDisposition["HasTransport"] = false;
+        };
+        //NO_TREATMENT No patient or No Resuscitation Attempted, No Treatment/Transport Required, or Transport of Body Parts 
+        //or Organs only. eDisposition.12[. = (4212013, 4212015, 4212021, 4212043)]) then true() else false()"/>
+        if(eDisposition["HasPatient"] == true) //Have a patient, Treatment Possible
+        {
+            if(_val[0] in ["4212013","4212015","4212021","4212023",]) //Dead Patient/Refused Treatment
+            {
+                eDisposition["HasTreatment"] = false;
+                eDisposition["HasTransport"] = false;
+            }
+            else
+            {
+                eDisposition["HasTreatment"] = true;                
+            }
+        };
+
+        //NO_TRANSPORT: No patient or Without Transport, No Treatment/Transport Required, Released, or Transferred. 
+        //eDisposition.12[. = (4212015, 4212019, 4212021, 4212025, 4212027, 4212029, 4212031)]) then true() else false()
+
+        if(eDisposition["HasPatient"] == true) //Have a patient, Transport Possible
+        {
+            if(_val[0] in ["4212015","4212019","4212021","4212025","4212027", "4212029", "4212031"]) //various No Transport Options
+            {
+                eDisposition["HasTransport"] = false;
+            }
+            else
+            {
+                eDisposition["HasTransport"] = true;
+            }
+        };
+    };
     
     //eDisposition.01////
     _val = getValue(_elementList, "eDisposition.01");
@@ -32,22 +212,41 @@ var seteDisposition = function (businessObject)
     {
         if (isRequiredStateElement("eDisposition.01") == true)
         {
-            DestinationGroup["eDisposition.01"] = v3NOT_RECORDED;
-            DestinationGroup["TransferredToName"] = v3NOT_RECORDED;
-            v2Array.push({ section: "E20", element: "E20_01", val: v2NOT_RECORDED });
+            if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+            {
+                eDisposition["eDisposition.01"] = v3NOT_RECORDED;
+                eDisposition["TransferredToName"] = v3NOT_RECORDED;
+                v2Array.push({ section: "E20", element: "E20_01", val: v2NOT_RECORDED });
+            }
+            else // else, no Transport, not Applicable Data
+            {
+                eDisposition["eDisposition.01"] = v3NOT_APPLICABLE;
+                eDisposition["TransferredToName"] = v3NOT_APPLICABLE;
+                v2Array.push({ section: "E20", element: "E20_01", val: v2NOT_APPLICABLE});
+            }
         }
         else
         {
-            DestinationGroup["eDisposition.01"] = v2NOT_REPORTING;
-            DestinationGroup["TransferredToName"] = v2NOT_REPORTING;
+            eDisposition["eDisposition.01"] = v2NOT_REPORTING;
+            eDisposition["TransferredToName"] = v2NOT_REPORTING;
             v2Array.push({ section: "E20", element: "E20_01", val: v2NOT_REPORTING });
         }
     }
     else
     {
-        v2Array.push({ section: "E20", element: "E20_01", val: _val[0] });
-        DestinationGroup["eDisposition.01"] = _val[0];
-        DestinationGroup["eDisposition.TransferredToName"] = _val[0];
+        if (eDisposition.HasTransport == true) 
+        {
+            v2Array.push({ section: "E20", element: "E20_01", val: _val[0] });
+            eDisposition["eDisposition.01"] = _val[0];
+            eDisposition["TransferredToName"] = _val[0];
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.01", Description: "Transport Desitination with No Transport Record " })
+            v2Array.push({ section: "E20", element: "E20_01", val: null });
+            eDisposition["eDisposition.01"] = null;
+            eDisposition["TransferredToName"] = null;
+        }
     };
 
 
@@ -55,48 +254,75 @@ var seteDisposition = function (businessObject)
     _val = getValue(_elementList, "eDisposition.02");
     if (_val == null)
     {
-        if (isRequiredStateElement("eDisposition.02") == true)
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
         {
-            DestinationGroup["eDisposition.02"] = v3NOT_RECORDED;
-            DestinationGroup["TransferredToCode"] = v3NOT_RECORDED;            
-            v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_RECORDED });
+            if (isRequiredStateElement("eDisposition.02") == true)
+            {
+                eDisposition["eDisposition.02"] = v3NOT_RECORDED;
+                eDisposition["TransferredToCode"] = v3NOT_RECORDED;            
+                v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_RECORDED });
+            }        
+            else
+            {
+                eDisposition["TransferredToCode"] = v2NOT_REPORTING;
+                eDisposition["eDisposition.02"] = v2NOT_REPORTING;
+                v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_REPORTING });
+            }
+        }    
+        else
+        {
+            eDisposition["eDisposition.02"] = v3NOT_APPLICABLE;
+            eDisposition["TransferredToCode"] = v3NOT_APPLICABLE;            
+            v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_APPLICABLE });
+        }
+    }    
+    else
+    {
+        if (eDisposition.HasTransport == true) 
+        {
+            eDisposition["eDisposition.02"] = _val[0];
+            eDisposition["TransferredToCode"] = _val[0];
+            v2Array.push({ section: "E20", element: "E20_02", val: _val[0] });
         }
         else
         {
-            DestinationGroup["TransferredToCode"] = v2NOT_REPORTING;
-            DestinationGroup["eDisposition.02"] = v2NOT_REPORTING;
-            v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_REPORTING });
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.02", Description: "Transport Desitination with No Transport Record " })
+            v2Array.push({ section: "E20", element: "E20_02", val: null });
+            eDisposition["eDisposition.02"] = null;
+            eDisposition["TransferredToCode"] = null;
         }
-    }
-    else
-    {
-        DestinationGroup["eDisposition.02"] = _val[0];
-        DestinationGroup["TransferredToCode"] = _val[0];
-        v2Array.push({ section: "E20", element: "E20_02", val: _val[0] });
     };
 
     //eDisposition.03////
     _val = getValue(_elementList, "eDisposition.03");
     if (_val == null)
     {
-        if (isRequiredStateElement("eDisposition.03") == true)
+        if (isRequiredStateElement("eDisposition.03") == true) 
         {
-            DestinationGroup["eDisposition.03"] = v3NOT_RECORDED;
-            DestinationGroup["Address"] = v3NOT_RECORDED;
-            v2Array.push({ section: "E20", element: "E20_03", val: v2NOT_RECORDED });
-        }
-        else
-        {
-            DestinationGroup["eDisposition.03"] = v2NOT_REPORTING;
-            DestinationGroup["Address"] = v2NOT_REPORTING;
-            v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_REPORTING });
-        }
+            if (eDisposition.HasTransport == true) //if have a transport, and Is Required Data 
+            {
+                ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.03", Description: "Transport Address Required" })
+            }
+        };
+        eDisposition["eDisposition.03"] = null;
+        eDisposition["Address"] = null;
+        v2Array.push({ section: "E20", element: "E20_02", val: null });
     }
     else
     {
-        DestinationGroup["eDisposition.03"] = _val[0];
-        DestinationGroup["Address"] = _val[0];
-        v2Array.push({ section: "E20", element: "E20_02", val: _val[0] });
+        if (eDisposition.HasTransport == true) //if NO Transport, wipe out data
+        {
+            eDisposition["eDisposition.03"] = _val[0];
+            eDisposition["Address"] = _val[0];
+            v2Array.push({ section: "E20", element: "E20_02", val: _val[0] });
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.03", Description: "Transport Address/Transport Type Conflict" })
+            eDisposition["eDisposition.03"] = null;
+            eDisposition["Address"] = null;
+            v2Array.push({ section: "E20", element: "E20_02", val: null });
+        }
     };
 
 
@@ -104,46 +330,101 @@ var seteDisposition = function (businessObject)
     _val = getValue(_elementList, "eDisposition.04");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.03"] = "";
-        DestinationGroup["City"] = "";
-        v2Array.push({ section: "E20", element: "E20_04", val: v3NOT_RECORDED });
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.04", Description: "Transport Address Required" })
+        };
+        eDisposition["eDisposition.04"] = null;
+        eDisposition["City"] = null;
+        v2Array.push({ section: "E20", element: "E20_04", val: null });
     }    
     else 
     {
-        DestinationGroup["eDisposition.04"] = _val[0];
-        DestinationGroup["City"] = _val[0];
-        v2Array.push({ section: "E20", element: "E20_04", val: _val[0] });
+        if (eDisposition.HasTransport == true) //if NO Transport, wipe out data
+        {
+            eDisposition["eDisposition.04"] = _val[0];
+            eDisposition["City"] = _val[0];
+            v2Array.push({ section: "E20", element: "E20_04", val: _val[0] });
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.04", Description: "Transport City/Transport Type Conflict" })
+            eDisposition["eDisposition.04"] = null;
+            eDisposition["City"] = null;
+            v2Array.push({ section: "E20", element: "E20_04", val: null });
+        }
     };
 
     //eDisposition.05////
     _val = getValue(_elementList, "eDisposition.05");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.05"] = v3NOT_RECORDED;
-        DestinationGroup["State"] = v3NOT_RECORDED;
-        v2Array.push({ section: "E20", element: "E20_05", val: v2NOT_RECORDED });
-    }    
+        if (isRequiredStateElement("eDisposition.01") == true) 
+        {
+            if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+            {
+                eDisposition["eDisposition.05"] = v3NOT_RECORDED;
+                eDisposition["State"] = v3NOT_RECORDED;
+                v2Array.push({ section: "E20", element: "E20_05", val: v2NOT_RECORDED });
+            }
+            else
+            {
+                eDisposition["eDisposition.05"] = v3NOT_APPLICABLE;
+                eDisposition["State"] = v3NOT_APPLICABLE;
+                v2Array.push({ section: "E20", element: "E20_05", val: v2NOT_APPLICABLE});
+            }        
+        }    
+    }
     else 
     {
-        DestinationGroup["eDisposition.05"] = _val[0];
-        DestinationGroup["State"] = _val[0];
-        v2Array.push({ section: "E20", element: "E20_05", val: _val[0] });
+        if (eDisposition.HasTransport == true) //if NO Transport, wipe out data
+        {
+            eDisposition["eDisposition.05"] = _val[0];
+            eDisposition["State"] = _val[0];
+            v2Array.push({ section: "E20", element: "E20_05", val: _val[0] });
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.05", Description: "Transport State/Transport Type Conflict " })
+            eDisposition["eDisposition.05"] = v3NOT_APPLICABLE;
+            eDisposition["State"] = v3NOT_APPLICABLE;
+            v2Array.push({ section: "E20", element: "E20_05", val: v2NOT_APPLICABLE});
+        }    
     };
 
     //eDisposition.06////
     _val = getValue(_elementList, "eDisposition.06");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.06"] = v3NOT_RECORDED;
-        DestinationGroup["County"] = v3NOT_RECORDED;        
-        v2Array.push({ section: "E20", element: "E20_06", val: v2NOT_RECORDED });
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.06"] = v3NOT_RECORDED;
+            eDisposition["County"] = v3NOT_RECORDED;        
+            v2Array.push({ section: "E20", element: "E20_06", val: v2NOT_RECORDED });
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.06", Description: "Transport City with No Transport Record " })
+            eDisposition["eDisposition.06"] = v3NOT_APPLICABLE;
+            eDisposition["County"] = v3NOT_APPLICABLE;        
+            v2Array.push({ section: "E20", element: "E20_06", val: v2NOT_APPLICABLE });
+        }
     }    
     else 
     {
-        DestinationGroup["eDisposition.06"] = _val[0];
-        DestinationGroup["County"] = _val[0];      
-        v2Array.push({ section: "E20", element: "E20_06", val: _val[0] });
-    
+        if (eDisposition.HasTransport == true) 
+        {
+            eDisposition["eDisposition.06"] = _val[0];
+            eDisposition["County"] = _val[0];      
+            v2Array.push({ section: "E20", element: "E20_06", val: _val[0] });
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.06", Description: "Transport City/Transport Type Conflict " })
+            eDisposition["eDisposition.06"] = v3NOT_APPLICABLE;
+            eDisposition["County"] = v3NOT_APPLICABLE;        
+            v2Array.push({ section: "E20", element: "E20_06", val: v2NOT_APPLICABLE });
+        }    
     };
 
 
@@ -151,19 +432,44 @@ var seteDisposition = function (businessObject)
     _val = getValue(_elementList, "eDisposition.07");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.07"] = v3NOT_RECORDED;
-        DestinationGroup["ZIP"] = v3NOT_RECORDED;
-        _retArray.push('\t\t\t' + "<eDisposition.07" + NIL_V3NOT_RECORDED + '\n');
-        OLAPArray.push('\t\t\t' + "<DestinationCode>" + "NOT RECORDED" + "</DestinationZIPCode>" + '\n');
-        v2Array.push({ section: "E20", element: "E20_07", val: v2NOT_RECORDED });
-    }
-    
+        if (isRequiredStateElement("eDisposition.07") == true) 
+        {
+            if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+            {
+                eDisposition["eDisposition.07"] = v3NOT_RECORDED;
+                eDisposition["ZIP"] = v3NOT_RECORDED;
+                v2Array.push({ section: "E20", element: "E20_07", val: v2NOT_RECORDED });
+            }
+            else
+            {
+                eDisposition["eDisposition.07"] = v3NOT_APPLICABLE;
+                eDisposition["ZIP"] = v3NOT_APPLICABLE;
+                v2Array.push({ section: "E20", element: "E20_07", val: v2NOT_APPLICABLE });
+            }
+        }
+        else
+        {
+            eDisposition["eDisposition.07"] = null;
+            eDisposition["ZIP"] = null;
+            v2Array.push({ section: "E20", element: "E20_07", val: null });
+        }
+    }    
     else 
     {
-        DestinationGroup["eDisposition.07"] = _val[0];
-        DestinationGroup["ZIP"] = _val[0];
-        v2Array.push({ section: "E20", element: "E20_07", val: _val });
-        console.log("Better be dFacility.10 ZIP")
+        if (eDisposition.HasTransport == true) 
+        {
+            eDisposition["eDisposition.07"] = _val[0];
+            eDisposition["ZIP"] = _val[0];
+            v2Array.push({ section: "E20", element: "E20_07", val: _val[0] });
+            console.log("Better be dFacility.10 ZIP")
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.07", Description: "Transport Zip/Transport Type Conflict " })
+            eDisposition["eDisposition.07"] = v3NOT_APPLICABLE;
+            eDisposition["ZIP"] = v3NOT_APPLICABLE;
+            v2Array.push({ section: "E20", element: "E20_07", val: v2NOT_APPLICABLE });
+        }
     };
 
 
@@ -171,49 +477,74 @@ var seteDisposition = function (businessObject)
     //eDisposition.08////
     _val = getValue(_elementList, "eDisposition.08");
     if (_val == null) 
-    {
-        DestinationGroup["eDisposition.08"] = null;
-        DestinationGroup["Country"] = null;
+    {        
+        eDisposition["eDisposition.08"] = null;
+        eDisposition["Country"] = null;
     }
     else 
     {
-        console.log("Better be dFacility.12 - Country")
-        DestinationGroup["eDisposition.08"] = _val[0];
-        DestinationGroup["Country"] = _val[0];
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            console.log("Better be dFacility.12 - Country")
+            eDisposition["eDisposition.08"] = _val[0];
+            eDisposition["Country"] = _val[0];
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.08", Description: "Transport County/Transport Type Conflict " })
+            console.log("Better be dFacility.12 - Country")
+            eDisposition["eDisposition.08"] = null;
+            eDisposition["Country"] = null;
+        }
     };
 
-    _retArray.push('\t'+"</eDisposition.DestinationGroup>" + '\n');
     
-    ////////////////////////////////////
-    ////////////////////////////////////
-
     //eDisposition.09////
     _val = getValue(_elementList, "eDisposition.09");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.09"] = null;
-        DestinationGroup["GPSLocation"] = null;
+        eDisposition["eDisposition.09"] = null;
+        eDisposition["GPSLocation"] = null;
         v2Array.push({ section: "E20", element: "E20_08", val: null });
     }
     else 
     {
-        DestinationGroup["eDisposition.09"] = _val[0];
-        DestinationGroup["GPSLocation"] = _val[0];
-        v2Array.push({ section: "E20", element: "E20_08", val: _val[0]});
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.09"] = _val[0];
+            eDisposition["GPSLocation"] = _val[0];
+            v2Array.push({ section: "E20", element: "E20_08", val: _val[0]});
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.09", Description: "Transport GPS/Transport Type Conflict " })
+            eDisposition["eDisposition.09"] = null;
+            eDisposition["GPSLocation"] = null;
+            v2Array.push({ section: "E20", element: "E20_08", val: null});
+        }
     };
 
     //eDisposition.10////
     _val = getValue(_elementList, "eDisposition.10");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.10"] = null;
-        DestinationGroup["USNationalGridCoordinates"] = null;
+        eDisposition["eDisposition.10"] = null;
+        eDisposition["USNationalGridCoordinates"] = null;
     }
     else 
     {
-        console.log("Better be dFacility.14 - Country")
-        DestinationGroup["eDisposition.10"] = _val[0];
-        DestinationGroup["USNationalGridCoordinates"] = _val[0];
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            console.log("Better be dFacility.14 - Country")
+            eDisposition["eDisposition.10"] = _val[0];
+            eDisposition["USNationalGridCoordinates"] = _val[0];
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.10", Description: "Transport National Coords/Transport Type Conflict " })
+            eDisposition["eDisposition.10"] = null;
+            eDisposition["USNationalGridCoordinates"] = null;
+        }
     };
 
 
@@ -223,186 +554,353 @@ var seteDisposition = function (businessObject)
     {
         if (isRequiredStateElement("eDisposition.11") == true) 
         {
-            DestinationGroup["eDisposition.11"] = v3NOT_RECORDED;
-            DestinationGroup["NumberofPatientsTransportedinthisEMSUnit"] = v3NOT_RECORDED;
+            if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+            {
+                eDisposition["eDisposition.11"] = v3NOT_RECORDED;
+                eDisposition["NumberofPatientsTransportedinthisEMSUnit"] = v3NOT_RECORDED;
+            }
+            else
+            {
+                eDisposition["eDisposition.11"] = v3NOT_REPORTING;
+                eDisposition["NumberofPatientsTransportedinthisEMSUnit"] = v3NOT_REPORTING;
+            }
         }
         else
         {
-            DestinationGroup["eDisposition.11"] = v2NOT_REPORTING;
-            DestinationGroup["NumberofPatientsTransportedinthisEMSUnit"] = v2NOT_REPORTING;
+            eDisposition["eDisposition.11"] = v3NOT_APPLICABLE;
+            eDisposition["NumberofPatientsTransportedinthisEMSUnit"] = v3NOT_APPLICABLE;
         }
     }
     else
     {
-        DestinationGroup["eDisposition.11"] = _val[0];
-        DestinationGroup["NumberofPatientsTransportedinthisEMSUnit"] = _val[0];
+        if (eDisposition.HasTransport == true) 
+        {
+            eDisposition["eDisposition.11"] = _val[0];
+            eDisposition["NumberofPatientsTransportedinthisEMSUnit"] = _val[0];
+        }
+        else 
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.11", Description: "Transport Number Patients/Transport Type Conflict  " })
+            eDisposition["eDisposition.11"] = v3NOT_APPLICABLE;
+            eDisposition["NumberofPatientsTransportedinthisEMSUnit"] = v3NOT_APPLICABLE;
+        }
     };
 
-    //eDisposition.12////
-    _val = getValue(_elementList, "eDisposition.12");
-    if (_val == null) 
-    {
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eDisposition.12", Description: "Incident/Patient Disposition Mandatory" })
-    }
-    else 
-    {
-        OLAPArray.push('\t\t\t' + "<>" + setCodeText("eDisposition.12", _val) + "</IncidentPatientDisposition>" + '\n');
-        DestinationGroup["eDisposition.12"] = _val[0];
-        DestinationGroup["IncidentPatientDisposition"] = setCodeText("eDisposition.12", _val[0]);
-        v2Array.push({ section: "E20", element: "E20_10", val: setV2("eDisposition.12", _val) });
-    };
 
     //eDisposition.13////
     _val = getValue(businessObject.elements, "eDisposition.13");
     if (_val == null)
     {
-        DestinationGroup["eDisposition.13"] = null;
-        DestinationGroup["HowPatientWasMovedtoAmbulance"] = null;
-        v2Array.push({ section: "E20", element: "E20_11", val: null });
+       eDisposition["eDisposition.13"] = null;
+       eDisposition["HowPatientWasMovedtoAmbulance"] = null;
+       v2Array.push({ section: "E20", element: "E20_11", val: null });
     }
     else
     {
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        
-        for (var i = 0; i < _val.length; i++) 
+        if (eDisposition.HasTransport == true) 
         {
-            arr1.push(_val[i]);            
-            arr2.push(setV2("eDisposition.13", _val[i]));
-            arr3.push(setCodeText("eDisposition.13", _val[i]));
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];        
+            for (var i = 0; i < _val.length; i++) 
+            {
+                if(_val[i].trim().length !=0)
+                {
+                    arr1.push(_val[i]);            
+                    arr2.push(setV2("eDisposition.13", _val[i]));
+                    arr3.push(setCodeText("eDisposition.13", _val[i]));
+                }
+            }
+            if(arr1.length >0)
+            {        
+                v2Array.push({ section: "E20", element: "E20_11", val: arr2.slice(0) });
+                eDisposition["eDisposition.13"] = arr1.slice(0);
+                eDisposition["HowPatientWasMovedtoAmbulance"] = arr3.slice(0);
+            }
+            else
+            {
+                v2Array.push({ section: "E20", element: "E20_11", val: null });
+                eDisposition["eDisposition.13"] = null;
+                eDisposition["HowPatientWasMovedtoAmbulance"] = null;
+            }
         }
-        v2Array.push({ section: "E20", element: "E20_11", val: arr2.slice(0) });
-        DestinationGroup["eDisposition.13"] = arr1.slice(0);
-        DestinationGroup["HowPatientWasMovedtoAmbulance"] = arr3.slice(0);
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.12", Description: "How Patient Moved/Transport Type Conflict  " })
+            v2Array.push({ section: "E20", element: "E20_11", val: null });
+            eDisposition["eDisposition.13"] = null;
+            eDisposition["HowPatientWasMovedtoAmbulance"] = null;
+        }
     };
 
     //eDisposition.14////
     _val = getValue(businessObject.elements, "eDisposition.14");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.14"] = null;
-        DestinationGroup["PositionofPatientDuringTransport"] = null;
+        eDisposition["eDisposition.14"] = null;
+        eDisposition["PositionofPatientDuringTransport"] = null;
         v2Array.push({ section: "E20", element: "E20_12", val: null });
     }
     else
     {
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        
-        for (var i = 0; i < _val.length; i++) 
+        if (eDisposition.HasTransport == true) 
         {
-            arr1.push(_val[i]);            
-            arr2.push(setV2("eDisposition.14", _val[i]));
-            arr3.push(setCodeText("eDisposition.14", _val[i]));
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+        
+            for (var i = 0; i < _val.length; i++) 
+            {
+                if (_val[i].trim().length != 0) 
+                {
+                    arr1.push(_val[i]);            
+                    arr2.push(setV2("eDisposition.14", _val[i]));
+                    arr3.push(setCodeText("eDisposition.14", _val[i]));
+                }
 
+            };
+            if (arr1.length > 0) 
+            {
+                v2Array.push({ section: "E20", element: "E20_12", val:  arr2.slice(0) });
+                eDisposition["eDisposition.14"] = arr1.slice(0);
+                eDisposition["PositionofPatientDuringTransport"] = arr3.slice(0);
+            }
+            else
+            {
+                v2Array.push({ section: "E20", element: "E20_12", val:  null });
+                eDisposition["eDisposition.14"] = null;
+                eDisposition["PositionofPatientDuringTransport"] = null;
+            }
         }
-        v2Array.push({ section: "E20", element: "E20_12", val:  arr2.slice(0) });
-        DestinationGroup["eDisposition.14"] = arr1.slice(0);
-        DestinationGroup["PositionofPatientDuringTransport"] = arr3.slice(0);
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.14", Description: "Patient Position/Transport Type Conflict  " })
+            v2Array.push({ section: "E20", element: "E20_12", val:  null });
+            eDisposition["eDisposition.14"] = null;
+            eDisposition["PositionofPatientDuringTransport"] = null;
+        }
     };
 
     //eDisposition.15////
     _val = getValue(businessObject.elements, "eDisposition.15");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.15"] = null;
-        DestinationGroup["HowPatientWasTransportedFromAmbulance"] = null;
+        eDisposition["eDisposition.15"] = null;
+        eDisposition["HowPatientWasTransportedFromAmbulance"] = null;
         v2Array.push({ section: "E20", element: "E20_13", val: null });
     }
     else
     {
-        DestinationGroup["HowPatientWasTransportedFromAmbulance"] = _val[0];
-        DestinationGroup["eDisposition.15"] = _val[0];
-        v2Array.push({ section: "E20", element: "E20_13", val: setV2("eDisposition.15", _val[0]) });
+        if (eDisposition.HasTransport == true) 
+        {
+            eDisposition["HowPatientWasTransportedFromAmbulance"] = _val[0];
+            eDisposition["eDisposition.15"] = _val[0];
+            v2Array.push({ section: "E20", element: "E20_13", val: setV2("eDisposition.15", _val[0]) });
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.15", Description: "Patient Transport From Ambulance/Transport Type Conflict  " })
+            eDisposition["HowPatientWasTransportedFromAmbulance"] = null;
+            eDisposition["eDisposition.15"] = null;
+            v2Array.push({ section: "E20", element: "E20_13", val: null });
+        }
     };
 
     //eDisposition.16////
     _val = getValue(_elementList, "eDisposition.16");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.16"] = v3NOT_RECORDED;
-        DestinationGroup["EMSTransportMethod"] = v3NOT_RECORDED;
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.16"] = v3NOT_RECORDED;
+            eDisposition["EMSTransportMethod"] = v3NOT_RECORDED;
+        }
+        else
+        {
+            eDisposition["eDisposition.16"] = v3NOT_APPLICABLE;
+            eDisposition["EMSTransportMethod"] = v3NOT_APPLICABLE;
+        }
     }
     else 
     {
-        DestinationGroup["EMSTransportMethod"] = _val[0];
-        DestinationGroup["eDisposition.16"] = _val[0];
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["EMSTransportMethod"] = _val[0];
+            eDisposition["eDisposition.16"] = _val[0];
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.16", Description: "Patient Transport Method/Transport Type Conflict  " })
+            eDisposition["eDisposition.16"] = v3NOT_APPLICABLE;
+            eDisposition["EMSTransportMethod"] = v3NOT_APPLICABLE;
+        }
     };
 
     //eDisposition.17////
     _val = getValue(_elementList, "eDisposition.17");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.17"] = v3NOT_RECORDED;
-        DestinationGroup["TransportModefromScene"] = v3NOT_RECORDED;
-        v2Array.push({ section: "E20", element: "E20_14", val: v2NOT_RECORDED });
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.17"] = v3NOT_RECORDED;
+            eDisposition["TransportModefromScene"] = v3NOT_RECORDED;
+            v2Array.push({ section: "E20", element: "E20_14", val: v2NOT_RECORDED });
+        }
+        else
+        {
+            eDisposition["eDisposition.17"] = v3NOT_APPLICABLE;
+            eDisposition["TransportModefromScene"] = v3NOT_APPLICABLE;
+            v2Array.push({ section: "E20", element: "E20_14", val: v2NOT_APPLICABLE});
+        }
     }
     else 
     {
-        DestinationGroup["TransportModefromScene"] = setCodeText("eDisposition.17", _val[0]) 
-        v2Array.push({ section: "E20", element: "E20_14", val: setV2("eDisposition.17", _val[0]) });
-        DestinationGroup["eDisposition.17"] = _val[0];
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["TransportModefromScene"] = setCodeText("eDisposition.17", _val[0]) 
+            v2Array.push({ section: "E20", element: "E20_14", val: setV2("eDisposition.17", _val[0]) });
+            eDisposition["eDisposition.17"] = _val[0];
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.17", Description: "Additional Transport Mode/Transport Type Conflict  " })
+            eDisposition["eDisposition.17"] = v3NOT_APPLICABLE;
+            eDisposition["TransportModefromScene"] = v3NOT_APPLICABLE;
+            v2Array.push({ section: "E20", element: "E20_14", val: v2NOT_APPLICABLE});
+        }
     };
 
     //eDisposition.18////
     _val = getValue(businessObject.elements, "eDisposition.18");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.17"] = v3NOT_RECORDED;
-        DestinationGroup["AdditionalTransportModeDescriptors"] = v3NOT_RECORDED;
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.17"] = v3NOT_RECORDED;
+            eDisposition["AdditionalTransportModeDescriptors"] = v3NOT_RECORDED;
+        }
+        else
+        {
+            eDisposition["eDisposition.17"] = v3NOT_APPLICABLE;
+            eDisposition["AdditionalTransportModeDescriptors"] = v3NOT_APPLICABLE;
+        }
     }
     else
     {
-        var arr1 = [];
-        var arr2 = [];
-        for (var i = 0; i < _val.length; i++)
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
         {
-            arr1.push(_val[i]);            
-            arr2.push(setCodeText("eDisposition.18", _val[i]));
+
+            var arr1 = [];
+            var arr2 = [];
+            for (var i = 0; i < _val.length; i++)
+            {
+                if (_val[i].trim().length != 0) 
+                {
+                    arr1.push(_val[i]);            
+                    arr2.push(setCodeText("eDisposition.18", _val[i]));
+                }
+            };
+            if (arr1.length > 0) {
+                eDisposition["eDisposition.18"] = arr1.slice(0);
+                eDisposition["AdditionalTransportModeDescriptors"] = arr2.slice(0);
+            }
         }
-        DestinationGroup["eDisposition.18"] = arr1.slice(0);
-        DestinationGroup["AdditionalTransportModeDescriptors"] = arr2.slice(0);
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.18", Description: "Additional Transport Method/Transport Type Conflict  " })
+            eDisposition["eDisposition.18"] = v3NOT_APPLICABLE;
+            eDisposition["AdditionalTransportModeDescriptors"] = v3NOT_APPLICABLE;
+        }
     };
 
     //eDisposition.19////
     _val = getValue(_elementList, "eDisposition.19");
     if (_val == null) 
     {
-        v2Array.push({ section: "E20", element: "E20_15", val: v2NOT_RECORDED });
-        DestinationGroup["eDisposition.19"] = v3NOT_RECORDED;
-        DestinationGroup["ConditionofPatientatDestination"] = v3NOT_RECORDED;
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            v2Array.push({ section: "E20", element: "E20_15", val: v2NOT_RECORDED });
+            eDisposition["eDisposition.19"] = v3NOT_RECORDED;
+            eDisposition["ConditionofPatientatDestination"] = v3NOT_RECORDED;
+        }
+        else
+        {
+            v2Array.push({ section: "E20", element: "E20_15", val: v2NOT_APPLICABLE });
+            eDisposition["eDisposition.19"] = v3NOT_APPLICABLE;
+            eDisposition["ConditionofPatientatDestination"] = v3NOT_APPLICABLE;
+        }   
     }
     else 
     {
-        v2Array.push({ section: "E20", element: "E20_15", val: setV2("eDisposition.19", _val[0])});
-        DestinationGroup["eDisposition.19"] = _val[0];
-        DestinationGroup["ConditionofPatientatDestination"] = (setCodeText("eDisposition.19", _val[0]));
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            v2Array.push({ section: "E20", element: "E20_15", val: setV2("eDisposition.19", _val[0])});
+            eDisposition["eDisposition.19"] = _val[0];
+            eDisposition["ConditionofPatientatDestination"] = (setCodeText("eDisposition.19", _val[0]));
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.19", Description: "Condition of Patientat Destination/Transport Type Conflict  " })
+            v2Array.push({ section: "E20", element: "E20_15", val: v2NOT_APPLICABLE });
+            eDisposition["eDisposition.19"] = v3NOT_APPLICABLE;
+            eDisposition["ConditionofPatientatDestination"] = v3NOT_APPLICABLE;
+        }
     };
 
     //eDisposition.20////
     _val = getValue(businessObject.elements, "eDisposition.20");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.20"] = v3NOT_RECORDED;
-        DestinationGroup["ReasonforChoosingDestination"] = v3NOT_RECORDED;
-        v2Array.push({ section: "E20", element: "E20_16", val: v2NOT_RECORDED });
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.20"] = v3NOT_RECORDED;
+            eDisposition["ReasonforChoosingDestination"] = v3NOT_RECORDED;
+            v2Array.push({ section: "E20", element: "E20_16", val: v2NOT_RECORDED });
+        }
+        else
+        {
+            eDisposition["eDisposition.20"] = v3NOT_APPLICABLE
+            eDisposition["ReasonforChoosingDestination"] = v3NOT_APPLICABLE;
+            v2Array.push({ section: "E20", element: "E20_16", val: v2NOT_APPLICABLE });
+        }
     }
     else
     {
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];
-        for (var i = 0; i < _val.length; i++)
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
         {
-            arr1.push(_val[i]);            
-            arr3.push(setV2("eDisposition.20", _val[i]));
-            arr3.push(setCodeText("eDisposition.20", _val[i]));                        
+     
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];
+            for (var i = 0; i < _val.length; i++)
+            {
+                if (_val[i].trim().length != 0) 
+                {
+                    arr1.push(_val[i]);            
+                    arr3.push(setV2("eDisposition.20", _val[i]));
+                    arr3.push(setCodeText("eDisposition.20", _val[i]));                        
+                }
+            };
+            if (arr1.length > 0) 
+            {
+                v2Array.push({ section: "E20", element: "E20_16", val:arr2.slice(0)  });
+                eDisposition["eDisposition.20"] = arr1.slice(0);        
+                eDisposition["ReasonforChoosingDestination"] = arr3.slice(0);      
+            }
+            else
+            {  
+                v2Array.push({ section: "E20", element: "E20_16", val:null  });
+                eDisposition["eDisposition.20"] = null;        
+                eDisposition["ReasonforChoosingDestination"] = null; 
+            }
         }
-        v2Array.push({ section: "E20", element: "E20_16", val:arr2.slice(0)  });
-        DestinationGroup["eDisposition.20"] = arr1.slice(0);        
-        DestinationGroup["ReasonforChoosingDestination"] = arr3.slice(0);      
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.20", Description: "Reason for Choosing Destination/Transport Type Conflict  " })
+            eDisposition["eDisposition.20"] = v3NOT_APPLICABLE
+            eDisposition["ReasonforChoosingDestination"] = v3NOT_APPLICABLE;
+            v2Array.push({ section: "E20", element: "E20_16", val: v2NOT_APPLICABLE });
+        }
     };
 
     
@@ -410,164 +908,199 @@ var seteDisposition = function (businessObject)
     _val = getValue(_elementList, "eDisposition.21");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.21"] = v3NOT_RECORDED;
-        DestinationGroup["TypeofDestination"] = v3NOT_RECORDED;
-        v2Array.push({ section: "E20", element: "E20_17", val: v2NOT_RECORDED });
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+
+            eDisposition["eDisposition.21"] = v3NOT_RECORDED;
+            eDisposition["TypeofDestination"] = v3NOT_RECORDED;
+            v2Array.push({ section: "E20", element: "E20_17", val: v2NOT_RECORDED });
+        }
+        else
+        {
+            eDisposition["eDisposition.21"] = v3NOT_APPLICABLE;
+            eDisposition["TypeofDestination"] = v3NOT_APPLICABLE;
+            v2Array.push({ section: "E20", element: "E20_17", val: v2NOT_APPLICABLE });
+        }
     }
     else 
     {
-        OLAPArray.push('\t\t\t' + "<>" +  + "</TypeofDestination>" + '\n');
-        DestinationGroup["eDisposition.21"] = _val[0];
-        DestinationGroup["TypeofDestination"] = setCodeText("eDisposition.21", _val[0])
-        v2Array.push({ section: "E20", element: "E20_17", val: setV2("eDisposition.21", _val[0])});
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.21"] = _val[0];
+            eDisposition["TypeofDestination"] = setCodeText("eDisposition.21", _val[0])
+            v2Array.push({ section: "E20", element: "E20_17", val: setV2("eDisposition.21", _val[0])});
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.21", Description: "Type of Destination/Transport Type Conflict  " })
+            eDisposition["eDisposition.21"] = v3NOT_APPLICABLE;
+            eDisposition["TypeofDestination"] = v3NOT_APPLICABLE;
+            v2Array.push({ section: "E20", element: "E20_17", val: v2NOT_APPLICABLE });
+        }
     };
 
     //eDisposition.22////
     _val = getValue(_elementList, "eDisposition.22");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.22"] = v3NOT_RECORDED;
-        DestinationGroup["HospitalInPatientDestination"] = v3NOT_RECORDED;
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.22"] = v3NOT_RECORDED;
+            eDisposition["HospitalInPatientDestination"] = v3NOT_RECORDED;
+        }
+        else
+        {
+            eDisposition["eDisposition.22"] = v3NOT_APPLICABLE;
+            eDisposition["HospitalInPatientDestination"] = v3NOT_APPLICABLE;
+        }
     }
     else 
     {
-        DestinationGroup["eDisposition.22"] = _val[0];
-        DestinationGroup["HospitalInPatientDestination"] = setCodeText("eDisposition.22", _val[0]);
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.22"] = _val[0];
+            eDisposition["HospitalInPatientDestination"] = setCodeText("eDisposition.22", _val[0]);
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.22", Description: "Hospital In Patient Destination/Transport Type Conflict  " })
+            eDisposition["eDisposition.22"] = v3NOT_APPLICABLE;
+            eDisposition["HospitalInPatientDestination"] = v3NOT_APPLICABLE;
+        }
     };
 
     //eDisposition.23////
     _val = getValue(_elementList, "eDisposition.23");
     if (_val == null) 
     {
-        DestinationGroup["eDisposition.22"] = v3NOT_RECORDED;
-        DestinationGroup["HospitalDesignation"] = v3NOT_RECORDED;
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.23"] = v3NOT_RECORDED;
+            eDisposition["HospitalDesignation"] = v3NOT_RECORDED;
+        }
+        else
+        {
+            eDisposition["eDisposition.23"] = v3NOT_APPLICABLE;
+            eDisposition["HospitalDesignation"] = v3NOT_APPLICABLE;
+        }
     }
     else 
     {
-        OLAPArray.push('\t\t\t' + "<>" +  + "</HospitalDesignation>" + '\n');
-        DestinationGroup["eDisposition.23"] = _val[0];
-        DestinationGroup["HospitalDesignation"] = setCodeText("eDisposition.23", _val[0]);
+        if (eDisposition.HasTransport == true) //if have a transport, forgot the data, 
+        {
+            eDisposition["eDisposition.23"] = _val[0];
+            eDisposition["HospitalDesignation"] = setCodeText("eDisposition.23", _val[0]);
+        }
+        else
+        {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.23", Description: "Hospital Designation/Transport Type Conflict  " })
+            eDisposition["eDisposition.23"] = v3NOT_APPLICABLE;
+            eDisposition["HospitalDesignation"] = v3NOT_APPLICABLE;
+        }
     };
 
+    // If No Transport, not Hospital Pre Activation
+    //eDisposition.24 Destination Team Pre-Arrival Alert or Activation and 
+    //eDisposition.25 Date/Time of Destination Prearrival Alert or Activation are both recorded when either one is recorded.
+    //and :eDisposition.24 != '4224001'
 
-    _sectionIndex = getSectionIndex(businessObject, "eDisposition.HospitalTeamActivationGroup");
-    for (var x = 0; x < _sectionIndex.length; x++) {
+    
+    if (eDisposition.HasTransport == false) //if have a transport, forgot the data, 
+    {
+        eDisposition["eDisposition.24"] = v3NOT_APPLICABLE;
+        eDisposition["DestinationTeamPreArrivalAlertorActivation"] = v3NOT_APPLICABLE;
+        eDisposition["eDisposition.25"] = null;
+        eDisposition["DateTimeofDestinationPrearrivalAlertorActivation"] = null;    
+    }
+    else
+    {
+        _sectionIndex = getSectionIndex(businessObject, "eDisposition.HospitalTeamActivationGroup");    
+        var bActivation = false;
+        for (var x = 0; x < _sectionIndex.length; x++) 
         {
-        
             //eDisposition.24////
             _val = getValue(businessObject.sections[xx].attributes.sections[_sectionIndexi].attributes.elements, "eDisposition.24");
             if (_val == null) 
             {
-                DestinationGroup["eDisposition.24"] = v3NOT_RECORDED;
-                DestinationGroup["DestinationTeamPreArrivalAlertorActivation"] = v3NOT_RECORDED;
+
+                HospitalTeamActivationGroup["eDisposition.24"] = v3NOT_RECORDED;
+                HospitalTeamActivationGroup["DestinationTeamPreArrivalAlertorActivation"] = v3NOT_RECORDED;
             }
             else 
             {
                 HospitalTeamActivationGroup["eDisposition.24"] = _val[0];
-                HospitalTeamActivationGroup["DestinationTeamPreArrivalAlertorActivation"] =  setCodeText("eDisposition.24", _val[0]);;
+                HospitalTeamActivationGroup["DestinationTeamPreArrivalAlertorActivation"] =  setCodeText("eDisposition.24", _val[0]);;              
+                if (_val[0] == "4224001")
+                {
+                    bActivation=false;
+                }
+                else
+                {
+                    bActivation=true;
+                }
             };
 
             //eDisposition.25////
             _val = getValue(_elementList, "eDisposition.25");
             if (_val == null) 
             {
-                DestinationGroup["eDisposition.25"] = v3NOT_RECORDED;
-                DestinationGroup["DateTimeofDestinationPrearrivalAlertorActivation"] = v3NOT_RECORDED;
+                if(bActivation = true)
+                {
+                    HospitalTeamActivationGroup["eDisposition.25"] = v3NOT_RECORDED;
+                    HospitalTeamActivationGroup["DateTimeofDestinationPrearrivalAlertorActivation"] = v3NOT_RECORDED;
+                }
+                else
+                {
+                    HospitalTeamActivationGroup["eDisposition.25"] = v3NOT_APPLICABLE;
+                    HospitalTeamActivationGroup["DateTimeofDestinationPrearrivalAlertorActivation"] = v3NOT_APPLICABLE;
+                }
             }
             else 
             {               
                 HospitalTeamActivationGroup["eDisposition.25"] = _val[0];
                 HospitalTeamActivationGroup["DateTimeofDestinationPrearrivalAlertorActivation"] = _val[0];                
-            };
-        };
-
+            }
+            HospitalTeamActivationGroupArray.push(HospitalTeamActivationGroup);
+        }
+        eDisposition.HospitalTeamActivationGroup = HospitalTeamActivationGroupArray;
+    };
+            
+            
         //eDisposition.26////
         _val = getValue(_elementList, "eDisposition.26");
         if (_val == null) 
         {
-            DestinationGroup["eDisposition.25"] = null;
-            DestinationGroup["DispositionInstructionsProvided"] = null;
+            eDisposition["eDisposition.25"] = null;
+            eDisposition["DispositionInstructionsProvided"] = null;
         }
         else 
         {
-
+            if (eDisposition.HasTransport == true) 
+            {
             var arr1 = [];
             var arr2 = [];
             var arr3 = [];
             for (var i = 0; i < _val.length; i++)
             {
-                arr1.push(_val[i]);            
-                arr3.push(setV2("eDisposition.25", _val[i]));
-                arr3.push(setCodeText("eDisposition.25", _val[i])); 
-                
-               
-                OLAPArray.push('\t\t\t\t' + "<>" + setCodeText("eDisposition.26", _val[i]) + "</DispositionInstructionsProvided>" + '\n');               
-                _retArray.push('\t\t\t' + "<eDisposition.26>" + _val[i]  + "</eDisposition.26>" + '\n');
+                if (_val[i].trim().length != 0) 
+                {                   
+                    arr1.push(_val[i]);                                
+                    arr3.push(setCodeText("eDisposition.26", _val[i])); 
+                }
             };
-            v2Array.push({ section: "E04", element: "E04_02", val: arr2.slice(0) });
-            DestinationGroup["eDisposition.26"] =arr1.slice(0);
-            DestinationGroup["DispositionInstructionsProvided"] =arr3.slice(0);
+            if (arr1.length > 0) 
+            {               
+                eDisposition["eDisposition.26"] =arr1.slice(0);
+                eDisposition["DispositionInstructionsProvided"] =arr3.slice(0);
+            }
+            else
+            {
+                eDisposition["eDisposition.25"] = null;
+                eDisposition["DispositionInstructionsProvided"] = null;
+            }
         };
 
 
-        var setNotApplicableAll = function (businessObject)
-        {
-            v2Array.push({ section: "E20", element: "E20_01", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_02", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_03", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_04", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_05", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_06", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_07", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_09", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_11", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_12", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_13", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_14", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_15", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_16", val: v2NOT_APPLICABLE });
-            v2Array.push({ section: "E20", element: "E20_17", val: v2NOT_APPLICABLE });
-
-            _retArray.push("<eDisposition>" + '\n');
-            _retArray.push('\t' + "<eDisposition.DestinationGroup>" + '\n');
-
-            if (isRequiredStateElement("eDisposition.01") == true) {
-                _retArray.push('\t\t' + "<eDisposition.01>" + NIL_V3NOT_APPLICABLE + '\n');
-            }
-
-            if (isRequiredStateElement("eDisposition.02") == true) {
-                _retArray.push('\t\t' + "<eDisposition.02>" + NIL_V3NOT_APPLICABLE + '\n');
-            }
-
-            if (isRequiredStateElement("eDisposition.03") == true) {
-                _retArray.push('\t\t' + "<eDisposition.03>" + NIL_V3NOT_APPLICABLE + '\n');
-            }
-            if (isRequiredStateElement("eDisposition.04") == true) {
-                _retArray.push('\t\t' + "<eDisposition.04>" + NIL_V3NOT_APPLICABLE + '\n');
-            }
-
-            _retArray.push('\t' + "<eDisposition.05>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.06>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.07>" + NIL_V3NOT_APPLICABLE + '\n');
-
-            if (isRequiredStateElement("eDisposition.11") == true) {
-                _retArray.push('\t\t' + "<eDisposition.11>" + NIL_V3NOT_APPLICABLE + '\n');
-            }
-
-            _retArray.push('\t' + "<eDisposition.12>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.16>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.17>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.18>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.19>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.20>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.21>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.22>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.23>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.24>" + NIL_V3NOT_APPLICABLE + '\n');
-            _retArray.push('\t' + "<eDisposition.25>" + NIL_V3NOT_APPLICABLE + '\n');
-
-
-        };
 
         function setD2(NEMSISElementNumber, valueArray) {
             //    console.log(NEMSISElementNumber);
@@ -1042,36 +1575,7 @@ var seteDisposition = function (businessObject)
 
         /*
           
-This pattern validates that certain elements are recorded, based on the Incident/Patient Disposition.
-Certain elements are recorded, based on eDisposition.12 Incident/Patient Disposition.
-If there is any data at all, this is invalid.
-    <!-- This rule fires if Disposition is "Canceled (Prior to Arrival at Scene)". Nothing is checked. -->
 
-    <!-- no_patient: No scene or Assist, No Patient, or Standby. -->
-    :eDisposition.12[. &lt;= 4212011 or . = (4212039, 4212041)]) then true() else false()"/>
-
-    <!-- no_treatment: No patient or No Resuscitation Attempted, No Treatment/Transport Required, or Transport of Body Parts or Organs only. -->
-
-    <sch:let name="no_treatment" value="if($no_patient or ancestor-or-self::nem:PatientCareReport/nem:eDisposition/nem:eDisposition.12[. = (4212013, 4212015, 4212021, 4212043)]) then true() else false()"/>
-
-    <!-- no_transport: No patient or Without Transport, No Treatment/Transport Required, Released, or Transferred. -->
-
-    <sch:let name="no_transport" value="if($no_patient or ancestor-or-self::nem:PatientCareReport/nem:eDisposition/nem:eDisposition.12[. = (4212015, 4212019, 4212021, 4212025, 4212027, 4212029, 4212031)]) then true() else false()"/>
-
-    <!-- Flag each of the following elements if it is empty, contingent upon a flag that was set based on the Disposition. -->
-
-    <sch:let name="eDisposition.17" value="if($no_transport or nem:eDisposition/nem:eDisposition.17 != '') then '' else key('nemSch_key_elements', 'eDisposition.17', $nemSch_elements)"/>
-
-    <sch:let name="eDisposition.20" value="if($no_transport or not(nem:eDisposition/nem:eDisposition.20 = '')) then '' else key('nemSch_key_elements', 'eDisposition.20', $nemSch_elements)"/>
-          
-  <sch:assert id="nemSch_consistency_eDisposition.12_all_present" role="[WARNING]" diagnostics="nemsisDiagnostic" test="not($eDisposition.17 or $eDisposition.20 or $ePatient.13 or $ePatient.15 or $eScene.09 or $eTimes.05 or $eTimes.06 or $eTimes.07 or $eTimes.09 or $eTimes.11 or $eTimes.12)">
-      Based on <sch:value-of select="key('nemSch_key_elements', 'eDisposition.12', $nemSch_elements)"/>, the following should be recorded:
-      <sch:value-of select="string-join(($eDisposition.17, $eDisposition.20, $ePatient.13, $ePatient.15, $eScene.09, $eTimes.05, $eTimes.06, $eTimes.07, $eTimes.09, $eTimes.11, $eTimes.12)[. != ''], ', ')"/>
-    </sch:assert>
-
-  </sch:rule>
-
-</sch:pattern><?DSDL_INCLUDE_END includes/pattern_consistency_eDisposition.12.xml?>
   <?DSDL_INCLUDE_START includes/pattern_consistency_eDisposition.HospitalTeamActivationGroup.xml?><sch:pattern id="nemSch_consistency_eDisposition.HospitalTeamActivationGroup">
 
   <!-- This pattern validates that eDisposition.24 Destination Team Pre-Arrival Alert or Activation and eDisposition.25 Date/Time of Destination Prearrival Alert or Activation are both recorded when either one is recorded. -->

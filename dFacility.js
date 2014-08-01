@@ -68,9 +68,8 @@ var setdFacility = function (facilityObject) {
     //  console.log(businessObject.sections.length);
 
     for (var a = 0; a < facilityObject.attributes.sections.length; a++) {
-
-        _retArray.push('\t' + "<dFacilityGroup>" + '\n');
-        _OLAPArray.push('\t' + "<dFacilityGroup>" + '\n');
+        V3XML.BeginNode("dFacilityGroup");
+        OLAPXML.BeginNode("dFacilityGroup");
         // console.log(businessObject.sections[a].attributes.name);
         var _elementList = facilityObject.attributes.sections[a].attributes.sections[0].attributes.elements;
 

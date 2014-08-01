@@ -37,89 +37,73 @@ var getSectionIndex = function (businessObject, sectionName) {
 }
 
 var seteOutcome = function (businessObject) {
-    if (typeof businessObject == undefined) {
-        SetNotApplicable();
-        return _retArray;
-    }
-    var elementList = businessObject.sections[xx].attributes.elements;
-    var _retArray = [];
 
-    _retArray.push("<eOutcome>")
-    OLAPArray.push("<eOutcome>")
 
     //eOutcome.01/////////
     _val = getValue(elementList, "eOutcome.01");
     if (_val == null)
     {
-        OLAPArray.push('\t\t\t' + "<EmergencyDepartmentDisposition>" + "NOT RECORDED" + "</EmergencyDepartmentDisposition>" + '\n');
-        _retArray.push('/t' + "<eOutcome.01" + NIL_V3NOT_RECORDED);
+        eOutcome["EmergencyDepartmentDisposition"] = NOT_RECORDED;
         eOutcome["eOutcome.01"] = V3NOT_RECORDED;
         v2Array.push({ section: "E22", element: "E22_01", val: v2NOT_RECORDED });
 
     }
     else
     {
-        OLAPArray.push('\t\t\t' + "<EmergencyDepartmentDisposition>" + setCodeText("eOutcome.01", _val) + "</EmergencyDepartmentDisposition>" + '\n');
-        v2Array.push({ section: "E22", element: "E22_01", val: setV2("eOutcome.01", _val) });
-        eOutcome["eOutcome.01"] = _val;
-        _retArray.push('/t' + "<eOutcome.01>" + _val + "</eOutcome.01>");
+        eOutcome["EmergencyDepartmentDisposition"] = setCodeText("eOutcome.01", _val[0]);
+        v2Array.push({ section: "E22", element: "E22_01", val: setV2("eOutcome.01", _val[0]) });
+        eOutcome["eOutcome.01"] = _val[0];
+
     };
 
     //eOutcome.02/////////
     _val = getValue(elementList, "eOutcome.02");
     if (_val == null)
     {
-        OLAPArray.push('\t\t\t' + "<HospitalDisposition>" + "NOT RECORDED" + "</HospitalDisposition>" + '\n');
-        _retArray.push('/t' + "<eOutcome.01" + NIL_V3NOT_RECORDED);
+        
+        
         eOutcome["eOutcome.02"] = V3NOT_RECORDED;
+        eOutcome["HospitalDisposition"] = NOT_RECORDED;
         v2Array.push({ section: "E22", element: "E22_02", val: v2NOT_RECORDED });
     }
     else
     {
-        OLAPArray.push('\t\t\t' + "<HospitalDisposition>" + setCodeText("eOutcome.02", _val) + "</HospitalDisposition>" + '\n');
-        eOutcome["eOutcome.02"] = _val;
-        _retArray.push('/t' + "<eOutcome.02>" + _val + "</eOutcome.02>");
-        v2Array.push({ section: "E22", element: "E22_02", val: setV2("eOutcome.02", _val) });
+        eOutcome["eOutcome.02"] = _val[0];
+        eOutcome["HospitalDisposition"] = setCodeText("eOutcome.02", _val[0]);
+        v2Array.push({ section: "E22", element: "E22_02", val: setV2("eOutcome.02", _val[0]) });
     };
 
 
     /////////////////////////////////
-    var _retArray = [];
-    _retVal.push('/t' + "<eOutcome.ExternalDataGroup>")
-    OLAPArray.push('/t' + "<eOutcome.ExternalDataGroup>")
 
     _sectionIndex = getSectionIndex(businessObject.sections[xx].attributes, "eOutcome.ExternalDataGroup");
     for (var x = 0; x < _sectionIndex.length; x++)
     {
-
+        var elementList = businessObject.elements.sections[i].attributes.elements;
         //eOutcome.03/////////
-        _val = getValue(businessObject.elements.sections[i].attributes.elements, "eOutcome.03");
+        _val = getValue(elementList, "eOutcome.03");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<ExternalReportIDNumberType>" + null + "</ExternalReportIDNumberType>" + '\n');
-            _retArray.push('/t' + "<eOutcome.03>" + null + "</eOutcome.03>");
-            eOutcome["eOutcome.03"] = null;
+            ExternalDataGroup["eOutcome.03"] = null;
+            ExternalDataGroup["ExternalReportIDNumberType"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t' + "<ExternalReportIDNumberType>" + setCodeText("eOutcome.03", _val) + "</ExternalReportIDNumberType>" + '\n');
-            eOutcome["eOutcome.03"] = _val;
-            _retArray.push('/t/t' + "<eOutcome.03>" + _val + "</eOutcome.03>");
+            ExternalDataGroup["eOutcome.03"] = _val[0];
+            ExternalDataGroup["ExternalReportIDNumberType"] = setCodeText("eOutcome.03", _val[0]);
         };
 
         //eOutcome.04/////////
         _val = getValue(businessObject.elements.sections[i].attributes.elements, "eOutcome.04");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<ExternalReportIDNumber>" + null + "</ExternalReportIDNumber>" + '\n');
-            _retArray.push('/t' + "<eOutcome.04>" + null + "</eOutcome.04>");
-            eOutcome["eOutcome.04"] = null;
+            ExternalDataGroup["eOutcome.04"] = null;
+            ExternalDataGroup["ExternalReportIDNumber"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<ExternalReportIDNumber>" + _val + "</ExternalReportIDNumber>" + '\n');
-            eOutcome["eOutcome.04"] = _val;
-            _retArray.push('/t/t' + "<eOutcome.04>" + _val + "</eOutcome.04>");
+            ExternalDataGroup["eOutcome.04"] = _val[0];
+            ExternalDataGroup["ExternalReportIDNumber"] = _val[0];
         };
 
 
@@ -127,21 +111,14 @@ var seteOutcome = function (businessObject) {
         _val = getValue(businessObject.elements.sections[i].attributes.elements, "eOutcome.05");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<OtherReportRegistryType>" + null + "</OtherReportRegistryType>" + '\n');
-            _retArray.push('/t' + "<eOutcome.05>" + null + "</eOutcome.05>");
-            eOutcome["eOutcome.05"] = null;
+            ExternalDataGroup["eOutcome.05"] = null;
+            ExternalDataGroup["OtherReportRegistryType"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<OtherReportRegistryType>" + _val + "</OtherReportRegistryType>" + '\n');
-            eOutcome["eOutcome.05"] = _val;
-            _retArray.push('/t/t' + "<eOutcome.05>" + _val + "</eOutcome.05>");
+            ExternalDataGroup["eOutcome.05"] = _val[0];
+            ExternalDataGroup["OtherReportRegistryType"] = _val[0];
         };
-
-
-        _retVal.push('/t' + "</eOutcome.ExternalDataGroup>")
-        OLAPArray.push('/t' + "</eOutcome.ExternalDataGroup>")
-
     };
     //////////////////////////////////////////
 
@@ -149,60 +126,52 @@ var seteOutcome = function (businessObject) {
         _val = getValue(elementList, "eOutcome.06");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<EmergencyDepartmentChiefComplaint>" + null + "</EmergencyDepartmentChiefComplaint>" + '\n');
-            _retArray.push('/t' + "<eOutcome.06>" + null + "</eOutcome.06>");
             eOutcome["eOutcome.06"] = null;
+            eOutcome["EmergencyDepartmentChiefComplaint"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<EmergencyDepartmentChiefComplaint>" + _val + "</EmergencyDepartmentChiefComplaint>" + '\n');
-            eOutcome["eOutcome.06"] = _val;
-            _retArray.push('/t' + "<eOutcome.06>" + _val + "</eOutcome.06>");
+            eOutcome["EmergencyDepartmentChiefComplaint"] = _val[0];            
+            eOutcome["eOutcome.06"] = _val[0];
         };
 
         //eOutcome.07/////////
         _val = getValue(elementList, "eOutcome.07");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<FirstEDSystolicBloodPressure>" + null + "</FirstEDSystolicBloodPressure>" + '\n');
-            _retArray.push('/t' + "<eOutcome.07>" + null + "</eOutcome.07>");
             eOutcome["eOutcome.07"] = null;
+            eOutcome["FirstEDSystolicBloodPressure"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<FirstEDSystolicBloodPressure>" + _val + "</FirstEDSystolicBloodPressure>" + '\n');
-            eOutcome["eOutcome.07"] = _val;
-            _retArray.push('/t' + "<eOutcome.07>" + _val + "</eOutcome.07>");
+            eOutcome["FirstEDSystolicBloodPressure"] = _val[0];
+            eOutcome["eOutcome.07"] = _val[0];            
         };
 
         //eOutcome.08/////////
         _val = getValue(elementList, "eOutcome.08");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<EmergencyDepartmentRecordedCauseofInjury>" + null + "</EmergencyDepartmentRecordedCauseofInjury>" + '\n');
-            _retArray.push('/t' + "<eOutcome.08>" + null + "</eOutcome.08>");
             eOutcome["eOutcome.08"] = null;
+            eOutcome["EmergencyDepartmentRecordedCauseofInjury"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<EmergencyDepartmentRecordedCauseofInjury>" + _val + "</EmergencyDepartmentRecordedCauseofInjury>" + '\n');
-            eOutcome["eOutcome.08"] = _val;
-            _retArray.push('/t' + "<eOutcome.08>" + _val + "</eOutcome.08>");
+            eOutcome["eOutcome.08"] = _val[0];
+            eOutcome["EmergencyDepartmentRecordedCauseofInjury"] = _val[0];
         };
 
         //eOutcome.09/////////
         _val = getValue(elementList, "eOutcome.09");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<EmergencyDepartmentProcedures>" + null + "</EmergencyDepartmentProcedures>" + '\n');
-            _retArray.push('/t' + "<eOutcome.09>" + null + "</eOutcome.09>");
             eOutcome["eOutcome.09"] = null;
+            eOutcome["EmergencyDepartmentProcedures"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<EmergencyDepartmentProcedures>" + _val + "</EmergencyDepartmentProcedures>" + '\n');
-            eOutcome["eOutcome.09"] = _val;
-            _retArray.push('/t' + "<eOutcome.09>" + _val + "</eOutcome.09>");
+            eOutcome["EmergencyDepartmentProcedures"] = _val[0];
+            eOutcome["eOutcome.09"] = _val[0];
         };
 
 
@@ -210,21 +179,19 @@ var seteOutcome = function (businessObject) {
         _val = getValue(elementList, "eOutcome.10");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<EmergencyDepartmentDiagnosis>" + null + "</EmergencyDepartmentDiagnosis>" + '\n');
-            _retArray.push('/t' + "<eOutcome.10>" + null + "</eOutcome.10>");
             eOutcome["eOutcome.10"] = null;
+            eOutcome["EmergencyDepartmentDiagnosis"] = null;
         }
         else
         {
-            var arr1 = [];
-            var arr2 = [];
-            for (var i = 0; i < _val.length; i++)
+            for (var i = 0; i < _val[0].length; i++)
             {
-                OLAPArray.push('\t\t\t' + "<EmergencyDepartmentDiagnosis>" + _val[i] + "</EmergencyDepartmentDiagnosis>" + '\n');
-                arr1.push(_val[i]);
-                _retArray.push('/t' + "<eOutcome.10>" + _val[i] + "</eOutcome.10>");
+                arr1.push(val[i]);
+                arr2.push(setCodeText("eOutcome.03", _val[i]));
+
             }
             eOther["eOutcome.10"] = arr1.slice(0);
+            eOther["EmergencyDepartmentDiagnosis"] = arr2.slice(0);            
         };
 
 
@@ -232,120 +199,107 @@ var seteOutcome = function (businessObject) {
         _val = getValue(elementList, "eOutcome.11");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<DateTimeofHospitalAdmission>" + null + "</DateTimeofHospitalAdmission>" + '\n');
-            _retArray.push('/t' + "<eOutcome.11>" + null + "</eOutcome.11>");
             eOutcome["eOutcome.11"] = null;
+            eOutcome["DateTimeofHospitalAdmission"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<DateTimeofHospitalAdmission>" + _val + "</DateTimeofHospitalAdmission>" + '\n');
-            eOutcome["eOutcome.11"] = _val;
-            _retArray.push('/t' + "<eOutcome.11>" + _val + "</eOutcome.11>");
+            eOutcome["DateTimeofHospitalAdmission"] = _val[0];
+            eOutcome["eOutcome.11"] = _val[0];
         };
 
         //eOutcome.12/////////
         _val = getValue(elementList, "eOutcome.12");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<HospitalProcedures>" + null + "</HospitalProcedures>" + '\n');
-            _retArray.push('/t' + "<eOutcome.11>" + null + "</eOutcome.11>");
             eOutcome["eOutcome.11"] = null;
+            eOutcome["HospitalProcedures"] = null;
         }
         else
         {
+            var arr1 = [];
             var arr2 = [];
-            for (var i = 0; i < _val.length; i++)
+            for (var i = 0; i < _val[0].length; i++)
             {
-                OLAPArray.push('\t\t\t' + "<HospitalProcedures>" + _val[i] + "</HospitalProcedures>" + '\n');
-                arr1.push(_val[i]);
-                _retArray.push('/t' + "<eOutcome.12>" + _val[i] + "</eOutcome.12>");
+                arr1.push(val[i]);
+                arr2.push(setCodeText("eOutcome.11", _val[i]));
+
             }
             eOther["eOutcome.12"] = arr1.slice(0);
+            eOutcome["HospitalProcedures"] = arr2.slice(0);
         };
 
         //eOutcome.13/////////
         _val = getValue(elementList, "eOutcome.13");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<HospitalDiagnosis>" + null + "</HospitalDiagnosis>" + '\n');
-            _retArray.push('/t' + "<eOutcome.13>" + null + "</eOutcome.13>");
             eOutcome["eOutcome.13"] = null;
+            eOutcome["HospitalDiagnosis"] = null;
         }
         else
         {
             var arr1 = [];
             var arr2 = [];
-            for (var i = 0; i < _val.length; i++)
-            {
-                arr1[i] = _val[i];
-                _retArray.push('/t' + "<eOutcome.13>" + _val[i] + "</eOutcome.13>");
-                OLAPArray.push('\t\t\t' + "<HospitalDiagnosis>" + _val[i] + "</HospitalDiagnosis>" + '\n');
+            for (var i = 0; i < _val[0].length; i++) {
+                arr1.push(val[i]);
+                arr2.push(setCodeText("eOutcome.13", _val[i]));
             }
             eOther["eOutcome.13"] = arr1.slice(0);
+            eOutcome["HospitalDiagnosis"] = arr2.slice(0);
         };
 
         //eOutcome.14/////////
         _val = getValue(elementList, "eOutcome.14");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<TotalICULengthofStay>" + null + "</TotalICULengthofStay>" + '\n');
-            _retArray.push('/t' + "<eOutcome.14>" + null + "</eOutcome.14>");
             eOutcome["eOutcome.14"] = null;
+            eOutcome["TotalICULengthofStay"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<TotalICULengthofStay>" + _val + "</TotalICULengthofStay>" + '\n');
-            eOutcome["eOutcome.14"] = _val;
-            _retArray.push('/t' + "<eOutcome.14>" + _val + "</eOutcome.14>");
+            eOutcome["TotalICULengthofStay"] = _val[0];
+            eOutcome["eOutcome.14"] = _val[0];
         };
 
         //eOutcome.15/////////
         _val = getValue(elementList, "eOutcome.15");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<TotalVentilatorDays>" + null + "</TotalVentilatorDays>" + '\n');
-            _retArray.push('/t' + "<eOutcome.15>" + null + "</eOutcome.15>");
             eOutcome["eOutcome.15"] = null;
+            eOutcome["TotalVentilatorDays"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<TotalVentilatorDays>" + _val + "</TotalVentilatorDays>" + '\n');
-            eOutcome["eOutcome.15"] = _val;
-            _retArray.push('/t' + "<eOutcome.15>" + _val + "</eOutcome.15>");
+            eOutcome["TotalVentilatorDays"] = _val[0];
+            eOutcome["eOutcome.15"] = _val[0];
         };
 
         //eOutcome.16/////////
         _val = getValue(elementList, "eOutcome.16");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<DateTimeofHospitalDischarge>" + null + "</DateTimeofHospitalDischarge>" + '\n');
-            _retArray.push('/t' + "<eOutcome.16>" + null + "</eOutcome.16>");
             eOutcome["eOutcome.16"] = null;
+            eOutcome["DateTimeofHospitalDischarge"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<DateTimeofHospitalDischarge>" + _val + "</DateTimeofHospitalDischarge>" + '\n');
-            eOutcome["eOutcome.16"] = _val;
-            _retArray.push('/t' + "<eOutcome.16>" + _val + "</eOutcome.16>");
+            eOutcome["DateTimeofHospitalDischarge"] = _val[0];
+            eOutcome["eOutcome.16"] = _val[0];
         };
 
         //eOutcome.17/////////
         _val = getValue(elementList, "eOutcome.17");
         if (_val == null)
         {
-            OLAPArray.push('\t\t\t' + "<OutcomeatHospitalDischarge>" + null + "</OutcomeatHospitalDischarge>" + '\n');
-            _retArray.push('/t' + "<eOutcome.17>" + null + "</eOutcome.17>");
             eOutcome["eOutcome.17"] = null;
+            eOutcome["OutcomeatHospitalDischarge"] = null;
         }
         else
         {
-            OLAPArray.push('\t\t\t' + "<OutcomeatHospitalDischarge>" + _val + "</OutcomeatHospitalDischarge>" + '\n');
-            eOutcome["eOutcome.17"] = _val;
-            _retArray.push('/t' + "<eOutcome.17>" + _val + "</eOutcome.17>");
+            eOutcome["OutcomeatHospitalDischarge"] = setCodeText("eOutcome.17", _val[0]);
+            eOutcome["eOutcome.17"] = _val[0];
+            
         }
-        _retArray.push("</eOutcome>")
-        OLAPArray.push("</eOutcome>")
-
     return _retArray;
 };
 
@@ -467,3 +421,122 @@ var eOutcome02 =
     "66": "5375",
     "70": "5385"
 };
+
+var eOutcome334_01 = {
+    "1" : "Discharged to home or self care (routine discharge)", 
+    "2" : "Discharged/transferred to another short term general hospital for inpatient care", 
+    "3" : "Discharged/transferred to a skilled nursing facility (SNF) {With Medicare certification in anticipation of covered skilled care.  See Code 61 below.}", 
+    "4" : "Discharged/transferred to an intermediate care facility (ICF)", 
+    "5" : "Discharged/transferred to another type of institution not defined elsewhere in this code list", 
+    "6" : "Discharged/transferred to home under care of organized home health service organization in anticipation of covered skills care", 
+    "7" : "Left against medical advice or discontinued care", 
+    "9" : "Admitted as an inpatient to this hospital.", 
+    "20" : "Deceased/Expired (or did not recover - Religious Non Medical Health Care Patient)", 
+    "21" : "Discharged/transferred to court/law enforcement", 
+    "30" : "Still a patient or expected to return for outpatient services.", 
+    "43" : "Discharged/transferred to a Federal Health Care Facility (e.g. VA or federal health care facility)", 
+    "50" : "Discharged/transferred to Hospice - home.", 
+    "51" : "Discharged/transferred to Hospice - medical facility", 
+    "61" : "Discharged/transferred within this institution to a hospital based Medicare approved swing bed.", 
+    "62" : "Discharged/transferred to a inpatient rehabilitation facility including distinct part units of a hospital.", 
+    "63" : "Discharged/transferred to long term care hospitals", 
+    "64" : "Discharged/transferred to a nursing facility certified under Medicaid but not certified under Medicare", 
+    "65" : "Discharged/transferred to a psychiatric hospital or psychiatric distinct part unit of a hospital.", 
+    "66" : "Discharged/transferred to a Critical Access Hospital (CAH).", 
+    "70" : "Discharged/transferred to another type of health care institution not defined elsewhere in the code list."
+};
+
+ var eOutcome334_02 = {
+     "1" : "Discharged to home or self care (routine discharge)", 
+     "2" : "Discharged/transferred to another short term general hospital for inpatient care", 
+     "3" : "Discharged/transferred to a skilled nursing facility (SNF) {With Medicare certification in anticipation of covered skilled care.  See Code 61 below.}", 
+     "4" : "Discharged/transferred to an intermediate care facility (ICF)", 
+     "5" : "Discharged/transferred to another type of institution not defined elsewhere in this code list", 
+     "6" : "Discharged/transferred to home under care of organized home health service organization in anticipation of covered skills care", 
+     "7" : "Left against medical advice or discontinued care", 
+     "20" : "Deceased/Expired (or did not recover - Religious Non Medical Health Care Patient)", 
+     "21" : "Discharged/transferred to court/law enforcement", 
+     "30" : "Still a patient or expected to return for outpatient services.", 
+     "43" : "Discharged/transferred to a Federal Health Care Facility (e.g. VA or federal health care facility)", 
+     "50" : "Discharged/transferred to Hospice - home.", 
+     "51" : "Discharged/transferred to Hospice - medical facility", 
+     "61" : "Discharged/transferred within this institution to a hospital based Medicare approved swing bed.", 
+     "62" : "Discharged/transferred to a inpatient rehabilitation facility including distinct part units of a hospital.", 
+     "63" : "Discharged/transferred to long term care hospitals", 
+     "64" : "Discharged/transferred to a nursing facility certified under Medicaid but not certified under Medicare", 
+     "65" : "Discharged/transferred to a psychiatric hospital or psychiatric distinct part unit of a hospital.", 
+     "66" : "Discharged/transferred to a Critical Access Hospital (CAH).", 
+     "70" : "Discharged/transferred to another type of health care institution not defined elsewhere in the code list."
+ };
+
+ var eOutcome334_03 = {
+     "4303001" : "Disaster Tag", 
+     "4303003" : "Fire Incident Report", 
+     "4303005" : "Hospital-Receiving", 
+     "4303007" : "Hospital-Transferring", 
+     "4303009" : "Law Enforcement Report", 
+     "4303011" : "Other (Not Listed)", 
+     "4303013" : "Other Registry", 
+     "4303015" : "Other Report", 
+     "4303017" : "Patient ID", 
+     "4303019" : "Prior EMS Patient Care Report", 
+     "4303021" : "STEMI Registry", 
+     "4303023" : "Stroke Registry", 
+     "4303025" : "Trauma Registry", 
+ };
+var eOutcome334_17 = {
+    "4317001" : "No Symptoms At All", 
+    "4317003" : "No significant disability despite symptoms; able to carry out all usual duties and activities", 
+    "4317005" : "Slight disability; unable to carry out all previous activities; but able to look after own affairs without assistance", 
+    "4317007" : "Moderate disability; requiring some help; but able to walk without assistance", 
+    "4317009" : "Moderately severe disability; unable to walk without assistance and unable to attend to own bodily needs without assistance", 
+    "4317011" : "Severe disability; bedridden; incontinent and requiring constant nursing care and attention", 
+    "4317013" : "Dead"
+}
+
+function setCodeText(NEMSISElementNumber, valueArray) {
+    var _return = [];
+    switch (NEMSISElementNumber) {
+        case "eOutcome.01":
+            if (eOutcome334_01[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eOutcome334_01[valueArray];
+            }
+            break;
+        case "eOutcome.02":
+            if (eOutcome334_02[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eOutcome334_02[valueArray];
+            }
+            break;
+
+        case "eOutcome.03":
+            if (eOutcome334_03[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eOutcome334_03[valueArray];
+            }
+            break;
+
+        case "eOutcome.17":
+            if (eOutcome334_17[valueArray] == undefined) {
+                _return = valueArray + " UNDEFINED";
+            }
+            else {
+                _return = eOutcome334_17[valueArray];
+            }
+            break;
+
+
+        default:
+            _return = " UNDEFINED";
+    }
+    return _return;
+
+};
+

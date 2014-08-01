@@ -198,7 +198,6 @@ var seteArrest = function (businessObject) {
 
         };
         /////////////eArrest.05
-        var CPRProvide=false; //can only be True when isArrest is True
         _val = getValue(businessObject.elements, "eArrest.05");
         if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
         {
@@ -210,10 +209,6 @@ var seteArrest = function (businessObject) {
                 }
                 else 
                 {
-                    if(_val[0]=="9923003")
-                    {
-                        CPRProvide=true;
-                    }
                     eArrest["eArrest.05"] = _val[0];
                     eArrest["CPRCareProvidedPriortoEMSArrival"]  = _val[0];
                 }   
@@ -229,7 +224,7 @@ var seteArrest = function (businessObject) {
     _val = getValue(businessObject.elements, "eArrest.06");
     if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        if (CPRProvide == true)  //Yes value for eArrest.01
+        if (eArrest["eArrest.05"] == 9923003)  //Yes 
         {
             if (_val == null) {
                 eArrest["eArrest.06"] = null;
@@ -256,8 +251,7 @@ var seteArrest = function (businessObject) {
     };
 
 
-        /////////////eArrest.07
-    var AEDProvided = false;
+    /////////////eArrest.07
     _val = getValue(businessObject.elements, "eArrest.07");        
     if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
@@ -270,10 +264,6 @@ var seteArrest = function (businessObject) {
             }
             else
             {    
-                if(_val[0] != "3007001")
-                {
-                    AEDProvided == true;
-                };
                 eArrest["eArrest.07"] = _val[0];
                 eArrest["WhoProvidedCPRPriortoEMSArrival"] = setCodeText("eArrest.07", _val[0]);
             }
@@ -290,7 +280,7 @@ var seteArrest = function (businessObject) {
         
     if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        if (AEDProvided == true)  //
+        if (eArrest["eArrest.07"] == "3007001")  //Yes
         {
             if (_val == null) 
             {
@@ -311,19 +301,17 @@ var seteArrest = function (businessObject) {
     };
 
     //eArrest.03 Resuscitation Attempted By EMS should contain "Initiated Chest Compressions" 
-        //when eArrest.09 Type of CPR Provided contains "Compressions..." and should contain "Attempted Ventilation" 
-    //when eArrest.09 Type of CPR Provided contains "Ventilation...".</sch:title>
+    //when eArrest.09 Type of CPR Provided contains "Compressions..."
+    //when eArrest.09 Type of CPR Provided contains "Ventilation  and should contain "Attempted Ventilation" ..."
     // This rule fires when there are non-empty instances of eArrest.09 within eArrest. -->  
-     //:eArrest.03 = '3003005' or not(nem:eArrest.09 = ('3009001', '3009003', '3009005', '3009007', 
+    //:eArrest.03 = '3003005' or not(nem:eArrest.09 = ('3009001', '3009003', '3009005', '3009007', 
     //'3009009', '3009011'))">
    
-
     //Assert that eArrest.03 Resuscitation Attempted by EMS should contain "Attempted Ventilation" when eArrest.09 
     //Type of CPR Provided contains "Ventilation...".  -->
 
-        //eArrest.03 = '3003003' or not(nem:eArrest.09 = ('3009013', '3009015', '3009017', '3009019'))">
-        //should contain "Attempted Ventilation" when .
-  </sch:assert>
+   //eArrest.03 = '3003003' or not(nem:eArrest.09 = ('3009013', '3009015', '3009017', '3009019'))">
+   //should contain "Attempted Ventilation" when .
 
 
     /////////////eArrest.09
@@ -398,112 +386,155 @@ var seteArrest = function (businessObject) {
 
     /////////////eArrest.10
     _val = getValue(businessObject.elements, "eArrest.10");
-    if (_val == null)
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        if (isRequiredStateElement("eArrest.10") == true) 
+        if (_val == null)
         {
-            eArrest["eArrest.10"] = V3NOT_RECORDED;
-            eArrest["TherapeuticHypothermiaInitiated"] = "NOT RECORDED";
+            if (isRequiredStateElement("eArrest.10") == true) 
+            {
+                eArrest["eArrest.10"] = V3NOT_RECORDED;
+                eArrest["TherapeuticHypothermiaInitiated"] = "NOT RECORDED";
+            }
+            else 
+            {
+                eArrest["eArrest.10"] = v3NOT_REPORTING;            
+                eArrest["TherapeuticHypothermiaInitiated"] = "NOT REPORTING";
+            }
         }
-        else 
+        else        
         {
-            eArrest["eArrest.10"] = v3NOT_REPORTING;            
-            eArrest["TherapeuticHypothermiaInitiated"] = "NOT REPORTING";
+            isNotApplicableFlag= true;
+            eArrest["eArrest.10"] = _val[0];
+            eArrest["TherapeuticHypothermiaInitiated"] = setCodeText("eArrest.10", _val[0]);
         }
     }
-    else        
+    else
     {
-        isNotApplicableFlag= true;
-        eArrest["eArrest.10"] = _val[0];
-        eArrest["TherapeuticHypothermiaInitiated"] = setCodeText("eArrest.10", _val[0]);
+        eArrest["eArrest.10"] = NIL_V3NOT_APPLICABLE;
+        eArrest["TherapeuticHypothermiaInitiated"] = NOT_APPLICABLE;
     };
 
 
     /////////////eArrest.11
     _val = getValue(businessObject.elements, "eArrest.11");
-    if (_val == null)
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        eArrest["eArrest.11"] = V3NOT_RECORDED;
-        eArrest["FirstMonitoredArrestRhythmofthePatient"] = "NOT RECORDED";
-        v2Array.push({ section: "E11", element: "E11_05", val: v2NOT_RECORDED });
+        if (_val == null)
+        {
+            eArrest["eArrest.11"] = V3NOT_RECORDED;
+            eArrest["FirstMonitoredArrestRhythmofthePatient"] = "NOT RECORDED";
+            v2Array.push({ section: "E11", element: "E11_05", val: v2NOT_RECORDED });
+        }
+        else
+        {
+            isNotApplicableFlag= true;
+            eArrest["eArrest.11"] = _val[0];
+            eArrest["FirstMonitoredArrestRhythmofthePatient"] = setCodeText("eArrest.11", _val[0]);
+            v2Array.push({ section: "E11", element: "E11_05", val: _val[0] });
+        }
     }
     else
     {
-        isNotApplicableFlag= true;
-        eArrest["eArrest.11"] = _val[0];
-        eArrest["FirstMonitoredArrestRhythmofthePatient"] = setCodeText("eArrest.11", _val[0]);
-        v2Array.push({ section: "E11", element: "E11_05", val: _val[0] });
+        eArrest["eArrest.11"] = NIL_V3NOT_APPLICABLE;
+        eArrest["FirstMonitoredArrestRhythmofthePatient"] = NOT_APPLICABLE;
+        v2Array.push({ section: "E11", element: "E11_05", val: v2NOT_APPLICABLE });
     };
 
 
     /////////////eArrest.12
     _val = getValue(businessObject.elements, "eArrest.12");
-    if (_val == null)
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        if (isRequiredStateElement("eArrest.12") == true)
+        if (_val == null)
         {
-            eArrest["eArrest.12"] = V3NOT_RECORDED;
-            eArrest["AnyReturnofSpontaneousCirculation"] = "NOT RECORDED";
-            v2Array.push({ section: "E11", element: "E11_06", val: v2NOT_RECORDED });            
-        }                
+            if (isRequiredStateElement("eArrest.12") == true)
+            {
+                eArrest["eArrest.12"] = V3NOT_RECORDED;
+                eArrest["AnyReturnofSpontaneousCirculation"] = "NOT RECORDED";
+                v2Array.push({ section: "E11", element: "E11_06", val: v2NOT_RECORDED });            
+            }                
+        }
+        else
+        {     
+            var arr1 = [];
+            var arr2 = [];
+            var arr3 = [];        
+            for (var i = 0; i < _val.length; i++) 
+            {            
+                arr1.push(_val[i]);
+                arr2.push(setV2("eArrest.12", _val[i]));
+                arr2.push(setCodeText("eArrest.12", _val[i]))
+            };
+            v2Array.push({ section: "E11", element: "E11_06", val: arr2.slice(0)     });
+            dAgency["eArrest.12"] = arr1.slice(0);
+            dAgency["AnyReturnofSpontaneousCirculation"] = arr3.slice(0);
+        }
     }
     else
     {
-        isNotApplicableFlag= true;
-        var arr1 = [];
-        var arr2 = [];
-        var arr3 = [];        
-        for (var i = 0; i < _val.length; i++) 
-        {            
-            arr1.push(_val[i]);
-            arr2.push(setV2("eArrest.12", _val[i]));
-            arr2.push(setCodeText("eArrest.12", _val[i]))
-        };
-        v2Array.push({ section: "E11", element: "E11_06", val: arr2.slice(0)     });
-        dAgency["eArrest.12"] = arr1.slice(0);
-        dAgency["AnyReturnofSpontaneousCirculation"] = arr3.slice(0);
+        v2Array.push({ section: "E11", element: "E11_06", val: v2NOT_APPLICABLE     });
+        dAgency["eArrest.12"] = NIL_V3NOT_APPLICABLE;
+        dAgency["AnyReturnofSpontaneousCirculation"] = NOT_APPLICABLE;
     };
 
     /////////////eArrest.13
     _val = getValue(businessObject.elements, "eArrest.13");
-    if (_val == null)
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
+        if (_val == null)
+        {
+            eArrest["eArrest.13"] = null;
+            eArrest["NeurologicalOutcomeatHospitalDischarge"] = null;
+            v2Array.push({ section: "E11", element: "E11_07", val: v2NOT_APPLICABLE     });
+        }
+        else 
+        {
+            isNotApplicableFlag= true;
+            eArrest["eArrest.13"] = _val[0];
+            eArrest["NeurologicalOutcomeatHospitalDischarge"] = setCodeText("eArrest.13", _val[0]);
+        }
+    }
+    else
+    {      
         eArrest["eArrest.13"] = null;
         eArrest["NeurologicalOutcomeatHospitalDischarge"] = null;
-    }
-    else 
-    {
-        isNotApplicableFlag= true;
-        eArrest["eArrest.13"] = _val[0];
-        eArrest["NeurologicalOutcomeatHospitalDischarge"] = setCodeText("eArrest.13", _val[0]);
+        v2Array.push({ section: "E11", element: "E11_07", val: v2NOT_APPLICABLE     });
     };
 
     /////////////eArrest.14
     _val = getValue(businessObject.elements, "eArrest.14");
-    if (_val == null)
+    if (isApplicable == true)  //If there is no incident, all set to NOT_APPLICABLE
     {
-        if (isRequiredStateElement("eArrest.14") == true)
+        if (_val == null)
         {
-            eArrest["eArrest.14"] = v3NOT_RECORDED;
-            eArrest["DateTimeofCardiacArrest"] = "NOT RECORDED";
-            v2Array.push({ section: "E11", element: "E11_08", val: v2NOT_RECORDED });
+            if (isRequiredStateElement("eArrest.14") == true)
+            {
+                eArrest["eArrest.14"] = v3NOT_RECORDED;
+                eArrest["DateTimeofCardiacArrest"] = "NOT RECORDED";
+                v2Array.push({ section: "E11", element: "E11_08", val: v2NOT_RECORDED });
+            }
+        }
+        else
+        {    
+            if (getValue(businessObject.elements, "eArrest.01" == "3001001"))
+            {
+                OLAPArray.push('\t' + "<DateTimeofCardiacArrest>" + v3NOT_APPLICABLE + "</DateTimeofCardiacArrest>" + '\n');
+                v2Array.push({ section: "E11", element: "E11_08", val: v2NOT_APPLICABLE });
+                _retArray.push('\t' + "<eArrest.14" + NIL_V3NOT_APPLICABLE + '\n');
+            }
+            else
+            {
+                eArrest["eArrest.14"] = _val[0];
+                eArrest["DateTimeofCardiacArrest"] = _val[0];
+                v2Array.push({ section: "E11", element: "E11_08", val: _val[0] });
+            }
         }
     }
     else
     {
-        isNotApplicableFlag= true;
-        if (getValue(businessObject.elements, "eArrest.01" == "3001001"))
-        {
-            OLAPArray.push('\t' + "<DateTimeofCardiacArrest>" + v3NOT_APPLICABLE + "</DateTimeofCardiacArrest>" + '\n');
-            v2Array.push({ section: "E11", element: "E11_08", val: v2NOT_APPLICABLE });
-            _retArray.push('\t' + "<eArrest.14" + NIL_V3NOT_APPLICABLE + '\n');
-        }
-        else
-        {
-            eArrest["eArrest.14"] = _val[0];
-            eArrest["DateTimeofCardiacArrest"] = _val[0];
-            v2Array.push({ section: "E11", element: "E11_08", val: _val[0] });
-        }
+        eArrest["eArrest.14"] = NIL_V3NOT_APPLICABLE;
+        eArrest["DateTimeofCardiacArrest"] = NOT_APPLICABLE;
+        v2Array.push({ section: "E11", element: "E11_08", val: v2NOT_APPLICABLE });
     };
 
     /////////////eArrest.15
