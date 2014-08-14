@@ -1,8 +1,6 @@
-Why I continue
+Altered Get() to produce ValueObject identical to OLTP object.
 
-1.  It's what I do.
+Need to change remaining PN values and inject XMLWriter inline.
 
-Why I don't quit
 
-1.  It's not what I do.
 
