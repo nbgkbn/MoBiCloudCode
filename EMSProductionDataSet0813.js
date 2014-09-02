@@ -8544,10 +8544,9 @@ var seteDevice = function (businessObject) {
     */
     return eDevice;
 };
-var seteExam = function (businessObject) 
-{
+var seteExam = function (businessObject) {
     var eExam = new Object();
-/*            
+            
     ////////Check for cancelled calls, Standby, non-patient
     var group = ["4212007","4212009","4212011","4212039","4212041","4212043"]; //Calls without patient interaction
     if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
@@ -8621,7 +8620,6 @@ var seteExam = function (businessObject)
         }
         else 
         {
-            _val = _exam.ValueArray[0].val;
             v2Array.push({ section: "E16", element: "E16_01", val: _val });
             eExam["eExam.01"] = _val;
             eExam["EstimatedBodyWeightinKilograms"] = _val;
@@ -9140,7 +9138,6 @@ var seteExam = function (businessObject)
                     }
                     else 
                     {
-                        _val = _exam.ValueArray[0].val;
                         SpineGroup["eExam.13"] = _val;
                         SpineGroup["BackandSpineAssessmentFindingLocation"] = _val;
                     };
@@ -9206,7 +9203,6 @@ var seteExam = function (businessObject)
                     }
                     else 
                     {
-                        _val = _exam.ValueArray[0].val;
                         OXML.Node("ExtremityAssessmentFindingLocation", setCodeText("eExam.15",_val));     
                         XML.Node("eExam.15", _val); 
                         
@@ -9267,7 +9263,6 @@ var seteExam = function (businessObject)
                     }
                     else 
                     {
-                        _val = _exam.ValueArray[0].val;
                         EyeGroup["eExam.17"] = _val;
                         EyeGroup["EyeAssessmentFindingLocation"] = setCodeText("eExam.17", _val);
                     };
@@ -9401,10 +9396,9 @@ var seteExam = function (businessObject)
             return eExam;
             */
 };
-var seteHistory = function (businessObject) 
-{
+var seteHistory = function (businessObject) {
     var eHistory = new Object();
-/*            
+            
     ////////Check for cancelled calls, Standby, non-patient
     var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; //Calls without patient interaction
     if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
@@ -9415,7 +9409,8 @@ var seteHistory = function (businessObject)
     {
         eHistory.IsValid = true;
     };
-                     
+          
+           
     ////////eHistory.01
     _history = getValue(businessObject.elements, "eHistory.01");
     if (eHistory.IsValid ==false)
@@ -9436,8 +9431,8 @@ var seteHistory = function (businessObject)
             else 
             {
                 v2Array.push({ section: "E12", element: "E12_01", val: v2NOT_REPORTING });
-                eHistory["eHistory.01"] = v3NOT_REPORTING;
-                eHistory["BarrierstoPatientCare"] = NOT_REPORTING;
+                eExam["eHistory.01"] = v3NOT_REPORTING;
+                eExam["BarrierstoPatientCare"] = NOT_REPORTING;
 
                 XML.BeginNode("eHistory.01");
                 XML.Attrib("NV", NIL_V3NOT_REPORTING);
@@ -9462,7 +9457,7 @@ var seteHistory = function (businessObject)
                 }
             };
             v2Array.push({ section: "E12", element: "E12_01", val: arr2.slice(0) });
-            eHistory["BarrierstoPatientCare"] = arr3.slice(0);
+            eExam["BarrierstoPatientCare"] = arr3.slice(0);
             eHistory["eHistory.01"] = arr1.slice(0);
         }
     }
@@ -9552,10 +9547,10 @@ var seteHistory = function (businessObject)
             
         
             /////////eHistory.04
-            _history = getValue(businessObject.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements, "eHistory.04");
+            eHistory = getValue(businessObject.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements, "eHistory.04");
             if (eHistory.IsValid ==false)
             {
-                if (_history.IsNull == true) 
+                if (_val == null) 
                 {
                     v2Array.push({ section: "E12", element: "E12_05", val: null });
                     PractitionerGroup["MiddleName"] = null;
@@ -9649,7 +9644,7 @@ var seteHistory = function (businessObject)
 
         OXML.Node("AdvanceDirectives", NOT_APPLICABLE);
     };
-    alert("eHistory.06 CodeType")
+        NEIL
     ////////eHistory.06
     _history = getValue(businessObject.elements, "eHistory.06");
     if (eHistory.IsValid ==false)
@@ -9659,7 +9654,8 @@ var seteHistory = function (businessObject)
             if (_history.HasPN == false)
             {
                 if (isRequiredStateElement("eHistory.06") == true) 
-                {       
+                {
+        
                     eHistory["eHistory.06"] =v3NOT_RECORDED;
                     eHistory["MedicationAllergies"] =v3NOT_RECORDED;
                     v2Array.push({ section: "E12", element: "E12_08", val: v2NOT_RECORDED });
@@ -9684,9 +9680,9 @@ var seteHistory = function (businessObject)
                 }
             }
             else
-            {//<eProcedures.03 PN="8801003" xsi::nill="true"></eProcedures.03>
+            {
                 XML.BeginNode("eHistory.06");
-                XML.Attrib("PN", _history.ValueArray[0].PN)
+                XML.Attrib("PN", PN_FINDING_NOT_PRESENT_NOT_NILLABLE)
                 XML.WriteString(i);
                 XML.EndNode();
             }
@@ -9917,8 +9913,8 @@ var seteHistory = function (businessObject)
             };
             
             /////////eHistory.11
-            _history = getValue(businessObject.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements, "eHistory.11");
-            if (_history.IsNull == true) 
+            _val = getValue(businessObject.sections[xx].attributes.sections[_sectionIndex[x]].attributes.elements, "eHistory.11");
+            if (_val == null) 
             {
                 eHistory["eHistory.11"] =null;
                 eHistory["ImmunizationDate"] =null;
@@ -10056,7 +10052,8 @@ var seteHistory = function (businessObject)
             };     
         }
     };
-                
+        
+        
     ////////eHistory.16
     _history = getValue(businessObject.elements, "eHistory.16");
     if ((eHistory.IsValid ==false) )
@@ -10137,7 +10134,8 @@ var seteHistory = function (businessObject)
             };
             eHistory["eHistory.17"] = arr1.slice(0);        
             eHistory["AlcoholDrugUseIndicators"] =arr2.slice(0);
-            v2Array.push({ section: "E12", element: "E12_18", val: arr3.slice(0)});                
+            v2Array.push({ section: "E12", element: "E12_18", val: arr3.slice(0)});    
+            
         }
     }
     else
@@ -10146,14 +10144,18 @@ var seteHistory = function (businessObject)
         eHistory["AlcoholDrugUseIndicators"] =NOT_APPLICABLE;
         v2Array.push({ section: "E12", element: "E12_18", val: v2NOT_APPLICABLE});        
         
+        XML.BeginNode("eHistory.17");
+        XML.Attrib("NV", NIL_V3NOT_REPORTING);
+        XML.EndNode();
 
+        OXML.Node("AlcoholDrugUseIndicators", NOT_REPORTING);        
     };
-    alert("eHistory.18")
-    ////////eHistory.18
-        _history = getValue(businessObject.elements, "eHistory.18");
+                
+        ////////eHistory.18
+        _val = getValue(businessObject.elements, "eHistory.18");
         if ((eHistory.IsValid ==false) )
         {
-            if (_history.IsNull == true) 
+            if (_val == null) 
             {
                 PNValue = getPertinentNegative("eExam.02")
                 if(PNValue != null)
@@ -10190,926 +10192,695 @@ var seteHistory = function (businessObject)
             v2Array.push({ section: "E12", element: "E12_20", val: null});          
         };
             
-        ////////eHistory.19
-        _history = getValue(businessObject.elements, "eHistory.19");
-        if ((eHistory.IsValid ==false) )
-        {
+                ////////eHistory.19
+                _val = getValue(businessObject.elements, "eHistory.19");
+                if ((eHistory.IsValid ==false) )
+                {
             
-            if (_history.IsNull == true) 
-            {
-                eHistory["LastOralIntake"] =null;
-                eHistory["eHistory.19"] =null;
-
-                OXML.Node("LastOralIntake", null);     
-                XML.Node("eHistory.19", null);
-            }
-            else 
-            {
-                OXML.Node("LastOralIntake", _val);     
-                XML.Node("eHistory.19", _val);
-                eHistory["LastOralIntake"] =_val;
-                eHistory["eHistory.19"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("LastOralIntake", null);     
-            XML.Node("eHistory.19", null);
-            eHistory["LastOralIntake"] =null;
-            eHistory["eHistory.19"] =null;
-        };      
-        */
- 
-    return eHistory;
-};
-var seteInjury = function (businessObject) {
-    //NEMSISEMSObject = complete NEMSIS Object from OLTP object
-    //This function converts NEMSISEMSObject to both Version 2.2.1 and Version 3.3.4 NEMSIS Objects
-    //Creates qualified JSON objects
-    //Imposes localized business rules (within a given section/attribute)
-    //If NEMSISObject does not contain this Section (isUndefined == true), function assigns appropriate
-    //values to attribute/elements based upon State/Agency Configuration.
-    var eInjury = new Object();
-    /*
-    var SeatGroup = new Object();
-    var SeatGroupArray = new Array();
-    ////////Check for cancelled calls, Standby, non-patient
-            
-    var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; //Calls without patient interaction
-    if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
-    {
-        eInjury.IsValid = false;
-    }
-    else
-    {
-        eInjury.IsValid = true;
-    };
-    var v2Array = [];
-    var _injury = new Object();
-    var eInjuryObject = new Object()
-    eInjuryObject = getNEMSISSection(businessObject, "eInjury")
-        
-    var elementList = "";
-    elementList = eInjuryObject.attributes.elements;
-    // console.log(elementList)
-        
-    //eInjury.01///////////////////
-    _injury = getValue(elementList, "eInjury.01");
-    if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-    {
-        if (_injury.IsNull == true) 
-        {
-            eInjury["eInjury.01"] = v3NOT_RECORDED;
-            eInjury["CauseofInjury"] = NOT_RECORDED;
-            v2Array.push({ section: "E10", element: "E10_01", val: v2NOT_RECORDED });
-
-            XML.BeginNode("eInjury.01");
-            XML.Attrib("NV", NIL_V3NOT_REPORTING);
-            XML.EndNode();
-
-            OXML.Node("CauseofInjury", NOT_REPORTING);      
-        }
-        else 
-        {
-            var arr1 = [];
-            var arr2 = [];
-            var arr3 = [];
-            for (var i = 0; i < _injury.ValueArray.length; i++)
-            {
-                if ((_injury.ValueArray[i].HasValue == true) && (arr1.indexOf(_injury.ValueArray[i].val) > -1))
-                {
-                    _val = _injury.ValueArray[i].val
-                    arr1.push(_val);
-                    arr2.push(setV2("eInjury.01", _val));
-                    arr3.push(setCodeText("eInjury.01", _val));
-                    OXML.Node("CauseofInjury", setCodeText("eInjury.01", _val));
-                    XML.Node("eInjury.01", _val);
-                }
-            };
-            eInjury["eInjury.01"] = arr1.slice(0);
-            eInjury["CauseofInjury"] = arr3.slice(0);
-            v2Array.push({ section: "E10", element: "E10_01", val: arr2.slice(0) });
-        }
-    }
-    else
-    {
-        eInjury["eInjury.01"] = v3NOT_APPLICABLE;
-        eInjury["CauseofInjury"] = NOT_APPLICABLE;
-        v2Array.push({ section: "E10", element: "E10_01", val: v2NOT_APPLICABLE });
-
-        XML.BeginNode("eInjury.01");
-        XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-        XML.EndNode();
-
-        OXML.Node("CauseofInjury", NOT_APPLICABLE);      
-    };
-        
-    //eInjury.02///////////////////
-    _injury = getValue(elementList, "eInjury.02");
-    if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-    {
-        if (_injury.IsNull == true) 
-        {
-            if (isRequiredStateElement("eInjury.02")) 
-            {
-                eInjury["eInjury.02"] = v3NOT_RECORDED;
-                eInjury["MechanismofInjury"] = NOT_RECORDED;
-                v2Array.push({ section: "E10", element: "E10_03", val: v2NOT_RECORDED });
-
-                XML.BeginNode("eInjury.02");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("MechanismofInjury", NOT_RECORDED);      
-            }    
-            else 
-            {
-                eInjury["eInjury.02"] = v3NOT_REPORTING;
-                eInjury["MechanismofInjury"] = NOT_REPORTING;
-                v2Array.push({ section: "E10", element: "E10_03", val: v2NOT_REPORTING });
-
-                XML.BeginNode("eInjury.02");
-                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                XML.EndNode();
-
-                OXML.Node("MechanismofInjury", NOT_REPORTING);      
-            }
-        }
-        else 
-        {
-            var arr1 = [];
-            var arr2 = [];
-            var arr3 = [];
-            for (var i = 0; i < _injury.ValueArray.length; i++)
-            {
-                if ((_injury.ValueArray[i].HasValue == true) && (arr1.indexOf(_injury.ValueArray[i].val) > -1))
-                {
-                    _val = _injury.ValueArray[i].val
-                    arr1.push(_val);
-                    arr2.push(setV2("eInjury.02", _val));
-                    arr3.push(setCodeText("eInjury.02", _val));
-
-                    OXML.Node("MechanismofInjury", setCodeText("eInjury.02",_val));     
-                    XML.Node("eInjury.02", _val);
-                }
-            };
-            bHasInjury = true;
-            eInjury["MechanismofInjury"] = arr3.slice(0);
-            eInjury["eInjury.02"] = arr1.slice(0);
-            v2Array.push({ section: "E10", element: "E10_03", val: arr2.slice(0) });
-        }
-    }
-    else
-    {
-        eInjury["eInjury.02"] = v3NOT_APPLICABLE;
-        eInjury["MechanismofInjury"] = NOT_APPLICABLE;
-        v2Array.push({ section: "E10", element: "E10_03", val: v2NOT_APPLICABLE });
-
-        XML.BeginNode("eInjury.02");
-        XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-        XML.EndNode();
-
-        OXML.Node("MechanismofInjury", NOT_APPLICABLE);      
-    };
-        
-        
-    //eInjury.03///////////////////
-    _injury = getValue(elementList, "eInjury.03");
-    if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-    {
-        if (_injury.IsNull == true) 
-        {
-            if (isRequiredStateElement("eInjury.03")) 
-            {
-                eInjury["eInjury.03"] = v3NOT_RECORDED;
-                eInjury["TraumaCenterCriteria"] = NOT_RECORDED;
-
-                XML.BeginNode("eInjury.03");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("TraumaCenterCriteria", NOT_APPLICABLE);  
-            }
-        }
-        else 
-        {
-            var arr1 = [];
-            var arr3 = [];
-            for (var i = 0; i < _injury.ValueArray.length; i++)
-            {
-                if ((_injury.ValueArray[i].HasValue == true) && (arr1.indexOf(_injury.ValueArray[i].val) > -1))
-                {
-                    _val = _injury.ValueArray[i].val
-                    arr1.push(_val);
-                    arr3.push(setCodeText("eInjury.03", _val));
-                    OXML.Node("TraumaCenterCriteria", setCodeText("eInjury.03",_val));     
-                    XML.Node("eInjury.03", _val);
-                }
-            };
-            bHasInjury = true;
-            eInjury["eInjury.03"] = arr1.slice(0);
-            eInjury["TraumaCenterCriteria"] = arr3.slice(0);
-        }
-    }
-    else
-    {
-        eInjury["eInjury.03"] = v3NOT_APPLICABLE;
-        eInjury["TraumaCenterCriteria"] = NOT_APPLICABLE;
-
-        XML.BeginNode("eInjury.03");
-        XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-        XML.EndNode();
-
-        OXML.Node("TraumaCenterCriteria", NOT_APPLICABLE);          
-    };
-        
-        PN
-        //eInjury.04///////////////////
-        _val = getValue(elementList, "eInjury.04");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            PNValue = getPertinentNegative("eInjury.04")
-            if (PNValue != null) {
-                if (PNValue == "8801005") {
-                    eInjury["eInjury.04"] = PN_FINDING_NOT_PRESENT_IS_NILLABLE;
-                    eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = "8801005";
-                    v2Array.push({ section: "E10", element: "E10_04", val: v2NOT_RECORDED });
-                }
-            }
-            if (_val == null) {
-                eInjury["eInjury.04"] = v3NOT_RECORDED;
-                eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = v3NOT_RECORDED;
-                v2Array.push({ section: "E10", element: "E10_04", val: v2NOT_RECORDED });
-            }
-            else {
-                var arr1 = [];
-                var arr2 = [];
-                var arr3 = [];
-                for (var i = 0; i < _val.length; i++) 
-                {
-                    if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
-                        {
-                        arr1.push(_val);
-                        arr2.push(setV2("eInjury.04", _val));
-                        arr3.push(setCodeText("eInjury.04", _val));
+                    if (_val == null) 
+                    {
+                        eHistory["LastOralIntake"] =null;
+                        eHistory["eHistory.19"] =null;
                     }
-                };
-                bHasInjury = true;
-                eInjury["eInjury.04"] = arr1.slice(0);
-                eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = arr3.slice(0);
-                v2Array.push({ section: "E10", element: "E10_04", val: arr2.slice(0) });
-            }
-        }
-        else
-        {
-            eInjury["eInjury.04"] = v3NOT_APPLICABLE;
-            eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E10", element: "E10_04", val: v2NOT_APPLICABLE});
-        };
-        
-        ///eInjury.05////////////
-        _injury = getValue(elementList, "eInjury.05");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            if (_injury.IsNull == true) 
-            {
-                if (isRequiredStateElement("eInjury.05")) 
-                {
-                    eInjury["eInjury.05"] = null;
-                    eInjury["MainAreaoftheVehicleImpactedbytheCollision"] = null;
-                    v2Array.push({ section: "E10", element: "E10_05", val: v2NOT_RECORDED });
-
-                    XML.BeginNode("eInjury.05");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("MainAreaoftheVehicleImpactedbytheCollision", NOT_RECORDED);   
-                }
-            }
-            else 
-            {
-                bHasInjury = true;
-                _val = _injury.ValueArray[0].val;
-                if((_val >1) && (_val<12))
-                {
-                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eInjury.05", Description: "Validation Error:  Main Area of Impact must be between 1 and 12. " })                    
+                    else 
+                    {
+                        eHistory["LastOralIntake"] =_val;
+                        eHistory["eHistory.19"] = _val;
+                    }
                 }
                 else
                 {
-                    eInjury["eInjury.05"] = _val;
-                    eInjury["MainAreaoftheVehicleImpactedbytheCollision"] = _val;
-                    v2Array.push({ section: "E10", element: "E10_05", val: setV2("eInjury.05", _val) });
-
-                    XML.Node("eInjury.05", _val);   
-                    OXML.Node("MainAreaoftheVehicleImpactedbytheCollision", _val);   
+                    eHistory["LastOralIntake"] =null;
+                    eHistory["eHistory.19"] =null;
+                };      
+                */
+            return eHistory;
+        };
+var seteInjury = function (businessObject) {
+            //NEMSISEMSObject = complete NEMSIS Object from OLTP object
+            //This function converts NEMSISEMSObject to both Version 2.2.1 and Version 3.3.4 NEMSIS Objects
+            //Creates qualified JSON objects
+            //Imposes localized business rules (within a given section/attribute)
+            //If NEMSISObject does not contain this Section (isUndefined == true), function assigns appropriate
+            //values to attribute/elements based upon State/Agency Configuration.
+            var eInjury = new Object();
+            var SeatGroup = new Object();
+            var SeatGroupArray = new Array();
+            ////////Check for cancelled calls, Standby, non-patient
+            /*
+            var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; //Calls without patient interaction
+            if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
+            {
+                eInjury.IsValid = false;
+            }
+            else
+            {
+                eInjury.IsValid = true;
+            };
+            var v2Array = [];
+        
+            var eInjuryObject = new Object()
+            eInjuryObject = getNEMSISSection(businessObject, "eInjury")
+        
+            var elementList = "";
+            elementList = eInjuryObject.attributes.elements;
+            // console.log(elementList)
+        
+            //eInjury.01///////////////////
+            _val = getValue(elementList, "eInjury.01");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+            {
+                if (_val == null) 
+                {
+                    eInjury["eInjury.01"] = v3NOT_RECORDED;
+                    eInjury["CauseofInjury"] = NOT_RECORDED;
+                    v2Array.push({ section: "E10", element: "E10_01", val: v2NOT_RECORDED });
+                }
+                else {
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        if(_val !=null)
+                        {
+                        if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(_val);
+                            arr2.push(setV2("eInjury.01", _val));
+                            arr3.push(setCodeText("eInjury.01", _val));
+                            }
+                        }
+                    };
+                    eInjury["eInjury.01"] = arr1.slice(0);
+                    eInjury["CauseofInjury"] = arr3.slice(0);
+                    v2Array.push({ section: "E10", element: "E10_01", val: arr2.slice(0) });
                 }
             }
-        }
-        else
-        {
-            XML.Node("eInjury.05", null);   
-            OXML.Node("MainAreaoftheVehicleImpactedbytheCollision", null);   
-            eInjury["eInjury.05"] = null;
-            eInjury["MainAreaoftheVehicleImpactedbytheCollision"] = null;
-            v2Array.push({ section: "E10", element: "E10_05", val: v2NOT_RECORDED });
-        };
-        
-        //eInjury.06///////////
-        _injury = getValue(elementList, "eInjury.06");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            if (_injury.IsNull == true) 
+            else
             {
-                XML.Node("eInjury.06", null);   
-                OXML.Node("LocationofPatientinVehicle", null);   
+                eInjury["eInjury.01"] = v3NOT_APPLICABLE;
+                eInjury["CauseofInjury"] = NOT_APPLICABLE;
+                v2Array.push({ section: "E10", element: "E10_01", val: v2NOT_APPLICABLE });
+            };
         
-                eInjury["eInjury.06"] = null;
-                eInjury["LocationofPatientinVehicle"] = null;
-                v2Array.push({ section: "E10", element: "E10_06", val: null });
-        
-            }
-            else 
+            //eInjury.02///////////////////
+            _val = getValue(elementList, "eInjury.02");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
             {
-                _val = _injury.ValueArray[0].val;
-
-                eInjury["eInjury.06"] = _val;
-                eInjury["LocationofPatientinVehicle"] = setCodeText("eInjury.06", _val);
-                v2Array.push({ section: "E10", element: "E10_06", val: setV2("eInjury.06", _val) });
-
-                XML.Node("eInjury.06", _val );   
-                OXML.Node("LocationofPatientinVehicle", setCodeText("eInjury.06", _val) );   
-            }
-        }
-        else
-        {
-            XML.Node("eInjury.06", null);   
-            OXML.Node("LocationofPatientinVehicle", null);   
-            eInjury["eInjury.06"] = null;
-            eInjury["LocationofPatientinVehicle"] = null;
-            v2Array.push({ section: "E10", element: "E10_06", val: null });
-        };
-        
-        //eInjury.07/////////
-        _injury = getValue(elementList, "eInjury.07");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            if (_injury.IsNull == true) 
-            {
-                if (isRequiredStateElement("eInjury.07")) 
+                if (_val == null) 
                 {
-                    eInjury["eInjury.07"] = v3NOT_RECORDED;
-                    eInjury["UseofOccupantSafetyEquipment"] = v3NOT_RECORDED;
-                    v2Array.push({ section: "E10", element: "E10_08", val: v2NOT_RECORDED });
-
-                    v2Array.push({ section: "E10", element: "E10_08", val: v2NOT_RECORDED });
-                    XML.BeginNode("eInjury.07");
-                    XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                    XML.EndNode();
-
-                    OXML.Node("UseofOccupantSafetyEquipment", NOT_RECORDED);   
+                    if (isRequiredStateElement("eInjury.02")) {
+                        eInjury["eInjury.01"] = v3NOT_RECORDED;
+                        eInjury["MechanismofInjury"] = NOT_RECORDED;
+                        v2Array.push({ section: "E10", element: "E10_03", val: v2NOT_RECORDED });
+                    }
+                    else {
+                        eInjury["eInjury.02"] = v3NOT_REPORTING;
+                        eInjury["MechanismofInjury"] = NOT_REPORTING;
+                        v2Array.push({ section: "E10", element: "E10_03", val: v2NOT_REPORTING });
+                    }
                 }
                 else 
                 {
-                    eInjury["eInjury.07"] = v3NOT_REPORTING;
-                    eInjury["UseofOccupantSafetyEquipment"] = NOT_REPORTING;
-
-                    v2Array.push({ section: "E10", element: "E10_08", val: v2NOT_REPORTING });
-                    XML.BeginNode("eInjury.07");
-                    XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                    XML.EndNode();
-
-                    OXML.Node("UseofOccupantSafetyEquipment", NOT_REPORTING);   
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(_val);
+                            arr2.push(setV2("eInjury.02", _val));
+                            arr3.push(setCodeText("eInjury.02", _val));
+                        }
+                    };
+                    bHasInjury = true;
+                    eInjury["MechanismofInjury"] = arr3.slice(0);
+                    eInjury["eInjury.02"] = arr1.slice(0);
+                    v2Array.push({ section: "E10", element: "E10_03", val: arr2.slice(0) });
                 }
             }
-            else 
+            else
             {
-                var arr1 = [];
-                var arr2 = [];
-                var arr3 = [];
-                for (var i = 0; i < _injury.ValueArray.length; i++)
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (arr1.indexOf(_injury.ValueArray[i].val) > -1))
-                    {
-                        _val = _injury.ValueArray[i].val
-                        arr1.push(_val);
-                        arr2.push(setV2("eInjury.07", _val));
-                        arr3.push(setCodeText("eInjury.07", _val));
-
-                        OXML.Node("UseofOccupantSafetyEquipment", setCodeText("eInjury.07", _val));   
-                        XML.Node("eInjury.07", _val);   
-                    }
-                };
-                bHasInjury = true;
-                eInjury["eInjury.07"] = arr1.slice(0);
-                eInjury["UseofOccupantSafetyEquipment"] = arr3.slice(0);
-                v2Array.push({ section: "E10", element: "E10_08", val: arr2.slice(0) });
-            }
-        }
-        else
-        {
-            eInjury["eInjury.07"] = v3NOT_APPLICABLE;
-            eInjury["UseofOccupantSafetyEquipment"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E10", element: "E10_08", val: v2NOT_APPLICABLE});    
-
-            v2Array.push({ section: "E10", element: "E10_08", val: v2NOT_APPLICABLE });
-            XML.BeginNode("eInjury.07");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("UseofOccupantSafetyEquipment", NOT_APPLICABLE);   
-        };
+                eInjury["eInjury.02"] = v3NOT_APPLICABLE;
+                eInjury["MechanismofInjury"] = NOT_APPLICABLE;
+                v2Array.push({ section: "E10", element: "E10_03", val: v2NOT_APPLICABLE });};
         
-        //eInjury.08//////////
-        _injury = getValue(elementList, "eInjury.08");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            if (_injury.IsNull == true) 
+        
+            //eInjury.03///////////////////
+            _val = getValue(elementList, "eInjury.03");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+            {
+                if (_val == null) 
+                {
+                    if (isRequiredStateElement("eInjury.03")) 
+                    {
+                        eInjury["eInjury.03"] = v3NOT_RECORDED;
+                        eInjury["TraumaCenterCriteria"] = NOT_RECORDED;
+                    }
+                }
+                else 
+                {
+                    var arr1 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                       if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(_val);
+                            arr3.push(setCodeText("eInjury.03", _val));
+                        }
+                    };
+                    bHasInjury = true;
+                    eInjury["eInjury.03"] = arr1.slice(0);
+                    eInjury["TraumaCenterCriteria"] = arr3.slice(0);
+                }
+            }
+            else
+            {
+                eInjury["eInjury.03"] = v3NOT_APPLICABLE;
+                eInjury["TraumaCenterCriteria"] = NOT_APPLICABLE;
+        
+            };
+        
+        
+            //eInjury.04///////////////////
+            _val = getValue(elementList, "eInjury.04");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+            {
+                PNValue = getPertinentNegative("eInjury.04")
+                if (PNValue != null) {
+                    if (PNValue == "8801005") {
+                        eInjury["eInjury.04"] = PN_FINDING_NOT_PRESENT_IS_NILLABLE;
+                        eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = "8801005";
+                        v2Array.push({ section: "E10", element: "E10_04", val: v2NOT_RECORDED });
+                    }
+                }
+                if (_val == null) {
+                    eInjury["eInjury.04"] = v3NOT_RECORDED;
+                    eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = v3NOT_RECORDED;
+                    v2Array.push({ section: "E10", element: "E10_04", val: v2NOT_RECORDED });
+                }
+                else {
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                      if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(_val);
+                            arr2.push(setV2("eInjury.04", _val));
+                            arr3.push(setCodeText("eInjury.04", _val));
+                        }
+                    };
+                    bHasInjury = true;
+                    eInjury["eInjury.04"] = arr1.slice(0);
+                    eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = arr3.slice(0);
+                    v2Array.push({ section: "E10", element: "E10_04", val: arr2.slice(0) });
+                }
+            }
+            else
+            {
+                eInjury["eInjury.04"] = v3NOT_APPLICABLE;
+                eInjury["VehicularPedestrianorOtherInjuryRiskFactor"] = NOT_APPLICABLE;
+                v2Array.push({ section: "E10", element: "E10_04", val: v2NOT_APPLICABLE});
+            };
+        
+            ///eInjury.05////////////
+            _val = getValue(elementList, "eInjury.05");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+            {
+                if (_val == null) 
+                {
+                    if (isRequiredStateElement("eInjury.05")) 
+                    {
+                        eInjury["eInjury.05"] = null;
+                        eInjury["MainAreaoftheVehicleImpactedbytheCollision"] = null;
+                        v2Array.push({ section: "E10", element: "E10_05", val: v2NOT_RECORDED });
+                    }
+                }
+                else 
+                {
+                    bHasInjury = true;
+                    eInjury["eInjury.05"] = _val;
+                    eInjury["MainAreaoftheVehicleImpactedbytheCollision"] = _val;
+                    v2Array.push({ section: "E10", element: "E10_05", val: setV2("eInjury.05", _val) });
+                }
+            }
+            else
+            {
+                eInjury["eInjury.05"] = null;
+                eInjury["MainAreaoftheVehicleImpactedbytheCollision"] = null;
+                v2Array.push({ section: "E10", element: "E10_05", val: v2NOT_RECORDED });
+            };
+        
+            //eInjury.06///////////
+            _val = getValue(elementList, "eInjury.06");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+            {
+                if (_val == null) 
+                {
+                    eInjury["eInjury.06"] = null;
+                    eInjury["LocationofPatientinVehicle"] = null;
+                    v2Array.push({ section: "E10", element: "E10_06", val: null });
+        
+                }
+                else 
+                {
+                    eInjury["eInjury.06"] = _val;
+                    eInjury["LocationofPatientinVehicle"] = _val;
+                    v2Array.push({ section: "E10", element: "E10_06", val: setV2("eInjury.06", _val) });
+                }
+            }
+            else
+            {
+                eInjury["eInjury.06"] = null;
+                eInjury["LocationofPatientinVehicle"] = null;
+                v2Array.push({ section: "E10", element: "E10_06", val: null });
+            };
+        
+            //eInjury.07/////////
+            _val = getValue(elementList, "eInjury.07");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+            {
+                if (_val == null) 
+                {
+                    if (isRequiredStateElement("eInjury.07")) 
+                    {
+                        eInjury["eInjury.07"] = v3NOT_RECORDED;
+                        eInjury["UseofOccupantSafetyEquipment"] = v3NOT_RECORDED;
+                        v2Array.push({ section: "E10", element: "E10_08", val: v2NOT_RECORDED });
+                    }
+                    else 
+                    {
+                        eInjury["eInjury.07"] = v3NOT_REPORTING;
+                        eInjury["UseofOccupantSafetyEquipment"] = NOT_REPORTING;
+                        v2Array.push({ section: "E10", element: "E10_08", val: v2NOT_REPORTING });
+                    }
+                }
+                else 
+                {
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(_val);
+                            arr2.push(setV2("eInjury.07", _val));
+                            arr3.push(setCodeText("eInjury.07", _val));
+                        }
+                    };
+                    bHasInjury = true;
+                    eInjury["eInjury.07"] = arr1.slice(0);
+                    eInjury["UseofOccupantSafetyEquipment"] = arr3.slice(0);
+                    v2Array.push({ section: "E10", element: "E10_08", val: arr2.slice(0) });
+                }
+            }
+            else
+            {
+                eInjury["eInjury.07"] = v3NOT_APPLICABLE;
+                eInjury["UseofOccupantSafetyEquipment"] = NOT_APPLICABLE;
+                v2Array.push({ section: "E10", element: "E10_08", val: v2NOT_APPLICABLE});    
+            };
+        
+            //eInjury.08//////////
+            _val = getValue(elementList, "eInjury.08");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+            {
+                if (_val == null) 
+                {
+                    eInjury["eInjury.08"] = null;
+                    eInjury["AirbagDeployment"] = null;
+                    v2Array.push({ section: "E10", element: "E10_09", val: v2NOT_KNOWN });
+                }
+                else 
+                {
+        
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(_val);
+                            arr2.push(setV2("eInjury.08", _val));
+                            arr3.push(setCodeText("eInjury.08", _val));
+                        }
+                    };
+                    bHasInjury = true;
+                    v2Array.push({ section: "E10", element: "E10_09", val: arr2.slice(0) });
+                    eInjury["eInjury.08"] = arr1.slice(0);
+                    eInjury["AirbagDeployment"] = arr3.slice(0);
+                }
+            }
+            else
             {
                 eInjury["eInjury.08"] = null;
                 eInjury["AirbagDeployment"] = null;
                 v2Array.push({ section: "E10", element: "E10_09", val: v2NOT_KNOWN });
-                OXML.Node("AirbagDeployment", "");     
-                XML.Node("eInjury.08", "");
-            }
-            else 
-            {        
-                var arr1 = [];
-                var arr2 = [];
-                var arr3 = [];
-                for (var i = 0; i < _injury.ValueArray.length; i++)
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (arr1.indexOf(_injury.ValueArray[i].val) > -1))
-                    {
-                        _val = _injury.ValueArray[i].val
-                        arr1.push(_val);
-                        arr2.push(setV2("eInjury.08", _val));
-                        arr3.push(setCodeText("eInjury.08", _val));
-                        OXML.Node("AirbagDeployment", setCodeText("eInjury.08",_val));     
-                        XML.Node("eInjury.08", _val);
-                    }
-                };
-                bHasInjury = true;
-                v2Array.push({ section: "E10", element: "E10_09", val: arr2.slice(0) });
-                eInjury["eInjury.08"] = arr1.slice(0);
-                eInjury["AirbagDeployment"] = arr3.slice(0);
-            }
-        }
-        else
-        {
-            OXML.Node("AirbagDeployment", "");     
-            XML.Node("eInjury.08", "");
-            eInjury["eInjury.08"] = null;
-            eInjury["AirbagDeployment"] = null;
-            v2Array.push({ section: "E10", element: "E10_09", val: v2NOT_KNOWN });
-        };
+            };
         
         
             //eInjury.09/////////////
-        _injury = getValue(elementList, "eInjury.09");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            if (_injury.IsNull == true) 
+            _val = getValue(elementList, "eInjury.09");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
             {
-                OXML.Node("HeightofFall", "");     
-                XML.Node("eInjury.09", "");
-
+                if (_val == null) 
+                {
+                    eInjury["eInjury.09"] = null;
+                    eInjury["HeightofFall"] = null;
+                    v2Array.push({ section: "E10", element: "E10_10", val: null });
+                }
+                else 
+                {
+                    bHasInjury = true;
+                    eInjury["eInjury.09"] = _val;
+                    eInjury["HeightofFall"] = _val;
+                    v2Array.push({ section: "E10", element: "E10_10", val: _val });
+                }
+            }
+            else
+            {
                 eInjury["eInjury.09"] = null;
                 eInjury["HeightofFall"] = null;
                 v2Array.push({ section: "E10", element: "E10_10", val: null });
-            }
-            else 
-            {
-                bHasInjury = true;
-                _val = _injury.ValueArray[0].val;
-
-                eInjury["eInjury.09"] = _val;
-                eInjury["HeightofFall"] = _val;
-
-                eInjury["eInjury.09"] = _val;
-                eInjury["HeightofFall"] = _val;
-                v2Array.push({ section: "E10", element: "E10_10", val: _val });
-            }
-        }
-        else
-        {
-            OXML.Node("HeightofFall", "");     
-            XML.Node("eInjury.09", "");
-            eInjury["eInjury.09"] = null;
-            eInjury["HeightofFall"] = null;
-            v2Array.push({ section: "E10", element: "E10_10", val: null });
-        };
+            };
         
             //eInjury.10///////////////
-        _injury= getValue(elementList, "eInjury.10");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            if (_injury.IsNull == true) 
+            _val = getValue(elementList, "eInjury.10");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
             {
-                OXML.Node("OSHAPersonalProtectiveEquipmentUsed", "");     
-                XML.Node("eInjury.10", "");
+                if (_val == null) {
+                    eInjury["eInjury.10"] = null;
+                    eInjury["OSHAPersonalProtectiveEquipmentUsed"] = null;
+                }
+                else {
+                    var arr1 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(_val);
+                            arr3.push(setCodeText("eInjury.10", _val));
+                        }
+                    };
+                    eInjury["OSHAPersonalProtectiveEquipmentUsed"] = arr3.slice(0);
+                    eInjury["eInjury.10"] = arr1.slice(0);
+                }
+            }
+            else
+            {
                 eInjury["eInjury.10"] = null;
                 eInjury["OSHAPersonalProtectiveEquipmentUsed"] = null;
-            }
-            else {
-                var arr1 = [];
-                var arr3 = [];
-                for (var i = 0; i < _injury.ValueArray.length; i++)
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (arr1.indexOf(_injury.ValueArray[i].val) > -1))
-                    {
-                        _val = _injury.ValueArray[i].val
-                        arr1.push(_val);
-                        arr3.push(setCodeText("eInjury.10", _val));
-                        OXML.Node("OSHAPersonalProtectiveEquipmentUsed", setCodeText("eInjury.10", _val));     
-                        XML.Node("eInjury.10", _val);
-                    }
-                };
-                eInjury["OSHAPersonalProtectiveEquipmentUsed"] = arr3.slice(0);
-                eInjury["eInjury.10"] = arr1.slice(0);
-            }
-        }
-        else
-        {
-            OXML.Node("OSHAPersonalProtectiveEquipmentUsed", "");     
-            XML.Node("eInjury.10", "");
-
-            eInjury["eInjury.10"] = null;
-            eInjury["OSHAPersonalProtectiveEquipmentUsed"] = null;
-        };
+            };
         
             //eInjury.11///////
-        _injury = getValue(elementList, "eInjury.11");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            if (_injury.IsNull == true) 
+            _val = getValue(elementList, "eInjury.11");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
             {
-                OXML.Node("ACNSystemCompanyProvidingACNData", "");     
-                XML.Node("eInjury.11", "");
+                if (_val == null) 
+                {
+                    eInjury["eInjury.11"] = null;
+                    eInjury["ACNSystemCompanyProvidingACNData"] = null;
+                }
+                else {
+                    bHasInjury = true;
+                    eInjury["ACNSystemCompanyProvidingACNData"] = _val;
+                    eInjury["eInjury.11"] = _val;
+                }
+            }
+            else
+            {
                 eInjury["eInjury.11"] = null;
                 eInjury["ACNSystemCompanyProvidingACNData"] = null;
-            }
-            else 
-            {
-                _val = _injury.ValueArray[0].val;
-
-                bHasInjury = true;
-                eInjury["ACNSystemCompanyProvidingACNData"] = _val;
-                eInjury["eInjury.11"] = _val;
-                OXML.Node("ACNSystemCompanyProvidingACNData", _val);     
-                XML.Node("eInjury.11", _val);
-            }
-        }
-        else
-        {
-            OXML.Node("ACNSystemCompanyProvidingACNData", "");     
-            XML.Node("eInjury.11", "");
-            eInjury["eInjury.11"] = null;
-            eInjury["ACNSystemCompanyProvidingACNData"] = null;
-        };
+            };
         
             //////////////////////////////
         
             //alert("PhoneNumber")
         
             //eInjury.12///////////
-        _injury= getValue(elementList, "eInjury.12");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            if (_injury.IsNull == true) 
+            _val = getValue(elementList, "eInjury.12");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
             {
-                OXML.Node("ACNIncidentID", "");     
-                XML.Node("eInjury.12", "");
-                eInjury["eInjury.12"] = null;
-                eInjury["ACNIncidentID"] = null;
-            }
-            else 
-            {
-                bHasInjury = true;
-                _val = _injury.ValueArray[0].val;
-
-                OXML.Node("ACNIncidentID", _val);     
-                XML.Node("eInjury.12", _val);
-                eInjury["eInjury.12"] = _val;
-                eInjury["ACNIncidentID"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("ACNIncidentID", "");     
-            XML.Node("eInjury.12", "");
-            eInjury["eInjury.12"] = null;
-            eInjury["ACNIncidentID"] = null;
-        };
-        
-    PHONE
-        //eInjury.13/////////////
-        _injury = getValue(elementList, "eInjury.13");
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {        
-            if (_injury.IsNull == true) 
-            {
-                OXML.Node("ACNCallBackPhoneNumber", "");     
-                XML.Node("eInjury.13", "");
-                eInjury["eInjury.13"] = null;
-                eInjury["ACNCallBackPhoneNumber"] = null;
-            }
-            else {
-                sPatHomeNum = "";
-                var arr1 = [];
-                var arr2 = [];
-                for (var i = 0; i < _val.length; i++) 
-                    if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
-                        {
-        
-                        {
-                            var PhoneNumberType = setPhoneNumberType("eInjury.13", _val);
-        
-                            if (PhoneNumberType == "9913001") {
-                                arr1.push("FAX  " + _val);
-                                arr2.push("9913001  " + _val);
-                            }
-                            else if (PhoneNumberType == "9913003") {
-                                arr1.push("HOME  " + _val);
-                                arr1.push("9913003  " + _val);
-                                sPatNum = _val;
-        
-                            }
-                            else if (PhoneNumberType == "9913005") {
-                                arr1.push("MOBILE  " + _val);
-                                arr2.push("9913005  " + _val);
-                            }
-                            else if (PhoneNumberType == "9913007") {
-                                arr1.push("PAGER " + _val);
-                                arr2.push("9913007 " + _val);
-                            }
-                            else if (PhoneNumberType == "9913009") {
-                                arr1.push("WORK " + _val);
-                                arr2.push("9913009 " + _val);
-                            }
-                            else {
-                                arr1.push(_val);
-                                arr2.push(_val);
-                            }
-                        }
-                    };
-                if (sPatHomeNum == null) {
-                    for (var i = 0; i < _val.length; i++) {
-                        if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
-                        {
-                            sPatHomeNum = _val
-        
-                        }
-                    }
-                };
-                bHasInjury = true;
-                eInjury["eInjury.10"] = arr1.slice(0);
-                eInjury["ACNCallBackPhoneNumber"] = arr2.slice(0);
-            }
-        }
-        else
-        {
-            eInjury["eInjury.13"] = null;
-            eInjury["ACNCallBackPhoneNumber"] = null;
-        };
-    
-        //eInjury.14///////////////
-        _injury = getValue(elementList, "eInjury.14");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true) 
-            {
-                OXML.Node("DateTimeofACNIncident", "");     
-                XML.Node("eInjury.14", "");
-                eInjury["eInjury.14"] = null;
-                eInjury["DateTimeofACNIncident"] = null;
-            }
-            else 
-            {
-                _val = _injury.ValueArray[0].val;
-
-                OXML.Node("DateTimeofACNIncident", _val);     
-                XML.Node("eInjury.14", _val);
-                eInjury["eInjury.14"] = _val;
-                eInjury["DateTimeofACNIncident"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("DateTimeofACNIncident", "");     
-            XML.Node("eInjury.14", "");
-
-            eInjury["eInjury.14"] = null;
-            eInjury["DateTimeofACNIncident"] = null;         
-        };
-        
-        //eInjury.15//////////////  
-        _injury = getValue(elementList, "eInjury.15");
-        if (eInjury.IsValid == true) //
-        {
-            if (_injury.IsNull == true) 
-            {
-                OXML.Node("ACNIncidentLocation", "");     
-                XML.Node("eInjury.15", "");
-                eInjury["eInjury.15"] = null;
-                eInjury["ACNIncidentLocation"] = null;
-        
-            }
-            else 
-            {
-                _val = _injury.ValueArray[0].val;
-                OXML.Node("ACNIncidentLocation", _val);     
-                XML.Node("eInjury.15", _val);
-                eInjury["ACNIncidentLocation"] = _val;
-                eInjury["eInjury.15"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("ACNIncidentLocation", "");     
-            XML.Node("eInjury.15", "");
-            eInjury["eInjury.15"] = null;
-            eInjury["ACNIncidentLocation"] = null;
-        };
-        
-        //eInjury.16//////////////
-        _injury= getValue(elementList, "eInjury.16");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true) 
-            {
-                OXML.Node("ACNIncidentVehicleBodyType", "");     
-                XML.Node("eInjury.16", "");
-                eInjury["eInjury.16"] = null;
-                eInjury["ACNIncidentVehicleBodyType"] = null;
-            }
-            else 
-            {
-                _val = _injury.ValueArray[0].val;
-                OXML.Node("ACNIncidentVehicleBodyType", _val);     
-                XML.Node("eInjury.16", _val);
-                eInjury["eInjury.16"] = _val;
-                eInjury["ACNIncidentVehicleBodyType"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("ACNIncidentVehicleBodyType", "");     
-            XML.Node("eInjury.16", "");
-
-            eInjury["eInjury.16"] = null;
-            eInjury["ACNIncidentVehicleBodyType"] = null;
-        };
-        
-            //eInjury.17//////////////
-        _injury= getValue(elementList, "eInjury.17");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true) 
-            {
-                eInjury["ACNIncidentVehicleManufacturer"] = null;
-                eInjury["eInjury.17"] = null;
-                OXML.Node("ACNIncidentVehicleManufacturer", "");     
-                XML.Node("eInjury.17", "");
-        
-            }
-            else {
-                _val = _injury.ValueArray[0].val;
-                OXML.Node("ACNIncidentVehicleManufacturer", _val);     
-                XML.Node("eInjury.17", _val);
-
-                eInjury["eInjury.17"] = _val;
-                eInjury["ACNIncidentVehicleManufacturer"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("ACNIncidentVehicleManufacturer", "");     
-            XML.Node("eInjury.17", "");
-            eInjury["ACNIncidentVehicleManufacturer"] = null;
-            eInjury["eInjury.17"] = null;
-        };
-        
-        //eInjury.18//////////////
-        _injury= getValue(elementList, "eInjury.18");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true) 
-            {
-                eInjury["eInjury.18"] = null;
-                eInjury["ACNIncidentVehicleMake"] = null;
-                    
-                OXML.Node("ACNIncidentVehicleMake", "");     
-                XML.Node("eInjury.18", "");
-            }
-            else 
-            {   
-                _val = _injury.ValueArray[i].val
-
-                eInjury["ACNIncidentVehicleMake"] = _val;
-                eInjury["eInjury.18"] = _val;
-                OXML.Node("ACNIncidentVehicleMake", _val);     
-                XML.Node("eInjury.18", _val);
-            }
-        }
-        else
-        {
-            eInjury["eInjury.18"] = null;
-            eInjury["ACNIncidentVehicleMake"] = null;
-                
-            OXML.Node("ACNIncidentVehicleMake", "");     
-            XML.Node("eInjury.18", "");        
-        };
-        
-        //eInjury.19//////////////
-        _val = getValue(elementList, "eInjury.19");
-        if (eInjury.IsValid == true) 
-        {
-            if (_val == null) 
-            {
-                eInjury["eInjury.19"] = null;
-                eInjury["ACNIncidentVehicleModel"] = null;
-
-                OXML.Node("ACNIncidentVehicleModel", "");     
-                XML.Node("eInjury.19", "");        
-            }
-            else 
-            {       
-                _val = _injury.ValueArray[0].val;
-
-                OXML.Node("ACNIncidentVehicleModel", _val);     
-                XML.Node("eInjury.19", _val);        
-                eInjury["eInjury.19"] = _val;
-                eInjury["ACNIncidentVehicleModel"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("ACNIncidentVehicleModel", "");     
-            XML.Node("eInjury.19", "");        
-            eInjury["eInjury.19"] = null;
-            eInjury["ACNIncidentVehicleModel"] = null;
-        };
-                
-        //eInjury.20//////////////
-        _injury = getValue(elementList, "eInjury.20");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true)                 
-            {
-                OXML.Node("ACNIncidentVehicleModel", "");     
-                XML.Node("eInjury.20", "");        
-                eInjury["eInjury.20"] = null;
-                eInjury["ACNIncidentVehicleModelYear"] = null;
-            }
-            else 
-            {
-                _val = _injury.ValueArray[0].val;
-                OXML.Node("ACNIncidentVehicleModel", _val);     
-                XML.Node("eInjury.20", _val);        
-                eInjury["ACNIncidentVehicleModelYear"] = _val;
-                eInjury["eInjury.20"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("ACNIncidentVehicleModel", "");     
-            XML.Node("eInjury.20", "");        
-
-            eInjury["eInjury.20"] = null;
-            eInjury["ACNIncidentVehicleModelYear"] = null;
-        };
-        
-            //eInjury.21//////////////
-        _injury= getValue(elementList, "eInjury.21");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true) 
-            {
-                OXML.Node("ACNIncidentMultipleImpacts", "");     
-                XML.Node("eInjury.21", "");        
-                eInjury["eInjury.21"] = null;
-                eInjury["ACNIncidentMultipleImpacts"] = null;
+                if (_val == null) {
+                    eInjury["eInjury.12"] = null;
+                    eInjury["ACNIncidentID"] = null;
+                }
+                else {
+                    bHasInjury = true;
+                    eInjury["eInjury.12"] = _val;
+                    eInjury["ACNIncidentID"] = _val;
+                }
             }
             else
             {
-                _val = _injury.ValueArray[0].val;
-
-                OXML.Node("ACNIncidentMultipleImpacts", setCodeText("eInjury.21",_val));     
-                XML.Node("eInjury.21", "");        
-                eInjury["eInjury.21"] = _val;
-                eInjury["ACNIncidentMultipleImpacts"] = setCodeText("eInjury.21",_val);
+                eInjury["eInjury.12"] = null;
+                eInjury["ACNIncidentID"] = null;
+            };
+        
+            //eInjury.13/////////////
+            _val = getValue(elementList, "eInjury.13");
+            if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+            {
+        
+                if (_val == null) 
+                {
+                    eInjury["eInjury.13"] = null;
+                    eInjury["ACNCallBackPhoneNumber"] = null;
+                }
+                else {
+                    sPatHomeNum = "";
+                    var arr1 = [];
+                    var arr2 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                       if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+        
+                            {
+                                var PhoneNumberType = setPhoneNumberType("eInjury.13", _val);
+        
+                                if (PhoneNumberType == "9913001") {
+                                    arr1.push("FAX  " + _val);
+                                    arr2.push("9913001  " + _val);
+                                }
+                                else if (PhoneNumberType == "9913003") {
+                                    arr1.push("HOME  " + _val);
+                                    arr1.push("9913003  " + _val);
+                                    sPatNum = _val;
+        
+                                }
+                                else if (PhoneNumberType == "9913005") {
+                                    arr1.push("MOBILE  " + _val);
+                                    arr2.push("9913005  " + _val);
+                                }
+                                else if (PhoneNumberType == "9913007") {
+                                    arr1.push("PAGER " + _val);
+                                    arr2.push("9913007 " + _val);
+                                }
+                                else if (PhoneNumberType == "9913009") {
+                                    arr1.push("WORK " + _val);
+                                    arr2.push("9913009 " + _val);
+                                }
+                                else {
+                                    arr1.push(_val);
+                                    arr2.push(_val);
+                                }
+                            }
+                        };
+                    if (sPatHomeNum == null) {
+                        for (var i = 0; i < _val.length; i++) {
+                           if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                                sPatHomeNum = _val
+        
+                            }
+                        }
+                    };
+                    bHasInjury = true;
+                    eInjury["eInjury.10"] = arr1.slice(0);
+                    eInjury["ACNCallBackPhoneNumber"] = arr2.slice(0);
+                }
             }
-        }
-        else
-        {
-            eInjury["eInjury.21"] = null;
-            eInjury["ACNIncidentMultipleImpacts"] = null;
-            OXML.Node("ACNIncidentMultipleImpacts", "");     
-            XML.Node("eInjury.21", "");        
-        };
+            else
+            {
+                eInjury["eInjury.13"] = null;
+                eInjury["ACNCallBackPhoneNumber"] = null;
+            };
+            //eInjury.14///////////////
+            _val = getValue(elementList, "eInjury.14");
+            if (eInjury.IsValid == true) 
+            {
+                if (_val == null) {
+                    eInjury["eInjury.14"] = null;
+                    eInjury["DateTimeofACNIncident"] = null;
+                }
+                else {
+                    eInjury["eInjury.14"] = _val;
+                    eInjury["DateTimeofACNIncident"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["eInjury.14"] = null;
+                eInjury["DateTimeofACNIncident"] = null;
+         
+            };
+        
+            //eInjury.15//////////////  
+            _val = getValue(elementList, "eInjury.15");
+            if (eInjury.IsValid == true) //
+            {
+                if (_val == null) 
+                {
+                    eInjury["eInjury.15"] = null;
+                    eInjury["ACNIncidentLocation"] = null;
+        
+                }
+                else 
+                {
+                    eInjury["ACNIncidentLocation"] = _val;
+                    eInjury["eInjury.15"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["eInjury.15"] = null;
+                eInjury["ACNIncidentLocation"] = null;
+            };
+        
+            //eInjury.16//////////////
+            _val = getValue(elementList, "eInjury.16");
+            if (eInjury.IsValid == true) 
+            {
+                if (_val == null) {
+                    eInjury["eInjury.16"] = null;
+                    eInjury["ACNIncidentVehicleBodyType"] = null;
+                }
+                else {
+                    eInjury["eInjury.16"] = _val;
+                    eInjury["ACNIncidentVehicleBodyType"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["eInjury.16"] = null;
+                eInjury["ACNIncidentVehicleBodyType"] = null;
+            };
+        
+            //eInjury.17//////////////
+            _val = getValue(elementList, "eInjury.17");
+            if (eInjury.IsValid == true) 
+            {
+                if (_val == null) 
+                {
+                    eInjury["ACNIncidentVehicleManufacturer"] = null;
+                    eInjury["eInjury.17"] = null;
+        
+                }
+                else {
+                    eInjury["eInjury.17"] = _val;
+                    eInjury["ACNIncidentVehicleManufacturer"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["ACNIncidentVehicleManufacturer"] = null;
+                eInjury["eInjury.17"] = null;
+            };
+        
+            //eInjury.18//////////////
+            _val = getValue(elementList, "eInjury.18");
+            if (eInjury.IsValid == true) 
+            {
+                if (_val == null) 
+                {
+                    eInjury["eInjury.18"] = null;
+                    eInjury["ACNIncidentVehicleMake"] = null;
+                }
+                else 
+                {   
+                    eInjury["ACNIncidentVehicleMake"] = _val;
+                    eInjury["eInjury.18"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["eInjury.18"] = null;
+                eInjury["ACNIncidentVehicleMake"] = null;
+        
+            };
+        
+            //eInjury.19//////////////
+            _val = getValue(elementList, "eInjury.19");
+            if (eInjury.IsValid == true) 
+            {
+                if (_val == null) 
+                {
+                    eInjury["eInjury.19"] = null;
+                    eInjury["ACNIncidentVehicleModel"] = null;
+                }
+                else {       
+                    eInjury["eInjury.19"] = _val;
+                    eInjury["ACNIncidentVehicleModel"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["eInjury.19"] = null;
+                eInjury["ACNIncidentVehicleModel"] = null;
+            };
         
         
-            alert("Deltas")
+            //eInjury.20//////////////
+            _val = getValue(elementList, "eInjury.20");
+            if (eInjury.IsValid == true) 
+            {
+                if (_val == null) 
+                {
+                    eInjury["eInjury.20"] = null;
+                    eInjury["ACNIncidentVehicleModelYear"] = null;
+                }
+                else {
+                    eInjury["ACNIncidentVehicleModelYear"] = _val;
+                    eInjury["eInjury.20"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["eInjury.20"] = null;
+                eInjury["ACNIncidentVehicleModelYear"] = null;
+            };
+        
+            //eInjury.21//////////////
+            _val = getValue(elementList, "eInjury.21");
+            if (eInjury.IsValid == true) 
+            {
+                if (_val == null) 
+                {
+                    eInjury["eInjury.21"] = null;
+                    eInjury["ACNIncidentMultipleImpacts"] = null;
+                }
+                else
+                {
+                    eInjury["eInjury.21"] = _val;
+                    eInjury["ACNIncidentMultipleImpacts"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["eInjury.21"] = null;
+                eInjury["ACNIncidentMultipleImpacts"] = null;
+            };
+        
+        
+            //alert("Deltas")
             //eInjury.22//////////////
             _val = getValue(elementList, "eInjury.22");
             if (eInjury.IsValid == true) 
@@ -11161,2131 +10932,1610 @@ var seteInjury = function (businessObject) {
         
         
         
-        //eInjury.23///////////
-            _injury = getValue(elementList, "eInjury.23");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true) 
+            //eInjury.23///////////
+            _val = getValue(elementList, "eInjury.23");
+            if (eInjury.IsValid == true) 
             {
-                eInjury["eInjury.23"] = null;
+                if (_val == null) 
+                {
+                    eInjury["eInjury.22"] = null;
+                    eInjury["ACNHighProbabilityofInjury"] = null;
+                }
+                else {
+                    bHasInjury = true;
+                    eInjury["eInjury.23"] = _val;
+                    eInjury["ACNHighProbabilityofInjury"] = _val;
+                }
+            }
+            else
+            {
+                eInjury["eInjury.22"] = null;
                 eInjury["ACNHighProbabilityofInjury"] = null;
-                OXML.Node("ACNHighProbabilityofInjury", "");     
-                XML.Node("eInjury.23", "");        
-            }
-            else 
-            {
-                bHasInjury = true;
-                _val = _injury.ValueArray[0].val;
-
-                eInjury["ACNHighProbabilityofInjury"] = setCodeText("eInjury.23",_val);
-                eInjury["eInjury.23"] = null;
-                OXML.Node("ACNHighProbabilityofInjury", setCodeText("eInjury.23",_val));     
-                XML.Node("eInjury.23", _val);        
-            }
-        }
-        else
-        {
-            OXML.Node("ACNHighProbabilityofInjury", "");     
-            XML.Node("eInjury.23", "");        
-
-            eInjury["eInjury.23"] = null;
-            eInjury["ACNHighProbabilityofInjury"] = null;
-        };
+            };
         
-        //eInjury.24/////////////
-        _injury = getValue(elementList, "eInjury.24");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true) 
+            //eInjury.24/////////////
+            _val = getValue(elementList, "eInjury.24");
+            if (eInjury.IsValid == true) 
             {
-                OXML.Node("ACNIncidentPDOF", "");     
-                XML.Node("eInjury.24", "");        
-                eInjury["eInjury.24"] = null;
-                eInjury["ACN Incident PDOF"] = null;
+                if (_val == null) 
+                {
+                    eInjury["eInjury.22"] = null;
+                    eInjury["ACNHighProbabilityofInjury"] = null;
+                }
+                else 
+                {       
+                    eInjury["eInjury.24"] = _val;
+                    eInjury["ACNHighProbabilityofInjury"] = _val;
+                }
             }
-            else 
-            {       
-                _val = _injury.ValueArray[0].val;
-
-                OXML.Node("ACNIncidentPDOF", _val)  
-                XML.Node("eInjury.24", _val);        
-                eInjury["eInjury.24"] = _val;
-                eInjury["ACN Incident PDOF"] = val;     
-            }
-        }
-        {
-            OXML.Node("ACNIncidentPDOF", "");     
-            XML.Node("eInjury.24", "");        
-            eInjury["eInjury.24"] = null;
-            eInjury["ACN Incident PDOF"] = null;
-        };
+            {
+                eInjury["eInjury.22"] = null;
+                eInjury["ACNHighProbabilityofInjury"] = null;
+            };
         
             //eInjury.25////////
-        _injury = getValue(elementList, "eInjury.25");
-        if (eInjury.IsValid == true) 
-        {
-            if (_injury.IsNull == true) 
+            _val = getValue(elementList, "eInjury.25");
+            if (eInjury.IsValid == true) 
             {
-                OXML.Node("ACNIncidentRollover", "");     
-                XML.Node("eInjury.25", "");        
+                if (_val == null) 
+                {
+                    eInjury["ACNIncidentRollover"] = null;
+                    eInjury["eInjury.25"] = null;
+                }
+                else {
+                    bHasInjury = true;
+                    eInjury["ACNIncidentRollover"] = _val;
+                    eInjury["eInjury.25"] = _val;
+                }
+            }
+            {
                 eInjury["ACNIncidentRollover"] = null;
                 eInjury["eInjury.25"] = null;
-            }
-            else 
-            {
-                bHasInjury = true;
-                _val = _injury.ValueArray[0].val;
-
-                OXML.Node("ACNIncidentRollover", setCodeText("eInjury.25",_val));     
-                XML.Node("eInjury.25", _val);        
-                eInjury["ACNIncidentRollover"] = setCodeText("eInjury.25",_val);
-                eInjury["eInjury.25"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("ACNIncidentRollover", "");     
-            XML.Node("eInjury.25", "");        
-
-            eInjury["ACNIncidentRollover"] = null;
-            eInjury["eInjury.25"] = null;
-        };
+            };
         
-        _sectionIndex = getSectionIndex(eInjuryObject.sections.attributes, "eInjury.SeatGroup");
-        for (var x = 0; x < _sectionIndex.length; x++) {
-            _elementList = businessObject.sections[i].attributes.elements;
-            //eInjury.26////////                        
-            eInjury = getValue(_elementList, "eInjury.26");
-            if (eInjury.IsValid == true) {
-                if (_injury.IsNull == true) {
-                    OXML.Node("ACNVehicleSeatLocation", "");
-                    XML.Node("eInjury.26", "");
+        
+            _sectionIndex = getSectionIndex(eInjuryObject.sections.attributes, "eInjury.SeatGroup");
+            for (var x = 0; x < _sectionIndex.length; x++) {
+                _elementList = businessObject.sections[i].attributes.elements;
+        
+        
+                //eInjury.26////////                        
+                _val = getValue(_elementList, "eInjury.26");
+                if (eInjury.IsValid == true) 
+                {
+                    if (_val == null) 
+                    {
+                        SeatGroup["eInjury.26"] = null;
+                        SeatGroup["ACNVehicleSeatLocation"] = null;
+                    }
+                    else {
+                        bHasInjury = true;
+                        SeatGroup["eInjury.26"] = _val;
+                        SeatGroup["ACNVehicleSeatLocation"] = _val;
+                    }
+                }
+                else
+                {
                     SeatGroup["eInjury.26"] = null;
                     SeatGroup["ACNVehicleSeatLocation"] = null;
+                };
+        
+        
+        
+                //eInjury.27////////
+                _val = getValue(_elementList, "eInjury.27");
+                if (eInjury.IsValid == true) 
+                {
+                    if (_val == null) 
+                    {
+                        SeatGroup["SeatOccupied"] = null;
+                        SeatGroup["eInjury.27"] = null;
+                    }
+                    else {
+                        bHasInjury = true;
+                        SeatGroup["eInjury.27"] = _val;
+                        if (_val == "Y") {
+                            SeatGroup["SeatOccupied"] = "Yes";
+                        };
+                        if (_val == "N") {
+                            SeatGroup["SeatOccupied"] = "No";
+                        };
+                    }
                 }
-                else {
-                    bHasInjury = true;
-                    OXML.Node("ACNVehicleSeatLocation", setCodeText("eInjury.26", _val));
-                    XML.Node("eInjury.26", "");
-                    SeatGroup["eInjury.26"] = _val;
-                    SeatGroup["ACNVehicleSeatLocation"] = setCodeText("eInjury.26", _val);
-                }
-            }
-            else {
-                OXML.Node("ACNVehicleSeatLocation", "");
-                XML.Node("eInjury.26", "");
-                SeatGroup["eInjury.26"] = null;
-                SeatGroup["ACNVehicleSeatLocation"] = null;
-            };
-
-
-            //eInjury.27////////
-            _injury = getValue(_elementList, "eInjury.27");
-            if (eInjury.IsValid == true) {
-                if (_injury.IsNull == true) {
-                    OXML.Node("SeatOccupied", "");
-                    XML.Node("eInjury.27", "");
-
+                else
+                {
                     SeatGroup["SeatOccupied"] = null;
                     SeatGroup["eInjury.27"] = null;
+                };
+        
+                //eInjury.28////////
+                _val = getValue(_elementList, "eInjury.29");
+                if (eInjury.IsValid == true) 
+                {
+        
+                    if (_val == null) 
+                    {
+                        SeatGroup["eInjury.28"] = null;
+                        SeatGroup["ACNIncidentSeatbeltUse"] = null;
+                    }
+                    else {
+                        bHasInjury = true;
+                        SeatGroup["ACNIncidentSeatbeltUse"] = _val;
+                        SeatGroup["eInjury.29"] = _val;
+                    }
                 }
-                else {
-                    bHasInjury = true;
-                    _val = _injury.ValueArray[0].val;
-                    XML.Node("eInjury.27", _val);
-                    SeatGroup["eInjury.27"] = _val;
-                    if (_val == "Y") {
-                        SeatGroup["SeatOccupied"] = "Yes";
-                        OXML.Node("SeatOccupied", "Yes");
-                    };
-                    if (_val == "N") {
-                        SeatGroup["SeatOccupied"] = "No";
-                        OXML.Node("SeatOccupied", "No");
-                    };
-                }
-            }
-            else {
-                OXML.Node("SeatOccupied", "");
-                XML.Node("eInjury.27", "");
-                SeatGroup["SeatOccupied"] = null;
-                SeatGroup["eInjury.27"] = null;
-            };
-
-            //eInjury.28////////
-            _injury = getValue(_elementList, "eInjury.28");
-            if (eInjury.IsValid == true) {
-
-                if (_injury.IsNull == true) {
+                else
+                {
                     SeatGroup["eInjury.28"] = null;
                     SeatGroup["ACNIncidentSeatbeltUse"] = null;
-
-                    OXML.Node("ACNIncidentSeatbeltUse", "");
-                    XML.Node("eInjury.28", "");
-                }
-                else {
-                    bHasInjury = true;
-                    _val = _injury.ValueArray[0].val;
-                    OXML.Node("ACNIncidentSeatbeltUse", _val);
-                    XML.Node("eInjury.28", _val);
-                    SeatGroup["ACNIncidentSeatbeltUse"] = _val;
-                    SeatGroup["eInjury.28"] = _val;
-                }
+                };
+        
             }
-            else {
-                SeatGroup["eInjury.28"] = null;
-                SeatGroup["ACNIncidentSeatbeltUse"] = null;
-            }
+        */
+            return eInjury;
 
-            //eInjury.29////////
-            _injury = getValue(_elementList, "eInjury.29");
-            if (eInjury.IsValid == true) {
-
-                if (_injury.IsNull == true) {
-                    SeatGroup["eInjury.29"] = null;
-                    SeatGroup["ACNIncidentAirbagDeployed"] = null;
-
-                    OXML.Node("ACNIncidentAirbagDeployed", "");
-                    XML.Node("eInjury.29", "");
-                }
-                else {
-                    bHasInjury = true;
-                    _val = _injury.ValueArray[0].val;
-                    OXML.Node("ACNIncidentAirbagDeployed", _val);
-                    XML.Node("eInjury.29", _val);
-                    SeatGroup["ACNIncidentAirbagDeployed"] = _val;
-                    SeatGroup["eInjury.29"] = _val;
-                }
-            }
-            else {
-                OXML.Node("ACNIncidentSeatbeltUse", "");
-                XML.Node("eInjury.29", "");
-                SeatGroup["eInjury.29"] = null;
-                SeatGroup["ACNIncidentSeatbeltUse"] = null;
-            }
         };
-    */
-        return eInjury;
-
-};
-var seteLabs = function (businessObject) 
-{
-    var eLabs = new Object();
-    /*
-    var _labs = new Object();
-    for (var i = 0; i < businessObject.sections.length ; i++)
-    {
-        elementList = businessObject.sections[i].attributes.elements;        
-        if(typeof businessObject["eLabs"] != undefined)
-        {
-            console.log(businessObject);
-            console.log(businessObject["eLabs"].length);
+var seteLabs = function (businessObject) {
+            var eLabs = new Object();
+            /*
+        
+            for (var i = 0; i < businessObject.sections.length ; i++)
+            {
+                elementList = businessObject.sections[i].attributes.elements;        
+                if(typeof businessObject["eLabs"] != undefined)
+                {
+                    console.log(businessObject);
+                    console.log(businessObject["eLabs"].length);
                     
-            ///////////eLabs.01    
-            _labs  = getValue(elementList, "eLabs.01");
-            if (_labs.IsNull == true) 
-            {          
-                LabsGroup["eLabs.01"] = null;
-                LabsGroup["DateTimeofLaboratoryorImagingResult"] = null;
-                OXML.Node("DateTimeofLaboratoryorImagingResult", null);     
-                XML.Node("eLabs.01", null);
-            }
-            else 
-            {
-                _val = _labs.ValueArray[0].val;
-                OXML.Node("DateTimeofLaboratoryorImagingResult", _val);     
-                XML.Node("eLabs.01", _val);
-                LabsGroup["eLabs.01"] = _val;
-                LabsGroup["DateTimeofLaboratoryorImagingResult"] = _val;
-            };                
-            ///////////eLabs.02
-            _labs = getValue(elementList, "eLabs.02");
-            if (_labs.IsNull == true) 
-            {
-                OXML.Node("StudyResultPriortothisUnitEMSCare", null);     
-                XML.Node("eLabs.02", null);
-                LabsGroup["eLabs.02"] = null;
-                LabsGroup["StudyResultPriortothisUnitEMSCare"] = null;
-            }
-            else 
-            {
-                _val = _labs.ValueArray[0].val;
-                OXML.Node("StudyResultPriortothisUnitEMSCare", _val);     
-                XML.Node("eLabs.02", _val);
-                LabsGroup["eLabs.02"] = _val;
-                LabsGroup["StudyResultPriortothisUnitEMSCare"] = _val;
-            };
-        
-            ///////////////////LabResultGroup
-            /////////////////////////////////////
-            _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eLabs.LabResultGroup");
-            for (var x = 0; x < _sectionIndex.length; x++) 
-            {
-                var listOfElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.elements
-                ///////////eLabs.03
-                _labs = getValue(businessObject.elements, "eLabs.03");
-                if (_labs.IsNull == true) 
-                {
-                    OXML.Node("LaboratoryResultType", null);     
-                    XML.Node("eLabs.03", null);
-                    LabResultGroup["eLabs.03"] = null;
-                    LabResultGroup["LaboratoryResultType"] = null;
-                }
-                else 
-                {
-                    _val = _labs.ValueArray[0].val;
-                    OXML.Node("LaboratoryResultType", _val);     
-                    XML.Node("eLabs.03", _val);
-                    LabResultGroup["eLabs.03"] = _val;
-                    LabResultGroup["LaboratoryResultType"] = _val;
-                };
-        
-                ///////////eLabs.04
-                _labs = getValue(businessObject.elements, "eLabs.04");
-                if (_labs.IsNull == true) 
-                {
-                    OXML.Node("LaboratoryResult", null);     
-                    XML.Node("eLabs.04", null);
-                    LabResultGroup["eLabs.04"] = null;
-                    LabResultGroup["LaboratoryResult"] = null;
-                }
-                else 
-                {
-                    _val = _labs.ValueArray[0].val;
-                    OXML.Node("LaboratoryResult", _val);     
-                    XML.Node("eLabs.04", _val);
-                    LabResultGroup["eLabs.04"] = _val;
-                    LabResultGroup["LaboratoryResult"] = _val;
-                };
-            };            
-            ///////////////////LabImageGroup
-            _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eLabs.LabImageGroup");
-            for (var x = 0; x < _sectionIndex.length; x++) 
-            {
-                var listOfElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.elements
-        
-                _labs = getValue(listOfElements, "eLabs.05");
-                if (_labs.IsNull == true) 
-                {
-                    LabResultGroup["eLabs.05"] = null;
-                    LabResultGroup["ImagingStudyType"] = null;
-                }
-                else 
-                {
-                    _val = _labs.ValueArray[0].val;
-                    LabResultGroup["eLabs.05"] = _val;
-                    LabResultGroup["ImagingStudyType"] = _val;
-                };
-        
-                _labs = getValue(listOfElements, "eLabs.06");
-                if (_labs.IsNull == true) 
-
-                {
-                    LabResultGroup["eLabs.06"] = null;
-                    LabResultGroup["ImagingStudyResults"] = null;
-                }
-                else 
-                {
-                    _val = _labs.ValueArray[0].val;
-                    OXML.Node("LaboratoryResult", _val);     
-                    XML.Node("eLabs.04", _val);
-                    LabResultGroup["eLabs.06"] = _val;
-                    LabResultGroup["ImagingStudyResults"] = _val;
-                };
-        
-                /////////////////////////////////
-        
-                _sectionIndex = getSectionIndex(businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.sections, "eLabs.WaveformGraphicGroup");
-                for (var k = 0; k < _sectionIndex.length; k++) 
-                {
-                    var _waveFormElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.section[k].attributes.elements;
-                    _labs = getValue(_waveFormElements, "eLabs.07");
-                    if (_labs.IsNull == true) 
-                    {
-                        OXML.Node("ImagingStudyFileorWaveformGraphicType", null);     
-                        XML.Node("eLabs.04", null);
-                        LabResultGroup["eLabs.07"] = null;
-                        LabResultGroup["ImagingStudyFileorWaveformGraphicType"] = null;          
+                    ///////////eLabs.01    
+                    _val = getValue(elementList, "eLabs.01");
+                    if (_val == null) 
+                    {          
+                        LabsGroup["eLabs.01"] = null;
+                        LabsGroup["DateTimeofLaboratoryorImagingResult"] = null;
                     }
                     else 
                     {
-                        _val = _labs.ValueArray[0].val;
-                        OXML.Node("ImagingStudyFileorWaveformGraphicType", _val);     
-                        XML.Node("eLabs.04", _val);
-                        LabResultGroup["eLabs.07"] = _val;
-                        LabResultGroup["ImagingStudyFileorWaveformGraphicType"] = _val;
+                        LabsGroup["eLabs.01"] = _val;
+                        LabsGroup["DateTimeofLaboratoryorImagingResult"] = _val;
                     };
         
-                    _labs = getValue(_waveFormElements, "eLabs.08");
-                    if (_labs.IsNull == true) 
+        
+                    ///////////eLabs.02
+                    _val = getValue(elementList, "eLabs.02");
+                    if (_val == null) 
                     {
-                        LabResultGroup["eLabs.08"] = null;
-                        LabResultGroup["ImagingStudyFileorWaveformGraphic"] = null;          
-                        LabResultGroup["eLabs.08"] = null;
-                        LabResultGroup["ImagingStudyFileorWaveformGraphic"] = null;
+                        LabsGroup["eLabs.02"] = null;
+                        LabsGroup["StudyResultPriortothisUnitEMSCare"] = null;
                     }
                     else 
                     {
-                        _val = _labs.ValueArray[0].val;
-                        LabResultGroup["eLabs.08"] = _val;
-                        LabResultGroup["ImagingStudyFileorWaveformGraphic"] = _val;          
-                        LabResultGroup["eLabs.08"] = _val;
-                        LabResultGroup["ImagingStudyFileorWaveformGraphic"] = _val;
+                        LabsGroup["eLabs.02"] = _val;
+                        LabsGroup["StudyResultPriortothisUnitEMSCare"] = _val;
                     };
+        
+                    ///////////////////LabResultGroup
+                    /////////////////////////////////////
+                    _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eLabs.LabResultGroup");
+                    for (var x = 0; x < _sectionIndex.length; x++) 
+                    {
+                        var listOfElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.elements
+                        ///////////eLabs.03
+                        _val = getValue(businessObject.elements, "eLabs.03");
+                        if (_val == null) 
+                        {
+                            LabResultGroup["eLabs.03"] = null;
+                            LabResultGroup["LaboratoryResultType"] = null;
+                        }
+                        else 
+                        {
+                            LabResultGroup["eLabs.03"] = _val;
+                            LabResultGroup["LaboratoryResultType"] = _val;
+                        };
+        
+                        ///////////eLabs.04
+                        _val = getValue(businessObject.elements, "eLabs.04");
+                        if (_val == null) 
+                        {
+                            LabResultGroup["eLabs.04"] = null;
+                            LabResultGroup["LaboratoryResult"] = null;
+                        }
+                        else 
+                        {
+                            LabResultGroup["eLabs.04"] = _val;
+                            LabResultGroup["LaboratoryResult"] = _val;
+                        };
+                    };            
+                    ///////////////////LabImageGroup
+                    _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eLabs.LabImageGroup");
+                    for (var x = 0; x < _sectionIndex.length; x++) 
+                    {
+                        var listOfElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.elements
+        
+                        _val = getValue(listOfElements, "eLabs.05");
+                        if (_val == null) 
+                        {
+                            LabResultGroup["eLabs.05"] = null;
+                            LabResultGroup["ImagingStudyType"] = null;
+                        }
+                        else 
+                        {
+                            LabResultGroup["eLabs.05"] = _val;
+                            LabResultGroup["ImagingStudyType"] = _val;
+                        };
+        
+                        _val = getValue(listOfElements, "eLabs.06");
+                        if (_val == null) 
+                        {
+                            LabResultGroup["eLabs.06"] = null;
+                            LabResultGroup["ImagingStudyResults"] = null;
+                        }
+                        else 
+                        {
+                            LabResultGroup["eLabs.06"] = _val;
+                            LabResultGroup["ImagingStudyResults"] = _val;
+                        };
+        
+                        /////////////////////////////////
+        
+                        _sectionIndex = getSectionIndex(businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.sections, "eLabs.WaveformGraphicGroup");
+                        for (var k = 0; k < _sectionIndex.length; k++) 
+                        {
+                            var _waveFormElements = businessObject.sections[i].attributes.sections[_sectionIndex[x]].attributes.section[k].attributes.elements;
+                            _val = getValue(_waveFormElements, "eLabs.07");
+                            if (_val == null) 
+                            {
+                                LabResultGroup["eLabs.07"] = null;
+                                LabResultGroup["ImagingStudyFileorWaveformGraphicType"] = null;          
+                            }
+                            else 
+                            {
+                                LabResultGroup["eLabs.07"] = _val;
+                                LabResultGroup["ImagingStudyFileorWaveformGraphicType"] = _val;
+                            };
+        
+                            _val = getValue(_waveFormElements, "eLabs.08");
+                            if (_val == null) 
+                            {
+                                LabResultGroup["eLabs.08"] = null;
+                                LabResultGroup["ImagingStudyFileorWaveformGraphic"] = null;
+                            }
+                            else 
+                            {
+                                LabResultGroup["eLabs.08"] = _val;
+                                LabResultGroup["ImagingStudyFileorWaveformGraphic"] = _val;
+                            };
                         
-                }                
-            }
-            ///////////////////LabImageGroup            
-        };
-*/                
+                        }                
+                    }
+                    ///////////////////LabImageGroup            
+                };
+                */
             return eLabs;
-};
+        };
 var seteMedication = function (businessObject) {
-    var eMedication = new Object();
-    var _emeds = new Object();
+            var eMedication = new Object();
+            /*
             ////////Check for cancelled calls, Standby, non-patient
         
-    var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; //Calls without patient interaction
-    if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
-    {
-        eMedication.IsValid = false;
-    }
-    else
-    {
-        eMedication.IsValid = true;
-    };
-    var v2Array = [];
+            var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; //Calls without patient interaction
+            if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
+            {
+                eMedication.IsValid = false;
+            }
+            else
+            {
+                eMedication.IsValid = true;
+            };
+            var v2Array = [];
         
-    var eMedicationObject = new Object()
-    eMedicationsGropuObject = getNEMSISSection(businessObject, "eMedication")
+            var eMedicationObject = new Object()
+            eMedicationsGropuObject = getNEMSISSection(businessObject, "eMedication")
         
         
-    for (var i = 0; i < eMedicationsGropuObject.sections.length ; i++)
-    {
-        var elementList = eMedicationsGropuObject.sections[xx].attributes.elements;
+            for (var i = 0; i < eMedicationsGropuObject.sections.length ; i++)
+            {
+                var elementList = eMedicationsGropuObject.sections[xx].attributes.elements;
         
-        //eMedications.03////////
-        PN
-        _val = getValue(elementList, "eMedications.03");
-        if(eMedication.IsValid ==true)
-        {           
-            if (_val == null)
-            {    
-                MedicationGroup["MedicationGiven"] == false;
-                PNValue = getPertinentNegative("eMedications.03")
-                if (PNValue != null) 
-                {
-                    if (PNValue == "8801001") 
-                    {
-                        MedicationGroup["eMedications.03"] = PN_CONTRA_INDICATION_NOTED;
-                        MedicationGroup["MedicationGiven"] = "PN_CONTRA_INDICATION_NOTED";
-                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
-        
-                    }
-                    else if (PNValue == "8801003") {
-                        MedicationGroup["eMedications.03"] = PN_DENIED_BY_ORDER;
-                        MedicationGroup["MedicationGiven"] = "PN_DENIED_BY_ORDER";
-                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
-        
-                    }
-                    else if (PNValue == "8801007") 
-                    {
-                        MedicationGroup["eMedications.03"] = PN_MEDICATION_ALLERGY;
-                        MedicationGroup["MedicationGiven"] = "PN_MEDICATION_ALLERGY";
-                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
-        
-                    }
-                    else if (PNValue == "8801009") 
-                    {
-                        MedicationGroup["eMedications.03"] = PN_MEDICATION_ALREADY_TAKEN;
-                        MedicationGroup["MedicationGiven"] = "PN_MEDICATION_ALREADY_TAKEN";
-                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
-                    }
-                    else if (PNValue == "8801019") 
-                    {
-                        MedicationGroup["MedicationGiven"] = "PN_REFUSED_IS_NILLABLE";
-                        MedicationGroup["eMedications.03"] = PN_REFUSED_IS_NILLABLE;
-                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
-                    }
-                    else if (PNValue == "8801023") 
-                    {
-                        MedicationGroup["MedicationGiven"] = "PN_UNABLE_TO_COMPLETE_IS_NILLABLE";
-                        MedicationGroup["eMedications.03"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE;
-                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
-                    }
-                }
-                
-                else
+                //eMedications.03////////
+                _val = getValue(elementList, "eMedications.03");
+                if(eMedication.IsValid ==true)
                 {           
-                    if (isRequiredStateElement("eMedications.03"))
-                    {
-                        MedicationGroup["eMedications.03"] = v3NOT_RECORDED;
-                        MedicationGroup["MedicationGiven"] = NOT_RECORDED;
-                        v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_RECORDED });
+                    if (_val == null)
+                    {    
+                        MedicationGroup["MedicationGiven"] == false;
+                        PNValue = getPertinentNegative("eMedications.03")
+                        if (PNValue != null) 
+                        {
+                            if (PNValue == "8801001") 
+                            {
+                                MedicationGroup["eMedications.03"] = PN_CONTRA_INDICATION_NOTED;
+                                MedicationGroup["MedicationGiven"] = "PN_CONTRA_INDICATION_NOTED";
+                                v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+        
+                            }
+                            else if (PNValue == "8801003") {
+                                MedicationGroup["eMedications.03"] = PN_DENIED_BY_ORDER;
+                                MedicationGroup["MedicationGiven"] = "PN_DENIED_BY_ORDER";
+                                v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+        
+                            }
+                            else if (PNValue == "8801007") 
+                            {
+                                MedicationGroup["eMedications.03"] = PN_MEDICATION_ALLERGY;
+                                MedicationGroup["MedicationGiven"] = "PN_MEDICATION_ALLERGY";
+                                v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+        
+                            }
+                            else if (PNValue == "8801009") 
+                            {
+                                MedicationGroup["eMedications.03"] = PN_MEDICATION_ALREADY_TAKEN;
+                                MedicationGroup["MedicationGiven"] = "PN_MEDICATION_ALREADY_TAKEN";
+                                v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+                            }
+                            else if (PNValue == "8801019") 
+                            {
+                                MedicationGroup["MedicationGiven"] = "PN_REFUSED_IS_NILLABLE";
+                                MedicationGroup["eMedications.03"] = PN_REFUSED_IS_NILLABLE;
+                                v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+                            }
+                            else if (PNValue == "8801023") 
+                            {
+                                MedicationGroup["MedicationGiven"] = "PN_UNABLE_TO_COMPLETE_IS_NILLABLE";
+                                MedicationGroup["eMedications.03"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE;
+                                v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_KNOWN });
+                            }
+                        }
+                
+                        else
+                        {           
+                            if (isRequiredStateElement("eMedications.03"))
+                            {
+                                MedicationGroup["eMedications.03"] = v3NOT_RECORDED;
+                                MedicationGroup["MedicationGiven"] = NOT_RECORDED;
+                                v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_RECORDED });
+                            }
+                            else
+                            {
+                                MedicationGroup["eMedications.03"] = null;
+                                MedicationGroup["MedicationGiven"] = null;
+                                v2Array.push({ section: "E18", element: "E18_03", val: null });
+                            }
+                        }
                     }
                     else
                     {
-                        MedicationGroup["eMedications.03"] = null;
-                        MedicationGroup["MedicationGiven"] = null;
-                        v2Array.push({ section: "E18", element: "E18_03", val: null });
+                        MedicationGroup["MedicationGiven"] == true;
+                        MedicationGroup["eMedications.03"] = _val;
+                        MedicationGroup["MedicationGiven"] = _val;
+                        v2Array.push({ section: "E18", element: "E18_03", val: _val });
                     }
                 }
-            }
-            else
-            {
-                MedicationGroup["MedicationGiven"] == true;
-                MedicationGroup["eMedications.03"] = _val;
-                MedicationGroup["MedicationGiven"] = _val;
-                v2Array.push({ section: "E18", element: "E18_03", val: _val });
-            }
-        }
-        else
-        {
-            MedicationGroup["eMedications.03"] = v3NOT_RECORDED;
-            MedicationGroup["MedicationGiven"] = NOT_RECORDED;
-            v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_RECORDED });
-        }; 
-                
-        //eMedications.01////////
-        _meds = getValue(elementList, "eMedications.01");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {
-            if (_meds.IsNull == true)             
-            {
-                MedicationGroup["eMedications.01"] = V3NOT_RECORDED;
-                MedicationGroup["DateTimeMedicationAdministered"] = NOT_RECORDED;
-                v2Array.push({ section: "E18", element: "E18_01", val: V2NOT_RECORDED });
-
-                XML.BeginNode("eMedications.01");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("DateTimeMedicationAdministered", NOT_RECORDED);      
-            }        
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-
-                OXML.Node("DateTimeMedicationAdministered", _val);     
-                XML.Node("eMedications.01", _val);
-                MedicationGroup["eMedications.01"] = _val;
-                MedicationGroup["DateTimeMedicationAdministered"] = _val;
-                v2Array.push({ section: "E18", element: "E18_01", val: _val });
-            }
-        }
-        else
-        {
-            MedicationGroup["eMedications.01"] = v3NOT_APPLICABLE;
-            MedicationGroup["DateTimeMedicationAdministered"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E18", element: "E18_01", val: v2NOT_APPLICABLE });
-
-            XML.BeginNode("eMedications.01");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("DateTimeMedicationAdministered", NOT_APPLICABLE);      
-        }; 
-        
-        //eMedications.02////////
-        _val = getValue(elementList, "eMedications.02");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {
-            if (_val == null)
-            {
-                v2Array.push({ section: "E18", element: "E18_02", val: V2NOT_RECORDED });
-                MedicationGroup["eMedications.02"] = V3NOT_RECORDED;
-                MedicationGroup["MedicationAdministeredPriortothisUnitEMSCare"] = NOT_RECORDED;
-                
-                XML.BeginNode("eMedications.02");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("MedicationAdministeredPriortothisUnitEMSCare", NOT_RECORDED);      
-            }        
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-                OXML.Node("MedicationAdministeredPriortothisUnitEMSCare", setCodeText("eMedications.02",_val));      
-                XML.Node("eMedications.02", _val);      
-                MedicationGroup["eMedications.02"] = setCodeText("eMedications.02",_val);
-                MedicationGroup["MedicationAdministeredPriortothisUnitEMSCare"] = _val;             
-                v2Array.push({ section: "E18", element: "E18_02", val: SetD2("eMedications.02", _val) });
-            }
-        }
-        else
-        {
-            v2Array.push({ section: "E18", element: "E18_02", val: v2NOT_APPLICABLE });
-            MedicationGroup["eMedications.02"] = v3NOT_APPLICABLE;
-            MedicationGroup["MedicationAdministeredPriortothisUnitEMSCare"] = NOT_APPLICABLE;
-
-            XML.BeginNode("eMedications.02");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("MedicationAdministeredPriortothisUnitEMSCare", NOT_APPLICABLE);      
-        }; 
-        
-        //eMedication.04////////
-        _meds= getValue(elementList, "eMedications.04");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {                       
-            if (_meds.IsNull == true) 
-            {
-                if(isRequiredStateElement("eMedications.04"))
-                {                    
-                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eMedications.04", Description: "Validation Error: Medication Administered Route Required. " })                    
-                }            
                 else
                 {
-                    OXML.Node("MedicationAdministeredRoute", null);      
-                    XML.Node("eMedications.03", null);      
-                    MedicationGroup["MedicationAdministeredRoute"] = null;
-                    MedicationGroup["eMedications.04"] = null;
-                    v2Array.push({ section: "E18", element: "E18_04", val: v2NOT_REPORTING });
-                }
-            }
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-                OXML.Node("MedicationAdministeredRoute", setCodeText("eMedications.03",_val));      
-                XML.Node("eMedications.03", _val);      
-                MedicationGroup["eMedications.04"] = _val;
-                MedicationGroup["MedicationAdministeredRoute"] = setCodeText("eMedications.04", _val);
-                v2Array.push({ section: "E18", element: "E18_04", val:  SetD2("eMedications.04",_val)});
-            }
-        };
-                      
-        //eMedication.05/////////////
-        _meds = getValue(elementList, "eMedications.05");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {                       
-            if (_meds.IsNull == true) 
-            {
-                MedicationGroup["HasDosage"] = false;
-                MedicationGroup["MedicationDosage"] = NOT_RECORDED;
-                MedicationGroup["eMedications.05"] = V3NOT_RECORDED;
-                v2Array.push({ section: "E18", element: "E18_05", val: V2NOT_RECORDED });
-
-                XML.BeginNode("eMedications.05");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("MedicationDosage", NOT_RECORDED);      
-            }
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-
-                OXML.Node("MedicationDosage", _val);      
-                XML.Node("eMedications.05", _val);      
-                MedicationGroup["HasDosage"] = true;
-                MedicationGroup["MedicationDosage"] = _val;
-                v2Array.push({ section: "E18", element: "E18_05", val: _val });
-                MedicationGroup["eMedications.05"] = _val;
-            }
-        }
-        else
-        {
-            MedicationGroup["MedicationDosage"] = NOT_APPLICABLE;
-            MedicationGroup["eMedications.05"] = v3NOT_APPLICABLE;
-            v2Array.push({ section: "E18", element: "E18_05", val: v2NOT_APPLICABLE});
-
-            XML.BeginNode("eMedications.05");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("MedicationDosage", APPLICABLE);      
-        };
+                    MedicationGroup["eMedications.03"] = v3NOT_RECORDED;
+                    MedicationGroup["MedicationGiven"] = NOT_RECORDED;
+                    v2Array.push({ section: "E18", element: "E18_03", val: v2NOT_RECORDED });
+                }; 
         
-        //eMedication.06//////////////
-        _meds = getValue(elementList, "eMedications.06");
-        if(MedicationGroupMedicationGroup["HasDosage"]  == true)
-        {                       
-            if (_meds.IsNull == true) 
-            {
-                MedicationGroup["eMedications.06"] = V3NOT_RECORDED;
-                MedicationGroup["MedicationDosageUnits"] = NOT_RECORDED;
-                v2Array.push({ section: "E18", element: "E18_08", val: V2NOT_RECORDED });
-
-                XML.BeginNode("eMedications.06");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("MedicationDosageUnits", NOT_RECORDED);      
-            }
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-                XML.Node("eMedications.06", _val);      
-                OXML.Node("MedicationDosageUnits", setCodeText("eMedications.06", _val);                      
-                MedicationGroup["MedicationDosageUnits"] = setCodeText("eMedications.06", _val);
-                v2Array.push({ section: "E18", element: "E18_06", val: SetD2("eMedications.06",_val) });
-                MedicationGroup["eMedications.06"] = _val;
-            }
-        }
-        else
-        {
-            MedicationGroup["eMedications.06"] = v3NOT_APPLICABLE;
-            MedicationGroup["MedicationDosageUnits"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E18", element: "E18_08", val: v2NOT_APPLICABLE});
-
-            XML.BeginNode("eMedications.06");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("MedicationDosageUnits", NOT_APPLICABLE);      
-        };
         
-        //eMedications.07/////////////////
-        _meds = getValue(elementList, "eMedications.07");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {
-            if (_meds.IsNull == true) 
-            {
-                MedicationGroup["eMedications.07"] = V3NOT_RECORDED;
-                MedicationGroup["ResponsetoMedication"] = NOT_RECORDED;
-                v2Array.push({ section: "E18", element: "E18_07", val: V2NOT_RECORDED });
-
-                XML.BeginNode("eMedications.07");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("ResponsetoMedication", NOT_RECORDED);      
-            }
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-                XML.Node("eMedications.07", _val);      
-                OXML.Node("ResponsetoMedication", setCodeText("eMedications.07", _val));      
-                MedicationGroup["eMedications.07"] = _val;
-                MedicationGroup["ResponsetoMedication"] = setCodeText("eMedications.07", _val);
-                v2Array.push({ section: "E18", element: "E18_07", val: SetD2("eMedications.07",_val) });
-            }
-        }
-        else
-        {
-            MedicationGroup["eMedications.07"] = v3NOT_APPLICABLE;
-            MedicationGroup["ResponsetoMedication"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E18", element: "E18_07", val: v2NOT_APPLICABLE});
-
-            XML.BeginNode("eMedications.07");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("ResponsetoMedication", NOT_APPLICABLE);      
-        };
-        
-            //eMedications.08////////////
-        _meds = getValue(elementList, "eMedications.08");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {
-            if (_meds.IsNull == true) 
-            {
-                MedicationGroup["eMedications.08"] = V3NOT_RECORDED;
-                MedicationGroup["MedicationComplication"] = NOT_RECORDED;
-                v2Array.push({ section: "E18", element: "E18_08", val: V2NOT_RECORDED });
-                XML.BeginNode("eMedications.08");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("MedicationComplication", NOT_RECORDED);      
-            }
-            else 
-            {
-                var arr1 = [];
-                var arr2 = [];
-                var arr3 = []
-                for (var i = 0; i < _meds.ValueArray.length; i++)
+                //eMedications.01////////
+                _val = getValue(elementList, "eMedications.01");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
                 {
-                    if ((_meds.ValueArray[i].HasValue == true) && (arr1.indexOf(_meds.ValueArray[i].val) > -1))
+                    if (_val == null)
                     {
-                        _val = _meds.ValueArray[i].val
-                        arr1.push(_val);
-                        arr2.push(SetV2("eMedications.08", _val))
-                        arr3.push(setCodeText("eMedications.08", _val));
-                        OXML.Node("MedicationComplication", setCodeText("eMedications.08", _val));      
-                        XML.Node("eMedications.08", _val);      
+                        MedicationGroup["eMedications.01"] = V3NOT_RECORDED;
+                        MedicationGroup["DateTimeMedicationAdministered"] = NOT_RECORDED;
+                        v2Array.push({ section: "E18", element: "E18_01", val: V2NOT_RECORDED });
+                    }        
+                    else 
+                    {
+                        MedicationGroup["eMedications.01"] = _val;
+                        MedicationGroup["DateTimeMedicationAdministered"] = _val;
+                        v2Array.push({ section: "E18", element: "E18_01", val: _val });
                     }
-                };
-                MedicationGroup["eMedications.08"] = arr1.slice(0);
-                MedicationGroup["MedicationComplication"] = arr3.slice(0);
-                v2Array.push({ section: "E18", element: "E18_08", val:arr2.slice(0)  });
-            }
-        }
-        else
-        {
-            MedicationGroup["eMedications.08"] = v3NOT_APPLICABLE;
-            MedicationGroup["MedicationComplication"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E18", element: "E18_08", val: v2NOT_APPLICABLE});
-
-            XML.BeginNode("eMedications.08");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("MedicationComplication", NOT_APPLICABLE);      
-        };
-        
-        
-        //eMedications.09//////////////
-        _meds = getValue(elementList, "eMedications.09");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {
-            if (_meds.IsNull == true) 
-            {
-                if(isRequiredStateElement("eMedications.09"))
-                {
-                    MedicationGroup["eMedications.09"] = V3NOT_RECORDED;
-                    MedicationGroup["HealthcareProfessionalID"] = NOT_RECORDED;
-                    v2Array.push({ section: "E18", element: "E18_09", val: V2NOT_RECORDED });
-
-                    XML.BeginNode("eMedications.09");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("HealthcareProfessionalID", NOT_RECORDED);      
-                }            
+                }
                 else
                 {
-                    MedicationGroup["eMedications.09"] = v3NOT_REPORTING;
-                    MedicationGroup["HealthcareProfessionalID"] = NOT_REPORTING;
-                    v2Array.push({ section: "E18", element: "E18_09", val: v2NOT_REPORTING });
-
-                    XML.BeginNode("eMedications.09");
-                    XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                    XML.EndNode();
-
-                    OXML.Node("HealthcareProfessionalID", NOT_REPORTING);      
-                }
-            }
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-                OXML.Node("HealthcareProfessionalID", _val);      
-                XML.Node("eMedications.09", _val);      
-
-                MedicationGroup["eMedications.09"] = _val;
-                MedicationGroup["HealthcareProfessionalID"] = _val;
-                v2Array.push({ section: "E18", element: "E18_09", val: SetD2("eMedications.09",_val) });                
-            }
-        }
-        else
-        {
-            MedicationGroup["eMedications.09"] = v3NOT_APPLICABLE;
-            MedicationGroup["HealthcareProfessionalID"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E18", element: "E18_09", val: v2NOT_APPLICABLE});
-
-            XML.BeginNode("eMedications.09");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("HealthcareProfessionalID", NOT_APPLICABLE);      
-        }; 
+                    MedicationGroup["eMedications.01"] = v3NOT_APPLICABLE;
+                    MedicationGroup["DateTimeMedicationAdministered"] = NOT_APPLICABLE;
+                    v2Array.push({ section: "E18", element: "E18_01", val: v2NOT_APPLICABLE });
+                }; 
         
-        //eMedications.10////////////
-        _meds = getValue(elementList, "eMedications.10");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {
-            if (_meds.IsNull == true) 
-            {
-                MedicationGroup["eMedications.10"] = V3NOT_RECORDED;
-                MedicationGroup["RoleTypeofPersonAdministeringMedication"] = NOT_RECORDED;
-
-                XML.BeginNode("eMedications.10");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("RoleTypeofPersonAdministeringMedication", NOT_RECORDED);      
-            }
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-                OXML.Node("RoleTypeofPersonAdministeringMedication", setCodeText("eMedications.10", _val));      
-                XML.Node("eMedications.10", _val);      
-                MedicationGroup["eMedications.10"] = _val;
-                MedicationGroup["RoleTypeofPersonAdministeringMedication"] = setCodeText("eMedications.10", _val);
-            }
-        }
-        else
-        {
-            MedicationGroup["eMedications.10"] = v3NOT_APPLICABLE;
-            MedicationGroup["RoleTypeofPersonAdministeringMedication"] = NOT_APPLICABLE;
-
-            XML.BeginNode("eMedications.10");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("RoleTypeofPersonAdministeringMedication", NOT_APPLICABLE);              
-        };
-        
-        //eMedications.11///////////
-        _meds = getValue(elementList, "eMedications.11");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {
-            if (_meds.IsNull == true) 
-            {
-                OXML.Node("MedicationAuthorization",  null);      
-                XML.Node("eMedications.11", null);      
-                MedicationGroup["eMedications.11"] = null;
-                MedicationGroup["MedicationAuthorization"] = null;
-                v2Array.push({ section: "E18", element: "E18_10", val: null });                
-            }
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-                OXML.Node("MedicationAuthorization",  _val);      
-                XML.Node("eMedications.11", _val);      
-                v2Array.push({ section: "E18", element: "E18_10", val: SetD2("eMedications.11",_val) });                
-                MedicationGroup["eMedications.11"] = _val;
-                MedicationGroup["MedicationAuthorization"] = setCodeText("eMedications.11", _val);
-            }
-        }
-        else
-        {
-            OXML.Node("MedicationAuthorization",  null);      
-            XML.Node("eMedications.11", null);      
-            MedicationGroup["eMedications.11"] = null;
-            MedicationGroup["MedicationAuthorization"] = null;
-            v2Array.push({ section: "E18", element: "E18_10", val: null });                
-        };
-        
-        //eMedications.12/////////////
-        _meds = getValue(elementList, "eMedications.12");
-        if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
-        {
-            if (_meds.IsNull == true) 
-            {
-                OXML.Node("MedicationAuthorizingPhysician",  null);      
-                XML.Node("eMedications.12", null);      
-                MedicationGroup["eMedications.12"] = null;
-                MedicationGroup["MedicationAuthorizingPhysician"] = null;
-                v2Array.push({ section: "E18", element: "E18_11", val: null });                
-            }
-            else 
-            {
-                _val = _meds.ValueArray[0].val;
-                OXML.Node("MedicationAuthorizingPhysician",  _val);      
-                XML.Node("eMedications.12", _val);      
-                MedicationGroup["MedicationAuthorizingPhysician"] = _val;
-                v2Array.push({ section: "E18", element: "E18_11", val: _val });                
-                MedicationGroup["eMedications.12"] = _val;
-            }
-        }
-        else
-        {
-            OXML.Node("MedicationAuthorizingPhysician",  null);      
-            XML.Node("eMedications.12", null);      
-            MedicationGroup["eMedications.12"] = null;
-            MedicationGroup["MedicationAuthorizingPhysician"] = null;
-            v2Array.push({ section: "E18", element: "E18_11", val: null });                        
-        };        
-    };
-            
-    return eMedications;
-};
-var seteOther = function (businessObject) 
-{
-    var eOther = new Object();
-            
-    ////////Check for cancelled calls, Standby, non-patient
-        
-    var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; 
-    //Calls without patient interaction]; //Calls without patient interaction
-    if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
-    {
-        eOther.IsCallValid = false;
-    }
-    else
-    {
-        eOther.IsCallValid = true;
-    };
-    var v2Array = [];
-        
-    var eOtherObject = new Object()
-    eOtherGropuObject = getNEMSISSection(businessObject, "eOther")    
-        
-        
-    //eOther.01////////
-    _other = getValue(businessObject.elements, "eOther.01");
-    if(eOther.IsCallValid == true)
-    {
-        if (_other.IsNull == true) 
-        {
-            v2Array.push({ section: "E23", element: "E23_01", val: v2NOT_KNOWN });
-            eOther["eOther.01"] = null;
-            eOther["ReviewRequested"] = null;
-            OXML.Node("ReviewRequested", "");     
-            XML.Node("eOther.01", "");
-        }
-        else
-        {
-            _val = _other.ValueArray[0].val;
-            v2Array.push({ section: "E23", element: "E23_01", val: SetD2("eOther.01", _val) });
-            eOther["eOther.01"] = _val;
-            eOther["ReviewRequested"] = setCodeText("eOther.01", _val);
-            OXML.Node("ReviewRequested", setCodeText("eOther.01",_val));     
-            XML.Node("eOther.01", _val);
-        }
-    };
-        
-        
-    //eOther.02//////////
-    eOther = getValue(businessObject.elements, "eOther.02");
-    if(eOther.IsCallValid ==true)  //If call Is Valid
-    {
-        if (_other.IsNull == true) 
-        {
-            v2Array.push({ section: "E23", element: "E23_02", val: v2NOT_KNOWN });
-            eOther["eOther.02"] = null;
-            eOther["PotentialSystemofCareSpecialtyRegistryPatient"] = null;
-            OXML.Node("PotentialSystemofCareSpecialtyRegistryPatient", "");     
-            XML.Node("eOther.02", "");
-        }
-        else
-        {
-            var arr1 = [];
-            var arr2 = [];
-            var arr3 = [];
-            for (var i = 0; i < _other.ValueArray.length; i++)
-            {
-                if ((_other.ValueArray[i].HasValue == true) && (arr1.indexOf(_other.ValueArray[i].val) > -1))
+                //eMedications.02////////
+                _val = getValue(elementList, "eMedications.02");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
                 {
-                    _val = _other.ValueArray[i].val
-                    arr1.push(_val);
-                    arr2.push(setV2("eOther.03", _val));
-                    arr3.push(setCodeText("eOther.03", _val));
-                    OXML.Node("PotentialSystemofCareSpecialtyRegistryPatient", setCodeText("eOther.03", _val));     
-                    XML.Node("eOther.02", _val);
-                }
-            }
-        };
-        eOther["eOther.02"] = arr1.slice(0);
-        eOther["PotentialSystemofCareSpecialtyRegistryPatient"] = arr3.slice(0);
-        v2Array.push({ section: "E23", element: "E23_02", val: arr2.slice(0) });
-    }
-    else
-    {
-        v2Array.push({ section: "E23", element: "E23_02", val: v2NOT_KNOWN });
-        eOther["eOther.02"] = null;
-        eOther["PotentialSystemofCareSpecialtyRegistryPatient"] = null;
-        OXML.Node("PotentialSystemofCareSpecialtyRegistryPatient", "");     
-        XML.Node("eOther.02", "");
-    };
-        
-        
-    ///////////////////eOther.EMSCrewMemberGroup
-    _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eOther.EMSCrewMemberGroup");
-    for (var x = 0; x < _sectionIndex.length; x++) 
-    {
-        var EMSCrewMemberGroupElements = businessObject.sections[_sectionIndex[x]].attributes.elements
-            
-        //eOther.03//////////
-        _other = getValue(EMSCrewMemberGroupElements, "eOther.03");
-        if(eOther.IsCallValid == true)  //Wouldn't use protective equipment on a no call
-        {
-            if (_other.IsNull == true) 
-            {
-                v2Array.push({ section: "E23", element: "E23_03", val: null });                
-                EMSCrewMemberGroup["eOther.03"] = null;
-                EMSCrewMemberGroup["PersonalProtectiveEquipmentUsed"] = null;
-                OXML.Node("PersonalProtectiveEquipmentUsed", "");     
-                XML.Node("eOther.03", "");
-            }
-            else
-            {
-                var arr1 = [];
-                var arr2 = [];
-                var arr3 = [];
-                for (var i = 0; i < _other.ValueArray.length; i++)
-                {
-                    if ((_other.ValueArray[i].HasValue == true) && (arr1.indexOf(_other.ValueArray[i].val) > -1))
+                    if (_val == null)
                     {
-                        _val = _other.ValueArray[i].val
-                        arr1.push(_val);
-                        arr2.push(setV2("eOther.03", _val));
-                        arr3.push(setCodeText("eOther.04", _val));
-                        OXML.Node("PersonalProtectiveEquipmentUsed", setCodeText("eOther.04", _val));     
-                        XML.Node("eOther.03", _val);
+                        v2Array.push({ section: "E18", element: "E18_02", val: V2NOT_RECORDED });
+                        MedicationGroup["eMedications.02"] = V3NOT_RECORDED;
+                        MedicationGroup["MedicationAdministeredPriortothisUnitEMSCare"] = NOT_RECORDED;
+                    }        
+                    else 
+                    {
+                        MedicationGroup["eMedications.02"] = setCodeText("eMedications.02",_val);
+                        MedicationGroup["MedicationAdministeredPriortothisUnitEMSCare"] = _val;             
+                        v2Array.push({ section: "E18", element: "E18_02", val: SetD2("eMedications.02", _val) });
+                    }
+                }
+                else
+                {
+                    v2Array.push({ section: "E18", element: "E18_02", val: v2NOT_APPLICABLE });
+                    MedicationGroup["eMedications.02"] = v3NOT_APPLICABLE;
+                    MedicationGroup["MedicationAdministeredPriortothisUnitEMSCare"] = NOT_APPLICABLE;
+                }; 
+        
+                //eMedication.04////////
+                _val = getValue(elementList, "eMedications.04");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
+                {                       
+                    if (_val == null)
+                    {
+                        if(isRequiredStateElement("eMedications.04"))
+                        {                    
+                            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eMedications.04", Description: "Validation Error: Medication Administered Route Required. " })                    
+                        }            
+                        else
+                        {
+                            MedicationGroup["MedicationAdministeredRoute"] = null;
+                            MedicationGroup["eMedications.04"] = null;
+                            v2Array.push({ section: "E18", element: "E18_04", val: v2NOT_REPORTING });
+                        }
+                    }
+                    else 
+                    {
+                        MedicationGroup["eMedications.04"] = _val;
+                        MedicationGroup["MedicationAdministeredRoute"] = setCodeText("eMedications.04", _val);
+                        v2Array.push({ section: "E18", element: "E18_04", val:  SetD2("eMedications.04",_val)});
                     }
                 };
-            };            
-            EMSCrewMemberGroup["eOther.02"] = arr1.slice(0);
-            eOther["PersonalProtectiveEquipmentUsed"] = arr3.slice(0);
-            v2Array.push({ section: "E23", element: "E23_03", val: arr2.slice(0) });                            
-        }
-    };
         
-    //eOther.04///////////
-    _other = getValue(EMSCrewMemberGroup, "eOther.04");
-    if(eOther.IsValid == true)
-    {
-        if (_other.IsNull == true) 
-        {
-            EMSCrewMemberGroup["eOther.04"] = null;
-            EMSCrewMemberGroup["CrewMemberID"] = null;
-            OXML.Node("CrewMemberID",  null);     
-            XML.Node("eOther.04", null);
-        }
-        else
-        {
-            _val = _other.ValueArray[0].val;
-            OXML.Node("CrewMemberID",  _val);     
-            XML.Node("eOther.04", _val);
-            EMSCrewMemberGroup["eOther.04"] = _val;
-            EMSCrewMemberGroup["CrewMemberID"] = _val;
-        }
-    };
-        
-    //eOther.05/////////
-    _other = getValue(EMSCrewMemberGroup, "eOther.05");
-    eOther["WorkInjury"] = false;
-    if(eOther.IsCallValid == true)  //Wouldn't use protective equipment on a no call
-    {
-        if (_other.IsNull == true) 
-        {
-            v2Array.push({ section: "E23", element: "E23_05", val: V2NOT_RECORDED });
-            EMSCrewMemberGroup["eOther.05"] = V3NOT_RECORDED;        
-            EMSCrewMemberGroup["SuspectedEMSWorkRelatedExposureInjuryorDeath"] = V3NOT_RECORDED;     
-            XML.BeginNode("eOther.05");
-            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-            XML.EndNode();
-
-            OXML.Node("SuspectedEMSWorkRelatedExposureInjuryorDeath", NOT_RECORDED);      
-        }
-        else 
-        {
-            _val = _other.ValueArray[0].val;
-            eOther["WorkInjury"] = true;
-            v2Array.push({ section: "E23", element: "E23_05", val: SetD2("eOther.05", _val) });
-            EMSCrewMemberGroup["eOther.05"] = _val;
-            EMSCrewMemberGroup["SuspectedEMSWorkRelatedExposureInjuryorDeath"] = setCodeText("eOther.05", _val);                
-            OXML.Node("SuspectedEMSWorkRelatedExposureInjuryorDeath", setCodeText("eOther.05", _val));      
-            XML.Node("eOther.05",  _val);      
-        }
-    }
-    else
-    {
-        v2Array.push({ section: "E23", element: "E23_05", val: v2NOT_APPLICABLE });
-        EMSCrewMemberGroup["eOther.05"] = v3NOT_APPLICABLE;        
-        EMSCrewMemberGroup["SuspectedEMSWorkRelatedExposureInjuryorDeath"] = NOT_APPLICABLE;
-        XML.BeginNode("eOther.05");
-        XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-        XML.EndNode();
-
-        OXML.Node("SuspectedEMSWorkRelatedExposureInjuryorDeath", NOT_APPLICABLE);      
-    };
-        
-    //eOther.06/////////
-    _other = getValue(businessObject.elements, "eOther.06");
-    if(eOther.WorkInjury ==true)
-    {
-        if (_other.IsNull == true) 
-        {
-            if (isRequiredStateElement("eOther.06"))
-            {
-                EMSCrewMemberGroup["eOther.06"] = v3NOT_RECORDED;
-                EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = NOT_RECORDED;
-                v2Array.push({ section: "E23", element: "E23_06", val: V2NOT_RECORDED });
-
-                XML.BeginNode("eOther.06");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-                OXML.Node("TypeofWorkRelatedInjuryDeathorSuspectedExposure", NOT_RECORDED);   
-            }
-            else
-            {
-                EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = NOT_REPORTING;
-                EMSCrewMemberGroup["eOther.06"] = v3NOT_REPORTING;
-                v2Array.push({ section: "E23", element: "E23_06", val: v2NOT_REPORTING });
-                XML.BeginNode("eOther.06");
-                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                XML.EndNode();
-                OXML.Node("TypeofWorkRelatedInjuryDeathorSuspectedExposure", NOT_REPORTING);   
-            }            
-        }
-        else 
-        {
-            var arr1 = [];
-            var arr2 = [];
-            var arr3 = [];
-            for (var i = 0; i < _other.ValueArray.length; i++)
-            {
-                if ((_other.ValueArray[i].HasValue == true) && (arr1.indexOf(_other.ValueArray[i].val) > -1))
-                {
-                    _val = _other.ValueArray[i].val
-                    arr1.push(_val);
-                    arr2.push(setV2("eOther.06", _val));
-                    arr3.push(setCodeText("eOther.06", _val));
-                    OXML.Node("TypeofWorkRelatedInjuryDeathorSuspectedExposure", setCodeText("eOther.06",_val));     
-                    XML.Node("eOther.06", _val);
+              
+                //eMedication.05/////////////
+                _val = getValue(elementList, "eMedications.05");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
+                {                       
+                    if (_val == null) 
+                    {
+                        MedicationGroup["HasDosage"] = false;
+                        MedicationGroup["MedicationDosage"] = NOT_RECORDED;
+                        MedicationGroup["eMedications.05"] = V3NOT_RECORDED;
+                        v2Array.push({ section: "E18", element: "E18_05", val: V2NOT_RECORDED });
+                    }
+                    else 
+                    {
+                        MedicationGroup["HasDosage"] = true;
+                        MedicationGroup["MedicationDosage"] = _val;
+                        v2Array.push({ section: "E18", element: "E18_05", val: _val });
+                        MedicationGroup["eMedications.05"] = _val;
+                    }
                 }
-            };
-                
-            EMSCrewMemberGroup["eOther.06"] = arr1.slice(0);
-            EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = arr3.slice(0);
-            v2Array.push({ section: "E23", element: "E23_06", val: arr2.slice(0) });
-        }
-    }
-    else
-    {
-        EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = NOT_APPLICABLE;
-        EMSCrewMemberGroup["eOther.06"] = v3NOT_APPLICABLE;
-        v2Array.push({ section: "E23", element: "E23_06", val: v2NOT_APPLICABLE });
-
-        XML.BeginNode("eOther.06");
-        XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-        XML.EndNode();
-
-        OXML.Node("TypeofWorkRelatedInjuryDeathorSuspectedExposure", NOT_APPLICABLE);  
-    };
-        
-        
-    ///////////////////////////
-    //eOther.07////////
-    _other = getValue(businessObject.elements, "eOther.07");
-    if(eOther.IsCallValid == true)  
-    {
-        if (_other.IsNull == true) 
-        {
-            EMSCrewMemberGroup["eOther.07"] = null;
-            EMSCrewMemberGroup["NaturalSuspectedIntentionalorUnintentionalDisaster"] = null;
-            v2Array.push({ section: "E23", element: "E23_04", val: null });
-
-            OXML.Node("NaturalSuspectedIntentionalorUnintentionalDisaster", "");     
-            XML.Node("eOther.07", "");
-        }
-        else
-        {
-            var arr1 = [];
-            var arr2 = [];
-            var arr3 = [];
-            for (var i = 0; i < _other.ValueArray.length; i++)
-            {
-                if ((_other.ValueArray[i].HasValue == true) && (arr1.indexOf(_other.ValueArray[i].val) > -1))
+                else
                 {
-                    _val = _other.ValueArray[i].val
-                    arr1.push(_val);
-                    arr2.push(setV2("eOther.07", _val));
-                    arr3.push(setCodeText("eOther.07", _val));
-                    OXML.Node("NaturalSuspectedIntentionalorUnintentionalDisaster", (setCodeText("eOther.07", _val)));     
-                    XML.Node("eOther.07", _val);
+                    MedicationGroup["MedicationDosage"] = NOT_APPLICABLE;
+                    MedicationGroup["eMedications.05"] = v3NOT_APPLICABLE;
+                    v2Array.push({ section: "E18", element: "E18_05", val: v2NOT_APPLICABLE});
+                };
+        
+                //eMedication.06//////////////
+                _val = getValue(elementList, "eMedications.06");
+                if(MedicationGroupMedicationGroup["HasDosage"]  == true)
+                {                       
+                    if (_val == null) 
+                    {
+                        MedicationGroup["eMedications.06"] = V3NOT_RECORDED;
+                        MedicationGroup["MedicationDosageUnits"] = NOT_RECORDED;
+                        v2Array.push({ section: "E18", element: "E18_08", val: V2NOT_RECORDED });
+                    }
+                    else 
+                    {
+                        MedicationGroup["MedicationDosageUnits"] = setCodeText("eMedications.06", _val);
+                        v2Array.push({ section: "E18", element: "E18_06", val: SetD2("eMedications.06",_val) });
+                        MedicationGroup["eMedications.06"] = _val;
+                    }
                 }
+                else
+                {
+                    MedicationGroup["eMedications.06"] = v3NOT_APPLICABLE;
+                    MedicationGroup["MedicationDosageUnits"] = NOT_APPLICABLE;
+                    v2Array.push({ section: "E18", element: "E18_08", val: v2NOT_APPLICABLE});
+                };
+        
+                //eMedications.07/////////////////
+                _val = getValue(elementList, "eMedications.07");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
+                {
+                    if (_val == null) 
+                    {
+                        MedicationGroup["eMedications.07"] = V3NOT_RECORDED;
+                        MedicationGroup["ResponsetoMedication"] = NOT_RECORDED;
+                        v2Array.push({ section: "E18", element: "E18_07", val: V2NOT_RECORDED });
+                    }
+                    else 
+                    {
+                        MedicationGroup["eMedications.07"] = _val;
+                        MedicationGroup["ResponsetoMedication"] = setCodeText("eMedications.07", _val);
+                        v2Array.push({ section: "E18", element: "E18_07", val: SetD2("eMedications.07",_val) });
+                    }
+                }
+                else
+                {
+                    MedicationGroup["eMedications.07"] = v3NOT_APPLICABLE;
+                    MedicationGroup["ResponsetoMedication"] = NOT_APPLICABLE;
+                    v2Array.push({ section: "E18", element: "E18_07", val: v2NOT_APPLICABLE});
+                };
+        
+                //eMedications.08////////////
+                _val = getValue(elementList, "eMedications.08");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
+                {
+                    if (_val == null) 
+                    {
+                        MedicationGroup["eMedications.08"] = V3NOT_RECORDED;
+                        MedicationGroup["MedicationComplication"] = NOT_RECORDED;
+                        v2Array.push({ section: "E18", element: "E18_08", val: V2NOT_RECORDED });
+                    }
+                    else 
+                    {
+                        var arr1 = [];
+                        var arr2 = [];
+                        var arr3 = []
+                        for (var i = 0; i < _val.length; i++) 
+                        {
+                            if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                                arr1.push(_val);
+                                arr2.push(SetV2("eMedications.08", _val))
+                                arr3.push(setCodeText("eMedications.08", _val))                        
+                            }
+                        };
+                        MedicationGroup["eMedications.08"] = arr1.slice(0);
+                        MedicationGroup["MedicationComplication"] = arr3.slice(0);
+                        v2Array.push({ section: "E18", element: "E18_08", val:arr2.slice(0)  });
+                    }
+                }
+                else
+                {
+                    MedicationGroup["eMedications.08"] = v3NOT_APPLICABLE;
+                    MedicationGroup["MedicationComplication"] = NOT_APPLICABLE;
+                    v2Array.push({ section: "E18", element: "E18_08", val: v2NOT_APPLICABLE});
+                };
+        
+        
+                //eMedications.09//////////////
+                _val = getValue(elementList, "eMedications.09");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
+                {
+                    if (_val == null)
+                    {
+                        if(isRequiredStateElement("eMedications.09"))
+                        {
+                            MedicationGroup["eMedications.09"] = V3NOT_RECORDED;
+                            MedicationGroup["HealthcareProfessionalID"] = NOT_RECORDED;
+                            v2Array.push({ section: "E18", element: "E18_09", val: V2NOT_RECORDED });
+                        }            
+                        else
+                        {
+                            MedicationGroup["eMedications.09"] = v3NOT_REPORTING;
+                            MedicationGroup["HealthcareProfessionalID"] = NOT_REPORTING;
+                            v2Array.push({ section: "E18", element: "E18_09", val: v2NOT_REPORTING });
+                        }
+                    }
+                    else 
+                    {
+                        MedicationGroup["eMedications.09"] = _val;
+                        MedicationGroup["HealthcareProfessionalID"] = _val;
+                        v2Array.push({ section: "E18", element: "E18_09", val: SetD2("eMedications.09",_val) });                
+                    }
+                }
+                else
+                {
+                    MedicationGroup["eMedications.09"] = v3NOT_APPLICABLE;
+                    MedicationGroup["HealthcareProfessionalID"] = NOT_APPLICABLE;
+                    v2Array.push({ section: "E18", element: "E18_09", val: v2NOT_APPLICABLE});
+                }; 
+        
+                //eMedications.10////////////
+                _val = getValue(elementList, "eMedications.10");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
+                {
+                    if (_val == null) 
+                    {
+                        MedicationGroup["eMedications.10"] = V3NOT_RECORDED;
+                        MedicationGroup["RoleTypeofPersonAdministeringMedication"] = NOT_RECORDED;
+                    }
+                    else 
+                    {
+                        MedicationGroup["eMedications.10"] = _val;
+                        MedicationGroup["RoleTypeofPersonAdministeringMedication"] = setCodeText("eMedications.10", _val);
+                    }
+                }
+                else
+                {
+                    MedicationGroup["eMedications.10"] = v3NOT_APPLICABLE;
+                    MedicationGroup["RoleTypeofPersonAdministeringMedication"] = NOT_APPLICABLE;
+        
+                };
+        
+                //eMedications.11///////////
+                _val = getValue(elementList, "eMedications.11");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
+                {
+                    if (_val == null) 
+                    {
+                        MedicationGroup["eMedications.11"] = null;
+                        MedicationGroup["MedicationAuthorization"] = null;
+                        v2Array.push({ section: "E18", element: "E18_10", val: null });                
+                    }
+                    else 
+                    {
+                        v2Array.push({ section: "E18", element: "E18_10", val: SetD2("eMedications.11",_val) });                
+                        MedicationGroup["eMedications.11"] = _val;
+                        MedicationGroup["MedicationAuthorization"] = setCodeText("eMedications.11", _val);
+                    }
+                }
+                else
+                {
+                    MedicationGroup["eMedications.11"] = null;
+                    MedicationGroup["MedicationAuthorization"] = null;
+                    v2Array.push({ section: "E18", element: "E18_10", val: null });                
+                };
+        
+                //eMedications.12/////////////
+                _val = getValue(elementList, "eMedications.12");
+                if((eMedication.IsValid ==true) && (MedicationGroup.MedicationGiven == true))
+                {
+                    if (_val == null) 
+                    {
+                        MedicationGroup["eMedications.12"] = null;
+                        MedicationGroup["MedicationAuthorizingPhysician"] = null;
+                        v2Array.push({ section: "E18", element: "E18_11", val: null });                
+                    }
+                    else 
+                    {
+                        MedicationGroup["MedicationAuthorizingPhysician"] = _val;
+                        v2Array.push({ section: "E18", element: "E18_11", val: _val });                
+                        MedicationGroup["eMedications.12"] = _val;
+                    }
+                }
+                else
+                {
+                    MedicationGroup["eMedications.12"] = null;
+                    MedicationGroup["MedicationAuthorizingPhysician"] = null;
+                    v2Array.push({ section: "E18", element: "E18_11", val: null });                
+        
+                };
+        
             };
-            EMSCrewMemberGroup["eOther.07"] = arr1.slice(0);
-            EMSCrewMemberGroup["NaturalSuspectedIntentionalorUnintentionalDisaster"] = arr3.slice(0);
-            v2Array.push({ section: "E23", element: "E23_04", val: arr2.slice(0) });
-        }
-    }
-    else
-    {
-        EMSCrewMemberGroup["eOther.07"] = null;
-        EMSCrewMemberGroup["NaturalSuspectedIntentionalorUnintentionalDisaster"] = null;
-        v2Array.push({ section: "E23", element: "E23_04", val: null });
-        OXML.Node("NaturalSuspectedIntentionalorUnintentionalDisaster", "");     
-        XML.Node("eOther.07", "");
-    };
-                
-    //eOther..08//////////
-    _other = getValue(businessObject.elements, "eOther.08");
-    if(eOther.IsCallValid == true)  //Wouldn't use protective equipment on a no call
-    {
-        if (_other.IsNull == true) 
-        {
-            if (isRequiredStateElement("eOther.08"))
-            {
-                eOther["eOther.08"] = v3NOT_RECORDED;
-                eOther["CrewMemberCompletingthisReport"] = NOT_RECORDED;
-                v2Array.push({ section: "E23", element: "E23_10", val: v2NOT_RECORDED });
+            */
+            return eMedications
 
-                XML.BeginNode("eOther.08");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-                OXML.Node("CrewMemberCompletingthisReport", NOT_RECORDED);   
-            }
-            else
-            {
-                eOther["CrewMemberCompletingthisReport"] = NOT_REPORTING;
-                eOther["eOther.08"] = v3NOT_REPORTING;
-                v2Array.push({ section: "E23", element: "E23_10", val: v2NOT_REPORTING });
-
-                XML.BeginNode("eOther.08");
-                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                XML.EndNode();
-                OXML.Node("CrewMemberCompletingthisReport", NOT_REPORTING);   
-            }
-        }
-        else
-        {
-            _val = _other.ValueArray[0].val;
-
-            eOther["eOther.08"] = _val;
-            eOther["CrewMemberCompletingthisReport"] = setCodeText("eOther.08", _val);
-            v2Array.push({ section: "E23", element: "E23_10", val: D2Val("eOther.08", _val) });
-        }
-    }
-    else
-    {
-        eOther["CrewMemberCompletingthisReport"] = NOT_APPLICABLE;
-        eOther["eOther.08"] = v3NOT_APPLICABLE;
-        v2Array.push({ section: "E23", element: "E23_10", val: v2NOT_APPLICABLE});
-
-        XML.BeginNode("eOther.08");
-        XML.Attrib("NV", NIL_V3NOT_REPORTING);
-        XML.EndNode();
-        OXML.Node("CrewMemberCompletingthisReport", NOT_REPORTING);   
-    };
-                
-        
-    ///////////////////eOther.FileGroup
-    if(eOther.IsCallValid ==true)
-    {
-        _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eOther.FileGroup");
-        for (var x = 0; x < _sectionIndex.length; x++) 
-        {
-            var FileGroupElements = businessObject.sections[_sectionIndex[x]].attributes.elements
-            //eOther.09//////////
-            _other = getValue(FileGroupElements, "eOther.09");
-            if (_other.IsNull == true) 
-            {
-                OXML.Node("ExternalElectronicDocuments", null);     
-                XML.Node("eOther.09", null);
-                FileGroup["ExternalElectronicDocuments"] = null;
-                FileGroup["eOther.09"] = null;
-            }
-            else
-            {
-                _val = _other.ValueArray[0].val;
-                OXML.Node("ExternalElectronicDocuments", setCodeText("eHistory.17",_val));     
-                XML.Node("eOther.09", _val);
-                FileGroup["ExternalElectronicDocuments"] = setCodeText("eOther.09", _val);
-                FileGroup["eOther.09"] = _val;                
-            };
-        
-            //eOther.10//////////
-            _other = getValue(FileGroupElements, "eOther.10");
-            if (_other.IsNull == true) 
-            {
-                OXML.Node("FileAttachmentType", null);     
-                XML.Node("eOther.10", null);
-                FileGroup["FileAttachmentType"] = null;
-                FileGroup["eOther.10"] = null;
-            }
-            else
-            {
-                _val = _other.ValueArray[0].val;
-                OXML.Node("FileAttachmentType", _val);     
-                XML.Node("eOther.10", _val);
-                FileGroup["FileAttachmentType"] = _val;
-                FileGroup["eOther.10"] = _val;                
-            };        
-        
-            //eOther.11//////////
-            _other = getValue(FileGroupElements, "eOther.11");
-            if (_other.IsNull == true) 
-            {
-                OXML.Node("FileAttachmentImage", null);     
-                XML.Node("eOther.11", null);
-                FileGroup["FileAttachmentImage"] = null;
-                FileGroup["eOther.11"] = null;
-            }
-            else
-            {
-                _val = _other.ValueArray[0].val;
-
-                OXML.Node("FileAttachmentImage", _val);     
-                XML.Node("eOther.11", _val);
-                FileGroup["FileAttachmentImage"] = _val;
-                FileGroup["eOther.11"] = _val;
-            }
         };
-        if((Call.IsValid==true) && Call.HasPatient==true)
-        {
-            _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eOther.SignatureGroup");
+var seteOther = function (businessObject) {
+            var eOther = new Object();
+            /*
+            ////////Check for cancelled calls, Standby, non-patient
+        
+            var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; 
+            //Calls without patient interaction]; //Calls without patient interaction
+            if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
+            {
+                eOther.IsCallValid = false;
+            }
+            else
+            {
+                eOther.IsCallValid = true;
+            };
+            var v2Array = [];
+        
+            var eOtherObject = new Object()
+            eOtherGropuObject = getNEMSISSection(businessObject, "eOther")    
+        
+        
+            //eOther.01////////
+            _val = getValue(businessObject.elements, "eOther.01");
+            if(eOther.IsCallValid == true)
+            {
+                if (_val == null)
+                {
+                    v2Array.push({ section: "E23", element: "E23_01", val: v2NOT_KNOWN });
+                    eOther["eOther.01"] = null;
+                    eOther["ReviewRequested"] = null;
+                }
+                else
+                {
+                    v2Array.push({ section: "E23", element: "E23_01", val: SetD2("eOther.01", _val) });
+                    eOther["eOther.01"] = _val;
+                    eOther["ReviewRequested"] = setCodeText("eOther.01", _val);
+                }
+            };
+        
+        
+            //eOther.02//////////
+            _val = getValue(businessObject.elements, "eOther.02");
+            if(eOther.IsCallValid ==true)  //If call Is Valid
+            {
+                if (_val == null)
+                {
+                    v2Array.push({ section: "E23", element: "E23_02", val: v2NOT_KNOWN });
+                    eOther["eOther.02"] = null;
+                    eOther["PotentialSystemofCareSpecialtyRegistryPatient"] = null;
+                }
+                else
+                {
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        if(_val !=null)
+                        {
+                            arr1.push(_val);
+                            arr2.push(setV2("eOther.03", _val));
+                            arr3.push(setCodeText("eOther.03", _val));
+                        }
+                    }
+                };
+                eOther["eOther.02"] = arr1.slice(0);
+                eOther["PotentialSystemofCareSpecialtyRegistryPatient"] = arr3.slice(0);
+                v2Array.push({ section: "E23", element: "E23_02", val: arr2.slice(0) });
+            }
+            else
+            {
+                v2Array.push({ section: "E23", element: "E23_02", val: v2NOT_KNOWN });
+                eOther["eOther.02"] = null;
+                eOther["PotentialSystemofCareSpecialtyRegistryPatient"] = null;
+            };
+        
+        
+            ///////////////////eOther.EMSCrewMemberGroup
+            _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eOther.EMSCrewMemberGroup");
             for (var x = 0; x < _sectionIndex.length; x++) 
             {
-                var SignatureElements = businessObject.sections[_sectionIndex[x]].attributes.elements
-                //Other.12////////
-        
-                _other = getValue(SignatureElements , "eOther.12");
-                if (_other.IsNull == true) 
-                {
-                    OXML.Node("TypeofPersonSigning", null);     
-                    XML.Node("eOther.12", null);
-                    SignatureGroup["TypeofPersonSigning"] = null;
-                    SignatureGroup["eOther.12"] = null;
-                }
-                else
-                {
-                    _val = _other.ValueArray[0].val;
-                    OXML.Node("TypeofPersonSigning", setCodeText("eOther.12", _val));     
-                    XML.Node("eOther.12", _val);
-                    SignatureGroup["eOther.12"] = setCodeText("eOther.12", _val);
-                    SignatureGroup["eOther.12"] = _val;
-                };
-        
-                //eOther.13
-                _other = getValue(SignatureElements , "eOther.13");
-                if (_other.IsNull == true) 
-                {
-                    OXML.Node("SignatureReason", null);     
-                    XML.Node("eOther.13", null);
-                    SignatureGroup["SignatureReason"] = null;
-                    SignatureGroup["eOther.13"] = null;
-                }
-                else
-                {
-                    _val = _other.ValueArray[0].val;
-                    OXML.Node("SignatureReason", setCodeText("eOther.13",_val));     
-                    XML.Node("eOther.13", _val);
-                    SignatureGroup["eOther.13"] = setCodeText("eOther.13",_val);
-                    SignatureGroup["eOther.13"] = _val;
-                };
-        
-                //ether.14/////////
-                _other = getValue(SignatureElements , "eOther.14");
-                if (_other.IsNull == true) 
-                {
-                    XML.Node("eOther.14", "");
-                    OXML.Node("TypeOfPatientRepresentative", "");     
-                    SignatureGroup["TypeOfPatientRepresentative"] = null;
-                    SignatureGroup["eOther.14"] = null;
-                }
-                else
-                {                
-                    _val = _other.ValueArray[0].val;
-                    XML.Node("eOther.14", _val);
-                    OXML.Node("TypeOfPatientRepresentative", setCodeText("eOther.14",_val));     
-                    SignatureGroup["TypeOfPatientRepresentative"] = setCodeText("eOther.14",_val);
-                    SignatureGroup["eOther.14"] = _val;
-                };
-        
-                    //eOther.15//////
-                    _other = getValue(SignatureElements , "eOther.15");
-                    if (_other.IsNull == true) 
-                    {
-                        XML.Node("eOther.15", null);
-                        OXML.Node("SignatureStatus", null);     
-                        SignatureGroup["SignatureStatus"] = null;
-                        SignatureGroup["eOther.15"] = null;
-                    }
-                    else
-                    {
-                        _val = _other.ValueArray[0].val;
-
-                        XML.Node("eOther.15", _val);
-                        OXML.Node("SignatureStatus", setCodeText("eOther.15",_val));     
-                        SignatureGroup["SignatureStatus"] = setCodeText("eOther.15", _val);
-                        SignatureGroup["eOther.15"] = _val;
-                    };
-        
-                    //eOther.16/////////
-                    _other = getValue(SignatureElements , "eOther.16");
-                    if (_other.IsNull == true) 
-                    {
-                        XML.Node("eOther.16", null);
-                        OXML.Node("SignatureFileName", null);     
-                        SignatureGroup["SignatureFileName"] = null;
-                        SignatureGroup["eOther.16"] = null;        
-                    }
-                    else
-                    {
-                        _val = _other.ValueArray[0].val;
-                        XML.Node("eOther.16", _val);
-                        OXML.Node("SignatureFileName", setCodeText("eOther.16",_val));     
-                        SignatureGroup["SignatureFileName"] = setCodeText("eOther.16", _val) ;
-                        SignatureGroup["eOther.16"] = _val;
-                    };
-        
-                    //eOther.17////////
-                    _other = getValue(SignatureElements , "eOther.17");
-                    if (_other.IsNull == true) 
-                    {
-                        XML.Node("eOther.17", null);
-                        OXML.Node("SignatureFileType", null);     
-                        SignatureGroup["SignatureFileType"] = null;
-                        SignatureGroup["eOther.17"] = null;
-                    }
-                    else
-                    {
-                        _val = _other.ValueArray[0].val;
-                        XML.Node("eOther.17", _val);
-                        OXML.Node("SignatureFileType", _val);     
-                        SignatureGroup["SignatureFileType"] = _val;
-                        SignatureGroup["eOther.17"] = _val;
-                    };
-        
-                    //eOther.18///////
-                    _other = getValue(SignatureElements , "eOther.18");
-                    if (_other.IsNull == true) 
-                    {
-                        XML.Node("eOther.18", null);
-                        OXML.Node("SignatureGraphic", null);     
-                        SignatureGroup["SignatureGraphic"] = null;
-                        SignatureGroup["eOther.18"] = null;
-                    }
-                    else
-                    {
-                        _val = _other.ValueArray[0].val;
-                        XML.Node("eOther.18", _val);
-                        OXML.Node("SignatureGraphic", _val);     
-                        SignatureGroup["eOther.18"] = _val;
-                        SignatureGroup["SignatureGraphic"] = _val;
-                    };
-        
-                    //eOther.19//////////
-                    _other = getValue(SignatureElements , "eOther.19");
-                    if (_other.IsNull == true) 
-                    {
-                        XML.Node("eOther.19", null);
-                        OXML.Node("DateTimeofSignature", null);     
-                        SignatureGroup["DateTimeofSignature"] = null;
-                        SignatureGroup["eOther.19"] = null;
-                    }
-                    else
-                    {
-                        _val = _other.ValueArray[0].val;
-                        XML.Node("eOther.19", _val);
-                        OXML.Node("DateTimeofSignature", _val);     
-                        SignatureGroup["eOther.19"] = _val;
-                        SignatureGroup["DateTimeofSignature"] = _val;
-                    };
-        
-                    //eOther.20///////
-                    _other = getValue(SignatureElements , "eOther.20");
-                    if (_other.IsNull == true) 
-                    {
-                        XML.Node("eOther.20", null);
-                        OXML.Node("SignatureLastName", null);     
-                        SignatureGroup["SignatureLastName"] = null;
-                        SignatureGroup["eOther.20"] = null;
-                    }
-                    else
-                    {
-                        _val = _other.ValueArray[0].val;
-                        XML.Node("eOther.20", _val);
-                        OXML.Node("SignatureLastName", _val);     
-                        SignatureGroup["eOther.20"] = _val;
-                        SignatureGroup["SignatureLastName"] = _val;
-                    };
-        
-                    //eOther.21/////////
-                    _other = getValue(SignatureElements , "eOther.21");
-                    if (_other.IsNull == true) 
-                    {
-                        XML.Node("eOther.21", null);
-                        OXML.Node("SignatureFirstName", null);     
-                        SignatureGroup["eOther.21"] = null;
-                        SignatureGroup["SignatureFirstName"] = null;
-                    }
-                    else
-                    {
-                        XML.Node("eOther.21", _val);
-                        OXML.Node("SignatureFirstName", _val);     
-                        SignatureGroup["eOther.21"] = _val;
-                        SignatureGroup["SignatureFirstName"] = _val;
-                    };
-                }
-            }
-                
-            };               
-    return eOther;
-}
-var seteOutcome = function (businessObject) 
-{
-    var eOutcome = new Object();
-    var _outcome = new Object();
-    var ExternalDataGroup = new Object();
-                    
-    ////////Check for cancelled calls, Standby, non-patient
-        
-    var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; //Calls without patient interaction
-    if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
-    {
-        eOutcome.IsValid = false;
-    }
-    else
-    {
-        eOutcome.IsValid = true;
-    };
-    var v2Array = [];
-        
-    var eOutcomeObject = new Object()
-    eOutcomeObject = getNEMSISSection(businessObject, "eOutcome")
-        
-        
-    //eOutcome.01/////////
-    _outcome = getValue(elementList, "eOutcome.01");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true) 
-        {
-            eOutcome["EmergencyDepartmentDisposition"] = NOT_RECORDED;
-            eOutcome["eOutcome.01"] = V3NOT_RECORDED;
-            v2Array.push({ section: "E22", element: "E22_01", val: v2NOT_RECORDED });
-            XML.BeginNode("eOutcome.01");
-            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-            XML.EndNode();
-
-            OXML.Node("EmergencyDepartmentDisposition", NOT_RECORDED);      
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-
-            eOutcome["EmergencyDepartmentDisposition"] = setCodeText("eOutcome.01", _val);
-            v2Array.push({ section: "E22", element: "E22_01", val: setV2("eOutcome.01", _val) });
-            eOutcome["eOutcome.01"] = _val;
-            OXML.Node("EmergencyDepartmentDisposition", setCodeText("eOutcome.01", _val));      
-            XML.Node("eOutcome.01", _val);      
-        
-        }
-    }    
-    else
-    {
-        eOutcome["EmergencyDepartmentDisposition"] = NOT_APPLICABLE;
-        eOutcome["eOutcome.01"] = v3NOT_APPLICABLE;
-        v2Array.push({ section: "E22", element: "E22_01", val: v2NOT_APPLICABLE });
-        XML.BeginNode("eOutcome.01");
-        XML.Attrib("NV", NIL_V3NOT_REPORTING);
-        XML.EndNode();
-
-        OXML.Node("EmergencyDepartmentDisposition", NOT_REPORTING);      
-    };
-        
-    //eOutcome.02/////////
-    _outcome = getValue(elementList, "eOutcome.02");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true) 
-        {        
-            eOutcome["eOutcome.02"] = V3NOT_RECORDED;
-            eOutcome["HospitalDisposition"] = NOT_RECORDED;
-            v2Array.push({ section: "E22", element: "E22_02", val: v2NOT_RECORDED });
-            XML.BeginNode("eOutcome.02");
-            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-            XML.EndNode();
-
-            OXML.Node("HospitalDisposition", NOT_RECORDED);      
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-
-            eOutcome["eOutcome.02"] = _val;
-            eOutcome["HospitalDisposition"] = setCodeText("eOutcome.02", _val);
-            v2Array.push({ section: "E22", element: "E22_02", val: setV2("eOutcome.02", _val) });
-            OXML.Node("HospitalDisposition", setCodeText("eOutcome.02", _val));      
-            XML.Node("eOutcome.02", _val);      
-        }
-    }
-    else
-    {
-        eOutcome["eOutcome.02"] = v3NOT_APPLICABLE;
-        eOutcome["HospitalDisposition"] = NOT_APPLICABLE;
-        v2Array.push({ section: "E22", element: "E22_02", val: v2NOT_APPLICABLE });
-        XML.BeginNode("eOutcome.02");
-        XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-        XML.EndNode();
-
-        OXML.Node("HospitalDisposition", NOT_APPLICABLE);      
-    };
-        
-        
-    /////////////////////////////////
-    if(eOutcome.IsValid ==true)
-    {
-        _sectionIndex = getSectionIndex(businessObject.sections[xx].attributes, "eOutcome.ExternalDataGroup");
-        for (var x = 0; x < _sectionIndex.length; x++)
-        {
-            var elementList = businessObject.elements.sections[i].attributes.elements;
-            //eOutcome.03/////////
-            _outcome = getValue(elementList, "eOutcome.03");
-            if (_outcome.IsNull == true)
-            {
-                OXML.Node("ExternalReportIDNumberType", null);      
-                XML.Node("eOutcome.03", null);      
-                ExternalDataGroup["eOutcome.03"] = null;
-                ExternalDataGroup["ExternalReportIDNumberType"] = null;
-            }
-            else
-            {
-                _val = _outcome.ValueArray[0].val;
-                OXML.Node("ExternalReportIDNumberType", setCodeText("eOutcome.03", _val));      
-                XML.Node("eOutcome.03", _val);      
-                ExternalDataGroup["eOutcome.03"] = _val;
-                ExternalDataGroup["ExternalReportIDNumberType"] = setCodeText("eOutcome.03", _val);
-            };
-        
-            //eOutcome.04/////////
-            _outcome = getValue(businessObject.elements.sections[i].attributes.elements, "eOutcome.04");
-            if (_outcome.IsNull == true)
-            {
-                OXML.Node("ExternalReportIDNumber", null);      
-                XML.Node("eOutcome.04", null);      
-                ExternalDataGroup["eOutcome.04"] = null;
-                ExternalDataGroup["ExternalReportIDNumber"] = null;
-            }
-            else
-            {
-                _val = _outcome.ValueArray[0].val;
-
-                OXML.Node("ExternalReportIDNumber",  _val);      
-                XML.Node("eOutcome.04", _val);      
-                ExternalDataGroup["eOutcome.04"] = _val;
-                ExternalDataGroup["ExternalReportIDNumber"] = _val;
-            };
-        
-        
-            //eOutcome.05/////////
-            _outcome = getValue(businessObject.elements.sections[i].attributes.elements, "eOutcome.05");
-            if (_outcome.IsNull == true)
-            {
-                OXML.Node("OtherReportRegistryType", null);      
-                XML.Node("eOutcome.05", null);      
-                ExternalDataGroup["eOutcome.05"] = null;
-                ExternalDataGroup["OtherReportRegistryType"] = null;
-            }
-            else
-            {
-                _val = _outcome.ValueArray[0].val;
-
-                OXML.Node("OtherReportRegistryType", _val);      
-                XML.Node("eOutcome.05", _val);      
-                ExternalDataGroup["eOutcome.05"] = _val;
-                ExternalDataGroup["OtherReportRegistryType"] = _val;
-            }
-        }
-    };
-    //////////////////////////////////////////
-        
-    //eOutcome.06/////////
-    _outcome = getValue(elementList, "eOutcome.06");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("EmergencyDepartmentChiefComplaint", null);      
-            XML.Node("eOutcome.05", null);      
-            eOutcome["eOutcome.06"] = null;
-            eOutcome["EmergencyDepartmentChiefComplaint"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-
-            eOutcome["EmergencyDepartmentChiefComplaint"] = _val;            
-            eOutcome["eOutcome.06"] = _val;
-            OXML.Node("EmergencyDepartmentChiefComplaint", _val);      
-            XML.Node("eOutcome.05", _val);      
-        }
-    }
-    else
-    {
-        OXML.Node("EmergencyDepartmentChiefComplaint", null);      
-        XML.Node("eOutcome.05", null);      
-        eOutcome["eOutcome.06"] = null;
-        eOutcome["EmergencyDepartmentChiefComplaint"] = null;
-    };
-        
-    //eOutcome.07/////////
-    _outcome = getValue(elementList, "eOutcome.07");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("FirstEDSystolicBloodPressure", null);      
-            XML.Node("eOutcome.07", null);      
-            eOutcome["eOutcome.07"] = null;
-            eOutcome["FirstEDSystolicBloodPressure"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-
-            OXML.Node("FirstEDSystolicBloodPressure", _val);      
-            XML.Node("eOutcome.07", _val);      
-            eOutcome["FirstEDSystolicBloodPressure"] = _val;
-            eOutcome["eOutcome.07"] = _val;            
-        }
-    }
-    else
-    {
-        OXML.Node("FirstEDSystolicBloodPressure", null);      
-        XML.Node("eOutcome.07", null);      
-        eOutcome["eOutcome.07"] = null;
-        eOutcome["FirstEDSystolicBloodPressure"] = null;
-    };
-        
-    //eOutcome.08/////////
-    _outcome = getValue(elementList, "eOutcome.08");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("EmergencyDepartmentRecordedCauseofInjury", null);      
-            XML.Node("eOutcome.08", null);      
-            eOutcome["eOutcome.08"] = null;
-            eOutcome["EmergencyDepartmentRecordedCauseofInjury"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-            OXML.Node("EmergencyDepartmentRecordedCauseofInjury", _val);      
-            XML.Node("eOutcome.08", _val);      
-            eOutcome["eOutcome.08"] = _val;
-            eOutcome["EmergencyDepartmentRecordedCauseofInjury"] = _val;
-        }
-    }
-    else
-    {
-        OXML.Node("EmergencyDepartmentRecordedCauseofInjury", null);      
-        XML.Node("eOutcome.08", null);      
-        eOutcome["eOutcome.08"] = null;
-        eOutcome["EmergencyDepartmentRecordedCauseofInjury"] = null;
-    };
-        
-    //eOutcome.09/////////
-    _outcome = getValue(elementList, "eOutcome.09");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("EmergencyDepartmentProcedures", null);      
-            XML.Node("eOutcome.09", null);      
-            eOutcome["eOutcome.09"] = null;
-            eOutcome["EmergencyDepartmentProcedures"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-            eOutcome["EmergencyDepartmentProcedures"] = _val;
-            eOutcome["eOutcome.09"] = _val;
-            OXML.Node("EmergencyDepartmentProcedures", _val);      
-            XML.Node("eOutcome.09", _val);      
-        }
-    }
-    else
-    {
-        OXML.Node("EmergencyDepartmentProcedures", null);      
-        XML.Node("eOutcome.09", null);      
-        eOutcome["eOutcome.09"] = null;
-        eOutcome["EmergencyDepartmentProcedures"] = null;         
-    };
-                
-    //eOutcome.10/////////
-    _outcome = getValue(elementList, "eOutcome.10");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("EmergencyDepartmentDiagnosis", null);      
-            XML.Node("eOutcome.10", null);      
-            eOutcome["eOutcome.10"] = null;
-            eOutcome["EmergencyDepartmentDiagnosis"] = null;
-        }
-        else
-        {
-            for (var i = 0; i < _outcome.ValueArray.length; i++)
-            {
-                if ((_outcome.ValueArray[i].HasValue == true) && (arr1.indexOf(_outcome.ValueArray[i].val) > -1))
-                {
-                    _val = _outcome.ValueArray[i].val
-
-                    OXML.Node("EmergencyDepartmentDiagnosis", setCodeText("eOutcome.03", _val));      
-                    XML.Node("eOutcome.10", _val);      
-                    arr1.push(val[i]);
-                    arr2.push(setCodeText("eOutcome.03", _val));
-                }
-            }
-            eOther["eOutcome.10"] = arr1.slice(0);
-            eOther["EmergencyDepartmentDiagnosis"] = arr2.slice(0);            
-        }
-    }
-    else
-    {
-        OXML.Node("EmergencyDepartmentDiagnosis", null);      
-        XML.Node("eOutcome.10", null);      
-        eOutcome["eOutcome.10"] = null;
-        eOutcome["EmergencyDepartmentDiagnosis"] = null;
-    };
-        
-        
-    //eOutcome.11/////////
-    _outcome = getValue(elementList, "eOutcome.11");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("DateTimeofHospitalAdmission", null);      
-            XML.Node("eOutcome.11", null);      
-            eOutcome["eOutcome.11"] = null;
-            eOutcome["DateTimeofHospitalAdmission"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-
-            OXML.Node("DateTimeofHospitalAdmission", _val);      
-            XML.Node("eOutcome.11", _val);      
-            eOutcome["DateTimeofHospitalAdmission"] = _val;
-            eOutcome["eOutcome.11"] = _val;
-        }
-    }
-    else
-    {
-        OXML.Node("DateTimeofHospitalAdmission", null);      
-        XML.Node("eOutcome.11", null);      
-        eOutcome["eOutcome.11"] = null;
-        eOutcome["DateTimeofHospitalAdmission"] = null;
-    };
-        
-    //eOutcome.12/////////
-    _outcome = getValue(elementList, "eOutcome.12");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("HospitalProcedures", null);      
-            XML.Node("eOutcome.12", null);      
-            eOutcome["eOutcome.12"] = null;
-            eOutcome["HospitalProcedures"] = null;
-        }
-        else
-        {
-            var arr1 = [];
-            var arr2 = [];
-            for (var i = 0; i < _outcome.ValueArray.length; i++)
-            {
-                if ((_outcome.ValueArray[i].HasValue == true) && (arr1.indexOf(_outcome.ValueArray[i].val) > -1))
-                {
-                    _val = _outcome.ValueArray[i].val
-                    arr1.push(val[i]);
-                    arr2.push(setCodeText("eOutcome.12", _val));
-                    OXML.Node("HospitalProcedures", setCodeText("eOutcome.12", _val));      
-                    XML.Node("eOutcome.12", null);      
-                }
-            };
-            eOther["eOutcome.12"] = arr1.slice(0);
-            eOutcome["HospitalProcedures"] = arr2.slice(0);
-        }
-    }
-    else
-    {
-        eOutcome["eOutcome.12"] = null;
-        OXML.Node("HospitalProcedures", null);      
-        XML.Node("eOutcome.12", null);      
-        eOutcome["HospitalProcedures"] = null;
-    };
-        
-    //eOutcome.13/////////
-    _outcome = getValue(elementList, "eOutcome.13");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("HospitalDiagnosis", null);      
-            XML.Node("eOutcome.13", null);      
-            eOutcome["eOutcome.13"] = null;
-            eOutcome["HospitalDiagnosis"] = null;
-        }
-        else
-        {
-            var arr1 = [];
-            var arr2 = [];
-            for (var i = 0; i < _outcome.ValueArray.length; i++)
-            {
-                if ((_outcome.ValueArray[i].HasValue == true) && (arr1.indexOf(_outcome.ValueArray[i].val) > -1))
-                {
-                    _val = _outcome.ValueArray[i].val
-                    arr1.push(val[i]);
-                    arr2.push(setCodeText("eOutcome.13", _val));
-                    OXML.Node("HospitalDiagnosis", setCodeText("eOutcome.13", _val));      
-                    XML.Node("eOutcome.13", null);      
-                }
-            };
-            eOther["eOutcome.13"] = arr1.slice(0);
-            eOutcome["HospitalDiagnosis"] = arr2.slice(0);        
-        }
-    }
-    else
-    {
-        eOutcome["eOutcome.13"] = null;
-        eOutcome["HospitalDiagnosis"] = null;
-        OXML.Node("HospitalDiagnosis", null);      
-        XML.Node("eOutcome.13", null);      
-    };
-        
-    //eOutcome.14/////////
-    _outcome = getValue(elementList, "eOutcome.14");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("TotalICULengthofStay", null);      
-            XML.Node("eOutcome.14", null);      
-            eOutcome["eOutcome.14"] = null;
-            eOutcome["TotalICULengthofStay"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-
-            OXML.Node("TotalICULengthofStay", _val);      
-            XML.Node("eOutcome.14", _val);      
-            eOutcome["TotalICULengthofStay"] = _val;
-            eOutcome["eOutcome.14"] = _val;
-        }
-    }
-    else
-    {
-        OXML.Node("TotalICULengthofStay", null);      
-        XML.Node("eOutcome.14", null);      
-        eOutcome["eOutcome.14"] = null;
-        eOutcome["TotalICULengthofStay"] = null;
-    };
-        
-    //eOutcome.15/////////
-    _outcome = getValue(elementList, "eOutcome.15");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("TotalVentilatorDays", null);      
-            XML.Node("eOutcome.15", null);      
-            eOutcome["eOutcome.15"] = null;
-            eOutcome["TotalVentilatorDays"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-
-            eOutcome["TotalVentilatorDays"] = _val;
-            eOutcome["eOutcome.15"] = _val;
-            OXML.Node("TotalVentilatorDays", _val);      
-            XML.Node("eOutcome.15", _val);      
-        }
-    }
-    else
-    {
-        OXML.Node("TotalVentilatorDays", null);      
-        XML.Node("eOutcome.15", null);      
-        eOutcome["eOutcome.15"] = null;
-        eOutcome["TotalVentilatorDays"] = null;
-    };
-        
-    //eOutcome.16/////////
-    _outcome= getValue(elementList, "eOutcome.16");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("DateTimeofHospitalDischarge", null);      
-            XML.Node("eOutcome.16", null);      
-            eOutcome["eOutcome.16"] = null;
-            eOutcome["DateTimeofHospitalDischarge"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-
-            eOutcome["DateTimeofHospitalDischarge"] = _val;
-            eOutcome["eOutcome.16"] = _val;
-            OXML.Node("DateTimeofHospitalDischarge", _val);      
-            XML.Node("eOutcome.16", _val);      
-        }
-    }
-    else
-    {
-        OXML.Node("DateTimeofHospitalDischarge", null);      
-        XML.Node("eOutcome.16", null);      
-        eOutcome["eOutcome.16"] = null;
-        eOutcome["DateTimeofHospitalDischarge"] = null;
-    };
-        
-    //eOutcome.17/////////
-    _outcome= getValue(elementList, "eOutcome.17");
-    if(eOutcome.IsValid ==true)
-    {
-        if (_outcome.IsNull == true)
-        {
-            OXML.Node("OutcomeatHospitalDischarge", null);      
-            XML.Node("eOutcome.17", null); 
-            eOutcome["eOutcome.17"] = null;
-            eOutcome["OutcomeatHospitalDischarge"] = null;
-        }
-        else
-        {
-            _val = _outcome.ValueArray[0].val;
-            OXML.Node("OutcomeatHospitalDischarge", setCodeText("eOutcome.17", _val));      
-            XML.Node("eOutcome.17", _val); 
-            eOutcome["OutcomeatHospitalDischarge"] = setCodeText("eOutcome.17", _val);
-            eOutcome["eOutcome.17"] = _val;            
-        }
-    }
-    else
-    {
-        OXML.Node("OutcomeatHospitalDischarge", null);      
-        XML.Node("eOutcome.17", null); 
-        eOutcome["eOutcome.17"] = null;
-        eOutcome["OutcomeatHospitalDischarge"] = null;
-    };
+                var EMSCrewMemberGroupElements = businessObject.sections[_sectionIndex[x]].attributes.elements
             
-    return eOutcome;
-};
+                //eOther.03//////////
+                _val = getValue(EMSCrewMemberGroupElements, "eOther.03");
+                if(eOther.IsCallValid == true)  //Wouldn't use protective equipment on a no call
+                {
+                    if (_val == null)
+                    {
+                        v2Array.push({ section: "E23", element: "E23_03", val: null });                
+                        EMSCrewMemberGroup["eOther.03"] = null;
+                        EMSCrewMemberGroup["PersonalProtectiveEquipmentUsed"] = null;
+                    }
+                    else
+                    {
+                        var arr1 = [];
+                        var arr2 = [];
+                        var arr3 = [];
+                        for (var i = 0; i < _val.length; i++) 
+                        {
+                            if(_val!=null)
+                            {
+                                arr1.push(_val);
+                                arr2.push(setV2("eOther.04", _val));
+                                arr3.push(setCodeText("eOther.04", _val));
+                            }
+                        };
+                    };            
+                    EMSCrewMemberGroup["eOther.02"] = arr1.slice(0);
+                    eOther["PersonalProtectiveEquipmentUsed"] = arr3.slice(0);
+                    v2Array.push({ section: "E23", element: "E23_03", val: arr2.slice(0) });                            
+                }
+            };
+        
+            //eOther.04///////////
+            _val = getValue(EMSCrewMemberGroup, "eOther.04");
+            if(eOther.IsValid == true)
+            {
+                if (_val == null)
+                {
+                    EMSCrewMemberGroup["eOther.04"] = null;
+                    EMSCrewMemberGroup["CrewMemberID"] = null;
+                }
+                else
+                {
+                    EMSCrewMemberGroup["eOther.04"] = _val;
+                    EMSCrewMemberGroup["CrewMemberID"] = _val;
+                }
+            };
+        
+            //eOther.05/////////
+            _val = getValue(EMSCrewMemberGroup, "eOther.05");
+            eOther["WorkInjury"] = false;
+            if(eOther.IsCallValid == true)  //Wouldn't use protective equipment on a no call
+            {
+                if (_val == null)
+                {
+                    v2Array.push({ section: "E23", element: "E23_05", val: V2NOT_RECORDED });
+                    EMSCrewMemberGroup["eOther.05"] = V3NOT_RECORDED;        
+                    EMSCrewMemberGroup["SuspectedEMSWorkRelatedExposureInjuryorDeath"] = V3NOT_RECORDED;        
+                }
+                else 
+                {
+                    eOther["WorkInjury"] = true;
+                    v2Array.push({ section: "E23", element: "E23_05", val: SetD2("eOther.05", _val) });
+                    EMSCrewMemberGroup["eOther.05"] = _val;
+                    EMSCrewMemberGroup["SuspectedEMSWorkRelatedExposureInjuryorDeath"] = setCodeText("eOther.05", _val);                
+                }
+            }
+            else
+            {
+                v2Array.push({ section: "E23", element: "E23_05", val: v2NOT_APPLICABLE });
+                EMSCrewMemberGroup["eOther.05"] = v3NOT_APPLICABLE;        
+                EMSCrewMemberGroup["SuspectedEMSWorkRelatedExposureInjuryorDeath"] = NOT_APPLICABLE;
+            };
+        
+            //eOther.06/////////
+            _val = getValue(businessObject.elements, "eOther.06");
+            if(eOther.WorkInjury ==true)
+            {
+                if (_val == null)
+                {
+                    if (isRequiredStateElement("eOther.06"))
+                    {
+                        EMSCrewMemberGroup["eOther.06"] = v3NOT_RECORDED;
+                        EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = NOT_RECORDED;
+                        v2Array.push({ section: "E23", element: "E23_06", val: V2NOT_RECORDED });
+                    }
+                    else
+                    {
+                        EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = NOT_REPORTING;
+                        EMSCrewMemberGroup["eOther.06"] = v3NOT_REPORTING;
+                        v2Array.push({ section: "E23", element: "E23_06", val: v2NOT_REPORTING });
+                    }            
+                }
+                else 
+                {
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        if(_val!=null)
+                        {
+                            arr1.push(_val);
+                            arr2.push(setV2("eOther.06", _val));
+                            arr3.push(setCodeText("eOther.06", _val));
+                        }
+                    };
+                
+                    EMSCrewMemberGroup["eOther.06"] = arr1.slice(0);
+                    EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = arr3.slice(0);
+                    v2Array.push({ section: "E23", element: "E23_06", val: arr2.slice(0) });
+                }
+            }
+            else
+            {
+                EMSCrewMemberGroup["TypeofWorkRelatedInjuryDeathorSuspectedExposure"] = NOT_APPLICABLE;
+                EMSCrewMemberGroup["eOther.06"] = v3NOT_APPLICABLE;
+                v2Array.push({ section: "E23", element: "E23_06", val: v2NOT_APPLICABLE });
+            };
+        
+        
+            ///////////////////////////
+            //eOther.07////////
+            _val = getValue(businessObject.elements, "eOther.07");
+            if(eOther.IsCallValid == true)  
+            {
+                if (_val == null)
+                {
+                    EMSCrewMemberGroup["eOther.07"] = null;
+                    EMSCrewMemberGroup["NaturalSuspectedIntentionalorUnintentionalDisaster"] = null;
+                    v2Array.push({ section: "E23", element: "E23_04", val: null });
+                }
+                else
+                {
+                    var arr1 = [];
+                    var arr2 = [];
+                    var arr3 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                        if(_val!=null)
+                        {
+                            arr1.push(_val);
+                            arr2.push(setV2("eOther.07", _val));
+                            arr3.push(setCodeText("eOther.07", _val));
+                        }
+                    };
+                    EMSCrewMemberGroup["eOther.07"] = arr1.slice(0);
+                    EMSCrewMemberGroup["NaturalSuspectedIntentionalorUnintentionalDisaster"] = arr3.slice(0);
+                    v2Array.push({ section: "E23", element: "E23_04", val: arr2.slice(0) });
+                }
+            }
+            else
+            {
+                EMSCrewMemberGroup["eOther.07"] = null;
+                EMSCrewMemberGroup["NaturalSuspectedIntentionalorUnintentionalDisaster"] = null;
+                v2Array.push({ section: "E23", element: "E23_04", val: null });
+            };
+        
+        
+            //eOther..08//////////
+            _val = getValue(businessObject.elements, "eOther.08");
+            if(eOther.IsCallValid == true)  //Wouldn't use protective equipment on a no call
+            {
+                if (_val == null)
+                {
+                    if (isRequiredStateElement("eOther.08"))
+                    {
+                        eOther["eOther.08"] = v3NOT_RECORDED;
+                        eOther["CrewMemberCompletingthisReport"] = NOT_RECORDED;
+                        v2Array.push({ section: "E23", element: "E23_10", val: v2NOT_RECORDED });
+                    }
+                    else
+                    {
+                        eOther["CrewMemberCompletingthisReport"] = NOT_RECORDED;
+                        eOther["eOther.08"] = v3NOT_REPORTING;
+                        v2Array.push({ section: "E23", element: "E23_10", val: v2NOT_REPORTING });
+                    }
+                }
+                else
+                {
+                    eOther["eOther.08"] = _val;
+                    eOther["CrewMemberCompletingthisReport"] = setCodeText("eOther.08", _val);
+                    v2Array.push({ section: "E23", element: "E23_10", val: D2Val("eOther.08", _val) });
+                }
+            }
+            else
+            {
+                eOther["CrewMemberCompletingthisReport"] = NOT_APPLICABLE;
+                eOther["eOther.08"] = v3NOT_APPLICABLE;
+                v2Array.push({ section: "E23", element: "E23_10", val: v2NOT_APPLICABLE});
+            };
+        
+            ////////////////////////////
+        
+            ///////////////////eOther.FileGroup
+            if(eOther.IsCallValid ==true)
+            {
+                _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eOther.FileGroup");
+                for (var x = 0; x < _sectionIndex.length; x++) 
+                {
+                    var FileGroupElements = businessObject.sections[_sectionIndex[x]].attributes.elements
+                    //eOther.09//////////
+                    _val = getValue(FileGroupElements, "eOther.09");
+                    if (_val == null)
+                    {
+                        FileGroup["ExternalElectronicDocuments"] = null;
+                        FileGroup["eOther.09"] = null;
+                    }
+                    else
+                    {
+                        FileGroup["ExternalElectronicDocuments"] = setCodeText("eOther.09", _val);
+                        FileGroup["eOther.09"] = _val;                
+                    };
+        
+                    //eOther.10//////////
+                    _val = getValue(FileGroupElements, "eOther.10");
+                    if (_val == null)
+                    {
+                        FileGroup["FileAttachmentType"] = null;
+                        FileGroup["eOther.10"] = null;
+                    }
+                    else
+                    {
+                        FileGroup["FileAttachmentType"] = _val;
+                        FileGroup["eOther.10"] = _val;                
+                    };
+        
+        
+                    //eOther.11//////////
+                    _val = getValue(FileGroupElements, "eOther.11");
+                    if (_val == null)
+                    {
+                        FileGroup["FileAttachmentImage"] = null;
+                        FileGroup["eOther.11"] = null;
+                    }
+                    else
+                    {
+                        FileGroup["FileAttachmentImage"] = _val;
+                        FileGroup["eOther.11"] = _val;
+                    }
+                };
+                if((eOther.IsCallValid==true) && eDispostion.HasPatient==true)
+                {
+                    _sectionIndex = getSectionIndex(businessObject.sections[i].attributes, "eOther.SignatureGroup");
+                    for (var x = 0; x < _sectionIndex.length; x++) 
+                    {
+                        var SignatureElements = businessObject.sections[_sectionIndex[x]].attributes.elements
+                        //Other.12////////
+        
+                        _val = getValue(SignatureElements , "eOther.12");
+                        if (_val == null)
+                        {
+                            SignatureGroup["TypeofPersonSigning"] = null;
+                            SignatureGroup["eOther.12"] = null;
+                        }
+                        else
+                        {
+                            SignatureGroup["eOther.12"] = setCodeText("eOther.12", _val);
+                            SignatureGroup["eOther.12"] = _val;
+                        };
+        
+                        //eOther.13
+                        _val = getValue(SignatureElements , "eOther.13");
+                        if (_val == null)
+                        {
+                            SignatureGroup["SignatureReason"] = null;
+                            SignatureGroup["eOther.13"] = null;
+                        }
+                        else
+                        {
+                            SignatureGroup["eOther.13"] = setCodeText("eOther.13",_val);
+                            SignatureGroup["eOther.13"] = _val;
+                        };
+        
+                        //ether.14/////////
+                        _val = getValue(SignatureElements , "eOther.14");
+                        if (_val == null)
+                        {
+                            SignatureGroup["TypeOfPatientRepresentative"] = null;
+                            SignatureGroup["eOther.14"] = null;
+                        }
+                        else
+                        {                
+                            SignatureGroup["TypeOfPatientRepresentative"] = setCodeText("eOther.14",_val);
+                            SignatureGroup["eOther.14"] = _val;
+                        };
+        
+                        //eOther.15//////
+                        _val = getValue(SignatureElements , "eOther.15");
+                        if (_val == null)
+                        {
+                            SignatureGroup["SignatureStatus"] = null;
+                            SignatureGroup["eOther.15"] = null;
+                        }
+                        else
+                        {
+                            SignatureGroup["SignatureStatus"] = setCodeText("eOther.15", _val);
+                            SignatureGroup["eOther.15"] = _val;
+                        };
+        
+                        //eOther.16/////////
+                        _val = getValue(SignatureElements , "eOther.16");
+                        if (_val == null)
+                        {
+                            SignatureGroup["SignatureFileName"] = null;
+                            SignatureGroup["eOther.16"] = null;
+        
+                        }
+                        else
+                        {
+                            SignatureGroup["SignatureFileName"] = setCodeText("eOther.16", _val) ;
+                            SignatureGroup["eOther.16"] = _val;
+                        };
+        
+                        //eOther.17////////
+                        _val = getValue(SignatureElements , "eOther.17");
+                        if (_val == null)
+                        {
+                            SignatureGroup["SignatureFileType"] = null;
+                            SignatureGroup["eOther.17"] = null;
+                        }
+                        else
+                        {
+                            SignatureGroup["SignatureFileType"] = _val;
+                            SignatureGroup["eOther.17"] = _val;
+                        };
+        
+                        //eOther.18///////
+                        _val = getValue(SignatureElements , "eOther.18");
+                        if (_val == null)
+                        {
+                            SignatureGroup["SignatureGraphic"] = null;
+                            SignatureGroup["eOther.18"] = null;
+                        }
+                        else
+                        {
+                            SignatureGroup["eOther.18"] = _val;
+                            SignatureGroup["SignatureGraphic"] = _val;
+                        };
+        
+                        //eOther.19//////////
+                        _val = getValue(SignatureElements , "eOther.19");
+                        if (_val == null)
+                        {
+                            SignatureGroup["DateTimeofSignature"] = null;
+                            SignatureGroup["eOther.19"] = null;
+                        }
+                        else
+                        {
+                            SignatureGroup["eOther.19"] = _val;
+                            SignatureGroup["DateTimeofSignature"] = _val;
+                        };
+        
+                        //eOther.20///////
+                        _val = getValue(SignatureElements , "eOther.20");
+                        if (_val == null)
+                        {
+                            SignatureGroup["SignatureLastName"] = null;
+                            SignatureGroup["eOther.20"] = null;
+                        }
+                        else
+                        {
+                            SignatureGroup["eOther.20"] = _val;
+                            SignatureGroup["SignatureLastName"] = _val;
+                        };
+        
+                        //eOther.21/////////
+                        _val = getValue(SignatureElements , "eOther.21");
+                        if (_val == null)
+                        {
+                            SignatureGroup["eOther.21"] = null;
+                            SignatureGroup["SignatureFirstName"] = null;
+                        }
+                        else
+                        {
+                            SignatureGroup["eOther.21"] = _val;
+                            SignatureGroup["SignatureFirstName"] = _val;
+                        };
+                    }
+                }
+                
+            };
+        };
+        */
+            return eOther;
+        }
+var seteOutcome = function (businessObject) {
+            var eOutcome = new Object();
+            /*
+            var ExternalDataGroup = new Object();
+                    
+            ////////Check for cancelled calls, Standby, non-patient
+        
+            var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; //Calls without patient interaction
+            if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
+            {
+                eOutcome.IsValid = false;
+            }
+            else
+            {
+                eOutcome.IsValid = true;
+            };
+            var v2Array = [];
+        
+            var eOutcomeObject = new Object()
+            eOutcomeObject = getNEMSISSection(businessObject, "eOutcome")
+        
+        
+            //eOutcome.01/////////
+            _val = getValue(elementList, "eOutcome.01");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["EmergencyDepartmentDisposition"] = NOT_RECORDED;
+                    eOutcome["eOutcome.01"] = V3NOT_RECORDED;
+                    v2Array.push({ section: "E22", element: "E22_01", val: v2NOT_RECORDED });
+                }
+                else
+                {
+                    eOutcome["EmergencyDepartmentDisposition"] = setCodeText("eOutcome.01", _val);
+                    v2Array.push({ section: "E22", element: "E22_01", val: setV2("eOutcome.01", _val) });
+                    eOutcome["eOutcome.01"] = _val;
+        
+                }
+            }    
+            else
+            {
+                eOutcome["EmergencyDepartmentDisposition"] = NOT_APPLICABLE;
+                eOutcome["eOutcome.01"] = v3NOT_APPLICABLE;
+                v2Array.push({ section: "E22", element: "E22_01", val: v2NOT_APPLICABLE });
+            };
+        
+            //eOutcome.02/////////
+            _val = getValue(elementList, "eOutcome.02");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {        
+                    eOutcome["eOutcome.02"] = V3NOT_RECORDED;
+                    eOutcome["HospitalDisposition"] = NOT_RECORDED;
+                    v2Array.push({ section: "E22", element: "E22_02", val: v2NOT_RECORDED });
+                }
+                else
+                {
+                    eOutcome["eOutcome.02"] = _val;
+                    eOutcome["HospitalDisposition"] = setCodeText("eOutcome.02", _val);
+                    v2Array.push({ section: "E22", element: "E22_02", val: setV2("eOutcome.02", _val) });
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.02"] = v3NOT_APPLICABLE;
+                eOutcome["HospitalDisposition"] = NOT_APPLICABLE;
+                v2Array.push({ section: "E22", element: "E22_02", val: v2NOT_APPLICABLE });
+            };
+        
+        
+            /////////////////////////////////
+            if(eOutcome.IsValid ==true)
+            {
+                _sectionIndex = getSectionIndex(businessObject.sections[xx].attributes, "eOutcome.ExternalDataGroup");
+                for (var x = 0; x < _sectionIndex.length; x++)
+                {
+                    var elementList = businessObject.elements.sections[i].attributes.elements;
+                    //eOutcome.03/////////
+                    _val = getValue(elementList, "eOutcome.03");
+                    if (_val == null)
+                    {
+                        ExternalDataGroup["eOutcome.03"] = null;
+                        ExternalDataGroup["ExternalReportIDNumberType"] = null;
+                    }
+                    else
+                    {
+                        ExternalDataGroup["eOutcome.03"] = _val;
+                        ExternalDataGroup["ExternalReportIDNumberType"] = setCodeText("eOutcome.03", _val);
+                    };
+        
+                    //eOutcome.04/////////
+                    _val = getValue(businessObject.elements.sections[i].attributes.elements, "eOutcome.04");
+                    if (_val == null)
+                    {
+                        ExternalDataGroup["eOutcome.04"] = null;
+                        ExternalDataGroup["ExternalReportIDNumber"] = null;
+                    }
+                    else
+                    {
+                        ExternalDataGroup["eOutcome.04"] = _val;
+                        ExternalDataGroup["ExternalReportIDNumber"] = _val;
+                    };
+        
+        
+                    //eOutcome.05/////////
+                    _val = getValue(businessObject.elements.sections[i].attributes.elements, "eOutcome.05");
+                    if (_val == null)
+                    {
+                        ExternalDataGroup["eOutcome.05"] = null;
+                        ExternalDataGroup["OtherReportRegistryType"] = null;
+                    }
+                    else
+                    {
+                        ExternalDataGroup["eOutcome.05"] = _val;
+                        ExternalDataGroup["OtherReportRegistryType"] = _val;
+                    }
+                }
+            };
+            //////////////////////////////////////////
+        
+            //eOutcome.06/////////
+            _val = getValue(elementList, "eOutcome.06");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.06"] = null;
+                    eOutcome["EmergencyDepartmentChiefComplaint"] = null;
+                }
+                else
+                {
+                    eOutcome["EmergencyDepartmentChiefComplaint"] = _val;            
+                    eOutcome["eOutcome.06"] = _val;
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.06"] = null;
+                eOutcome["EmergencyDepartmentChiefComplaint"] = null;
+            };
+        
+            //eOutcome.07/////////
+            _val = getValue(elementList, "eOutcome.07");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.07"] = null;
+                    eOutcome["FirstEDSystolicBloodPressure"] = null;
+                }
+                else
+                {
+                    eOutcome["FirstEDSystolicBloodPressure"] = _val;
+                    eOutcome["eOutcome.07"] = _val;            
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.07"] = null;
+                eOutcome["FirstEDSystolicBloodPressure"] = null;
+            };
+        
+            //eOutcome.08/////////
+            _val = getValue(elementList, "eOutcome.08");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.08"] = null;
+                    eOutcome["EmergencyDepartmentRecordedCauseofInjury"] = null;
+                }
+                else
+                {
+                    eOutcome["eOutcome.08"] = _val;
+                    eOutcome["EmergencyDepartmentRecordedCauseofInjury"] = _val;
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.08"] = null;
+                eOutcome["EmergencyDepartmentRecordedCauseofInjury"] = null;
+            };
+        
+            //eOutcome.09/////////
+            _val = getValue(elementList, "eOutcome.09");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.09"] = null;
+                    eOutcome["EmergencyDepartmentProcedures"] = null;
+                }
+                else
+                {
+                    eOutcome["EmergencyDepartmentProcedures"] = _val;
+                    eOutcome["eOutcome.09"] = _val;
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.09"] = null;
+                eOutcome["EmergencyDepartmentProcedures"] = null;         
+            };
+        
+        
+            //eOutcome.10/////////
+            _val = getValue(elementList, "eOutcome.10");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.10"] = null;
+                    eOutcome["EmergencyDepartmentDiagnosis"] = null;
+                }
+                else
+                {
+                    for (var i = 0; i < _val.length; i++)
+                    {
+                        if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(val[i]);
+                            arr2.push(setCodeText("eOutcome.03", _val));
+                        }
+                    }
+                    eOther["eOutcome.10"] = arr1.slice(0);
+                    eOther["EmergencyDepartmentDiagnosis"] = arr2.slice(0);            
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.10"] = null;
+                eOutcome["EmergencyDepartmentDiagnosis"] = null;
+            };
+        
+        
+            //eOutcome.11/////////
+            _val = getValue(elementList, "eOutcome.11");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.11"] = null;
+                    eOutcome["DateTimeofHospitalAdmission"] = null;
+                }
+                else
+                {
+                    eOutcome["DateTimeofHospitalAdmission"] = _val;
+                    eOutcome["eOutcome.11"] = _val;
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.11"] = null;
+                eOutcome["DateTimeofHospitalAdmission"] = null;
+            };
+        
+            //eOutcome.12/////////
+            _val = getValue(elementList, "eOutcome.12");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.11"] = null;
+                    eOutcome["HospitalProcedures"] = null;
+                }
+                else
+                {
+                    var arr1 = [];
+                    var arr2 = [];
+                    for (var i = 0; i < _val.length; i++)
+                    {
+                        if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(val[i]);
+                            arr2.push(setCodeText("eOutcome.11", _val));
+                        }
+                    }
+                    eOther["eOutcome.12"] = arr1.slice(0);
+                    eOutcome["HospitalProcedures"] = arr2.slice(0);
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.11"] = null;
+                eOutcome["HospitalProcedures"] = null;
+            };
+        
+            //eOutcome.13/////////
+            _val = getValue(elementList, "eOutcome.13");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.13"] = null;
+                    eOutcome["HospitalDiagnosis"] = null;
+                }
+                else
+                {
+                    var arr1 = [];
+                    var arr2 = [];
+                    for (var i = 0; i < _val.length; i++) 
+                    {
+                       if((val[i] !=null) && (arr1.indexOf(val[i]) >-1))
+                            {
+                            arr1.push(val[i]);
+                            arr2.push(setCodeText("eOutcome.13", _val));
+                        }
+                    }
+                    eOther["eOutcome.13"] = arr1.slice(0);
+                    eOutcome["HospitalDiagnosis"] = arr2.slice(0);        
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.13"] = null;
+                eOutcome["HospitalDiagnosis"] = null;
+            };
+        
+            //eOutcome.14/////////
+            _val = getValue(elementList, "eOutcome.14");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.14"] = null;
+                    eOutcome["TotalICULengthofStay"] = null;
+                }
+                else
+                {
+                    eOutcome["TotalICULengthofStay"] = _val;
+                    eOutcome["eOutcome.14"] = _val;
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.14"] = null;
+                eOutcome["TotalICULengthofStay"] = null;
+            };
+        
+            //eOutcome.15/////////
+            _val = getValue(elementList, "eOutcome.15");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.15"] = null;
+                    eOutcome["TotalVentilatorDays"] = null;
+                }
+                else
+                {
+                    eOutcome["TotalVentilatorDays"] = _val;
+                    eOutcome["eOutcome.15"] = _val;
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.15"] = null;
+                eOutcome["TotalVentilatorDays"] = null;
+            };
+        
+            //eOutcome.16/////////
+            _val = getValue(elementList, "eOutcome.16");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.16"] = null;
+                    eOutcome["DateTimeofHospitalDischarge"] = null;
+                }
+                else
+                {
+                    eOutcome["DateTimeofHospitalDischarge"] = _val;
+                    eOutcome["eOutcome.16"] = _val;
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.16"] = null;
+                eOutcome["DateTimeofHospitalDischarge"] = null;
+            };
+        
+            //eOutcome.17/////////
+            _val = getValue(elementList, "eOutcome.17");
+            if(eOutcome.IsValid ==true)
+            {
+                if (_val == null)
+                {
+                    eOutcome["eOutcome.17"] = null;
+                    eOutcome["OutcomeatHospitalDischarge"] = null;
+                }
+                else
+                {
+                    eOutcome["OutcomeatHospitalDischarge"] = setCodeText("eOutcome.17", _val);
+                    eOutcome["eOutcome.17"] = _val;            
+                }
+            }
+            else
+            {
+                eOutcome["eOutcome.17"] = null;
+                eOutcome["OutcomeatHospitalDischarge"] = null;
+            };
+            */
+            return eOutcome;
+        };
 var setePatient = function (businessObject) {
-    var ePatient = new Object();
-    var _patient = new Object();
-        
-    ////////Check for cancelled calls, Standby, non-patient
-        
-    var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; 
-    //Calls without patient interaction]; //Calls without patient interaction
-    if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
-    {
-        ePatient.IsCallValid = false;
-    }
-    else
-    {
-        ePatient.IsCallValid = true;
-    };
-    var v2Array = [];
-        
-    var ePatientObject = new Object()
-    ePatientGroupObject = getNEMSISSection(businessObject, "eOther")    
-        
-    //////////////////////ePatient.01
-    _patient = getValue(elementList, "ePatient.01");
-    if(Call.HasPatient==true)
-    {
-        if (_patient.IsNull == true) 
+            var ePatient = new Object();
 
-        {
-            ePatient["ePatient.01"] = null;
-            ePatient["EMSPatientID"] = null;
-            OXML.Node("EMSPatientID", null);     
-            XML.Node("ePatient.01", null);
-        }
-        else
-        {
-            _val = _patient.ValueArray[0].val;
-            OXML.Node("EMSPatientID", _val);     
-            XML.Node("ePatient.01", _val);
-            ePatient["ePatient.01"] = _val;
-            ePatient["EMSPatientID"] = _val;
-        }
-    }
-    else
-    {
-        OXML.Node("EMSPatientID", null);     
-        XML.Node("ePatient.01", null);
-        ePatient["ePatient.01"] = null;
-        ePatient["EMSPatientID"] = null;
-    };
+            /*
         
-            //////////////////////ePatient.02
-        PN
-    _patient = getValue(elementList, "ePatient.02");
+            ////////Check for cancelled calls, Standby, non-patient
+        
+            var group = ["4212007","4212009","4212011","4212023", "4212025", "4212039","4212041","4212043"]; 
+            //Calls without patient interaction]; //Calls without patient interaction
+            if ((eResponse.StandBy == false) && (group.indexOf(eDisposition["eDisposition.12"]) >-1 ))
+            {
+                ePatient.IsCallValid = false;
+            }
+            else
+            {
+                ePatient.IsCallValid = true;
+            };
+            var v2Array = [];
+        
+            var ePatientObject = new Object()
+            ePatientGroupObject = getNEMSISSection(businessObject, "eOther")    
+        
+            //////////////////////ePatient.01
+            _val = getValue(elementList, "ePatient.01");
             if(Call.HasPatient==true)
             {
-                if (_patient.IsNull == true) 
+                if (_val == null)
+                {
+                    ePatient["ePatient.01"] = null;
+                    ePatient["EMSPatientID"] = null;
+                }
+                else
+                {
+                    ePatient["ePatient.01"] = _val;
+                    ePatient["EMSPatientID"] = _val;
+                }
+            }
+            else
+            {
+                ePatient["ePatient.01"] = null;
+                ePatient["EMSPatientID"] = null;
+            };
+        
+            //////////////////////ePatient.02
+        
+            _val = getValue(elementList, "ePatient.02");
+            if(Call.HasPatient==true)
+            {
+                if (_val == null) 
                 {
                     PNValue = getPertinentNegative("ePatient.02")
                     if (PNValue != null) 
@@ -13310,24 +12560,12 @@ var setePatient = function (businessObject) {
                             ePatient["ePatient.02"] = v3NOT_RECORDED;
                             ePatient["ePatient.02"] = NOT_RECORDED;
                             v2Array.push({ section: "E06", element: "E06_01", val: v2NOT_RECORDED });
-
-                            XML.BeginNode("ePatient.02");
-                            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                            XML.EndNode();
-
-                            OXML.Node("LastName", NOT_RECORDED);      
                         }
                         else
                         {
                             ePatient["ePatient.02"] = v3NOT_REPORTING;
                             ePatient["LastName"] = NOT_REPORTING;
                             v2Array.push({ section: "E06", element: "E06_01", val: v2NOT_REPORTING });
-                            XML.BeginNode("ePatient.02");
-                            XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                            XML.EndNode();
-
-                            OXML.Node("LastName", NOT_REPORTING);      
-
                         }
                     }
                 }
@@ -13343,20 +12581,13 @@ var setePatient = function (businessObject) {
                 ePatient["ePatient.02"] = v3NOT_APPLICABLE;
                 ePatient["LastName"] = NOT_APPLICABLE;
                 v2Array.push({ section: "E06", element: "E06_01", val: v2NOT_APPLICABLE });
-
-                XML.BeginNode("ePatient.02");
-                XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                XML.EndNode();
-
-                OXML.Node("LastName", NOT_APPLICABLE);      
-
             };
-        PN
+        
             ///////////ePatient.03////////
-            _patient = getValue(elementList, "ePatient.03");
+            _val = getValue(elementList, "ePatient.03");
             if(Call.HasPatient==true)
             {
-                if (_patient.IsNull == true)
+                if (_val == null)
                 {
                     PNValue = getPertinentNegative("ePatient.03")
                     if (PNValue != null)
@@ -13382,22 +12613,12 @@ var setePatient = function (businessObject) {
                             ePatient["ePatient.03"] = v3NOT_RECORDED;
                             ePatient["FirstName"] = NOT_RECORDED;
                             v2Array.push({ section: "E06", element: "E06_02", val: v2NOT_RECORDED });
-                            XML.BeginNode("ePatient.03");
-                            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                            XML.EndNode();
-
-                            OXML.Node("FirstName", NOT_RECORDED);      
                         }
                         else
                         {
                             ePatient["ePatient.03"] = v3NOT_REPORTING;
                             ePatient["FirstName"] = NOT_REPORTING;
                             v2Array.push({ section: "E06", element: "E06_02", val: v2NOT_REPORTING });
-                            XML.BeginNode("ePatient.03");
-                            XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                            XML.EndNode();
-
-                            OXML.Node("FirstName", NOT_REPORTING);      
                         }
                     }
                 }
@@ -13413,65 +12634,46 @@ var setePatient = function (businessObject) {
                 ePatient["ePatient.03"] = v3NOT_APPLICABLE;
                 ePatient["FirstName"] = NOT_APPLICABLE;
                 v2Array.push({ section: "E06", element: "E06_02", val: v2NOT_APPLICABLE });
-                XML.BeginNode("ePatient.03");
-                XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                XML.EndNode();
-
-                OXML.Node("FirstName", NOT_APPLICABLE);      
-
             };
         
-    ///////////ePatient.03////////
-    _patient = getValue(elementList, "ePatient.04");
-    if(Call.HasPatient==true)
-    {
-        if (_patient.IsNull == true)
-        {
-            OXML.Node("MiddleInitialName", null);   
-            XML.Node("ePatient.04", null);
-            ePatient["ePatient.04"] = null;
-            ePatient["MiddleInitialName"] = null;
-            v2Array.push({ section: "E06", element: "E06_03", val: null });
-        }
-        else
-        {
-            _val = _patient.ValueArray[0].val;
-            OXML.Node("MiddleInitialName", _val);   
-            XML.Node("ePatient.04", _val);
-            ePatient["ePatient.04"] = _val;
-            ePatient["MiddleInitialName"] = _val;
-            v2Array.push({ section: "E06", element: "E06_03", val: _val });
-        }
-    }
-    else
-    {
-        OXML.Node("MiddleInitialName", null);   
-        XML.Node("ePatient.04", null);
-        ePatient["ePatient.04"] = null;
-        ePatient["MiddleInitialName"] = null;
-        v2Array.push({ section: "E06", element: "E06_03", val: null });
-    };
+            ///////////ePatient.03////////
+            _val = getValue(elementList, "ePatient.04");
+            if(Call.HasPatient==true)
+            {
+                if (_val == null)
+                {
+                    ePatient["ePatient.04"] = null;
+                    ePatient["MiddleInitialName"] = null;
+                    v2Array.push({ section: "E06", element: "E06_03", val: null });
+                }
+                else
+                {
+                    ePatient["ePatient.04"] = _val;
+                    ePatient["MiddleInitialName"] = _val;
+                    v2Array.push({ section: "E06", element: "E06_03", val: _val });
+                }
+            }
+            else
+            {
+                ePatient["ePatient.04"] = null;
+                ePatient["MiddleInitialName"] = null;
+                v2Array.push({ section: "E06", element: "E06_03", val: null });
+            };
         
         
             ///////////ePatient.05////////
             _val = getValue(elementList, "ePatient.05");
             if(Call.HasPatient==true)
             {
-                if (_patient.IsNull == true)
+                if (_val == null)
                 {
                     ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient.05", Description: "Patient Address Required" })
                     ePatient["ePatient.05"] = null;
                     ePatient["PatientsHomeAddress"] = null;
                     v2Array.push({ section: "E06", element: "E06_04", val: null });
-                    OXML.Node("PatientsHomeAddress", null);   
-                    XML.Node("ePatient.05", null);
                 }
                 else
                 {
-                    _val = _patient.ValueArray[0].val;
-
-                    OXML.Node("PatientsHomeAddress", _val);   
-                    XML.Node("ePatient.05", _val);
                     ePatient["ePatient.05"] = _val;
                     ePatient["PatientsHomeAddress"] = _val;
                     v2Array.push({ section: "E06", element: "E06_04", val: _val });
@@ -13483,24 +12685,18 @@ var setePatient = function (businessObject) {
             };
         
         ///////////ePatient.06////////
-            _patient= getValue(elementList, "ePatient.06");
+        _val = getValue(elementList, "ePatient.06");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient.05", Description: "Patient Address Required" });
                 ePatient["ePatient.06"] = null;
                 ePatient["PatientsHomeCity"] = null;
                 v2Array.push({ section: "E06", element: "E06_05", val: v2NOT_RECORDED });
-                OXML.Node("PatientsHomeCity", null);   
-                XML.Node("ePatient.06", null);
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
-
-                OXML.Node("PatientsHomeCity", _val);   
-                XML.Node("ePatient.06", _val);
                 ePatient["ePatient.06"] = _val;
                 ePatient["PatientsHomeCity"] = _val;
                 v2Array.push({ section: "E06", element: "E06_05", val: _val });
@@ -13512,28 +12708,20 @@ var setePatient = function (businessObject) {
         };
         
         ///////////ePatient.07////////
-        _patient= getValue(elementList, "ePatient.07");
+        _val = getValue(elementList, "ePatient.07");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 if (isRequiredStateElement("ePatient.07"))
                 {
                     ePatient["ePatient.07"] = v3NOT_RECORDED;
                     ePatient["PatientsHomeCounty"] = NOT_RECORDED;
                     v2Array.push({ section: "E06", element: "E06_06", val: v2NOT_RECORDED });
-
-                    XML.BeginNode("ePatient.07");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("PatientsHomeCounty", NOT_RECORDED);      
                 }        
             }
             else
             {
-                OXML.Node("PatientsHomeCounty", _val);      
-                XML.Node("ePatient.07", _val);      
                 ePatient["PatientsHomeCounty"] = _val;
                 ePatient["ePatient.07"] = _val;
                 v2Array.push({ section: "E06", element: "E06_06", val: _val });
@@ -13544,37 +12732,23 @@ var setePatient = function (businessObject) {
             ePatient["ePatient.07"] = v3NOT_APPLICABLE;
             ePatient["PatientsHomeCounty"] = NOT_APPLICABLE;
             v2Array.push({ section: "E06", element: "E06_06", val: v2NOT_APPLICABLE });
-
-            XML.BeginNode("ePatient.07");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("PatientsHomeCounty", NOT_APPLICABLE);      
         };
         
         ///////////ePatient.08////////
-        _patient= getValue(elementList, "ePatient.08");
+        _val = getValue(elementList, "ePatient.08");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 if (isRequiredStateElement("ePatient.08"))
                 {
                     ePatient["ePatient.08"] = v3NOT_RECORDED;
                     ePatient["PatientsHomeState"] = NOT_RECORDED;
                     v2Array.push({ section: "E06", element: "E06_07", val: v2NOT_RECORDED });
-                    XML.BeginNode("ePatient.08");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("PatientsHomeState", NOT_RECORDED);      
                 }
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
-                OXML.Node("PatientsHomeState", _val);      
-                OXML.Node("ePatient.08", _val);      
                 ePatient["ePatient.08"] = _val;
                 ePatient["PatientsHomeState"] = _val;
                 v2Array.push({ section: "E06", element: "E06_07", val: _val });
@@ -13585,38 +12759,24 @@ var setePatient = function (businessObject) {
             ePatient["ePatient.08"] = v3NOT_APPLICABLE;
             ePatient["PatientsHomeState"] = NOT_APPLICABLE;
             v2Array.push({ section: "E06", element: "E06_07", val: v2NOT_APPLICABLE });
-            XML.BeginNode("ePatient.08");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("PatientsHomeState", NOT_APPLICABLE);      
         };
         
         
         ///////////ePatient.09////////
-        _patient= getValue(elementList, "ePatient.09");
+        _val = getValue(elementList, "ePatient.09");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 if (isRequiredStateElement("ePatient.09"))
                 {
                     ePatient["ePatient.09"] = NIL_V3NOT_RECORDED;
                     ePatient["PatientsHomeZip"] = NOT_RECORDED;
                     v2Array.push({ section: "E06", element: "E06_08", val: v2NOT_RECORDED });
-                    XML.BeginNode("ePatient.09");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("PatientsHomeZip", NOT_RECORDED);      
                 }
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
-
-                OXML.Node("PatientsHomeZip", _val);      
-                OXML.Node("ePatient.09", _val);      
                 ePatient["ePatient.09"] = _val;
                 ePatient["PatientsHomeZip"] = _val;
                 v2Array.push({ section: "E06", element: "E06_08", val: _val });
@@ -13627,20 +12787,14 @@ var setePatient = function (businessObject) {
             ePatient["ePatient.09"] = v3NOT_APPLICABLE;
             ePatient["PatientsHomeZip"] = NOT_APPLICABLE;
             v2Array.push({ section: "E06", element: "E06_08", val: v2NOT_APPLICABLE });
-
-            XML.BeginNode("ePatient.09");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("PatientsHomeZip", NOT_APPLICABLE);      
         };
         
         
         ///////////ePatient.10////////
-        _patient= getValue(elementList, "ePatient.10");
+        _val = getValue(elementList, "ePatient.10");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 ePatient["ePatient.10"] = null;
                 ePatient["PatientsHomeCountry"] = null;
@@ -13648,7 +12802,6 @@ var setePatient = function (businessObject) {
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
                 ePatient["ePatient.10"] = _val;
                 ePatient["PatientsHomeCountry"] = _val;
                 v2Array.push({ section: "E06", element: "E06_09", val: _val });
@@ -13663,17 +12816,16 @@ var setePatient = function (businessObject) {
         
         
         ///////////ePatient.11////////
-        _patient= getValue(elementList, "ePatient.11");
+        _val = getValue(elementList, "ePatient.11");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 ePatient["ePatient.11"] = null;
                 ePatient["PatientHomeCensusTract"] = null;
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
                 ePatient["PatientHomeCensusTract"] = _val;
                 ePatient["ePatient.11"] = _val;
             }
@@ -13685,17 +12837,16 @@ var setePatient = function (businessObject) {
         };
         
         ///////////ePatient.12////////
-        _patient= getValue(elementList, "ePatient.12");
+        _val = getValue(elementList, "ePatient.12");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 ePatient["ePatient.12"] = null;
                 ePatient["SocialSecurityNumber"] = null;
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
                 ePatient["SocialSecurityNumber"] = _val;
                 ePatient["ePatient.12"] = _val;    
             }
@@ -13708,10 +12859,10 @@ var setePatient = function (businessObject) {
         
         
         ///////////ePatient.13////////
-        _patient= getValue(elementList, "ePatient.13");
+        _val = getValue(elementList, "ePatient.13");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 if (isRequiredStateElement("ePatient.13"))
                 {
@@ -13722,7 +12873,6 @@ var setePatient = function (businessObject) {
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
                 ePatient["Gender"] = setCodeText("ePatient.13", _val);
                 ePatient["ePatient.13"] = _val;
                 v2Array.push({ section: "E06", element: "E06_11", val: setV2("ePatient.13", _val) });
@@ -13737,10 +12887,10 @@ var setePatient = function (businessObject) {
         
         
         ///////////ePatient.14////////
-        _patient= getValue(elementList, "ePatient.14");
+        _val = getValue(elementList, "ePatient.14");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null) 
             {
                 if (isRequiredStateElement("ePatient.14")) 
                 {
@@ -13778,10 +12928,10 @@ var setePatient = function (businessObject) {
         
         
         ///////////ePatient.15////////
-        _patient= getValue(elementList, "ePatient.15");
+        _val = getValue(elementList, "ePatient.15");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null) 
             {
                 if (isRequiredStateElement("ePatient.15")) 
                 {
@@ -13792,7 +12942,6 @@ var setePatient = function (businessObject) {
             }
             else 
             {
-                _val = _patient.ValueArray[0].val;
                 ePatient["ePatient.15"] = _val;
                 ePatient["Age"] = _val;
                 v2Array.push({ section: "E06", element: "E06_14", val: _val });
@@ -13807,10 +12956,10 @@ var setePatient = function (businessObject) {
         };
         
         ///////////ePatient.16////////
-        _patient= getValue(elementList, "ePatient.16");
+        _val = getValue(elementList, "ePatient.16");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null) 
             {
                 if (isRequiredStateElement("ePatient.16")) 
                 {
@@ -13821,7 +12970,6 @@ var setePatient = function (businessObject) {
             }
             else 
             {
-                _val = _patient.ValueArray[0].val;
                 ePatient["ePatient.16"] = _val;
                 ePatient["AgeUnits"] = setCodeText("ePatient.16", _val);
                 v2Array.push({ section: "E06", element: "E06_14", val: SetV2("ePatient.16", _val) });
@@ -13835,10 +12983,10 @@ var setePatient = function (businessObject) {
         };
         
         ///////////ePatient.17////////
-        _patient= getValue(elementList, "ePatient.17");
+        _val = getValue(elementList, "ePatient.17");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null) 
             {
                 PNValue = getPertinentNegative("ePatient.17")
                 if (PNValue != null) 
@@ -13875,7 +13023,6 @@ var setePatient = function (businessObject) {
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
                 ePatient["ePatient.17"] = _val;
                 ePatient["DateOfBirth"] = _val;
                 v2Array.push({ section: "E06", element: "E06_16", val: _val });
@@ -13890,10 +13037,10 @@ var setePatient = function (businessObject) {
         
         
         //ePatient.18////////////
-        _patient= getValue(elementList, "ePatient.18");
+        _val = getValue(elementList, "ePatient.18");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 ePatient["ePatient.18"] = null;
                 ePatient["PatientPhoneNumber"] = null;
@@ -13964,10 +13111,10 @@ var setePatient = function (businessObject) {
         
         
         //ePatient.19////////////
-        _patient= getValue(elementList, "ePatient.19");
+        _val = getValue(elementList, "ePatient.19");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 ePatient["ePatient.19"] = null;
                 ePatient["PatientEmailAddress"] = null;
@@ -14010,22 +13157,17 @@ var setePatient = function (businessObject) {
         
         
         //ePatient.20////////////
-        _patient = getValue(elementList, "ePatient.20");
+        _val = getValue(elementList, "ePatient.20");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 ePatient["ePatient.20"] = null;
                 ePatient["StateIssuingDriverLicense"] = null;
                 v2Array.push({ section: "E06", element: "E06_18", val: v2NOT_KNOWN });
-                OXML.Node("StateIssuingDriverLicense", null);     
-                XML.Node("ePatient.20", null);
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
-                OXML.Node("StateIssuingDriverLicense", setCodeTextsetCodeText("ePatient.19", _val));     
-                XML.Node("ePatient.20", _val);
                 ePatient["StateIssuingDriverLicense"] = setCodeText("ePatient.19", _val);
                 v2Array.push({ section: "E06", element: "E06_18", val: setV2("ePatient.19", _val) });
                 ePatient["ePatient.20"] = _val;
@@ -14033,592 +13175,425 @@ var setePatient = function (businessObject) {
         }
         else
         {
-            OXML.Node("StateIssuingDriverLicense", null);     
-            XML.Node("ePatient.20", null);
             ePatient["ePatient.20"] = null;
             ePatient["StateIssuingDriverLicense"] = null;
             v2Array.push({ section: "E06", element: "E06_18", val: v2NOT_KNOWN });
         };
         
         
-        _patient= getValue(elementList, "ePatient.21");
+        _val = getValue(elementList, "ePatient.21");
         if(Call.HasPatient==true)
         {
-            if (_patient.IsNull == true)
+            if (_val == null)
             {
                 ePatient["ePatient.21"] = null;
                 ePatient["DriverLicenseNumber"] = null;
                 v2Array.push({ section: "E06", element: "E06_19", val: v2NOT_KNOWN });
-                OXML.Node("DriverLicenseNumber", null);     
-                XML.Node("ePatient.21", null);
             }
             else
             {
-                _val = _patient.ValueArray[0].val;
-
                 ePatient["ePatient.21"] = _val;
                 ePatient["DriverLicenseNumber"] = _val;
                 v2Array.push({ section: "E06", element: "E06_19", val: _val});
-                OXML.Node("DriverLicenseNumber", _val);     
-                XML.Node("ePatient.21", _val);
             }
         }
         else
         {
-            OXML.Node("DriverLicenseNumber", null);     
-            XML.Node("ePatient.21", null);
             ePatient["ePatient.21"] = null;
             ePatient["DriverLicenseNumber"] = null;
             v2Array.push({ section: "E06", element: "E06_19", val: v2NOT_KNOWN });
         };
-        
-        return ePatient;
-};
+        */
+            return ePatient;
+        };
 var seteProcedures = function (businessObject) {
-    var eProcedures = new Object();
-    var _procedures = new Object();
-     
-    var ProceduresGroup = new Object();
-    var v2Array = [];                
-    ////////Check for cancelled calls, Standby, non-patient
-    if((Call.HasPatient==true) && (Call.HasTreatment==true) && (eResponse.StandBy == false))
-    {     
-    }
-    else
-    {
-        setnA
-        return eProcedures;
-    };
-        
-    eProceduresGroupObject = getNEMSISSection(businessObject, "eProcedures")
-    if(eProceduresGroupObject.length =0)
-    {
-        setnA
-        return eProcedures;
-    };
-        
-    for (var xx = 0; xx < businessObject.sections.length; xx++)
-    {
-        var elementList = businessObject.sections[xx].attributes.elements;
-                    
-        
-        //eProcedures.03////////////
-                    
-        _procedures = getValue(elementList, "eProcedures.03");
-        _PNValue = getPertinentNegative("eProcedures.03")
-        eProcedures.IsValid = false;    
-        if (_PNValue != null) 
-        {
-            if (_PNValue == "8801001") 
-            {
-                v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
-                ProcedureGroup["eProcedures.03"] = PN_CONTRAINDICATION_NOTED + " " + _val;
-                ProcedureGroup["Procedure"] = PN_CONTRAINDICATION_NOTED + " " + _val;
-            }
-            else if (_PNValue == "8801003") 
-            {
-                v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
-                ProcedureGroup["eProcedures.03"] = PN_DENIED_BY_ORDER + " " + _val;
-                ProcedureGroup["Procedure"] = PN_DENIED_BY_ORDER + " " + _val;
-            }
-            else if (_PNValue == "8801019") 
-            {
-                         
-                v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
-                ProcedureGroup["eProcedures.03"] = PN_REFUSED + " " + _val;
-                ProcedureGroup["Procedures"] = PN_REFUSED+ " " + _val;
-            }
-            else if (_PNValue == "8801023") 
-            {                
-                v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
-                ProcedureGroup["eProcedures.03"] = PN_UNABLE_TO_COMPLETE + " " + _val;
-                ProcedureGroup["Procedures"] = PN_UNABLE_TO_COMPLETE + " " + _val;
-            }
-        };
-                
-        if (_procedures.IsNull == true)                     
-        {
-            ProcedureGroup["Procedure"] = NOT_RECORDED;
-            ProcedureGroup["eProcedures.03"] = V3NOT_RECORDED;
-            v2Array.push({ section: "E19", element: "E19_03", val: V2NOT_RECORDED });
-        }
-        else 
-        {
-            eProcedures.IsValid = true;    
-            ProcedureGroup["eProcedures.03"] = _val;
-            ProcedureGroup["Procedure"] = _val;
-            v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
-        };
-        
-        
-        
-        //eProcedures.01////////////
-        _procedures = getValue(elementList, "eProcedures.01");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true)                         
-            {
-                ProcedureGroup["eProcedures.01"] = V3NOT_RECORDED;
-                ProcedureGroup["DateTimeProcedurePerformed"] = NOT_RECORDED;
-                v2Array.push({ section: "E19", element: "E19_01", val: V2NOT_RECORDED });
-                
-                XML.BeginNode("eProcedures.01");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("DateTimeProcedurePerformed", NOT_RECORDED);      
-            }
-            else 
-            {               
-                _val = _procedures.ValueArray[0].val;
-                OXML.Node("DateTimeProcedurePerformed", _val);      
-                OXML.Node("eProcedures.01", _val);      
-                ProcedureGroup["eProcedures.01"] = _val;
-                ProcedureGroup["DateTimeProcedurePerformed"] = _val;
-                v2Array.push({ section: "E19", element: "E19_01", val: _val });
-            }
-        }
-        else
-        {
-            ProcedureGroup["eProcedures.01"] = v3NOT_APPLICABLE;
-            ProcedureGroup["DateTimeProcedurePerformed"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E19", element: "E19_01", val: v2NOT_APPLICABLE });
-
-            XML.BeginNode("eProcedures.01");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("DateTimeProcedurePerformed", NOT_APPLICABLE);      
-        };
-        
-        //eProcedures.02////////////
-        _procedures = getValue(elementList, "eProcedures.02");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true)                         
-            {
-                ProcedureGroup["ProcedurePerformedPriortothisUnitEMSCare"] = NOT_RECORDED;
-                ProcedureGroup["eProcedures.02"] = V3NOT_RECORDED;
-                v2Array.push({ section: "E19", element: "E19_02", val: V2NOT_RECORDED });
-                
-                XML.BeginNode("eProcedures.02");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("ProcedurePerformedPriortothisUnitEMSCare", NOT_RECORDED);      
-            }
-            else 
-            {                    
-                _val = _procedures.ValueArray[0].val;
-                ProcedureGroup["ProcedurePerformedPriortothisUnitEMSCare"] = setCodeText("eProcedures.02", _val);
-                ProcedureGroup["eProcedures.02"] = _val;
-                v2Array.push({ section: "E19", element: "E19_02", val: SetV2("eProcedures.02", _val) });
-                OXML.Node("ProcedurePerformedPriortothisUnitEMSCare", setCodeText("eProcedures.02", _val));      
-                OXML.Node("eProcedures.02", _val);      
-            }
-        }
-        else
-        {
-            ProcedureGroup["ProcedurePerformedPriortothisUnitEMSCare"] = NOT_APPLICABLE;
-            ProcedureGroup["eProcedures.02"] = v3NOT_APPLICABLE;
-            v2Array.push({ section: "E19", element: "E19_02", val: v2NOT_APPLICABLE });
-            XML.BeginNode("eProcedures.02");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("ProcedurePerformedPriortothisUnitEMSCare", NOT_APPLICABLE);      
-        };
-        
-        //eProcedures.04////////////
-        _procedures = getValue(elementList, "eProcedures.04");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true)                         
-            {
-                ProcedureGroup["SizeofProcedureEquipment"] = null;
-                ProcedureGroup["eProcedures.04"] = null;
-                v2Array.push({ section: "E19", element: "E19_04", val: V2NOT_RECORDED });                                
-
-                OXML.Node("SizeofProcedureEquipment", null);      
-                XML.Node("eProcedures.04", null);      
-            }
-            else 
-            {
-                _val = _procedures.ValueArray[0].val;
-                       
-                ProcedureGroup["eProcedures.04"] = _val;
-                ProcedureGroup["SizeofProcedureEquipment"] = _val;
-                v2Array.push({ section: "E19", element: "E19_04", val: _val });
-                OXML.Node("SizeofProcedureEquipment", _val);      
-                XML.Node("eProcedures.04", _val);      
-            }
-        }
-        else
-        {
-            OXML.Node("SizeofProcedureEquipment", null);      
-            XML.Node("eProcedures.04", null);      
-            ProcedureGroup["SizeofProcedureEquipment"] = null;
-            ProcedureGroup["eProcedures.02"] = null;
-            v2Array.push({ section: "E19", element: "E19_04", val: V2NOT_RECORDED });
-        };
-        
-        //eProcedures.05////////////
-        _procedures = getValue(elementList, "eProcedures.05");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true)                         {
-                ProcedureGroup["eProcedures.05"] = V3NOT_RECORDED;
-                ProcedureGroup["NumberofProcedureAttempts"] = NOT_RECORDED;
-                v2Array.push({ section: "E19", element: "E19_05", val: V2NOT_RECORDED });
-
-                XML.BeginNode("eProcedures.05");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("NumberofProcedureAttempts", NOT_RECORDED);      
-            }
-            else 
-            {                
-                _val = _procedures.ValueArray[0].val;
-                ProcedureGroup["eProcedures.05"] = _val;
-                ProcedureGroup["NumberofProcedureAttempts"] = _val;
-                v2Array.push({ section: "E19", element: "E19_05", val: _val });
-                OXML.Node("eProcedures.05", _val);      
-                OXML.Node("NumberofProcedureAttempts", _val);      
-            }
-        }
-        else
-        {
-            ProcedureGroup["eProcedures.05"] = v3NOT_APPLICABLE;
-            ProcedureGroup["NumberofProcedureAttempts"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E19", element: "E19_05", val: v2NOT_APPLICABLE});
-
-            XML.BeginNode("eProcedures.05");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("NumberofProcedureAttempts", NOT_APPLICABLE);      
-        };
-        
-        //eProcedures.06////////////
-        _procedures = getValue(elementList, "eProcedures.06");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true) 
-            {
-                v2Array.push({ section: "E19", element: "E19_06", val: v2NOT_RECORDED });
-                ProcedureGroup["eProcedures.06"] = V3NOT_RECORDED;
-                ProcedureGroup["ProcedureSuccessful"] = NOT_RECORDED;
-                
-                XML.BeginNode("eProcedures.06");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("ProcedureSuccessful", NOT_RECORDED);      
-            }
-            else 
-            {
-                _val = _procedures.ValueArray[0].val;
-                ProcedureGroup["eProcedures.06"] = _val;
-                ProcedureGroup["ProcedureSuccessful"] = setCodeText("eProcedures.06", _val);
-                v2Array.push({ section: "E19", element: "E19_06", val: SetV2("eProcedures.05", _val) });
-                OXML.Node("ProcedureSuccessful", setCodeText("eProcedures.06", _val));      
-                XML.Node("eProcedures.06", _val);      
-            }
-        }
-        else
-        {
-            v2Array.push({ section: "E19", element: "E19_06", val: v2NOT_APPLICABLE });
-            ProcedureGroup["eProcedures.06"] = v3NOT_APPLICABLE;
-            ProcedureGroup["ProcedureSuccessful"] = NOT_APPLICABLE;
-            
-            XML.BeginNode("eProcedures.06");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("ProcedureSuccessful", NOT_APPLICABLE);      
-        };
-            
-        //eProcedures.07////////////
-        _procedures = getValue(elementList, "eProcedures.07");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true)
-            {
-                ProcedureGroup["eProcedures.07"] = V3NOT_RECORDED;
-                ProcedureGroup["ProcedureComplication"] = NOT_RECORDED;
-                v2Array.push({ section: "E19", element: "E19_07", val: v2NOT_RECORDED });
-                                
-                XML.BeginNode("eProcedures.07");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("ProcedureComplication", NOT_RECORDED);      
-            }
-            else 
-            {
-                var arr1 = [];
-                var arr2 = [];
-                var arr3 = [];
-                for (var i = 0; i < _procedures.ValueArray.length; i++)
-                {
-                    if ((_procedures.ValueArray[i].HasValue == true) && (arr1.indexOf(_procedures.ValueArray[i].val) > -1))
-                    {
-                        _val = _procedures.ValueArray[i].val
-
-                        arr1.push(_val);
-                        arr2.push(setD2("eProcedures.07", _val));
-                        arr3.push(setCodeText("eProcedures.07", _val));               
-                        OXML.Node("ProcedureComplication", setCodeText("eProcedures.07", _val));      
-                        XML.Node("eProcedures.07", _val);      
-                    }
-                };              
-                ProcedureGroup["eProcedures.07"] =  arr1.slice(0);
-                ProcedureGroup["ProcedureComplication"] =  arr3.slice(0);
-                v2Array.push({ section: "E06", element: "E06_12", val: arr2.slice(0) });
-            }
-        }
-        else
-        {
-            ProcedureGroup["eProcedures.07"] = v3NOT_APPLICABLE;
-            ProcedureGroup["ProcedureComplication"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E19", element: "E19_07", val: v2NOT_APPLICABLE });
-
-            XML.BeginNode("eProcedures.07");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("ProcedureComplication", NOT_APPLICABLE);      
-        };
-        
-        //eProcedures.08////////////
-        _procedures = getValue(elementList, "eProcedures.08");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true) 
-            {            
-                ProcedureGroup["eProcedures.08"] = V3NOT_RECORDED;
-                ProcedureGroup["ResponsetoProcedure"] = NOT_RECORDED;            
-                v2Array.push({ section: "E19", element: "E19_08", val: v2NOT_RECORDED });
-                XML.BeginNode("eProcedures.08");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("ResponsetoProcedure", NOT_RECORDED);      
-            }
-            else 
-            {
-                _val = _procedures.ValueArray[0].val;
-                ProcedureGroup["eProcedures.08"] = _val;
-                ProcedureGroup["ResponsetoProcedure"] = setCodeText("eProcedures.08", _val) ;            
-                v2Array.push({ section: "E19", element: "E19_08", val: SetV2("eProcedures.08", _val) });
-                OXML.Node("ResponsetoProcedure", setCodeText("eProcedures.08", _val));
-                XML.Node("eProcedures.08", _val);      
-            }
-        }
-        else
-        {
-            ProcedureGroup["eProcedures.08"] = v3NOT_APPLICABLE;
-            ProcedureGroup["ResponsetoProcedure"] = NOT_APPLICABLE;            
-            v2Array.push({ section: "E19", element: "E19_08", val: v2NOT_APPLICABLE });
-
-            XML.BeginNode("eProcedures.08");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("ResponsetoProcedure", NOT_APPLICABLE);      
-        };
-                
-        //eProcedures.09////////////
-        _procedures = getValue(elementList, "eProcedures.09");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true) 
-            {
-                if (isRequiredStateElement("eProcedures.09")) 
-                {
-                    ProcedureGroup["eProcedures.09"] = V3NOT_RECORDED;
-                    ProcedureGroup["ProcedureCrewMembersID"] = NOT_RECORDED;
-                    v2Array.push({ section: "E19", element: "E19_09", val: v2NOT_RECORDED });
-
-                    XML.BeginNode("eProcedures.09");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("ProcedureCrewMembersID", NOT_RECORDED);      
-                }
-                else 
-                {
-                    ProcedureGroup["eProcedures.09"] = v3NOT_REPORTING;
-                    ProcedureGroup["ProcedureCrewMembersID"] = NOT_REPORTING;
-                    v2Array.push({ section: "E19", element: "E19_09", val: v2NOT_REPORTING });                
-                    XML.BeginNode("eProcedures.09");
-                    XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                    XML.EndNode();
-
-                    OXML.Node("ProcedureCrewMembersID", NOT_REPORTING);      
-                }
-            }
-            else 
-            {
-                _val = _procedures.ValueArray[0].val;
-                XML.Node("eProcedures.09", _val);      
-                OXML.Node("ProcedureCrewMembersID", _val);      
-                ProcedureGroup["eProcedures.09"] = _val;
-                ProcedureGroup["ProcedureCrewMembersID"] = _val;
-                v2Array.push({ section: "E19", element: "E19_09", val: _val});                
-            }
-        }
-        else
-        {
-            ProcedureGroup["eProcedures.09"] = v3NOT_APPLICABLE;
-            ProcedureGroup["ProcedureCrewMembersID"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E19", element: "E19_09", val: v2NOT_AVAILABLE});
-            XML.BeginNode("eProcedures.09");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("ProcedureCrewMembersID", NOT_APPLICABLE);      
-        };
-        
-        
-        //eProcedures.10////////////
-        _procedures = getValue(elementList, "eProcedures.10");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true) 
-            {           
-                ProcedureGroup["RoleTypeofPersonPerformingtheProcedure"] = NOT_RECORDED;
-                ProcedureGroup["eProcedures.10"] = V3NOT_RECORDED;
-
-                XML.BeginNode("eProcedures.10");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("RoleTypeofPersonPerformingtheProcedure", NOT_RECORDED);      
+            var eProcedures = new Object();
+            /*
+            var ProceduresGroup = new Object();
+            var v2Array = [];                
+            ////////Check for cancelled calls, Standby, non-patient
+            if((Call.HasPatient==true) && (Call.HasTreatment==true) && (eResponse.StandBy == false))
+            {     
             }
             else
             {
-                _val = _procedures.ValueArray[0].val;
-                OXML.Node("RoleTypeofPersonPerformingtheProcedure",  setCodeText("eProcedures.10", _val));
-                XML.Node("eProcedures.10", _val);
-                ProcedureGroup["RoleTypeofPersonPerformingtheProcedure"] = setCodeText("eProcedures.10", _val);
-                ProcedureGroup["eProcedures.10"] = _val;          
-            }
-        }
-        else
-        {
-            ProcedureGroup["RoleTypeofPersonPerformingtheProcedure"] = NOT_APPLICABLE;
-            ProcedureGroup["eProcedures.10"] = v3NOT_APPLICABLE;
-            XML.BeginNode("eProcedures.10");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("RoleTypeofPersonPerformingtheProcedure", NOT_APPLICABLE);      
-        };
+               setnA
+               return eProcedures;
+            };
+        
+            eProceduresGroupObject = getNEMSISSection(businessObject, "eProcedures")
+            if(eProceduresGroupObject.length =0)
+            {
+                setnA
+                return eProcedures;
+            };
+        
+                for (var xx = 0; xx < businessObject.sections.length; xx++)
+                {
+                    var elementList = businessObject.sections[xx].attributes.elements;
+                    
+        
+                    //eProcedures.03////////////
+                    
+                    _val = getValue(elementList, "eProcedures.03");
+                    _PNValue = getPertinentNegative("eProcedures.03")
+                    eProcedures.IsValid = false;    
+                    if (_PNValue != null) 
+                    {
+                        if (_PNValue == "8801001") 
+                        {
+                            v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
+                            ProcedureGroup["eProcedures.03"] = PN_CONTRAINDICATION_NOTED + " " + _val;
+                            ProcedureGroup["Procedure"] = PN_CONTRAINDICATION_NOTED + " " + _val;
+                        }
+                        else if (_PNValue == "8801003") 
+                        {
+                            v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
+                            ProcedureGroup["eProcedures.03"] = PN_DENIED_BY_ORDER + " " + _val;
+                            ProcedureGroup["Procedure"] = PN_DENIED_BY_ORDER + " " + _val;
+                        }
+                        else if (_PNValue == "8801019") 
+                        {
+                         
+                            v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
+                            ProcedureGroup["eProcedures.03"] = PN_REFUSED + " " + _val;
+                            ProcedureGroup["Procedures"] = PN_REFUSED+ " " + _val;
+                        }
+                        else if (_PNValue == "8801023") 
+                        {                
+                            v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
+                            ProcedureGroup["eProcedures.03"] = PN_UNABLE_TO_COMPLETE + " " + _val;
+                            ProcedureGroup["Procedures"] = PN_UNABLE_TO_COMPLETE + " " + _val;
+                        }
+                    };
                 
-        //eProcedures.11////////////
-        _procedures = getValue(elementList, "eProcedures.11");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true) 
-            {
-                ProcedureGroup["eProcedures.10"] = null;
-                ProcedureGroup["ProcedureAuthorization"] = null;
-                v2Array.push({ section: "E19", element: "E19_10", val: v2NOT_RECORDED});
-                OXML.Node("ProcedureAuthorization", null);      
-                XML.Node("eProcedures.10", null);      
-            }
-            else 
-            {
-                _val = _procedures.ValueArray[0].val;
-                OXML.Node("ProcedureAuthorization", setCodeText("eProcedures.11", _val));      
-                XML.Node("eProcedures.10", _val);      
-                ProcedureGroup["eProcedures.11"] = _val;
-                ProcedureGroup["ProcedureAuthorization"] = setCodeText("eProcedures.11", _val);
-                v2Array.push({ section: "E06", element: "E06_12", val: SetV2("eProcedures.11", _val) });                        
-            }
-        }
-        else
-        {
-            ProcedureGroup["eProcedures.10"] = null;
-            ProcedureGroup["ProcedureAuthorization"] = null;
-            v2Array.push({ section: "E19", element: "E19_10", val: v2NOT_AVAILABLE});
-            OXML.Node("ProcedureAuthorization", null);      
-            XML.Node("eProcedures.10", null);      
-        };
+                    if (_val == null) 
+                    {
+                        ProcedureGroup["Procedure"] = NOT_RECORDED;
+                        ProcedureGroup["eProcedures.03"] = V3NOT_RECORDED;
+                        v2Array.push({ section: "E19", element: "E19_03", val: V2NOT_RECORDED });
+                    }
+                    else 
+                    {
+                        eProcedures.IsValid = true;    
+                        ProcedureGroup["eProcedures.03"] = _val;
+                        ProcedureGroup["Procedure"] = _val;
+                        v2Array.push({ section: "E19", element: "E19_03", val: SetV2("eProcedures.03", _val) });
+                    };
         
         
-        //eProcedures.12////////////
-        _procedures = getValue(elementList, "eProcedures.12");
-        if(eProcedures.IsValid == true)
-        {
-            if (_procedures.IsNull == true) 
-            {
-                ProcedureGroup["eProcedures.12"] = null;
-                ProcedureGroup["ProcedureAuthorizingPhysician"] = null;
-                OXML.Node("ProcedureAuthorizingPhysician", null);      
-                XML.Node("eProcedures.12", null);      
-                v2Array.push({ section: "E19", element: "E19_11", val: v2NOT_RECORDED});                
-            }
-            else 
-            {
-                _val = _procedures.ValueArray[0].val;
-                OXML.Node("ProcedureAuthorizingPhysician", _val);      
-                XML.Node("eProcedures.12", _val);      
-                ProcedureGroup["eProcedures.12"] = _val;
-                ProcedureGroup["ProcedureAuthorizingPhysician"] =_val;
-                v2Array.push({ section: "E19", element: "E19_11", val: _val});                
-            }
-        }
-        else
-        {
-            OXML.Node("ProcedureAuthorizingPhysician", null);      
-            XML.Node("eProcedures.12", null);      
-            ProcedureGroup["eProcedures.12"] = null;
-            ProcedureGroup["ProcedureAuthorizingPhysician"] = null;
-            v2Array.push({ section: "E19", element: "E19_11", val: v2NOT_APPLICABLE});
-        };
         
-                        //eProcedures.13////////////
-                    _procedures = getValue(elementList, "eProcedures.13");
+                    //eProcedures.01////////////
+                    _val = getValue(elementList, "eProcedures.01");
                     if(eProcedures.IsValid == true)
                     {
-                        if (_procedures.IsNull == true) 
+                        if (_val == null) 
+                        {
+                            ProcedureGroup["eProcedures.01"] = V3NOT_RECORDED;
+                            ProcedureGroup["DateTimeProcedurePerformed"] = NOT_RECORDED;
+                            v2Array.push({ section: "E19", element: "E19_01", val: V2NOT_RECORDED });
+                        }
+                        else 
+                        {               
+                            ProcedureGroup["eProcedures.01"] = _val;
+                            ProcedureGroup["DateTimeProcedurePerformed"] = _val;
+                            v2Array.push({ section: "E19", element: "E19_01", val: _val });
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["eProcedures.01"] = v3NOT_APPLICABLE;
+                        ProcedureGroup["DateTimeProcedurePerformed"] = NOT_APPLICABLE;
+                        v2Array.push({ section: "E19", element: "E19_01", val: v2NOT_APPLICABLE });
+                    };
+        
+                    //eProcedures.02////////////
+                    _val = getValue(elementList, "eProcedures.02");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {
+                            ProcedureGroup["ProcedurePerformedPriortothisUnitEMSCare"] = NOT_RECORDED;
+                            ProcedureGroup["eProcedures.02"] = V3NOT_RECORDED;
+                            v2Array.push({ section: "E19", element: "E19_02", val: V2NOT_RECORDED });
+                        }
+                        else {
+                    
+                            ProcedureGroup["ProcedurePerformedPriortothisUnitEMSCare"] = setCodeText("eProcedures.02", _val);
+                            ProcedureGroup["eProcedures.02"] = _val;
+                            v2Array.push({ section: "E19", element: "E19_02", val: SetV2("eProcedures.02", _val) });
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["ProcedurePerformedPriortothisUnitEMSCare"] = NOT_APPLICABLE;
+                        ProcedureGroup["eProcedures.02"] = v3NOT_APPLICABLE;
+                        v2Array.push({ section: "E19", element: "E19_02", val: v2NOT_APPLICABLE });
+        
+                    };
+        
+                              //eProcedures.04////////////
+                    _val = getValue(elementList, "eProcedures.04");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {
+                            ProcedureGroup["SizeofProcedureEquipment"] = null;
+                            ProcedureGroup["eProcedures.02"] = null;
+                            v2Array.push({ section: "E19", element: "E19_04", val: V2NOT_RECORDED });
+                        }
+                        else 
+                        {
+                       
+                            ProcedureGroup["eProcedures.04"] = _val;
+                            ProcedureGroup["SizeofProcedureEquipment"] = _val;
+                            v2Array.push({ section: "E19", element: "E19_04", val: _val });
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["SizeofProcedureEquipment"] = null;
+                        ProcedureGroup["eProcedures.02"] = null;
+                        v2Array.push({ section: "E19", element: "E19_04", val: V2NOT_RECORDED });
+                    };
+        
+                    //eProcedures.05////////////
+                    _val = getValue(elementList, "eProcedures.05");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {
+                            ProcedureGroup["eProcedures.05"] = V3NOT_RECORDED;
+                            ProcedureGroup["NumberofProcedureAttempts"] = NOT_RECORDED;
+                            v2Array.push({ section: "E19", element: "E19_05", val: V2NOT_RECORDED });
+                        }
+                        else 
+                        {                
+                            ProcedureGroup["eProcedures.05"] = _val;
+                            ProcedureGroup["NumberofProcedureAttempts"] = _val;
+                            v2Array.push({ section: "E19", element: "E19_05", val: _val });
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["eProcedures.05"] = v3NOT_APPLICABLE;
+                        ProcedureGroup["NumberofProcedureAttempts"] = NOT_APPLICABLE;
+                        v2Array.push({ section: "E19", element: "E19_05", val: v2NOT_APPLICABLE});
+                    };
+        
+                    //eProcedures.06////////////
+                    _val = getValue(elementList, "eProcedures.06");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {
+                            v2Array.push({ section: "E19", element: "E19_06", val: v2NOT_RECORDED });
+                            ProcedureGroup["eProcedures.06"] = V3NOT_RECORDED;
+                            ProcedureGroup["ProcedureSuccessful"] = NOT_RECORDED;
+                        }
+                        else {
+                            ProcedureGroup["eProcedures.06"] = _val;
+                            ProcedureGroup["ProcedureSuccessful"] = setCodeText("eProcedures.06", _val);
+                            v2Array.push({ section: "E19", element: "E19_06", val: SetV2("eProcedures.05", _val) });
+                        }
+                    }
+                    else
+                    {
+                        v2Array.push({ section: "E19", element: "E19_06", val: v2NOT_APPLICABLE });
+                        ProcedureGroup["eProcedures.06"] = v3NOT_APPLICABLE;
+                        ProcedureGroup["ProcedureSuccessful"] = NOT_APPLICABLE;
+                    };
+            
+                    //eProcedures.07////////////
+                    _val = getValue(elementList, "eProcedures.07");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {
+                            ProcedureGroup["eProcedures.07"] = V3NOT_RECORDED;
+                            ProcedureGroup["ProcedureComplication"] = NOT_RECORDED;
+                            v2Array.push({ section: "E19", element: "E19_07", val: v2NOT_RECORDED });
+                        }
+                        else 
+                        {
+                            var arr1 = [];
+                            var arr2 = [];
+                            var arr3 = [];
+                            for (var i = 0; i < _val.length; i++)
+                            {
+                                if(_val!=null)
+                                {
+                                    arr1.push(_val);
+                                    arr2.push(setD2("eProcedures.07", _val));
+                                    arr3.push(setCodeText("eProcedures.07", _val));               
+                                }
+                            };              
+                            ProcedureGroup["eProcedures.07"] =  arr1.slice(0);
+                            ProcedureGroup["ProcedureComplication"] =  arr3.slice(0);
+                            v2Array.push({ section: "E06", element: "E06_12", val: arr2.slice(0) });
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["eProcedures.07"] = v3NOT_APPLICABLE;
+                        ProcedureGroup["ProcedureComplication"] = NOT_APPLICABLE;
+                        v2Array.push({ section: "E19", element: "E19_07", val: v2NOT_RECORDED });
+                    };
+        
+                        //eProcedures.08////////////
+                    _val = getValue(elementList, "eProcedures.08");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {            
+                            ProcedureGroup["eProcedures.08"] = V3NOT_RECORDED;
+                            ProcedureGroup["ResponsetoProcedure"] = NOT_RECORDED;            
+                            v2Array.push({ section: "E19", element: "E19_08", val: v2NOT_RECORDED });
+                        }
+                        else 
+                        {
+                            ProcedureGroup["eProcedures.08"] = _val;
+                            ProcedureGroup["ResponsetoProcedure"] = setCodeText("eProcedures.08", _val) ;            
+                            v2Array.push({ section: "E19", element: "E19_08", val: SetV2("eProcedures.08", _val) });
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["eProcedures.08"] = v3NOT_APPLICABLE;
+                        ProcedureGroup["ResponsetoProcedure"] = NOT_APPLICABLE;            
+                        v2Array.push({ section: "E19", element: "E19_08", val: v2NOT_APPLICABLE });
+                    };
+        
+        
+                        //eProcedures.09////////////
+                    _val = getValue(elementList, "eProcedures.09");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {
+                            if (isRequiredStateElement("eProcedures.09")) 
+                            {
+                                ProcedureGroup["eProcedures.09"] = V3NOT_RECORDED;
+                                ProcedureGroup["ProcedureCrewMembersID"] = NOT_RECORDED;
+                                v2Array.push({ section: "E19", element: "E19_09", val: v2NOT_RECORDED });
+                            }
+                            else 
+                            {
+                                ProcedureGroup["eProcedures.09"] = v3NOT_REPORTING;
+                                ProcedureGroup["ProcedureCrewMembersID"] = NOT_REPORTING;
+                                v2Array.push({ section: "E19", element: "E19_09", val: v2NOT_REPORTING });                
+                            }
+                        }
+                        else 
+                        {
+                            ProcedureGroup["eProcedures.09"] = _val;
+                            ProcedureGroup["ProcedureCrewMembersID"] = _val;
+                            v2Array.push({ section: "E19", element: "E19_09", val: _val});                
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["eProcedures.09"] = v3NOT_APPLICABLE;
+                        ProcedureGroup["ProcedureCrewMembersID"] = NOT_APPLICABLE;
+                        v2Array.push({ section: "E19", element: "E19_09", val: v2NOT_AVAILABLE});
+                    };
+        
+        
+                        //eProcedures.10////////////
+                    _val = getValue(elementList, "eProcedures.10");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {           
+                            ProcedureGroup["RoleTypeofPersonPerformingtheProcedure"] = NOT_RECORDED;
+                            ProcedureGroup["eProcedures.10"] = V3NOT_RECORDED;
+                        }
+                        else
+                        {
+                            ProcedureGroup["RoleTypeofPersonPerformingtheProcedure"] = setCodeText("eProcedures.10", _val);
+                            ProcedureGroup["eProcedures.10"] = _val;          
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["RoleTypeofPersonPerformingtheProcedure"] = NOT_APPLICABLE;
+                        ProcedureGroup["eProcedures.10"] = v3NOT_APPLICABLE;
+                    };
+        
+        
+                        //eProcedures.11////////////
+                    _val = getValue(elementList, "eProcedures.11");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {
+                            ProcedureGroup["eProcedures.10"] = null;
+                            ProcedureGroup["ProcedureAuthorization"] = null;
+                            v2Array.push({ section: "E19", element: "E19_10", val: v2NOT_RECORDED});
+                        }
+                        else 
+                        {
+                            ProcedureGroup["eProcedures.11"] = _val;
+                            ProcedureGroup["ProcedureAuthorization"] = setCodeText("eProcedures.11", _val);
+                            v2Array.push({ section: "E06", element: "E06_12", val: SetV2("eProcedures.11", _val) });                        
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["eProcedures.10"] = null;
+                        ProcedureGroup["ProcedureAuthorization"] = null;
+                        v2Array.push({ section: "E19", element: "E19_10", val: v2NOT_AVAILABLE});
+                    };
+        
+        
+                        //eProcedures.12////////////
+                    _val = getValue(elementList, "eProcedures.12");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
+                        {
+                            ProcedureGroup["eProcedures.10"] = null;
+                            ProcedureGroup["ProcedureAuthorizingPhysician"] = null;
+                            v2Array.push({ section: "E19", element: "E19_11", val: v2NOT_RECORDED});                
+                        }
+                        else 
+                        {
+                            ProcedureGroup["eProcedures.12"] = _val;
+                            ProcedureGroup["ProcedureAuthorizingPhysician"] =_val;
+                            v2Array.push({ section: "E19", element: "E19_11", val: _val});                
+                        }
+                    }
+                    else
+                    {
+                        ProcedureGroup["eProcedures.10"] = null;
+                        ProcedureGroup["ProcedureAuthorizingPhysician"] = null;
+                        v2Array.push({ section: "E19", element: "E19_11", val: v2NOT_APPLICABLE});
+                    };
+        
+                        //eProcedures.13////////////
+                    _val = getValue(elementList, "eProcedures.13");
+                    if(eProcedures.IsValid == true)
+                    {
+                        if (_val == null) 
                         {
                             if (isRequiredStateElement("eProcedures.13")) 
                             {
                                 ProcedureGroup["eProcedures.13"] = V3NOT_RECORDED;
                                 ProcedureGroup["VascularAccessLocation"] = NOT_RECORDED;
-                                v2Array.push({ section: "E19", element: "E19_12", val: V2NOT_RECORDED});
-
-                                XML.BeginNode("eProcedures.13");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("VascularAccessLocation", NOT_RECORDED);      
+                                v2Array.push({ section: "E19", element: "E19_12", val: V2NOT_RECORDED});                                
                             }
                             else 
                             {
-
                                 ProcedureGroup["eProcedures.13"] = v3NOT_REPORTING;
                                 ProcedureGroup["VascularAccessLocation"] = NOT_REPORTING;
                                 v2Array.push({ section: "E19", element: "E19_12", val: v2NOT_REPORTING});
-                                XML.BeginNode("eProcedures.13");
-                                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                                XML.EndNode();
-
-                                OXML.Node("VascularAccessLocation", NOT_REPORTING); 
                             }
                         }
                         else 
                         {
-                            _val = _procedures.ValueArray[0].val;
                             ProcedureGroup["VascularAccessLocation"] = setCodeText("eProcedures.13", _val);
                             ProcedureGroup["eProcedures.13"] = _val;
                             v2Array.push({ section: "E19", element: "E19_12", val: SetD2("eProcedures.13", _val)});
-                            XML.Node("eProcedures.13", _val);
-                            OXML.Node("VascularAccessLocation", setCodeText("eProcedures.13", _val));
                         }
                     }
                     else
@@ -14626,681 +13601,485 @@ var seteProcedures = function (businessObject) {
                         ProcedureGroup["eProcedures.13"] = v3NOT_APPLICABLE;
                         ProcedureGroup["VascularAccessLocation"] = NOT_APPLICABLE;
                         v2Array.push({ section: "E19", element: "E19_12", val: v2NOT_APPLICABLE});
-                        XML.BeginNode("eProcedures.13");
-                        XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                        XML.EndNode();
-
-                        OXML.Node("VascularAccessLocation", NOT_APPLICABLE); 
                     }
                 }
-                
+                */
             return eProcuedrues
         };
 var seteProtocols = function (businessObject) {
 
-    var eProtocol = new Object()
-    var _protocol = new Object()
-    var ProtocolGroup = new Object();
-    var v2Array = [];
-    ////////Check for cancelled calls, Standby, non-patient
-    if ((Call.HasPatient == true) && (Call.HasTreatment == true) && (eResponse.StandBy == false)) {
-        setnA
-        return eProtocols;
-    };
+            var eProtocol = new Object()
+            var ProtocolGroup = new Object();
+            var v2Array = [];
+            ////////Check for cancelled calls, Standby, non-patient
+            if ((Call.HasPatient == true) && (Call.HasTreatment == true) && (eResponse.StandBy == false)) {
+                setnA
+                return eProtocols;
+            };
 
-    ProtocolGroupObject = getNEMSISSection(businessObject, "ProtocolGroup")
-    if (ProtocolGroupObject.length = 0) {
-        setnA
-        return eProtocols;
-    };
+            ProtocolGroupObject = getNEMSISSection(businessObject, "ProtocolGroup")
+            if (ProtocolGroupObject.length = 0) {
+                setnA
+                return eProtocols;
+            };
+            /*
         
-    for (var xx = 0; xx < businessObject.sections.length; xx++)
-    {
-        var elementList = businessObject.sections[xx].attributes.elements;
         
-        ///////////eProtocols.01////////
-        eProtocol["IsValid"] = false;
-        _protocol = getValue(elementList, "eProtocols.01");
-        if (eProtocol.IsValid == true) {
-        
-            if (_protocol.IsNull == true) 
+            for (var xx = 0; xx < businessObject.sections.length; xx++)
             {
-                ProtocolsGroup["ProtocolsUsed"] = NOT_RECORDED;
-                ProtocolsGroup["eProtocols.01"] = v3NOT_RECORDED;
-                v2Array.push({ section: "E17", element: "E17_11", val: V2NOT_RECORDED });
-                
-                XML.BeginNode("eProcedures.01");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("ProtocolsUsed", NOT_RECORDED); 
+                var elementList = businessObject.sections[xx].attributes.elements;
+        
+                ///////////eProtocols.01////////
+                eProtocol["IsValid"] = false;
+                _val = getValue(elementList, "eProtocols.01");
+                if (eProcedures.IsValid == true) {
+        
+                    if (_val == null) {
+                        ProtocolsGroup["ProtocolsUsed"] = NOT_RECORDED;
+                        ProtocolsGroup["eProtocols.01"] = v3NOT_RECORDED;
+                        v2Array.push({ section: "E17", element: "E17_11", val: V2NOT_RECORDED });
+                    }
+                    else
+                    {
+                        eProtocol["IsValid"] = true;
+                        ProtocolsGroup["eProtocols.01"] = _val;
+                        ProtocolsGroup["ProtocolsUsed"] = setCodeText("eProtocols.01", _val);
+                        v2Array.push({ section: "E17", element: "E17_11", val: setV2("eProtocols.01", _val) });
+                    }
+                }
+                else
+                {
+                    ProtocolsGroup["ProtocolsUsed"] = NOT_APPLICABLE;
+                    ProtocolsGroup["eProtocols.01"] = v3NOT_APPLICABLE;
+                    v2Array.push({ section: "E17", element: "E17_11", val: v2NOT_APPLICABLE});
+                };
+        
+                ///////////eProtocols.02////////
+                _val = getValue(elementList, "eProtocols.02");
+                if (eProtocol["IsValid"] == true)
+                {
+                    if (_val == null)
+                    {
+                        ProtocolsGroup["eProtocols.02"] = V3NOT_RECORDED;
+                        ProtocolsGroup["ProtocolAgeCategory"] = NOT_RECORDED;
+                    }
+                    else
+                    {
+                        ProtocolsGroup["eProtocols.02"] = _val;
+                        ProtocolsGroup["ProtocolAgeCategory"] = setCodeText("eProtocols.02", _val);
+                    }
+                }
+                else
+                {
+                    ProtocolsGroup["eProtocols.02"] = v3NOT_APPLICABLE;
+                    ProtocolsGroup["ProtocolAgeCategory"] = NOT_APPLICABLE;
+                };
             }
-            else
-            {
-                _val = _protocol.ValueArray[0].val;
-                eProtocol["IsValid"] = true;
-                ProtocolsGroup["eProtocols.01"] = _val;
-                ProtocolsGroup["ProtocolsUsed"] = setCodeText("eProtocols.01", _val);
-                v2Array.push({ section: "E17", element: "E17_11", val: setV2("eProtocols.01", _val) });
-                XML.Node("eProtocols.01", _val); 
-                OXML.Node("ProtocolsUsed", setCodeText("eProtocols.01", _val)); 
-            }
-        }
-        else
-        {
-            ProtocolsGroup["ProtocolsUsed"] = NOT_APPLICABLE;
-            ProtocolsGroup["eProtocols.01"] = v3NOT_APPLICABLE;
-            v2Array.push({ section: "E17", element: "E17_11", val: v2NOT_APPLICABLE});
-
-            XML.BeginNode("eProcedures.01");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("ProtocolsUsed", NOT_APPLICABLE); 
+            */
+            return eProtocol;
         };
-        
-        ///////////eProtocols.02////////
-        _protocol = getValue(elementList, "eProtocols.02");
-        if (eProtocol["IsValid"] == true)
-        {
-            if (_protocol.IsNull == true) 
-            {
-                ProtocolsGroup["eProtocols.02"] = V3NOT_RECORDED;
-                ProtocolsGroup["ProtocolAgeCategory"] = NOT_RECORDED;
-                
-                XML.BeginNode("eProcedures.02");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("ProtocolAgeCategory", NOT_RECORDED); 
-            }
-            else
-            {
-                _val = _protocol.ValueArray[0].val;
-                ProtocolsGroup["eProtocols.02"] = _val;
-                ProtocolsGroup["ProtocolAgeCategory"] = setCodeText("eProtocols.02", _val);
-                XML.Node("eProtocols.02", _val); 
-                OXML.Node("ProtocolAgeCategory", setCodeText("eProtocols.02", _val)); 
-            }
-        }
-        else
-        {
-            ProtocolsGroup["eProtocols.02"] = v3NOT_APPLICABLE;
-            ProtocolsGroup["ProtocolAgeCategory"] = NOT_APPLICABLE;
-            XML.BeginNode("eProcedures.02");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("ProtocolAgeCategory", NOT_APPLICABLE); 
-        };
-    }            
-    return eProtocol;
-};
 var seteeRecord = function (businessObject) {
-    var eRecord = new Object();
-    
-    //////////////////////eRecord.01
-    _val = getValue(businessObject.elements, "eRecord.01");
-    if (_val == null) {
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eRecord.01", Description: "PCR Number  MANDATORY" })
-        eRecord["PCR"] = null;
-        eRecord["eRecord.01"] = null;
-        OXML.Node("PCR", null); 
-        XML.Node("eRecord.01", null); 
-    }
-    else 
-    {
-        v2Array.push({ section: "E01", element: "E01_01", val: _val });
-        eRecord["eRecord.01"] = _val;
-        eRecord["PCR"] = _val;
-
-        OXML.Node("PCR", _val); 
-        XML.Node("eRecord.01", _val); 
-    };
-        
-    //////////////////////eRecord.02
-    _val = getValue(elementList, "eRecord.02");
-    if (_val == null) {
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eRecord.02", Description: "Software Creator MANDATORY" })
-        eRecord["eRecord.02"] = null;
-        eRecord["SoftwareCreator"] = null;
-        v2Array.push({ section: "E01", element: "E01_02", val: v2NOT_RECORDED });
-        OXML.Node("SoftwareCreator", null); 
-        XML.Node("eRecord.02", null); 
-        
-    }
-    else 
-    {
-        OXML.Node("SoftwareCreator", _val); 
-        XML.Node("eRecord.02", _val); 
-        eRecord["eRecord.02"] = _val;
-        eRecord["SoftwareCreator"] = _val;
-        v2Array.push({ section: "E01", element: "E01_02", val: _val });
-    };
-        
-    //////////////////////eRecord.03
-    _val = getValue(businessObject.elements, "eRecord.03");
-    if (_val == null) 
-    {
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eRecord.03", Description: "Software Name MANDATORY" })
-        v2Array.push({ section: "E01", element: "E01_03", val: v2NOT_RECORDED });
-        eRecord["eRecord.03"] = null;
-        eRecord["SoftwareName"] = null;
-
-        OXML.Node("SoftwareName", null); 
-        XML.Node("eRecord.03", null); 
-    }
-    else 
-    {
-        v2Array.push({ section: "E02", element: "E02_03", val: _val });
-        eRecord["eRecord.03"] = _val;
-        eRecord["SoftwareName"] = _val;
-        OXML.Node("SoftwareName", _val); 
-        XML.Node("eRecord.03", _val); 
-    };
-        
-        
-    //////////////////////eRecord.04
-    _val = getValue(businessObject.elements, "eRecord.04");
-    if (_val == null) 
-    {
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eRecord.04", Description: "Software Version MANDATORY" })
-        v2Array.push({ section: "E01", element: "E01_04", val: v2NOT_RECORDED });
-        eRecord["eRecord.04"] = null;
-        eRecord["SoftwareVersion"] = null;
-
-        OXML.Node("SoftwareVersion", null); 
-        XML.Node("eRecord.04", null); 
-    }
-    else {
-        v2Array.push({ section: "E01", element: "E01_04", val: _val });
-        eRecord["eRecord.04"] = _val;
-        eRecord["SoftwareVersion"] = _val;
-        OXML.Node("SoftwareVersion", _val); 
-        XML.Node("eRecord.04", _val); 
-    };
-            
-    return eRecord;
-};
-var seteVitals = function (businessObject) 
-{
-    var eVitals = new Object();
-    var _vitals = new Object();
-    var VitalGroup = new Object();
-    var v2Array = [];
-
-        
-    if (typeof businessObject["eVitals.VitalsGroup"] != undefined)
-    {
-            
-        ////////Check for cancelled calls, Standby, non-patient
-        if ((Call.HasPatient == true) && (Call.HasTreatment == true) && (eResponse.StandBy == false)) {
-            eVitals.IsValid = true;
-        }
-        else {
-            setnA
-            return eVitals;
-        };
-        
-        VitalGroup = getNEMSISSection(businessObject, "eVitals.VitalGroup")
-        if (VitalGroup.length = 0) {
-            setnA
-            return eVitals;
-        };
-        
-        for (var xx = 0; xx < businessObject["eVitals.VitalsGroup"].length; xx++) {
-            console.log(businessObject["eVitals.VitalsGroup"][xx]);
-        
-            //eVital.01/////////////////////////////
-            _val = getValue(businessObject.elements, "eVitals.01");
-            if (eVitals.IsValid == true) {
-                if (_vitals.IsNull == true) 
-                {
-                    v2Array.push({ section: "E14", element: "E14_01", val: null });
-                    VitalsGroup["DateTimeVitalSignsTaken"] = NOT_RECORDED;
-                    VitalsGroup["eVitals.01"] = v3NOT_RECORDED;
-                    XML.BeginNode("eVitals.01");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("DateTimeVitalSignsTaken", NOT_RECORDED);      
-                }
-                else
-                {
-                    _val = _vitals.ValueArray[0].val;
-                    VitalsGroup["DateTimeVitalSignsTaken"] = _val;
-                    v2Array.push({ section: "E14", element: "E14_01", val: _val });
-                    VitalsVitalsGroup["eVitals.01"] = _val;
-                    OXML.Node("eVitals.01", _val);      
-                    XML.Node("DateTimeVitalSignsTaken", _val);      
-                }
-            }
-            else
-            {
-                v2Array.push({ section: "E14", element: "E14_01", val: null });
-                VitalsGroup["DateTimeVitalSignsTaken"] = NOT_APPLICABLE;
-                VitalsGroup["eVitals.01"] = v3NOT_APPLICABLE;
-
-                XML.BeginNode("eVitals.01");
-                XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                XML.EndNode();
-
-                OXML.Node("DateTimeVitalSignsTaken", NOT_APPLICABLE);
-            };
-        
-        
-            //eVital.02/////////////////////////////
-            _val = getValue(businessObject.elements, "eVitals.02");
-            if (eVitals.IsValid == true) 
-            {
-                if (_vitals.IsNull == true) 
-                {
-                    v2Array.push({ section: "E14", element: "E14_02", val: v2NOT_RECORDED });
-                    VitalsGroup["eVitals.02"] = v3NOT_RECORDED;
-                    VitalsGroup["ObtainedPriortothisUnitsEMSCare"] = NOT_RECORDED;
-                    
-                    XML.BeginNode("eVitals.02");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("ObtainedPriortothisUnitsEMSCare", NOT_RECORDED);      
-                }
-                else
-                {
-                    _val = _vitals.ValueArray[0].val;
-                    v2Array.push({ section: "E14", element: "E14_02", val: setV2("eVitals.02", _val) });
-                    VitalsGroup["ObtainedPriortothisUnitsEMSCare"] = setCodeText("eVitals.02", _val);
-                    VitalsGroup["eVitals.02"] = _val;
-                    OXML.Node("ObtainedPriortothisUnitsEMSCare", setCodeText("eVitals.02", _val));      
-                    OXML.Node("eVitals.02", _val);      
-                }
-            }
-            else
-            {
-                v2Array.push({ section: "E14", element: "E14_02", val: v2NOT_APPLICABLE });
-                VitalsGroup["eVitals.02"] = v3NOT_APPLICABLE;
-                VitalsGroup["ObtainedPriortothisUnitsEMSCare"] = NOT_APPLICABLE;
-
-                XML.BeginNode("eVitals.02");
-                XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                XML.EndNode();
-
-                OXML.Node("ObtainedPriortothisUnitsEMSCare", NOT_APPLICABLE);      
-            };
-        
-        
-            //eVital.03/////////////////////////////
-            _val = getValue(businessObject.elements, "eVitals.03");
-            eVitals.HasECG = false;
-            if (eVitals.IsValid == true) 
-            {
-                if (_vitals.IsNull == true) 
-                {
-                    PNValue = getPertinentNegative("eVitals.03")
-                    if (PNValue != null)
-                    {
-                        if (PNValue == "8801019")
-                        {
-                            VitalsGroup["CardiacRhythmECG"] = "REFUSED";
-                            VitalsGroup["eVitals.03"] = PN_REFUSED_IS_NILLABLE;
-                            v2Array.push({ section: "E14", element: "E14_03", val: v2NOT_KNOWN });
-                        }
-                        else if (PNValue == "8801023")
-                        {
-                            VitalsGroup["CardiacRhythmECG"] = "UNABLE TO COMPLETE";
-                            VitalsGroup["eVitals.03"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE;
-                            v2Array.push({ section: "E14", element: "E14_03", val: v2NOT_KNOWN });
-                        }
-                    }
-                    else
-                    {
-                        if (isRequiredStateElement("eExam.02") == true)
-                        {
-                            VitalsGroup["CardiacRhythmECG"] = NOT_RECORDED;
-                            VitalsGroup["eVitals.03"] = v3NOT_RECORDED;
-                            v2Array.push({ section: "E14", element: "E14_03", val: v2NOT_RECORDED });
-
-                            XML.BeginNode("eVitals.03");
-                            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                            XML.EndNode();
-
-                            OXML.Node("CardiacRhythmECG", NOT_RECORDED);      
-                        }
-                    }
-                }
-                else
-                {
-                    var arr1 = [];
-                    var arr2 = [];
-                    var arr3 = [];                    
-                    for (var i = 0; i < _vitals.ValueArray.length; i++)
-                    {
-                        if ((_vitals.ValueArray[i].HasValue == true) && (arr1.indexOf(_vitals.ValueArray[i].val) > -1))
-                        {
-                            _val = _vitals.ValueArray[i].val
-
-                            eVitals.HasECG = true;
-                            arr1.push(val[i]);
-                            arr2.push(setV2("eVitals.03", _val));
-                            arr3.push(setCodeText("eVitals.03", _val));
-                            OXML.Node("CardiacRhythmECG", setCodeText("eVitals.03", _val)); 
-                            XML.Node("eVitals.03",  _val); 
-                        }
-                    }
-                    VitalsGroup["eVitals.03"] = arr1.slice(0);
-                    VitalsGroup["eVitals.03"] = arr1.slice(0);
-                    v2Array.push({ section: "E14", element: "E14_03", val: arr2.slice(0) });
-
-                    XML.BeginNode("eVitals.03");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("CardiacRhythmECG", NOT_APPLICABLE); 
-                }
-            };
-            //eVital.04/////////////////////////////
-        
-            _val = getValue(businessObject.elements, "eVitals.04");
-            if (eVitals.HasECG == true) {
-                if (_vitals.IsNull == true) 
-                {
-                    if (isRequiredStateElement("eVitals.04"))
-                    {
-                        VitalsGroup["ECGType"] = NOT_RECORDED;
-                        VitalsGroup["eVitals.04"] = v3NOT_RECORDED;
-                        XML.BeginNode("eVitals.04");
-                        XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                        XML.EndNode();
-
-                        OXML.Node("ECGType", NOT_RECORDED);    
-                    }
-                    else
-                    {
-                        VitalsGroup["ECGType"] = null;
-                        VitalsGroup["eVitals.04"] = null;
-                        OXML.Node("ECGType", null);    
-                        XML.Node("eVitals.04", null);    
-                    }
-                }
-                else
-                {
-                    _val = _vitals.ValueArray[0].val;
-                    VitalsGroup["ECGType"] = setCodeText("eVitals.04", _val);
-                    VitalsGroup["eVitals.04"] = _val;
-                    OXML.Node("ECGType", setCodeText("eVitals.04", _val));    
-                    XML.Node("eVitals.04", _val);    
-                }
-            }
-            else
-            {
-                VitalsGroup["ECGType"] = NOT_APPLICABLE;
-                VitalsGroup["eVitals.04"] = v3NOT_APPLICABLE;
-                XML.BeginNode("eVitals.04");
-                XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                XML.EndNode();
-
-                OXML.Node("ECGType", NOT_APPLICABLE);    
-            };
-        
-        
-        //eVital.05/////////////////////////////
-        _val = getValue(businessObject.elements, "eVitals.05");
-        if (eVitals.HasECG == true)
-        {
-            if (_vitals.IsNull == true) 
-            {
-                VitalsGroup["eVitals.05"] = v3NOT_RECORDED;
-                VitalsGroup["MethodofECGInterpretation"] = NOT_RECORDED;
-                XML.BeginNode("eVitals.05");
-                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                XML.EndNode();
-
-                OXML.Node("MethodofECGInterpretation", NOT_RECORDED);    
+            var eRecord = new Object();
+            /*
+            //////////////////////eRecord.01
+            _val = getValue(businessObject.elements, "eRecord.01");
+            if (_val == null) {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eRecord.01", Description: "PCR Number  MANDATORY" })
+                eRecord["PCR"] = null;
+                eRecord["eRecord.01"] = null;
             }
             else {
-                var arr1 = [];
-                var arr3 = [];
-                for (var i = 0; i < _vitals.ValueArray.length; i++)
-                {
-                    if ((_vitals.ValueArray[i].HasValue == true) && (arr1.indexOf(_vitals.ValueArray[i].val) > -1))
-                    {
-                        _val = _vitals.ValueArray[i].val
-
-                        arr1.push(val[i]);
-                        arr3.push(val + setCodeText("eVitals.05", _val));
-                        OXML.Node("MethodofECGInterpretation", setCodeText("eVitals.05", _val));    
-                        OXML.Node("eVitals.05", _val);    
-                    }
-                };
-                VitalsGroup["eVitals.05"] = arr1.slice(0);
-                VitalsGroup["MethodofECGInterpretation"] = arr2.slice(0);
+                v2Array.push({ section: "E01", element: "E01_01", val: _val });
+                eRecord["eRecord.01"] = _val;
+                eRecord["PCR"] = _val;
+            };
+        
+            //////////////////////eRecord.02
+            _val = getValue(elementList, "eRecord.02");
+            if (_val == null) {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eRecord.02", Description: "Software Creator MANDATORY" })
+                eRecord["eRecord.02"] = null;
+                eRecord["SoftwareCreator"] = null;
+                v2Array.push({ section: "E01", element: "E01_02", val: v2NOT_RECORDED });
+        
             }
-        }
-        else
-        {
-            VitalsGroup["eVitals.05"] = v3NOT_APPLICABLE;
-            VitalsGroup["MethodofECGInterpretation"] = NOT_APPLICABLE;
-            XML.BeginNode("eVitals.05");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("MethodofECGInterpretation", NOT_APPLICABLE);    
+            else {
+                eRecord["eRecord.02"] = _val;
+                eRecord["SoftwareCreator"] = _val;
+                v2Array.push({ section: "E01", element: "E01_02", val: _val });
+            };
+        
+            //////////////////////eRecord.03
+            _val = getValue(businessObject.elements, "eRecord.03");
+            if (_val == null) {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eRecord.03", Description: "Software Name MANDATORY" })
+                v2Array.push({ section: "E01", element: "E01_03", val: v2NOT_RECORDED });
+                eRecord["eRecord.03"] = null;
+                eRecord["SoftwareName"] = null;
+            }
+            else {
+                v2Array.push({ section: "E02", element: "E02_03", val: _val });
+                eRecord["eRecord.03"] = _val;
+                eRecord["SoftwareName"] = _val;
+            };
+        
+        
+            //////////////////////eRecord.04
+            _val = getValue(businessObject.elements, "eRecord.04");
+            if (_val == null) {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eRecord.04", Description: "Software Version MANDATORY" })
+                v2Array.push({ section: "E01", element: "E01_04", val: v2NOT_RECORDED });
+                eRecord["eRecord.04"] = null;
+                eRecord["SoftwareVersion"] = null;
+            }
+            else {
+                v2Array.push({ section: "E01", element: "E01_04", val: _val });
+                eRecord["eRecord.04"] = _val;
+                eRecord["SoftwareVersion"] = _val;
+            };
+            */
+            return eRecord;
         };
+var seteVitals = function (businessObject) {
+            var eVitals = new Object();
+            var VitalGroup = new Object();
+            var v2Array = [];
+            /*
         
-        
-        //eVital.06/////////////////////////////
-        _vitals= getValue(businessObject.elements, "eVitals.06");
-        eVitals.SBP = false;
-        if (eVitals.IsValid == true) {
-            if (_vitals.IsNull == true) 
+            if (typeof businessObject["eVitals.VitalsGroup"] != undefined)
             {
-                _PNValue = getPN("eVitals.06");
-                if (_PNValue != null)
-                {
-                    if (_PNValue == "8801019")
+            
+                ////////Check for cancelled calls, Standby, non-patient
+                if ((Call.HasPatient == true) && (Call.HasTreatment == true) && (eResponse.StandBy == false)) {
+                    eVitals.IsValid = true;
+                }
+                else {
+                    setnA
+                    return eVitals;
+                };
+        
+                VitalGroup = getNEMSISSection(businessObject, "eVitals.VitalGroup")
+                if (VitalGroup.length = 0) {
+                    setnA
+                    return eVitals;
+                };
+                /*
+            for (var xx = 0; xx < businessObject["eVitals.VitalsGroup"].length; xx++) {
+                console.log(businessObject["eVitals.VitalsGroup"][xx]);
+        
+                //eVital.01/////////////////////////////
+                _val = getValue(businessObject.elements, "eVitals.01");
+                if (eVitals.IsValid == true) {
+                    if (_val == null)
                     {
-                        v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_KNOWN });
-                        VitalsGroup["SBP"] = _PNValue;
-                        VitalsGroup["eVitals.06"] = PN_REFUSED_IS_NILLABLE;
-                    }
-                    else if (_PNValue == "8801023")
-                    {
-                        v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_KNOWN });
-                        VitalsGroup["SBP"] = _PNValue;
-                        VitalsGroup["eVitals.06"] = _PNValue;
-                    }
-                    else if (_PNValue == "8801005")
-                    {
-                        v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_KNOWN });
-                        VitalsGroup["eVitals.06"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE;
-                        VitalsGroup["SBP"] = _PNValue;
+                        v2Array.push({ section: "E14", element: "E14_01", val: null });
+                        VitalsGroup["DateTimeVitalSignsTaken"] = NOT_RECORDED;
+                        VitalsGroup["eVitals.01"] = v3NOT_RECORDED;
                     }
                     else
                     {
-                        if (isRequiredStateElement("eVitals.06"))
+                        VitalsGroup["DateTimeVitalSignsTaken"] = _val;
+                        v2Array.push({ section: "E14", element: "E14_01", val: _val });
+                        VitalsVitalsGroup["eVitals.01"] = _val;
+                    }
+                }
+                else
+                {
+                    v2Array.push({ section: "E14", element: "E14_01", val: null });
+                    VitalsGroup["DateTimeVitalSignsTaken"] = NOT_APPLICABLE;
+                    VitalsGroup["eVitals.01"] = v3NOT_APPLICABLE;
+                };
+        
+        
+                //eVital.02/////////////////////////////
+                _val = getValue(businessObject.elements, "eVitals.02");
+                if (eVitals.IsValid == true) {
+                    if (_val == null)
+                    {
+                        v2Array.push({ section: "E14", element: "E14_02", val: v2NOT_RECORDED });
+                        VitalsGroup["eVitals.02"] = v3NOT_RECORDED;
+                        VitalsGroup["ObtainedPriortothisUnitsEMSCare"] = NOT_RECORDED;
+                    }
+                    else
+                    {
+                        v2Array.push({ section: "E14", element: "E14_02", val: setV2("eVitals.02", _val) });
+                        VitalsGroup["ObtainedPriortothisUnitsEMSCare"] = setCodeText("eVitals.02", _val);
+                        VitalsGroup["eVitals.02"] = _val;
+                    }
+                }
+                else
+                {
+                    v2Array.push({ section: "E14", element: "E14_02", val: v2NOT_APPLICABLE });
+                    VitalsGroup["eVitals.02"] = v3NOT_APPLICABLE;
+                    VitalsGroup["ObtainedPriortothisUnitsEMSCare"] = NOT_APPLICABLE;
+                };
+        
+        
+                //eVital.03/////////////////////////////
+                _val = getValue(businessObject.elements, "eVitals.03");
+                eVitals.HasECG = false;
+                if (eVitals.IsValid == true) {
+                    if (_val == null)
+                    {
+                        PNValue = getPertinentNegative("eVitals.03")
+                        if (PNValue != null)
                         {
-                            VitalsGroup["SBP"] = NOT_RECORDED;
-                            v2Array.push({ section: "E14", element: "E14_04", val: v2RECORDED });
-                            VitalsGroup["eVitals.06"] = v3NOT_RECORDED;
-                            XML.BeginNode("eVitals.06");
-                            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                            XML.EndNode();
-
-                            OXML.Node("SBP", NOT_RECORDED);    
+                            if (PNValue == "8801019")
+                            {
+                                VitalsGroup["CardiacRhythmECG"] = "REFUSED";
+                                VitalsGroup["eVitals.03"] = PN_REFUSED_IS_NILLABLE;
+                                v2Array.push({ section: "E14", element: "E14_03", val: v2NOT_KNOWN });
+                            }
+                            else if (PNValue == "8801023")
+                            {
+                                VitalsGroup["CardiacRhythmECG"] = "UNABLE TO COMPLETE";
+                                VitalsGroup["eVitals.03"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE;
+                                v2Array.push({ section: "E14", element: "E14_03", val: v2NOT_KNOWN });
+                            }
                         }
                         else
                         {
-                            VitalsGroup["SBP"] = NOT_REPORTING;
-                            v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_REPORTING });
-                            VitalsGroup["eVitals.06"] = v3NOT_REPORTING;
-                            XML.BeginNode("eVitals.06");
-                            XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                            XML.EndNode();
-
-                            OXML.Node("SBP", NOT_REPORTING);    
+                            if (isRequiredStateElement("eExam.02") == true)
+                            {
+                                VitalsGroup["CardiacRhythmECG"] = NOT_RECORDED;
+                                VitalsGroup["eVitals.03"] = v3NOT_RECORDED;
+                                v2Array.push({ section: "E14", element: "E14_03", val: v2NOT_RECORDED });
+                            }
                         }
                     }
-                }
-            }
-            else
-            {
-                _val = _vitals.ValueArray[0].val;
-                OXML.Node("SBP", _val);    
-                OXML.Node("eVitals.06", _val);    
-                eVitals.SBP = true;
-                VitalsGroup["eVitals.06"] = _val;
-                VitalsGroup["SBP"] = _val;
-                v2Array.push({ section: "E14", element: "E14_04", val: _val });
-            }
-        }
-        else
-        {
-            VitalsGroup["SBP"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_APPLICABLE });
-            VitalsGroup["eVitals.06"] = v3NOT_APPLICABLE;
-            XML.BeginNode("eVitals.06");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("SBP", NOT_APPLICABLE);    
-        };
-        
-        
-        //eVitals.07/////////////////////////////
-        _vitals = getValue(businessObject.elements, "eVitals.07");
-        eVitals.DBP = false;
-        if (eVitals.IsValid == true) 
-        {
-            if (_vitals.IsNull == true) 
-            {
-                var _pn = getPN("eVitals.07");
-                if (_PNValue != null) {
-                    if (_PNValue == "8801019") {
-                        v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_KNOWN });
-                        VitalsGroup["eVitals.07"] = PN_REFUSED_IS_NILLABLE;
-                        VitalsGroup["DBP"] = _PNValue;
-                    }
-                    else if (_PNValue == "8801023") {
-                        v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_KNOWN });
-                        VitalsGroup["DBP"] = _PNValue;
-                        VitalsGroup["eVitals.07"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE;
-                    }
-                    else if (_PNValue == "8801005") {
-                        VitalsGroup["DBP"] = _PNValue;
-                        v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_KNOWN });
-                        VitalsGroup["eVitals.07"] = PN_FINDING_NOT_PRESENT_IS_NILLABLE;
-                    }
-                }
-                else {
-                    if (isRequiredStateElement("eVitals.07")) 
+                    else
                     {
-                        VitalsGroup["DBP"] = NOT_RECORDED;
-                        v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_RECORDED });
-                        VitalsGroup["eVitals.07"] = v3NOT_RECORDED;
-                        XML.BeginNode("eVitals.07");
-                        XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                        XML.EndNode();
-
-                        OXML.Node("DBP", NOT_RECORDED);    
+                        var arr1 = [];
+                        var arr2 = [];
+                        var arr3 = [];
+                        VitalsGroup["eVitals.03"] = _val;
+                        for (var i = 0; i < businessObject.elements; i++)
+                        {
+                            if (_val != null)
+                            {
+                                eVitals.HasECG = true;
+                                arr1.push(val[i]);
+                                arr2.push(setV2("eVitals.03", _val));
+                                arr3.push(setCodeText("eVitals.03", _val));
+                            }
+                        }
+                        VitalsGroup["eVitals.03"] = arr1.slice(0);
+                        VitalsGroup["eVitals.03"] = arr1.slice(0);
+                        v2Array.push({ section: "E14", element: "E14_03", val: arr2.slice(0) });
+                    }
+                };
+                    
+                        
+                //eVital.04/////////////////////////////
+        
+                _val = getValue(businessObject.elements, "eVitals.04");
+                if (eVitals.HasECG == true) {
+                    if (_val == null)
+                    {
+                        if (isRequiredStateElement("eVitals.04"))
+                        {
+                            VitalsGroup["ECGType"] = NOT_RECORDED;
+                            VitalsGroup["eVitals.04"] = v3NOT_RECORDED;
+                        }
+                        else
+                        {
+                            VitalsGroup["ECGType"] = null;
+                            VitalsGroup["eVitals.04"] = null;
+                        }
+                    }
+                    else
+                    {
+                        VitalsGroup["ECGType"] = setCodeText("eVitals.04", _val);
+                        VitalsGroup["eVitals.04"] = _val;
+                    }
+                }
+                else
+                {
+                    VitalsGroup["ECGType"] = NOT_APPLICABLE;
+                    VitalsGroup["eVitals.04"] = v3NOT_APPLICABLE;
+                };
+        
+        
+                //eVital.05/////////////////////////////
+                _val = getValue(businessObject.elements, "eVitals.05");
+                if (eVitals.HasECG == true)
+                {
+                    if (_val == null)
+                    {
+                        VitalsGroup["eVitals.05"] = v3NOT_RECORDED;
+                        VitalsGroup["MethodofECGInterpretation"] = NOT_RECORDED;
                     }
                     else {
-                        VitalsGroup["DBP"] = NOT_REPORTING;
-                        v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_REPORTING });
-                        VitalsGroup["eVitals.07"] = v3NOT_REPORTING;
-                        XML.BeginNode("eVitals.07");
-                        XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                        XML.EndNode();
-
-                        OXML.Node("DBP", NOT_REPORTING);    
+                        var arr1 = [];
+                        var arr3 = [];
+                        for (var i = 0; i < businessObject.elements; i++) {
+                            if (_val != null) {
+                                arr1.push(val[i]);
+                                arr3.push(val + setCodeText("eVitals.05", _val));
+                            }
+                        };
+                        VitalsGroup["eVitals.05"] = arr1.slice(0);
+                        VitalsGroup["MethodofECGInterpretation"] = arr2.slice(0);
                     }
                 }
-            }
-            else 
-            {
-                _val = _vitals.ValueArray[0].val;
-                VitalsGroup["DBP"] = _val;
-                v2Array.push({ section: "E14", element: "E14_05", val: _val });
-                VitalsGroup["eVitals.07"] = _val;
-                eVitals.DBP = true;
-                OXML.Node("eVitals.07", _val);    
-                OXML.Node("DBP", _val);    
-            }
-        }
-        else {
-            VitalsGroup["DBP"] = NOT_APPLICABLE;
-            v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_APPLICABLE });
-            VitalsGroup["eVitals.07"] = v3NOT_APPLICABLE;
-            XML.BeginNode("eVitals.07");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("DBP", NOT_APPLICABLE);    
-        };
+                else
+                {
+                    VitalsGroup["eVitals.05"] = v3NOT_APPLICABLE;
+                    VitalsGroup["MethodofECGInterpretation"] = NOT_APPLICABLE;
+                };
         
         
-        //eVital.08/////////////////////////////
-        _vitals = getValue(businessObject.elements, "eVitals.08");
-        if ((eVitals.DBP == true) &&(eVitals.SBP== true))   //We have good BP
-        {
-            if (_vitals.IsNull == true) 
-            {
-                if (isRequiredStateElement("eVitals.08")) {
-                    VitalsGroup["MethodofBloodPressureMeasurement"] = NOT_RECORDED;
-                    VitalsGroup["eVitals.08"] = v3NOT_RECORDED;
-                    v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_RECORDED });
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_RECORDED);    
+                //eVital.06/////////////////////////////
+                _val = getValue(businessObject.elements, "eVitals.06");
+                eVitals.SBP = false;
+                if (eVitals.IsValid == true) {
+                    if (_val == null)
+                    {
+                        _PNValue = getPN("eVitals.06");
+                        if (_PNValue != null)
+                        {
+                            if (_PNValue == "8801019")
+                            {
+                                v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_KNOWN });
+                                VitalsGroup["SBP"] = _PNValue;
+                                VitalsGroup["eVitals.06"] = PN_REFUSED_IS_NILLABLE;
+                            }
+                            else if (_PNValue == "8801023")
+                            {
+                                v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_KNOWN });
+                                VitalsGroup["SBP"] = _PNValue;
+                                VitalsGroup["eVitals.06"] = _PNValue;
+                            }
+                            else if (_PNValue == "8801005")
+                            {
+                                v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_KNOWN });
+                                VitalsGroup["eVitals.06"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE;
+                                VitalsGroup["SBP"] = _PNValue;
+                            }
+                            else
+                            {
+                                if (isRequiredStateElement("eVitals.06"))
+                                {
+                                    VitalsGroup["SBP"] = NOT_RECORDED;
+                                    v2Array.push({ section: "E14", element: "E14_04", val: v2RECORDED });
+                                    VitalsGroup["eVitals.06"] = v3NOT_RECORDED;
+                                }
+                                else
+                                {
+                                    VitalsGroup["SBP"] = NOT_REPORTING;
+                                    v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_REPORTING });
+                                    VitalsGroup["eVitals.06"] = v3NOT_REPORTING;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        eVitals.SBP = true;
+                        VitalsGroup["eVitals.06"] = _val;
+                        VitalsGroup["SBP"] = _val;
+                        v2Array.push({ section: "E14", element: "E14_04", val: _val });
+                    }
+                }
+                else
+                {
+                    VitalsGroup["SBP"] = NOT_APPLICABLE;
+                    v2Array.push({ section: "E14", element: "E14_04", val: v2NOT_APPLICABLE });
+                    VitalsGroup["eVitals.06"] = v3NOT_APPLICABLE;
+                };
+        
+        
+                //eVitals.07/////////////////////////////
+                _val = getValue(businessObject.elements, "eVitals.07");
+                eVitals.DBP = false;
+                if (eVitals.IsValid == true) {
+                    if (_val == null) {
+                        var _pn = getPN("eVitals.07");
+                        if (_PNValue != null) {
+                            if (_PNValue == "8801019") {
+                                v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_KNOWN });
+                                VitalsGroup["eVitals.07"] = PN_REFUSED_IS_NILLABLE;
+                                VitalsGroup["DBP"] = _PNValue;
+                            }
+                            else if (_PNValue == "8801023") {
+                                v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_KNOWN });
+                                VitalsGroup["DBP"] = _PNValue;
+                                VitalsGroup["eVitals.07"] = PN_UNABLE_TO_COMPLETE_IS_NILLABLE;
+                            }
+                            else if (_PNValue == "8801005") {
+                                VitalsGroup["DBP"] = _PNValue;
+                                v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_KNOWN });
+                                VitalsGroup["eVitals.07"] = PN_FINDING_NOT_PRESENT_IS_NILLABLE;
+                            }
+                        }
+                        else {
+                            if (isRequiredStateElement("eVitals.07")) 
+                            {
+                                VitalsGroup["DBP"] = NOT_RECORDED;
+                                v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_RECORDED });
+                                VitalsGroup["eVitals.07"] = v3NOT_RECORDED;
+                            }
+                            else {
+                                VitalsGroup["DBP"] = NOT_REPORTING;
+                                v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_REPORTING });
+                                VitalsGroup["eVitals.07"] = v3NOT_RECORDED;
+                            }
+                        }
+                    }
+                    else {
+                        VitalsGroup["DBP"] = _val;
+                        v2Array.push({ section: "E14", element: "E14_05", val: _val });
+                        VitalsGroup["eVitals.07"] = _val;
+                        eVitals.DBP = true;
+                    }
                 }
                 else {
-                    VitalsGroup["MethodofBloodPressureMeasurement"] = NOT_REPORTING;
-                    VitalsGroup["eVitals.08"] = null;
-                    v2Array.push({ section: "E14", element: "E14_05", val: null });
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_REPORTING);    
+                    VitalsGroup["DBP"] = NOT_APPLICABLE;
+                    v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_APPLICABLE });
+                    VitalsGroup["eVitals.07"] = v3NOT_APPLICABLE;
+                };
+        
+        
+                //eVital.08/////////////////////////////
+                _val = getValue(businessObject.elements, "eVitals.08");
+                if ((eVitals.DBP == true) &&(eVitals.SBP== true))   //We have good BP
+                {
+                    if (_val == null) 
+                    {
+                        if (isRequiredStateElement("eVitals.08")) {
+                            VitalsGroup["MethodofBloodPressureMeasurement"] = NOT_RECORDED;
+                            VitalsGroup["eVitals.08"] = v3NOT_RECORDED;
+                            v2Array.push({ section: "E14", element: "E14_05", val: v2NOT_RECORDED });
+                        }
+                        else {
+                            VitalsGroup["MethodofBloodPressureMeasurement"] = NOT_REPORTING;
+                            VitalsGroup["eVitals.08"] = null;
+                            v2Array.push({ section: "E14", element: "E14_05", val: null });
+                        }
+                    }
+                    else {
+                        VitalsGroup["MethodofBloodPressureMeasurement"] = setCodeText("eVitals.08", _val);
+                        VitalsGroup["eVitals.08"] = _val;
+                        v2Array.push({ section: "E14", element: "E14_05", val: setV2("eVitals.08", _val) });
+                        isNotApplicableFlag = false;
+                    }
                 }
-            }
-            else 
-            {
-                _val = _vitals.ValueArray[0].val;
-                VitalsGroup["MethodofBloodPressureMeasurement"] = setCodeText("eVitals.08", _val);
-                VitalsGroup["eVitals.08"] = _val;
-                v2Array.push({ section: "E14", element: "E14_05", val: setV2("eVitals.08", _val) });
-                isNotApplicableFlag = false;
-            }
-        }
-        else
-        {
-            VitalsGroup["MethodofBloodPressureMeasurement"] = NOT_APPLICABLE;
-            VitalsGroup["eVitals.08"] = v3NOT_APPLICABLE;
-            v2Array.push({ section: "E14", element: "E14_05", val: null });
-
-            XML.BeginNode("eVitals.07");
-            XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-            XML.EndNode();
-
-            OXML.Node("DBP", NOT_APPLICABLE);    
-        };
+                else
+                {
+                    VitalsGroup["MethodofBloodPressureMeasurement"] = NOT_APPLICABLE;
+                    VitalsGroup["eVitals.08"] = v3NOT_APPLICABLE;
+                    v2Array.push({ section: "E14", element: "E14_05", val: null });
+                };
         
         
-        //eVital.09/////////////////////////////               
+                //eVital.09/////////////////////////////               
                 _val = getValue(businessObject.elements, "eVitals.09");
                 if ((eVitals.SBP == true) && (eVitals.DBP == true)) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         VitalsGroup["MeanArterialPressure"] = null;
                         VitalsGroup["eVitals.09"] = null;
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         VitalsGroup["MeanArterialPressure"] = _val;
                         VitalsGroup["eVitals.09"] = _val;
                         isNotApplicableFlag = false;
@@ -15322,7 +14101,7 @@ var seteVitals = function (businessObject)
                 _val = getValue(businessObject.elements, "eVitals.10");
                 eVitals.IsHeartRateMonitored = false;
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
+                    if (_val == null)
                     {
                         _PNValue = getPN("eVitals.10");
                         if (_PNValue != null)
@@ -15353,31 +14132,18 @@ var seteVitals = function (businessObject)
                                     VitalsGroup["HeartRate"] = NOT_RECORDED;
                                     v2Array.push({ section: "E14", element: "E14_07", val: v2RECORDED });
                                     VitalsGroup["eVitals.10"] = v3NOT_RECORDED;
-
-                                    XML.BeginNode("eVitals.07");
-                                    XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                    XML.EndNode();
-
-                                    OXML.Node("DBP", NOT_RECORDED);    
                                 }
                                 else
                                 {
                                     VitalsGroup["HeartRate"] = NOT_REPORTING;
                                     v2Array.push({ section: "E14", element: "E14_07", val: v2NOT_REPORTING });
                                     VitalsGroup["eVitals.10"] = v3NOT_REPORTING;
-
-                                    XML.BeginNode("eVitals.07");
-                                    XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                                    XML.EndNode();
-
-                                    OXML.Node("DBP", NOT_REPORTING);    
                                 }
                             }
                         }
                     }
                     else
                     {
-                        _val = _vitals.ValueArray[0].val;
                         VitalsGroup["HeartRate"] = _val;
                         VitalsGroup["eVitals.10"] = _val;
                         v2Array.push({ section: "E14", element: "E14_07", val: _val });
@@ -15386,30 +14152,20 @@ var seteVitals = function (businessObject)
                 }
                 else
                 {
-                    VitalsGroup["HeartRate"] = NOT_APPLICABLE;
-                    v2Array.push({ section: "E14", element: "E14_07", val: v2NOT_APPLICABLE });
-                    VitalsGroup["eVitals.10"] = v3NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
+                    VitalsGroup["HeartRate"] = NOT_REPORTING;
+                    v2Array.push({ section: "E14", element: "E14_07", val: v2NOT_REPORTING });
+                    VitalsGroup["eVitals.10"] = v3NOT_REPORTING;
                 };
         
                 //eVital.11/////////////////////////////               
                 _val = getValue(businessObject.elements, "eVitals.11");
                 if(eVitals.IsHeartRateMonitored == true)
                     {
-                    if (_vitals.IsNull == true) 
-
-                    {
+                    if (_val == null) {
                         VitalsGroup["MethodofHeartRateMeasurement"] = null;
                         VitalsGroup["eVitals.11"] = null;
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         VitalsGroup["MethodofHeartRateMeasurement"] = _val;
                         VitalsGroup["eVitals.11"] = _val;
                         isNotApplicableFlag = false;
@@ -15424,9 +14180,7 @@ var seteVitals = function (businessObject)
                 //eVitals.12/////////////////////////////
                 _val = getValue(businessObject.elements, "eVitals.12");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.12");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15450,28 +14204,15 @@ var seteVitals = function (businessObject)
                                 VitalsGroup["PulseOximetry"] = NOT_RECORDED;
                                 v2Array.push({ section: "E14", element: "E14_09", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.12"] = v3NOT_RECORDED;
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 VitalsGroup["PulseOximetry"] = NOT_REPORTING;
                                 v2Array.push({ section: "E14", element: "E14_09", val: v2NOT_REPORTING });
-                                VitalsGroup["eVitals.12"] = v3NOT_REPORTING;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_REPORTING);    
+                                VitalsGroup["eVitals.12"] = v3NOT_RECORDED;
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         VitalsGroup["PulseOximetry"] = _val;
                         v2Array.push({ section: "E14", element: "E14_09", val: _val });
                         VitalsGroup["eVitals.12"] = _val;
@@ -15482,27 +14223,17 @@ var seteVitals = function (businessObject)
                     VitalsGroup["PulseOximetry"] = NOT_APPLICABLE;
                     v2Array.push({ section: "E14", element: "E14_09", val: v2NOT_APPLICABLE });
                     VitalsGroup["eVitals.12"] = v3NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
                 //eVital.13/////////////////////////////
                 _val = getValue(businessObject.elements, "eVitals.13");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
-                    {
+                    if (_val == null) {
                         v2Array.push({ section: "E14", element: "E14_10", val: null });
                         VitalsGroup["PulseRhythm"] = null;
                         VitalsGroup["eVitals.13"] = null;
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_10", val: _val });
                         VitalsGroup["eVitals.13"] = _val;
                         VitalsGroup["PulseRhythm"] = setCodeText("eVitals.13", _val);
@@ -15519,9 +14250,7 @@ var seteVitals = function (businessObject)
                 //eVitals.14/////////////////////////////
                 _val = getValue(businessObject.elements, "eVitals.14");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.14");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15545,29 +14274,17 @@ var seteVitals = function (businessObject)
                                 VitalsGroup["RespiratoryRate"] = NOT_RECORDED;
                                 v2Array.push({ section: "E14", element: "E14_11", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.14"] = v3NOT_RECORDED;
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else
                             {
                                 VitalsGroup["RespiratoryRate"] = NOT_REPORTING;
                                 v2Array.push({ section: "E14", element: "E14_11", val: v2NOT_REPORTING });
-                                VitalsGroup["eVitals.14"] = v3NOT_REPORTING;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_REPORTING);    
+                                VitalsGroup["eVitals.14"] = v3NOT_RECORDED;
                             }
                         }
                     }
                     else
                     {
-                        _val = _vitals.ValueArray[0].val;
                         VitalsGroup["RespiratoryRate"] = _val;
                         v2Array.push({ section: "E14", element: "E14_11", val: _val });
                         VitalsGroup["eVitals.14"] = _val;
@@ -15578,27 +14295,18 @@ var seteVitals = function (businessObject)
                     VitalsGroup["RespiratoryRate"] = NOT_APPLICABLE;
                     v2Array.push({ section: "E14", element: "E14_11", val: v2NOT_APPLICABLE });
                     VitalsGroup["eVitals.14"] = v3NOT_APPLICABLE;
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
         
                 //eVital.15/////////////////////////////
                 _val = getValue(businessObject.elements, "eVitals.15");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
-                    {
+                    if (_val == null) {
                         v2Array.push({ section: "E14", element: "E14_12", val: null });
                         VitalsGroup["RespiratoryEffort"] = null;
                         VitalsGroup["eVitals.15"] = null;
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         VitalsGroup["RespiratoryEffort"] = setCodeText("eVitals.15", _val)
                         v2Array.push({ section: "E14", element: "E14_12", val: setV2("eVitals.15", _val) });
                         VitalsGroup["eVitals.15"] = _val;
@@ -15615,9 +14323,7 @@ var seteVitals = function (businessObject)
                 //eVitals.16/////////////////////////////
                 _val = getValue(businessObject.elements, "eVitals.16");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.16");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15636,29 +14342,15 @@ var seteVitals = function (businessObject)
                                 VitalsGroup["CO2"] = NOT_RECORDED;
                                 v2Array.push({ section: "E14", element: "E14_13", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.16"] = v3NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 VitalsGroup["CO2"] = v3NOT_REPORTING;
                                 v2Array.push({ section: "E14", element: "E14_13", val: v2NOT_REPORTING });
                                 VitalsGroup["eVitals.16"] = v3NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_REPORTING);    
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         VitalsGroup["CO2"] = _val;
                         v2Array.push({ section: "E14", element: "E14_13", val: _val });
                         VitalsGroup["eVitals.16"] = _val;
@@ -15670,21 +14362,13 @@ var seteVitals = function (businessObject)
                     VitalsGroup["CO2"] = NOT_APPLICABLE;
                     v2Array.push({ section: "E14", element: "E14_13", val: v2NOT_APPLICABLE });
                     VitalsGroup["eVitals.16"] = v3NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
         
                 //eVitals.17/////////////////////////////
                 _val = getValue(businessObject.elements, "eVitals.17");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.17");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15700,12 +14384,6 @@ var seteVitals = function (businessObject)
                             if (isRequiredStateElement("eVitals.17")) {
                                 VitalsGroup["CarbonMonoxide"] = NOT_RECORDED;
                                 VitalsGroup["eVitals.17"] = v3NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 VitalsGroup["CarbonMonoxide"] = null;
@@ -15713,9 +14391,7 @@ var seteVitals = function (businessObject)
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         VitalsGroup["CarbonMonoxide"] = _val;
                         VitalsGroup["eVitals.17"] = _val;
                         isNotApplicableFlag = false;
@@ -15725,20 +14401,12 @@ var seteVitals = function (businessObject)
                 {
                     VitalsGroup["CarbonMonoxide"] = NOT_APPLICABLE;
                     VitalsGroup["eVitals.17"] = v3NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
                 //eVitals.18/////////////////////////////
                 _val = getValue(businessObject.elements, "eVitals.18");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
- 
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.18");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15757,12 +14425,6 @@ var seteVitals = function (businessObject)
                                 v2Array.push({ section: "E14", element: "E14_14", val: v2NOT_RECORDED });
                                 VitalsGroup["BloodGlucoseLevel"] = NOT_RECORDED;
                                 VitalsGroup["eVitals.18"] = v3NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 VitalsGroup["BloodGlucoseLevel"] = null;
@@ -15771,9 +14433,7 @@ var seteVitals = function (businessObject)
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_14", val: _val });
                         VitalsGroup["BloodGlucoseLevel"] = _val;
                         VitalsGroup["eVitals.18"] = _val;             
@@ -15783,12 +14443,6 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_14", val: v2NOT_APPLICABLE });
                     VitalsGroup["BloodGlucoseLevel"] = NOT_APPLICABLE;
                     VitalsGroup["eVitals.18"] = v3NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
         
@@ -15796,9 +14450,7 @@ var seteVitals = function (businessObject)
                 //eVitals.19/////////////////////////////
                 _val = getValue(businessObject.elements, "eVitals.19");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
- 
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.19");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15817,12 +14469,6 @@ var seteVitals = function (businessObject)
                                 VitalsGroup["GlasgowComaScoreEye"] = NOT_RECORDED;
                                 v2Array.push({ section: "E14", element: "E14_15", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.19"] = v3NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 v2Array.push({ section: "E14", element: "E14_15", val: null });
@@ -15831,9 +14477,7 @@ var seteVitals = function (businessObject)
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_15", val: _val });
                         VitalsGroup["GlasgowComaScoreEye"] = _val;
                         VitalsGroup["eVitals.19"] = _val;
@@ -15843,20 +14487,12 @@ var seteVitals = function (businessObject)
                     VitalsGroup["GlasgowComaScoreEye"] = NOT_APPLICABLE;
                     v2Array.push({ section: "E14", element: "E14_15", val: v2NOT_APPLICABLE});
                     VitalsGroup["eVitals.19"] = v3NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
                 //eVital.20/////////////////////////////        
                 _val = getValue(businessObject.elements, "eVitals.20");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
- 
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.20");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15875,12 +14511,6 @@ var seteVitals = function (businessObject)
                                 v2Array.push({ section: "E14", element: "E14_16", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.20"] = v3NOT_RECORDED;
                                 VitalsGroup["GlasgowComaScoreVerbal"] = NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 VitalsGroup["GlasgowComaScoreVerbal"] = null;
@@ -15889,9 +14519,7 @@ var seteVitals = function (businessObject)
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_16", val: _val });
                         VitalsGroup["GlasgowComaScoreVerbal"] = setCodeText("eVitals.20", _val);
                         VitalsGroup["eVitals.20"] = _val;
@@ -15901,12 +14529,6 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_16", val: v2NOT_APPLICABLE});
                     VitalsGroup["eVitals.20"] = v3NOT_APPLICABLE;
                     VitalsGroup["GlasgowComaScoreVerbal"] = NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
         
@@ -15914,8 +14536,7 @@ var seteVitals = function (businessObject)
                 //eVital.21/////////////////////////////        
                 _val = getValue(businessObject.elements, "eVitals.21");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.21");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15934,12 +14555,6 @@ var seteVitals = function (businessObject)
                                 v2Array.push({ section: "E14", element: "E14_23", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.21"] = v3NOT_RECORDED;
                                 VitalsGroup["eVitals.GlasgowComaScoreMotor"] = NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 v2Array.push({ section: "E14", element: "E14_23", val: null });
@@ -15948,9 +14563,7 @@ var seteVitals = function (businessObject)
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_23", val: _val });
                         VitalsGroup["eVitals.21"] = _val;
                         VitalsGroup["eVitals.GlasgowComaScoreMotor"] = _val;             
@@ -15960,19 +14573,12 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_23", val: v2NOT_APPLICABLE });
                     VitalsGroup["eVitals.21"] = v3NOT_APPLICABLE;
                     VitalsGroup["eVitals.GlasgowComaScoreMotor"] = NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
                 //eVital.22/////////////////////////////        
                 _val = getValue(businessObject.elements, "eVitals.22");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.22");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -15991,12 +14597,6 @@ var seteVitals = function (businessObject)
                                 v2Array.push({ section: "E14", element: "E14_18", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.22"] = v3NOT_RECORDED;
                                 VitalsGroup["GlasgowComaScoreQualifier"] = NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 v2Array.push({ section: "E14", element: "E14_18", val: null });
@@ -16005,9 +14605,7 @@ var seteVitals = function (businessObject)
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_18", val: setD2("eVitals.22", _val) });
                         VitalsGroup["GlasgowComaScoreQualifier"] = setCodeText("eVitals.22", _val);
                         VitalsGroup["eVitals.22"] = _val;
@@ -16017,19 +14615,13 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_18", val: v2NOT_APPLICABLE});
                     VitalsGroup["eVitals.22"] = v3NOT_APPLICABLE;
                     VitalsGroup["GlasgowComaScoreQualifier"] = NOT_APPLICABLE;
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
                 //eVital.23/////////////////////////////        
         
                 _val = getValue(businessObject.elements, "eVitals.23");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.23");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -16048,29 +14640,15 @@ var seteVitals = function (businessObject)
                                 VitalsGroup["GlasgowComaScoreScore"] = NOT_RECORDED;
                                 v2Array.push({ section: "E14", element: "E14_19", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.23"] = v3NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 v2Array.push({ section: "E14", element: "E14_19", val: v2NOT_REPORTING });
                                 VitalsGroup["eVitals.23"] = v3NOT_REPORTING;
                                 VitalsGroup["GlasgowComaScoreScore"] = NOT_REPORTING;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_REPORTING);    
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_19", val: setD2("eVitals.23 ", _val) });
                         VitalsGroup["GlasgowComaScoreScore"] = setCodeText("eVitals.23", _val);
                         VitalsGroup["eVitals.23"] = _val;
@@ -16080,11 +14658,6 @@ var seteVitals = function (businessObject)
                     VitalsGroup["GlasgowComaScoreScore"] = NOT_APPLICABLE;
                     v2Array.push({ section: "E14", element: "E14_19", val: v2NOT_APPLICABLE});
                     VitalsGroup["eVitals.23"] = v3NOT_APPLICABLE;
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
         
@@ -16092,8 +14665,7 @@ var seteVitals = function (businessObject)
                 _val = getValue(businessObject.elements, "eVitals.24  ");
                 eVitals.HasTemperature = false;
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.24 ");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -16112,29 +14684,15 @@ var seteVitals = function (businessObject)
                                 v2Array.push({ section: "E14", element: "E14_20", val: v2NOT_RECORDED });
                                 VitalsGroup["Temperature"] = NOT_RECORDED;
                                 VitalsGroup["eVitals.24"] = v3NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 v2Array.push({ section: "E14", element: "E14_20", val: v2NOT_REPORTING });
                                 VitalsGroup["eVitals.24"] = v3NOT_REPORTING;
                                 VitalsGroup["Temperature"] = NOT_REPORTING;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_REPORTING);    
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_20", val: _val });
                         VitalsGroup["eVitals.24"] = _val;
                         VitalsGroup["Temperature"] = _val;
@@ -16145,27 +14703,18 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_20", val: v2NOT_APPLICABLE });
                     VitalsGroup["eVitals.24"] = v3NOT_APPLICABLE;
                     VitalsGroup["Temperature"] = NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
                 //eVital.25/////////////////////////////   
         
                 _val = getValue(businessObject.elements, "eVitals.25");
                 if (eVitals.HasTemperature == true) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         v2Array.push({ section: "E14", element: "E14_21", val: null });
                         VitalsGroup["TemperatureMethod"] = null;
                         VitalsGroup["eVitals.25"] = null;
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_21", val: setV2("eVitals.25", _val) });
                         VitalsGroup["TemperatureMethod"] = setCodeText("eVitals.25", _val);
                         VitalsGroup["eVitals.25"] = _val;
@@ -16184,22 +14733,13 @@ var seteVitals = function (businessObject)
                 //eVital.26/////////////////////////////   
                 _val = getValue(businessObject.elements, "eVitals.26");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         v2Array.push({ section: "E14", element: "E14_22", val: v2NOT_RECORDED });
                         VitalsGroup["eVitals.26"] = v3NOT_RECORDED;
                         VitalsGroup["LevelofResponsiveness"] = NOT_RECORDED;
-
-                        XML.BeginNode("eVitals.07");
-                        XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                        XML.EndNode();
-
-                        OXML.Node("DBP", NOT_RECORDED);    
         
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         v2Array.push({ section: "E14", element: "E14_22", val: setV2("eVitals.26", _val) });
                         VitalsGroup["eVitals.26"] = _val;
                         VitalsGroup["LevelofResponsiveness"] = setCodeText("eVitals.26", _val);;
@@ -16210,11 +14750,6 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_22", val: v2NOT_APPLICABLE });
                     VitalsGroup["eVitals.26"] = v3NOT_APPLICABLE;
                     VitalsGroup["LevelofResponsiveness"] = NOT_APPLICABLE;
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
         
@@ -16222,8 +14757,7 @@ var seteVitals = function (businessObject)
                 _val = getValue(businessObject.elements, "eVitals.27 ");
                 eVitals.HasPainScale = false;
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.27");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -16242,12 +14776,6 @@ var seteVitals = function (businessObject)
                                 v2Array.push({ section: "E14", element: "E14_23", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.27"] = v3NOT_RECORDED;
                                 VitalsGroup["PainScaleScore"] = NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 v2Array.push({ section: "E14", element: "E14_23", val: null });
@@ -16256,9 +14784,7 @@ var seteVitals = function (businessObject)
                             }
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         eVitals.HasPainScale = true;
                         v2Array.push({ section: "E14", element: "E14_23", val: _val });
                         VitalsGroup["eVitals.27"] = _val;
@@ -16270,41 +14796,21 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_23", val: v2NOT_APPLICABLE });
                     VitalsGroup["eVitals.27"] = v3NOT_APPLICABLE;
                     VitalsGroup["PainScaleScore"] = NOT_APPLICABLE;
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
                 //eVital.28/////////////////////////////   
                 _val = getValue(businessObject.elements, "eVitals.28");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-                    {
+                    if (_val == null) {
                         if (isRequiredStateElement("eVitals.28")) {
                             VitalsGroup["eVitals.28"] = v3NOT_RECORDED;
                             VitalsGroup["PainScaleType"] = NOT_RECORDED;
-
-                            XML.BeginNode("eVitals.07");
-                            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                            XML.EndNode();
-
-                            OXML.Node("DBP", NOT_RECORDED);    
                         }
                         else {
                             VitalsGroup["eVitals.28"] = v3NOT_REPORTING;
                             VitalsGroup["PainScaleType"] = NOT_REPORTING;
-
-                            XML.BeginNode("eVitals.07");
-                            XML.Attrib("NV", NIL_V3NOT_REPORTING);
-                            XML.EndNode();
-
-                            OXML.Node("DBP", NOT_REPORTING);    
                         }
                     }
-                    else 
-                    {
-                        _val = _vitals.ValueArray[0].val;
+                    else {
                         VitalsGroup["eVitals.28"] = _val;
                         VitalsGroup["PainScaleType"] = setCodeText("eVitals.28", _val);
                     }
@@ -16319,12 +14825,6 @@ var seteVitals = function (businessObject)
                     {
                         VitalsGroup["eVitals.28"] = v3NOT_APPLICABLE;
                         VitalsGroup["PainScaleType"] = NOT_APPLICABLE;
-
-                        XML.BeginNode("eVitals.07");
-                        XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                        XML.EndNode();
-
-                        OXML.Node("DBP", NOT_APPLICABLE);    
                     }
                 };
         
@@ -16334,8 +14834,7 @@ var seteVitals = function (businessObject)
                 _val = getValue(businessObject.elements, "eVitals.29 ");
                 eVitals.HasStroke = false;
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
+                    if (_val == null)
                     {
                         _PNValue = getPN("eVitals.29");
                         if (_PNValue != null)
@@ -16360,12 +14859,6 @@ var seteVitals = function (businessObject)
                                 v2Array.push({ section: "E14", element: "E14_24", val: v2NOT_RECORDED });
                                 VitalsGroup["eVitals.29"] = v3NOT_RECORDED;
                                 VitalsGroup["StrokeScaleScore"] = NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else
                             {
@@ -16377,7 +14870,6 @@ var seteVitals = function (businessObject)
                     }
                     else
                     {
-                        _val = _vitals.ValueArray[0].val;
                         v2Array.push({ section: "E14", element: "E14_24", val: _val });
                         VitalsGroup["eVitals.29"] = _val;
                         VitalsGroup["StrokeScaleScore"] = setCodeText("eVitals.29 ", _val);
@@ -16392,31 +14884,18 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_24", val: v2NOT_APPLICABLE });
                     VitalsGroup["eVitals.29"] = v3NOT_APPLICABLE;
                     VitalsGroup["StrokeScaleScore"] = NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
                 //eVital.30/////////////////////////////   
                 _val = getValue(businessObject.elements, "eVitals.30");
                 if (eVitals.HasStroke == true)
                 {
-                    if (_vitals.IsNull == true) 
-
+                    if (_val == null)
                     {
                         if (isRequiredStateElement("eVitals.30"))
                         {
                             VitalsGroup["eVitals.30"] = v3NOT_RECORDED;
                             VitalsGroup["StrokeScaleType"] = NOT_RECORDED;
-
-                            XML.BeginNode("eVitals.07");
-                            XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                            XML.EndNode();
-
-                            OXML.Node("DBP", NOT_RECORDED);    
                         }
                         else
                         {
@@ -16426,7 +14905,6 @@ var seteVitals = function (businessObject)
                     }
                     else
                     {
-                        _val = _vitals.ValueArray[0].val;
                         VitalsGroup["eVitals.30"] = _val;
                         VitalsGroup["StrokeScaleType"] = setCodeText("eVitals.30", _val);
                     }
@@ -16435,20 +14913,13 @@ var seteVitals = function (businessObject)
                 {
                     VitalsGroup["eVitals.30"] = v3NOT_APPLICABLE;
                     VitalsGroup["StrokeScaleType"] = NOT_APPLICABLE;
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
                 };
         
         
                 //eVital.31/////////////////////////////   
                 _val = getValue(businessObject.elements, "eVitals.31 ");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
-                    {
+                    if (_val == null) {
                         _PNValue = getPN("eVitals.31");
                         if (_PNValue != null) {
                             if (_PNValue == "8801019") {
@@ -16468,12 +14939,6 @@ var seteVitals = function (businessObject)
                                 v2Array.push({ section: "E14", element: "E14_25", val: v2NOT_RECORDED });
                                 VitalsGroup["ReperfusionChecklist"] = NOT_RECORDED;
                                 VitalsGroup["eVitals.31"] = v3NOT_RECORDED;
-
-                                XML.BeginNode("eVitals.07");
-                                XML.Attrib("NV", NIL_V3NOT_RECORDED);
-                                XML.EndNode();
-
-                                OXML.Node("DBP", NOT_RECORDED);    
                             }
                             else {
                                 v2Array.push({ section: "E14", element: "E14_25", val: null });
@@ -16483,7 +14948,6 @@ var seteVitals = function (businessObject)
                         }
                     }
                     else {
-                        _val = _vitals.ValueArray[0].val;
                         v2Array.push({ section: "E14", element: "E14_25", val: setD2("eVitals.31", _val) });
                         VitalsGroup["eVitals.31"] = _val;
                         VitalsGroup["ReperfusionChecklist"] = setCodeText("eVitals.31 ", _val);
@@ -16494,20 +14958,12 @@ var seteVitals = function (businessObject)
                     v2Array.push({ section: "E14", element: "E14_25", val: v2NOT_APPLICABLE });
                     VitalsGroup["ReperfusionChecklist"] = NOT_APPLICABLE;
                     VitalsGroup["eVitals.31"] = v3NOT_APPLICABLE;
-
-                    XML.BeginNode("eVitals.07");
-                    XML.Attrib("NV", NIL_V3NOT_APPLICABLE);
-                    XML.EndNode();
-
-                    OXML.Node("DBP", NOT_APPLICABLE);    
-
                 };
         
                 //eVital.32/////////////////////////////   
                 _val = getValue(businessObject.elements, "eVitals.32 ");
                 if (eVitals.IsValid == true) {
-                    if (_vitals.IsNull == true) 
-
+                    if (_val == null)
                     {
                         _PNValue = getPN("eVitals.32");
                         if (_PNValue != null)
@@ -16528,7 +14984,6 @@ var seteVitals = function (businessObject)
                     }
                     else
                     {
-                        _val = _vitals.ValueArray[0].val;
                         v2Array.push({ section: "E14", element: "E14_26", val: _val });
                         VitalsGroup["eVitals.32"] = _val;
                         VitalsGroup["APGAR"] = _val;
@@ -16545,8 +15000,7 @@ var seteVitals = function (businessObject)
                 _val = getValue(businessObject.elements, "eVitals.33 ");
                 if (eVitals.IsValid == true)
                 {
-                    if (_vitals.IsNull == true) 
-
+                    if (_val == null) 
                     {
                         _PNValue = getPN("eVitals.33");
                         if (_PNValue != null) 
@@ -16573,7 +15027,6 @@ var seteVitals = function (businessObject)
                     }
                     else 
                     {                
-                        _val = _vitals.ValueArray[0].val;
                         VitalsGroup["eVitals.31"] = _val;
                         VitalsGroup["RevisedTraumaScore"] = _val;
                     };
@@ -16590,52 +15043,52 @@ var seteVitals = function (businessObject)
             return eVitals;
         };
 var XMLWriter = function () {
-    this.XML = [];
-    this.Nodes = [];
-    this.State = "";
-    this.FormatXML = function (Str) {
-        if (Str)
-            return Str.replace(/&/g, "&amp;").replace(/\"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        return ""
-    }
-    this.BeginNode = function (Name) {
-        if (!Name) return;
-        if (this.State == "beg") this.XML.push(">");
-        this.State = "beg";
-        this.Nodes.push(Name);
-        this.XML.push("<" + Name);
-    }
-    this.EndNode = function () {
-        if (this.State == "beg") {
-            this.XML.push("/>");
-            this.Nodes.pop();
-        }
-        else if (this.Nodes.length > 0)
-            this.XML.push("</" + this.Nodes.pop() + ">");
-        this.State = "";
-    }
-    this.Attrib = function (Name, Value) {
-        if (this.State != "beg" || !Name) return;
-        this.XML.push(" " + Name + "=\"" + this.FormatXML(Value) + "\"");
-    }
-    this.WriteString = function (Value) {
-        if (this.State == "beg") this.XML.push(">");
-        this.XML.push(this.FormatXML(Value));
-        this.State = "";
-    }
-    this.Node = function (Name, Value) {
-        if (!Name) return;
-        if (this.State == "beg") this.XML.push(">");
-        this.XML.push((Value == "" || !Value) ? "<" + Name + "/>" : "<" + Name + ">" + this.FormatXML(Value) + "</" + Name + ">");
-        this.State = "";
-    }
-    this.Close = function () {
-        while (this.Nodes.length > 0)
-            this.EndNode();
-        this.State = "closed";
-    }
-    this.ToString = function () { return this.XML.join(""); }
-};
+            this.XML = [];
+            this.Nodes = [];
+            this.State = "";
+            this.FormatXML = function (Str) {
+                if (Str)
+                    return Str.replace(/&/g, "&amp;").replace(/\"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                return ""
+            }
+            this.BeginNode = function (Name) {
+                if (!Name) return;
+                if (this.State == "beg") this.XML.push(">");
+                this.State = "beg";
+                this.Nodes.push(Name);
+                this.XML.push("<" + Name);
+            }
+            this.EndNode = function () {
+                if (this.State == "beg") {
+                    this.XML.push("/>");
+                    this.Nodes.pop();
+                }
+                else if (this.Nodes.length > 0)
+                    this.XML.push("</" + this.Nodes.pop() + ">");
+                this.State = "";
+            }
+            this.Attrib = function (Name, Value) {
+                if (this.State != "beg" || !Name) return;
+                this.XML.push(" " + Name + "=\"" + this.FormatXML(Value) + "\"");
+            }
+            this.WriteString = function (Value) {
+                if (this.State == "beg") this.XML.push(">");
+                this.XML.push(this.FormatXML(Value));
+                this.State = "";
+            }
+            this.Node = function (Name, Value) {
+                if (!Name) return;
+                if (this.State == "beg") this.XML.push(">");
+                this.XML.push((Value == "" || !Value) ? "<" + Name + "/>" : "<" + Name + ">" + this.FormatXML(Value) + "</" + Name + ">");
+                this.State = "";
+            }
+            this.Close = function () {
+                while (this.Nodes.length > 0)
+                    this.EndNode();
+                this.State = "closed";
+            }
+            this.ToString = function () { return this.XML.join(""); }
+        };
 var stringToXMLDoc = (function (global) {
 
     // W3C DOMParser support
@@ -16661,8 +15114,8 @@ var stringToXMLDoc = (function (global) {
     }
 }(this));
 var isRequiredStateElement = function (elementID) {
-    return true;
-};
+            return true;
+        };
 var getValue = function (elementList, valueElement)
 {
     var _arr = [];
