@@ -165,7 +165,7 @@ var getObjectFromOLTPExtract = function (businessObject, sectionName) {
     //Returns an array of index values for a given sectionName within a sectionObject
     // if sectionName does not exist within the sectionObject, return -1
 
-     console.log(businessObject)
+     //console.log(businessObject)
 
     var _retValue = new Object();
     _retValue.IsUndefined = true;
@@ -215,8 +215,8 @@ var getValue = function (elementList, valueElement)
     var _arr = [];
     var returnObject = new Object();
     var valueObject = new Object();
-    //console.log(valueElement)
-//    console.log(elementList)
+   // console.log(valueElement)
+    //console.log(elementList)
     for (var i = 0; i < elementList.length; i++) {
  
         if (elementList[i].attributes.title == valueElement) {
@@ -235,13 +235,9 @@ var getValue = function (elementList, valueElement)
                     var returnObject = new Object();
                     valueObject.IsNull = false;
                     returnObject.val = elementList[i].attributes.value.trim();
-                    if (valueElement == "eInjury.01") {
-                        console.log(returnObject)
-                    }
                 }
             };
             if (elementList[i].attributes.pn != "") {
-                console.log(elementList[i].attributes.title)
                 returnObject.pn = elementList[i].attributes.pn;
                 valueObject.HasPN = true;
             };
@@ -251,7 +247,7 @@ var getValue = function (elementList, valueElement)
                     returnObject.PhoneNumberType = elementList[i].attributes.params.PhoneNumberType.value;
                 };
                 if (elementList[i].attributes.params.EmailType != undefined) {
-                    returnObject.EmailType = elementList[i].attributes.params.EmailType.value;
+                    returnObject.EmailType = elementList[i].attributes.params.EmailAddressType.value;
                 }
             }
 
@@ -270,10 +266,7 @@ var getValue = function (elementList, valueElement)
     valueObject.Count = _arr.length;
     //valueObject.IsNull = false;
     valueObject.ValueArray = _arr;
-    if (valueElement == "eInjury.01") {
-        console.log("eInjury.01")
-        console.log(valueObject)
-    }
+
     return valueObject;
 };
 function setV2(NEMSISElementNumber, v3Val, compValue) {
@@ -1254,130 +1247,6 @@ function setV2(NEMSISElementNumber, v3Val, compValue) {
     }
     return _retv;
 };
-var get334ObjectsByName = function (ObjectArray, ElementName) {
-    var retObject = new Object();
-    var bFound = false;
-    var _counter = 0;
-
-    console.log(ObjectArray);
-
-    if (typeof ObjectArray == 'undefined') {
-        return "undefined";
-    };
-    //while(( _counter <= ObjectArray.length-1) && (bFound ==false))
-    for (var _counter = 0; _counter < ObjectArray.length ; _counter++) {
-        if (typeof ObjectArray[_counter] != 'undefined') {
-            // console.log(_counter)
-            //            console.log("NAME  " +ObjectArray[_counter].Name);
-
-            if (ObjectArray[_counter].Name == ElementName) {
-
-                retObject = ObjectArray[_counter];
-                console.log(ObjectArray[_counter])
-                bFound = true;
-            }
-            //_counter = _counter + 1;
-        }
-    };
-    //  console.log(ElementName)
-    //   console.log(retObject)
-    //if (bFound == true) {
-    return retObject;
-    //}
-    //else {
-    //return "undefined"
-    //}
-};
-function setXML334EMS(objectArray) {
-    console.log(objectArray)
-    var elementObject = new Object();
-    var XML = new XMLWriter('UTF-8', '1.0');
-    XML.writeStartDocument();
-    XML.writeStartElement('EMSDataSet');
-    //XML.writeAttributeString('xmlns', "http://www.nemsis.org  xsi:schemaLocation=http://www.nemsis.org http://nemsis.org/media/XSD_v3/_nemsis_v3.3.4/3.3.4.140328/XSDs/NEMSIS_XSDs_v3.3.4.140328/EMSDataSet_v3.xsd  xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance") 
-    XML.writeAttributeString('xmlns', 'http://www.nemsis.org');
-    XML.writeAttributeString('xsi:schemaLocation', 'http://www.nemsis.org http://nemsis.org/media/XSD_v3/_nemsis_v3.3.3/3.3.3.130926/XSDs/NEMSIS_XSDs_v3.3.3.130926/DEMDataSet_v3.xsd');
-    XML.writeAttributeString('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-    XML.writeStartElement('PatientCareReport');
-    XML.writeStartElement("eRecord");
-
-    elementObject = get334ObjectsByName(objectArray, "eRecord.01")
-
-    if ((elementObject.HasErrors == false) && (elementObject.HasValue == true)) {
-        XML.writeElementString("eRecord.01", elementObject.Value);
-    };
-
-    if ((elementObject.HasErrors == false) && (elementObject.HasValue == true)) {
-        XML.writeStartElement("eRecord.SoftwareApplicationGroup");
-    };
-    elementObject = get334ObjectsByName(objectArray, "eRecord.02")
-
-    if ((elementObject.HasErrors == false) && (elementObject.HasData == true)) {
-        XML.writeElementString("eRecord.02", elementObject.Value)
-    };
-    elementObject = get334ObjectsByName(objectArray, "eRecord.03")
-    if ((elementObject.HasErrors == false) && (elementObject.HasData == true)) {
-        XML.writeElementString("eRecord.03", elementObject.Value)
-    };
-    elementObject = get334ObjectsByName(objectArray, "eRecord.04")
-    if ((elementObject.HasErrors == false) && (elementObject.HasData == true)) {
-        XML.writeElementString("eRecord.04", elementObject.Value)
-    };
-
-    XML.writeEndElement();
-    XML.writeEndElement();
-
-    XML.writeStartElement("eDispatch");
-    elementObject = get334ObjectsByName(objectArray, "eDispatch.01")
-    if ((elementObject.HasErrors == false) && (elementObject.HasData == true)) {
-        XML.writeElementString("eDispatch.01", elementObject.Value)
-    };
-
-    elementObject = get334ObjectsByName(objectArray, "eDispatch.02")
-    console.log(elementObject)
-    if ((elementObject.HasErrors == false) && (elementObject.HasData == true)) {
-        XML.writeElementString("eDispatch.02", elementObject.Value)
-    }
-    else {
-        console.log(elementObject.NV)
-        //if (elementObject.NV ) {
-        XML.writeStartElement('eDispatch.02');
-        XML.writeAttributeString('NV', elementObject.NV);
-        XML.writeAttributeString('xsi:nil', 'true');
-        XML.writeEndElement();
-        //}
-    };
-    elementObject = get334ObjectsByName(objectArray, "eDispatch.03")
-    if ((elementObject.HasErrors == false) && (elementObject.HasData == true)) {
-        XML.writeElementString("eDispatch.03", elementObject.Value)
-    }
-    else {
-        XML.writeElementString("eDispatch.03", "")
-    };
-    elementObject = get334ObjectsByName(objectArray, "eDispatch.04")
-    if ((elementObject.HasErrors == false) && (elementObject.HasData == true)) {
-        XML.writeElementString("eDispatch.04", elementObject.Value)
-    }
-    else {
-        XML.writeElementString("eDispatch.04", "")
-    };;
-    elementObject = get334ObjectsByName(objectArray, "eDispatch.05")
-    if ((elementObject.HasErrors == false) && (elementObject.HasData == true)) {
-        XML.writeElementString("eDispatch.05", elementObject.Value)
-    }
-    else {
-        XML.writeElementString("eDispatch.05", "")
-    };
-
-
-    XML.writeEndElement();
-    XML.writeEndElement();
-    XML.writeEndDocument();
-    XML.writeEndDocument();
-    //XML.writeAttributeString('timeStamp', Data);
-    var XMLDoc = XML.flush()
-    console.log(XMLDoc)
-};
 var isRequiredStateElement = function (elementID) {
     return true;
 };
@@ -1540,9 +1409,31 @@ function XMLWriter(encoding, version) {
     };
 
 })();
-var setV2XML = function (ArrayOfVersion2Objects) {
+
+var setV2XML = function (TheCall) {
+
+    var specMap = {
+        "7701001": "-5",
+        "7701003": "-15",
+        "7701005": "-20",
+        "8801005": "-10",
+        "8801013": "-10",
+        "8801015": "-10",
+        "8801017": "-10",
+        "8801019": "-10",
+        "8801021": "-10",
+        "8801023": "-10"
+    };
+    var specVal = ["7701001", "7701003", "7701005", "8801005", "8801013", "8801015", "8801017", "8801019", "8801021", "8801023"];
+
+    var v3NOT_RECORDED = "7701003";
+    var v3NOT_APPLICABLE = "7701001";
+    var v2NOT_AVAILABLE = "-5";
+    var v2NOT_REPORTING = "-15";
+    var v2NOT_APPLICABLE = "-25"
+    var v2NOT_RECORDED = "-20";
+    var v2NOT_KNOWN = "-10";
     var v2obj = new Object();
-    console.log(ArrayOfVersion2Objects)
     var v2Object = new Object();
     var v2XML = new XMLWriter('UTF-8', '1.0');
     v2XML.writeStartDocument();
@@ -1551,12 +1442,10 @@ var setV2XML = function (ArrayOfVersion2Objects) {
     v2XML.writeAttributeString('xmlns', 'http://www.nemsis.org'); 8
     v2XML.writeAttributeString('xsi:schemaLocation', '="http://www.nemsis.org http://www.nemsis.org/media/XSD/EMSDataSet.xsd');
     v2XML.writeAttributeString('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-    v2XML.writeStartElement('Header');
 
-    //  console.log(ArrayOfVersion2Objects)
 
-    /*
     v2XML.writeStartElement("Header");
+    /*
     v2obj = getVersion221Values(ArrayOfVersion2Objects, "D01_01")
     v2XML.writeElementString("D01_01", v2obj);
     v2obje = getVersion221Values(ArrayOfVersion2Objects, "D01_03")
@@ -1576,228 +1465,833 @@ var setV2XML = function (ArrayOfVersion2Objects) {
     v2XML.writeStartElement("Record");
     */
     //Record
+
     v2XML.writeStartElement("E01");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects, "E01_01");
-    console.log(v2obj.val[0])
-    v2XML.writeElementString("E01_01", "PCRID");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects, "E01_02");
-    v2XML.writeElementString("E01_02", v2obj.val[0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects, "E01_03");
-    v2XML.writeElementString("E01_03", v2obj.val[0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects, "E01_04");
-    v2XML.writeElementString("E01_04", v2obj.val[0]);
+
+    //v2obj = getVersion221Values(ArrayOfVersion2Objects, "E01_01");
+    
+    if (typeof TheCall.eRecord["eRecord.01"] != 'undefined') {
+        v2XML.writeElementString("E01_01", TheCall.eRecord["eRecord.01"]);
+    };
+
+    if (typeof TheCall.eRecord["eRecord.02"] != 'undefined') {
+        v2XML.writeElementString("E01_02", TheCall.eRecord["eRecord.02"]);
+    };
+    if (typeof TheCall.eRecord["eRecord.03"] != 'undefined') {
+        v2XML.writeElementString("E01_03", TheCall.eRecord["eRecord.03"]);
+    };
+    if (typeof TheCall.eRecord["eRecord.04"] != 'undefined') {
+        v2XML.writeElementString("E01_04", TheCall.eRecord["eRecord.04"]);
+    };
     v2XML.writeEndElement("E01");
 
     //Response
+
     v2XML.writeStartElement("E02");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects, "E02_01");
-    v2XML.writeElementString("E02_01", v2obj.val[0]);  //NATIONAL
-    /*
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_02");
-    v2XML.writeElementString("E02_02", val[0][0]); //NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_03");
-    v2XML.writeElementString("E02_03", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_04");
-    v2XML.writeElementString("E02_04", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_05");
-    v2XML.writeElementString("E02_05", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_06");
-    v2XML.writeElementString("E02_06", val[0][0]);//NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_07");
-    v2XML.writeElementString("E02_07", val[0][0]);//NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_08");
-    v2XML.writeElementString("E02_08", val[0][0]);//NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_09");
-    v2XML.writeElementString("E02_09", val[0][0]);//NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_10");
-    v2XML.writeElementString("E02_10", val[0][0]);//NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_11");
-    v2XML.writeElementString("E02_11", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_12");
-    v2XML.writeElementString("E02_12", val[0][0]);//NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_13");
-    v2XML.writeElementString("E02_13", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_14");
-    v2XML.writeElementString("E02_14", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_15");
-    v2XML.writeElementString("E02_15", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_16");
-    v2XML.writeElementString("E02_16", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_17");
-    v2XML.writeElementString("E02_17", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_18");
-    v2XML.writeElementString("E02_18", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_19");
-    v2XML.writeElementString("E02_19", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E02_20");
-    v2XML.writeElementString("E02_20", val[0][0]);//NATIONAL
-    v2XML.writeEndElement("E02");
-
-    v2XML.writeStartElement("E03");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E03_01");
-    v2XML.writeElementString("E03_01", val[0][0]);  //NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E03_02");
-    v2XML.writeElementString("E03_02", val[0][0]);  //NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E03_03");
-    v2XML.writeElementString("E03_03", val[0][0]);  //NA
-    v2XML.writeEndElement("E03");
-    //Crew
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E04");
-    for (var i = 0; i < v2obj.length; i++) {
-        v2XML.writeStartElement("E04");
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E04_01");
-        v2XML.writeElementString("E04_01", val[0][i]);  //NA
-
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E04_02");
-        v2XML.writeElementString("E04_02", val[0][i]);  //NA
-
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E04_03");
-        v2XML.writeElementString("E04_03", val[0][i]);  //NA
-
-        v2XML.writeEndElement("E04");
+    if (typeof TheCall.eResponse["eResponse.01"] != 'undefined') {
+        v2XML.writeElementString("E02_01", TheCall.eResponse["eResponse.01"]);
     };
 
-    //times
-    v2XML.writeStartElement("E12");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_01");
-    v2XML.writeElementString("E12_01", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_02");
-    v2XML.writeElementString("E12_02", val[0][0]); //NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_03");
-    v2XML.writeElementString("E12_03", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_04");
-    v2XML.writeElementString("E12_04", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_05");
-    v2XML.writeElementString("E12_05", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_06");
-    v2XML.writeElementString("E12_06", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_07");
-    v2XML.writeElementString("E12_07", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_08");
-    v2XML.writeElementString("E12_08", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_09");
-    v2XML.writeElementString("E12_09", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_10");
-    v2XML.writeElementString("E12_10", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_11");
-    v2XML.writeElementString("E12_11", val[0][0]);//NATIONAL
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_12");
-    v2XML.writeElementString("E12_12", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_13");
-    v2XML.writeElementString("E12_13", val[0][0]);//NATIONAL    
-    v2XML.writeEndElement("E12");
+    if (typeof TheCall.eResponse["eResponse.03"] != 'undefined') {
+        if (specVal.indexOf(TheCall.eResponse["eResponse.03"]) != -1) {
+            v2XML.writeElementString("E02_02", specMap[TheCall.eResponse["eResponse.03"]]);
+        }
+        else {
+            v2XML.writeElementString("E02_02", TheCall.eResponse["eResponse.03"]);
+        }
+    }
 
-    //Patient
+    if (typeof TheCall.eResponse["eResponse.04"] != 'undefined') {
+        if (specVal.indexOf(TheCall.eResponse["eResponse.04"]) != -1) {
+            v2XML.writeElementString("E02_03", specMap[TheCall.eResponse["eResponse.04"]]);
+        }
+        else {
+            v2XML.writeElementString("E02_03", TheCall.eResponse["eResponse.04"]);
+        }
+    };
+
+    if (typeof TheCall.eResponse["eResponse.07"] != 'undefined') {
+        v2XML.writeElementString("E02_05", TheCall.eResponse["eResponse.07"]);
+    };
+
+    if (typeof TheCall.eResponse["eResponse.08"] != 'undefined') {
+        if (TheCall.eResponse["eResponse.08"].length == 1) {
+            if (specVal.indexOf(TheCall.eResponse["eResponse.08"][0]) != -1) {
+                v2XML.writeElementString("E02_06", specMap[TheCall.eResponse["eResponse.08"][0]]);
+            }
+        }
+        else {
+            for (var i = 0; i < TheCall.eResponse["eResponse.08"].length; i++) {
+                v2XML.writeElementString("E02_06", TheCall.eResponse["eResponse.08"][i]);
+            }
+        }
+    };
+    if (typeof TheCall.eResponse["eResponse.09"] != 'undefined') {
+        if (TheCall.eResponse["eResponse.09"].length == 1) {
+            if (specVal.indexOf(TheCall.eResponse["eResponse.09"][0]) != -1) {
+                v2XML.writeElementString("E02_07", specMap[TheCall.eResponse["eResponse.09"][0]]);
+            }
+        }
+        else {
+            for (var i = 0; i < TheCall.eResponse["eResponse.09"].length; i++) {
+                v2XML.writeElementString("E02_07", TheCall.eResponse["eResponse.09"][i]);
+            }
+        }
+    };
+    if (typeof TheCall.eResponse["eResponse.10"] != 'undefined') {
+        if (TheCall.eResponse["eResponse.10"].length == 1) {
+            if (specVal.indexOf(TheCall.eResponse["eResponse.10"][0]) != -1) {
+                v2XML.writeElementString("E02_08", specMap[TheCall.eResponse["eResponse.10"][0]]);
+            }
+        }
+        else {
+            for (var i = 0; i < TheCall.eResponse["eResponse.10"].length; i++) {
+                v2XML.writeElementString("E02_08", TheCall.eResponse["eResponse.10"][i]);
+            }
+        }
+    };
+    if (typeof TheCall.eResponse["eResponse.11"] != 'undefined') {
+        if (TheCall.eResponse["eResponse.11"].length == 1) {
+            if (specVal.indexOf(TheCall.eResponse["eResponse.11"][0]) != -1) {
+                v2XML.writeElementString("E02_09", specMap[TheCall.eResponse["eResponse.11"][0]]);
+            }
+        }
+        else {
+            for (var i = 0; i < TheCall.eResponse["eResponse.11"].length; i++) {
+                v2XML.writeElementString("E02_09", TheCall.eResponse["eResponse.11"][i]);
+            }
+        }
+    };
+
+    if (typeof TheCall.eResponse["eResponse.12"] != 'undefined') {
+        if (TheCall.eResponse["eResponse.12"].length == 1) {
+            if (specVal.indexOf(TheCall.eResponse["eResponse.12"][0]) != -1) {
+                v2XML.writeElementString("E02_10", specMap[TheCall.eResponse["eResponse.12"][0]]);
+            }
+        }
+        else {
+            for (var i = 0; i < TheCall.eResponse["eResponse.12"].length; i++) {
+                v2XML.writeElementString("E02_10", TheCall.eResponse["eResponse.12"][i]);
+            }
+        }
+    };
+    if (typeof TheCall.eResponse["eResponse.13"] != 'undefined') {
+        if (typeof TheCall.eResponse["eResponse.13"].length == 0) {
+            v2XML.writeElementString("E02_11", "-5");
+        }
+        else {
+            v2XML.writeElementString("E02_11", TheCall.eResponse["eResponse.13"]);
+        }
+    }
+    else {
+        v2XML.writeElementString("E02_11", "-10");
+    };
+    if (typeof TheCall.eResponse["eResponse.14"] != 'undefined') {
+        v2XML.writeElementString("E02_12", TheCall.eResponse["eResponse.14"]);
+    };
+    if (typeof TheCall.eResponse["eResponse.16"] != 'undefined') {
+        if (TheCall.eResponse["eResponse.16"].length == 0) {
+            v2XML.writeElementString("E02_13", "-5");
+        }
+        else {
+            v2XML.writeElementString("E02_13", TheCall.eResponse["eResponse.16"]);
+        }
+    };
+
+    v2XML.writeElementString("E02_14", "-5"); //Dispatch Zone
+
+    if (typeof TheCall.eResponse["eResponse.17"] != 'undefined') {
+        v2XML.writeElementString("E02_15", TheCall.eResponse["eResponse.17"]);
+    };
+    if (typeof TheCall.eResponse["eResponse.19"] != 'undefined') {
+        v2XML.writeElementString("E02_16", TheCall.eResponse["eResponse.19"]);
+    };
+    if (typeof TheCall.eResponse["eResponse.20"] != 'undefined') {
+        v2XML.writeElementString("E02_17", TheCall.eResponse["eResponse.20"]);
+    };
+    if (typeof TheCall.eResponse["eResponse.21"] != 'undefined') {
+        v2XML.writeElementString("E02_18", TheCall.eResponse["eResponse.21"]);
+    };
+    if (typeof TheCall.eResponse["eResponse.22"] != 'undefined') {
+        v2XML.writeElementString("E02_19", TheCall.eResponse["eResponse.22"]);
+    };
+    if (typeof TheCall.eResponse["eResponse.23"] != 'undefined') {
+        v2XML.writeElementString("E02_20", TheCall.eResponse["eResponse.23"]);
+    };
+
+    v2XML.writeEndElement("E02");
+    ////////////////////////////////////////////////////
+
+    v2XML.writeStartElement("E03");
+
+    if (typeof TheCall.eDispatch["7.01"] != 'undefined') {
+        if (TheCall.eDispatch["eDispatch.01"].length == 1) {
+            if (specVal.indexOf(TheCall.eDispatch["eDispatch.01"][0]) != -1) {
+                v2XML.writeElementString("E03_01", specMap[TheCall.eDispatch["eDispatch.01"][0]]);
+            }
+        }
+
+        else {
+            v2XML.writeElementString("E03_01", TheCall.eDispatch["eDispatch.01"][0]);
+        }
+    };
+    if (typeof TheCall.eDispatch["eDispatch.02"] != 'undefined') {
+        if (specVal.indexOf(TheCall.eDispatch["eDispatch.02"][0]) != -1) {
+            v2XML.writeElementString("E03_02", specMap[TheCall.eDispatch["eDispatch.02"][0]]);
+        }
+
+        else {
+            v2XML.writeElementString("E03_02", TheCall.eDispatch["eDispatch.02"][0]);
+        }
+    };
+
+    if (typeof TheCall.eDispatch["eDispatch.03"] != 'undefined') {
+        if (TheCall.eDispatch["eDispatch.03"][0] == null) {
+            v2XML.writeElementString("E03_03", "");
+        }
+        else {
+            v2XML.writeElementString("E03_03", TheCall.eDispatch["eDispatch.03"][0]);
+        }
+    };
+    v2XML.writeEndElement("E03");
+    /*
+        /////////////////////////////////////////////////////
+    
+        for (var i = 0; i < TheCall.eCrew.CrewGroup.length; i++) 
+        {
+            v2XML.writeStartElement("E04");
+            if (typeof TheCall.eCrew.CrewGroup[i]["eCrew.01"] != 'undefined') {
+                if (specVal.indexOf(TheCall.eDispatch["eCrew.01"][0]) != -1) {
+                    v2XML.writeElementString("E04_01", specMap[TheCall.eCrew.CrewGroup[i]["eCrew.01"][0]]);
+                }
+                else {
+                    v2XML.writeElementString("E04_01", TheCall.eCrew.CrewGroup[i]["eCrew.01"][0]);
+                }
+            };
+        
+            if (typeof TheCall.eCrew.CrewGroup[i]["eCrew.02"] != 'undefined') {
+                if (specVal.indexOf(TheCall.eDispatch["eCrew.02"][0]) != -1) 
+                {
+                    v2XML.writeElementString("E04_03", specMap[TheCall.eCrew.CrewGroup[i]["eCrew.02"][0]]);
+                }                
+                else 
+                {
+                    v2XML.writeElementString("E04_03", TheCall.eCrew.CrewGroup[i]["eCrew.02"][0]);
+                }
+            };
+            if (typeof TheCall.eCrew.CrewGroup[i]["eCrew.03"] != 'undefined') {
+                if (specVal.indexOf(TheCall.eDispatch["eCrew.03"][0]) != -1) 
+                {
+                    v2XML.writeElementString("E04_02", specMap[TheCall.eCrew.CrewGroup[i]["eCrew.03"][0]]);
+                }                
+                else 
+                {
+                    v2XML.writeElementString("E04_02", TheCall.eCrew.CrewGroup[i]["eCrew.03"][0]);
+                }
+            };
+            v2XML.writeEndElement("E04");    
+        };
+        //////////////////////////////////////////
+        //times
+    
+        
+        
+        v2XML.writeStartElement("E12");
+        if (typeof TheCall.eTimes["eTimes.01"] != 'undefined') {
+            v2XML.writeElementString("E05_02", TheCall.eTimes["eTimes.01"]);
+        };
+        if (typeof TheCall.eTimes["eTimes.02"] != 'undefined') {
+            v2XML.writeElementString("E05_03", TheCall.eTimes["eTimes.02"]);
+        };
+        if (typeof TheCall.eTimes["eTimes.03"] != 'undefined') {
+            v2XML.writeElementString("E05_04", TheCall.eTimes["eTimes.03"]);
+        };
+    
+        if (typeof TheCall.eTimes["eTimes.05"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.05"][0]== null) &&(TheCall.eTimes["eTimes.05"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_05", "");
+            }
+            else 
+            {
+                v2XML.writeElementString("E05_05", TheCall.eDispatch["eTimes.05"][0]);      
+            }
+        };       
+    
+        if (typeof TheCall.eTimes["eTimes.06"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.06"][0]== null) &&(TheCall.eTimes["eTimes.06"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_06", "");
+            }
+        }                
+        else 
+        {
+            v2XML.writeElementString("E05_06", TheCall.eDispatch["eTimes.06"][0]);      
+        };
+    
+    
+        if (typeof TheCall.eTimes["eTimes.07"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.07"][0]== null) &&(TheCall.eTimes["eTimes.07"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_07", "");
+            }
+        }                
+        else 
+        {
+            v2XML.writeElementString("E05_07", TheCall.eDispatch["eTimes.07"][0]);      
+        };
+    
+        if (typeof TheCall.eTimes["eTimes.08"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.08"][0]== null) &&(TheCall.eTimes["eTimes.08"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_08", "");
+            }
+        }                
+        else 
+        {
+            v2XML.writeElementString("E05_08", TheCall.eDispatch["eTimes.08"][0]);      
+        };
+    
+        if (typeof TheCall.eTimes["eTimes.09"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.09"][0]== null) &&(TheCall.eTimes["eTimes.09"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_09", "");
+            }
+        }                
+        else 
+        {
+            v2XML.writeElementString("E05_09", TheCall.eDispatch["eTimes.09"][0]);      
+        };
+    
+        if (typeof TheCall.eTimes["eTimes.11"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.11"][0]== null) &&(TheCall.eTimes["eTimes.11"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_10", "");
+            }
+        }                
+        else 
+        {
+            v2XML.writeElementString("E05_10", TheCall.eDispatch["eTimes.11"][0]);      
+        };
+        /////////////////////////////////
+        //////////////////////////////MANDATORY
+        if (typeof TheCall.eTimes["eTimes.13"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.13"][0]== null) &&(TheCall.eTimes["eTimes.13"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_11", "");
+            }
+        }                
+        else 
+        {
+            v2XML.writeElementString("E05_11", TheCall.eDispatch["eTimes.13"][0]);      
+        };
+    
+        if (typeof TheCall.eTimes["eTimes.14"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.14"][0]== null) &&(TheCall.eTimes["eTimes.14"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_12", "");
+            }
+        }                
+        else 
+        {
+            v2XML.writeElementString("E05_12", TheCall.eDispatch["eTimes.14"][0]);      
+        };
+    
+        if (typeof TheCall.eTimes["eTimes.15"]  != 'undefined') 
+        {
+            if ((TheCall.eTimes["eTimes.15"][0]== null) &&(TheCall.eTimes["eTimes.15"][0]== "")) 
+            {
+                v2XML.writeElementString("E05_13", "");
+            }
+        }                
+        else 
+        {
+            v2XML.writeElementString("E05_13", TheCall.eDispatch["eTimes.15"][0]);      
+        };
+        v2XML.writeStartElement();
+    
+        /*
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_02");
+        v2XML.writeElementString("E12_02", val[0][0]); //NATIONAL
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_03");
+        v2XML.writeElementString("E12_03", val[0][0]);
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_04");
+        v2XML.writeElementString("E12_04", val[0][0]);//NATIONAL
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_05");
+        v2XML.writeElementString("E12_05", val[0][0]);//NATIONAL
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_06");
+        v2XML.writeElementString("E12_06", val[0][0]);//NATIONAL
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_07");
+        v2XML.writeElementString("E12_07", val[0][0]);//NATIONAL
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_08");
+        v2XML.writeElementString("E12_08", val[0][0]);
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_09");
+        v2XML.writeElementString("E12_09", val[0][0]);//NATIONAL
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_10");
+        v2XML.writeElementString("E12_10", val[0][0]);//NATIONAL
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_11");
+        v2XML.writeElementString("E12_11", val[0][0]);//NATIONAL
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_12");
+        v2XML.writeElementString("E12_12", val[0][0]);
+        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E12_13");
+        v2XML.writeElementString("E12_13", val[0][0]);//NATIONAL    
+        v2XML.writeEndElement("E12");
+        */
+    ////////////////////Patient
+    /*
     v2XML.writeStartElement("E06");
     //Name Group
     v2XML.writeStartElement("E06_01_0");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_01");
-    v2XML.writeElementString("E06_01", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_02");
-    v2XML.writeElementString("E06_02", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_03");
-    v2XML.writeElementString("E06_03", val[0][0]);//NA    
-    v2XML.writeEndElement("E06_01_0");
+    if (typeof TheCall.ePatient["ePatient.02"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePatient["ePatient.02"][0]) != -1) 
+        {
+            v2XML.writeElementString("E06_01", specMap[TheCall.ePatient["ePatient.02"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E06_01", TheCall.ePatient["ePatient.02"][0]);
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.03"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePatient["ePatient.03"][0]) != -1) 
+        {
+            v2XML.writeElementString("E06_02", specMap[TheCall.ePatient["ePatient.03"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E06_02", TheCall.ePatient["ePatient.03"][0]);
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.04"] != 'undefined') {
+        v2XML.writeElementString("E06_03", TheCall.ePatient["ePatient.04"][0]);
+    };
+
     //Address Group
     v2XML.writeStartElement("E06_04_0");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_04");
-    v2XML.writeElementString("E06_04", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_05");
-    v2XML.writeElementString("E06_05", val[0][0]);//NA        
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_07");
-    v2XML.writeElementString("E06_07", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_08");
-    v2XML.writeElementString("E06_08", val[0][0]);//NA    
-    v2XML.writeEndElement("E06_04_0");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_06");
-    v2XML.writeElementString("E06_06", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_09");
-    v2XML.writeElementString("E06_09", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_10");
-    v2XML.writeElementString("E06_10", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_11");
-    v2XML.writeElementString("E06_11", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_12");
-    v2XML.writeElementString("E06_12", val[0][0]);//NATIONAL   
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_13");
-    v2XML.writeElementString("E06_13", val[0][0]);//NATIONAL    
+    if (typeof TheCall.ePatient["ePatient.05"] != 'undefined') 
+    {
+        if ((TheCall.ePatient["ePatient.05"][0]== null) &&(TheCall.ePatient["ePatient.05"][0]== "")) 
+        {
+            v2XML.writeElementString("E06_04", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E06_04", TheCall.ePatient["ePatient.05"][0]);
+        }
+    };
 
-    //Age
-    v2XML.writeStartElement("E06_14_0");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_14");
-    v2XML.writeElementString("E06_14", val[0][0]);//NATIONAL    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_15");
-    v2XML.writeElementString("E06_15", val[0][0]);//NATIONAL    
+    if (typeof TheCall.ePatient["ePatient.06"] != 'undefined') 
+    {
+        if ((TheCall.ePatient["ePatient.06"][0]== null) &&(TheCall.ePatient["ePatient.06"][0]== "")) 
+        {
+            v2XML.writeElementString("E06_05", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E06_05", TheCall.ePatient["ePatient.06"][0]);        
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.07"] != 'undefined') 
+    {
+        if ((TheCall.ePatient["ePatient.07"][0]== null) &&(TheCall.ePatient["ePatient.07"][0]== "")) 
+        {
+            v2XML.writeElementString("E06_06", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E06_06", TheCall.ePatient["ePatient.07"][0]);        
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.08"] != 'undefined') 
+    {
+        if ((TheCall.ePatient["ePatient.08"][0]== null) &&(TheCall.ePatient["ePatient.08"][0]== "")) 
+        {
+            v2XML.writeElementString("E06_07", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E06_07", TheCall.ePatient["ePatient.08"][0]);        
+        }
+    };
+    v2XML.writeEndElement("E06_04_0");
+
+    if (typeof TheCall.ePatient["ePatient.09"] != 'undefined') 
+    {
+        if ((TheCall.ePatient["ePatient.09"][0]== null) &&(TheCall.ePatient["ePatient.09"][0]== "")) 
+        {
+            v2XML.writeElementString("E06_08", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E06_08", TheCall.ePatient["ePatient.09"][0]);        
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.10"] != 'undefined') 
+    {
+        if ((TheCall.ePatient["ePatient.10"][0]== null) &&(TheCall.ePatient["ePatient.10"][0]== "")) 
+        {
+            v2XML.writeElementString("E06_10", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E06_10", TheCall.ePatient["ePatient.10"][0]);        
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.13"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePatient["ePatient.13"][0]) != -1) 
+        {
+            v2XML.writeElementString("E06_11", specMap[TheCall.ePatient["ePatient.13"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E06_11", TheCall.ePatient["ePatient.13"][0]);
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.14"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePatient["ePatient.14"][0]) != -1) 
+        {
+            v2XML.writeElementString("E06_12", specMap[TheCall.ePatient["ePatient.14"][0]]);
+            v2XML.writeElementString("E06_13", specMap[TheCall.ePatient["ePatient.14"][0]]);
+        }                
+        else 
+        {
+           for (var i = 0; i < TheCall.ePatient["ePatient.14"].length; i++) 
+            {
+                v2XML.writeElementString("E06_12", TheCall.ePatient["ePatient.14"][i]);
+           };
+
+            if(TheCall.ePatient["ePatient.14"].indexOf("2514007") != -1) 
+            {
+                v2XML.writeElementString("E06_13", "690");
+            }
+            else
+            {
+                v2XML.writeElementString("E06_13", "695");
+            };
+
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.15"] != 'undefined') 
+    {
+        if (specVal.indexOf(TheCall.ePatient["ePatient.15"][0]) != -1) 
+        {
+            v2XML.writeElementString("E06_15", specMap[TheCall.ePatient["ePatient.15"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E06_15", TheCall.ePatient["ePatient.15"][0]);
+        }
+    };
+    
+    if (typeof TheCall.ePatient["ePatient.16"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePatient["ePatient.16"][0]) != -1) 
+        {
+            v2XML.writeElementString("E06_15", "");
+        }                
+        else 
+        {
+            v2XML.writeElementString("E06_15", TheCall.ePatient["ePatient.16"][0]);
+        }
+    };
+
     v2XML.writeEndElement("E06_14_0");
 
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_16");
-    v2XML.writeElementString("E06_16", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_17");
-    v2XML.writeElementString("E06_17", val[0][0]);//NA   
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_18");
-    v2XML.writeElementString("E06_18", val[0][0]);//NA   
+    if (typeof TheCall.ePatient["ePatient.17"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePatient["ePatient.17"][0]) != -1) 
+        {
+            v2XML.writeElementString("E06_16", "");
+        }                
+        else 
+        {
+            v2XML.writeElementString("E06_16", TheCall.ePatient["ePatient.17"][0]);
+        }
+    };
+
+    if (typeof TheCall.ePatient["ePatient.18"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePatient["ePatient.18"][0]) != -1) 
+        {
+            v2XML.writeElementString("E06_17", "");
+        }                
+        else 
+        {
+            v2XML.writeElementString("E06_17", TheCall.ePatient["ePatient.18"][0]);
+        }
+    };
+
 
     //Driver's Licence
     v2XML.writeStartElement("E06_19_0");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_16");
-    v2XML.writeElementString("E06_16", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E06_16");
-    v2XML.writeElementString("E06_16", val[0][0]);//NA
+    if (typeof TheCall.ePatient["ePatient.20"] != 'undefined') 
+    {
+        if ((TheCall.ePatient["ePatient.20"][0]== null) &&(TheCall.ePatient["ePatient.20"][0]== "")) 
+        {
+            v2XML.writeElementString("E06_18", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E06_18", TheCall.ePatient["ePatient.20"][0]);        
+        }
+    };
+    if (typeof TheCall.ePatient["ePatient.21"] != 'undefined') 
+    {
+        if ((TheCall.ePatient["ePatient.21"][0]== null) &&(TheCall.ePatient["ePatient.21"][0]== "")) 
+        {
+            v2XML.writeElementString("E06_19", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E06_19", TheCall.ePatient["ePatient.21"][0]);        
+        }
+    };
+
     v2XML.writeEndElement("E06_19_0");
     v2XML.writeEndElement("E06");
 
     //Payments
     v2XML.writeStartElement("E07");
+    if (typeof TheCall.ePayment["ePayment.01"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePayment["ePayment.01"][0]) != -1) 
+        {
+            v2XML.writeElementString("E07_01", specMap[TheCall.ePayment[0]["ePayment.01"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E07_01", TheCall.ePayment["ePayment.01"][0]);
+        }
+    };
 
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_01");
-    v2XML.writeElementString("E07_01", val[0][0]);  //NATIONAL -NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_02");
-    v2XML.writeElementString("E07_02", val[0][0]); //NA
+    if (typeof TheCall.ePayment["ePayment.02"] != 'undefined') {
+        if (specVal.indexOf(TheCall.ePayment["ePayment.02"][0]) != -1) 
+        {
+            v2XML.writeElementString("E07_02", specMap[TheCall.ePayment["ePayment.02"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E07_02", TheCall.ePayment["ePayment.02"][0]);
+        }
+    };
 
+
+    
     //Insurance Companies
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E04");
-    for (var i = 0; i < v2obj.length; i++) {
+    for (var i = 0; i < TheCall.ePayments.InsuranceGroup.length; i++) 
+    {
         v2XML.writeStartElement("E07_03_0");
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_03");
-        v2XML.writeElementString("E07_03", val[0][0]);//NA
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_04");
-        v2XML.writeElementString("E07_04", val[0][0]);//NATIONAL
+
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.09"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.09"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.09"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_03", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_03", TheCall.ePayments.InsuranceGroup[i]["ePayment.09"][0]);        
+            }
+        };
+
+
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.11"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.11"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.11"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_04", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_04", setV2(TheCall.ePayments.InsuranceGroup[i]["ePayment.11"][0]));        
+            }
+        };
 
         //Address
-        v2XML.writeStartElement("E07_05_0");
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_05");
-        v2XML.writeElementString("E07_05", val[0][0]);//NA
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_06");
-        v2XML.writeElementString("E07_06", val[0][0]);//NA
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_07");
-        v2XML.writeElementString("E07_07", val[0][0]);//NA
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_08");
-        v2XML.writeElementString("E07_08", val[0][0]);
+        
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.12"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.12"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.12"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_05", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_05", TheCall.ePayments.InsuranceGroup[i]["ePayment.12"][0]);        
+            }
+        };
+
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.13"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.13"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.13"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_06", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_06", TheCall.ePayments.InsuranceGroup[i]["ePayment.13"][0]);        
+            }
+        };
+
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.14"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.14"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.14"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_07", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_07", TheCall.ePayments.InsuranceGroup[i]["ePayment.14"][0]);        
+            }
+        };
+
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.15"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.15"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.15"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_08", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_08", TheCall.ePayments.InsuranceGroup[i]["ePayment.15"][0]);        
+            }
+        };
         v2XML.writeEndElement("E07_05_0");
 
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_09");
-        v2XML.writeElementString("E07_09", val[0][0]);//NA
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_10");
-        v2XML.writeElementString("E07_10", val[0][0]);//NA
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.17"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.17"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.17"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_09", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_09", TheCall.ePayments.InsuranceGroup[i]["ePayment.17"][0]);        
+            }
+        };
 
-        //Insured Name
-        v2XML.writeStartElement("E07_11_0");
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_11");
-        v2XML.writeElementString("E07_11", val[0][0]);//NA
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_12");
-        v2XML.writeElementString("E07_12", val[0][0]); //NA
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_13");
-        v2XML.writeElementString("E07_13", val[0][0]);//NA
-        v2XML.writeEndElement("E07_11_0");
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.18"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.18"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.18"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_10", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_10", TheCall.ePayments.InsuranceGroup[i]["ePayment.18"][0]);        
+            }
+        };
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.19"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.19"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.19"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_11", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_11", TheCall.ePayments.InsuranceGroup[i]["ePayment.19"][0]);        
+            }
+        };
 
-        v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_14");
-        v2XML.writeElementString("E07_14", val[0][0]);//NA
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.20"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.20"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.20"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_12", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_12", TheCall.ePayments.InsuranceGroup[i]["ePayment.20"][0]);        
+            }
+        };
+
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.21"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.21"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.21"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_13", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_13", TheCall.ePayments.InsuranceGroup[i]["ePayment.21"][0]);        
+            }
+        };
+
+        if (typeof TheCall.ePayments.InsuranceGroup[i]["ePayment.22"] != 'undefined') 
+        {
+            if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.22"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.22"][0]== "")) 
+            {
+                v2XML.writeElementString("E07_14", "-5");
+            }                
+            else
+            {
+                v2XML.writeElementString("E07_14", setV2(TheCall.ePayments.InsuranceGroup[i]["ePayment.22"][0]));        
+            }
+        };
+
         v2XML.writeEndElement("E07_03_0");
     };
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_15");
-    v2XML.writeElementString("E07_15", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_16");
-    v2XML.writeElementString("E07_16", val[0][0]);//NA
+
+    if (typeof TheCall.ePayments["ePayment.21"] != 'undefined') 
+    {
+        if ((TheCall.ePayments.InsuranceGroup[i]["ePayment.21"][0]== null) &&(TheCall.ePayments.InsuranceGroup[i]["ePayment.21"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_13", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_13", TheCall.ePayments.InsuranceGroup[i]["ePayment.21"][0]);        
+        }
+    };
+    if (typeof TheCall.eSituation["eSituation.14"] != 'undefined') 
+    {
+        if (specVal.indexOf(TheCall.eSituation["eSituation.14"][0]) != -1) 
+        {
+            v2XML.writeElementString("E07_15", specMap[TheCall.eSituation["eSituation.14"][0]]);
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_15", TheCall.eSituation["eSituation.14"][0]);        
+        }
+    };
+
+    if (typeof TheCall.eSituation["eSituation.15"]  != 'undefined') 
+    {
+        if ((TheCall.eSituation["eSituation.15"] [0]== null) &&(TheCall.eSituation["eSituation.15"] [0]== "")) 
+        {
+            v2XML.writeElementString("E07_16", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_16", setV2(TheCall.eSituation["eSituation.15"][0]));        
+        }
+    };
+
+    if (typeof TheCall.eSituation["eSituation.16"]  != 'undefined') 
+    {
+        if ((TheCall.eSituation["eSituation.16"] [0]== null) &&(TheCall.eSituation["eSituation.16"] [0]== "")) 
+        {
+            v2XML.writeElementString("E07_17", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_17", setV2(TheCall.eSituation["eSituation.16"][0]));        
+        }
+    };
+
+
     v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_17");
     v2XML.writeElementString("E07_17", val[0][0]);//NA
 
@@ -1805,69 +2299,316 @@ var setV2XML = function (ArrayOfVersion2Objects) {
     v2XML.writeStartElement("E07_18_0");
     //closest relative Name
     v2XML.writeStartElement("E07_18_1");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_18");
-    v2XML.writeElementString("E07_18", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_19");
-    v2XML.writeElementString("E07_19", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_20");
-    v2XML.writeElementString("E07_20", val[0][0]);//NA
+    if (typeof TheCall.ePayment["ePayment.23"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.23"][0]== null) &&(TheCall.ePayment["ePayment.23"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_18", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_18", TheCall.ePayment["ePayment.23"][0]);        
+        }
+    };
+    if (typeof TheCall.ePayment["ePayment.24"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.24"][0]== null) &&(TheCall.ePayment["ePayment.24"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_19", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_19", TheCall.ePayment["ePayment.24"][0]);        
+        }
+    };
+    if (typeof TheCall.ePayment["ePayment.25"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.25"][0]== null) &&(TheCall.ePayment["ePayment.25"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_20", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_20", TheCall.ePayment["ePayment.25"][0]);        
+        }
+    };
+
     v2XML.writeEndElement("E07_18_1");
 
     //closest relative Address
     v2XML.writeStartElement("E07_21_0");
 
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_21");
-    v2XML.writeElementString("E07_21", val[0][0]);  //NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_22");
-    v2XML.writeElementString("E07_22", val[0][0]); //NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_23");
-    v2XML.writeElementString("E07_23", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_24");
-    v2XML.writeElementString("E07_24", val[0][0]);//NA
-    v2XML.writeEndElement("E07_21_0");
+    if (typeof TheCall.ePayment["ePayment.26"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.26"][0]== null) &&(TheCall.ePayment["ePayment.26"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_21", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_21", TheCall.ePayment["ePayment.26"][0]);        
+        }
+    };
 
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_25");
-    v2XML.writeElementString("E07_25", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_26");
-    v2XML.writeElementString("E07_26", val[0][0]);//NA
+    if (typeof TheCall.ePayment["ePayment.27"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.26"][0]== null) &&(TheCall.ePayment["ePayment.27"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_22", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_22", TheCall.ePayment["ePayment.27"][0]);        
+        }
+    };
+
+    if (typeof TheCall.ePayment["ePayment.28"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.28"][0]== null) &&(TheCall.ePayment["ePayment.28"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_23", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_23", TheCall.ePayment["ePayment.28"][0]);        
+        }
+    };
+
+
+    if (typeof TheCall.ePayment["ePayment.29"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.29"][0]== null) &&(TheCall.ePayment["ePayment.29"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_24", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_24", TheCall.ePayment["ePayment.29"][0]);        
+        }
+    };
+
+    v2XML.writeEndElement("E07_21_0");
+    if (typeof TheCall.ePayment["ePayment.30"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.30"][0]== null) &&(TheCall.ePayment["ePayment.30"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_25", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_25", TheCall.ePayment["ePayment.30"][0]);        
+        }
+    };
+
+    if (typeof TheCall.ePayment["ePayment.31"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.31"][0]== null) &&(TheCall.ePayment["ePayment.31"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_26", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_26", setV2(TheCall.ePayment["ePayment.31"][0]));        
+        }
+    };
     v2XML.writeEndElement("E07_18_0");
 
     //Employer
     v2XML.writeStartElement("E07_27_0");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_27");
-    v2XML.writeElementString("E07_27", val[0][0]);//NA
+    if (typeof TheCall.ePayment["ePayment.33"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.33"][0]== null) &&(TheCall.ePayment["ePayment.33"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_27", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_27", setV2(TheCall.ePayment["ePayment.33"][0]));        
+        }
+    };
 
     //Employer Address
     v2XML.writeStartElement("E07_28_0");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_28");
-    v2XML.writeElementString("E07_28", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_29");
-    v2XML.writeElementString("E07_29", val[0][0]);
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_30");
-    v2XML.writeElementString("E07_30", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_31");
-    v2XML.writeElementString("E07_31", val[0][0]); //NA
+    if (typeof TheCall.ePayment["ePayment.34"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.34"][0]== null) &&(TheCall.ePayment["ePayment.34"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_28", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_28", setV2(TheCall.ePayment["ePayment.34"][0]));        
+        }
+    };
+
+    if (typeof TheCall.ePayment["ePayment.35"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.35"][0]== null) &&(TheCall.ePayment["ePayment.35"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_29", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_29", setV2(TheCall.ePayment["ePayment.35"][0]));        
+        }
+    };
+
+    if (typeof TheCall.ePayment["ePayment.36"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.36"][0]== null) &&(TheCall.ePayment["ePayment.36"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_30", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_30", setV2(TheCall.ePayment["ePayment.36"][0]));        
+        }
+    };
+
+    if (typeof TheCall.ePayment["ePayment.37"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.37"][0]== null) &&(TheCall.ePayment["ePayment.37"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_31", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_31", setV2(TheCall.ePayment["ePayment.37"][0]));        
+        }
+    };
+       
     v2XML.writeEndElement("E07_28_0");
     v2XML.writeEndElement("E07_27_0");
+    if (typeof TheCall.ePayment["ePayment.39"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.39"][0]== null) &&(TheCall.ePayment["ePayment.39"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_32", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_32", TheCall.ePayment["ePayment.39"][0]);        
+        }
+    };
+    if (typeof TheCall.ePayment["ePayment.40"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.40"][0]== null) &&(TheCall.ePayment["ePayment.40"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_33", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_33", setV2(TheCall.ePayment["ePayment.40"][0]));        
+        }
+    };
 
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_32");
-    v2XML.writeElementString("E07_32", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_33");
-    v2XML.writeElementString("E07_33", val[0][0]);//NA
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E07_34");
-    v2XML.writeElementString("E07_34", val[0][0]);//NATIONAL
+    if (typeof TheCall.ePayment["ePayment.50"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.50"][0]== null) &&(TheCall.ePayment["ePayment.50"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_34", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_34", SETv2(TheCall.ePayment["ePayment.50"][0]));        
+        }
+    };
+
+    v2XML.writeStartElement("E07_35_0");
+    if (typeof TheCall.ePayment["ePayment.51"]  != 'undefined') 
+    {
+        if ((TheCall.ePayment["ePayment.51"][0]== null) &&(TheCall.ePayment["ePayment.51"][0]== "")) 
+        {
+            v2XML.writeElementString("E07_35", "-5");
+            v2XML.writeElementString("E07_36", "-5");
+            v2XML.writeElementString("E07_37", "-5");
+        }                
+        else
+        {
+            v2XML.writeElementString("E07_35", SETv2(TheCall.ePayment["ePayment.51"][0]));        
+            v2XML.writeElementString("E07_36", "-5");
+            v2XML.writeElementString("E07_37", "-5");
+        }
+    };
+
+    v2XML.writeEndElement("E07_35_0");
     v2XML.writeEndElement("E07");
 
     //Scene
     v2XML.writeStartElement("E08");
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E08_01");
-    v2XML.writeElementString("E08_01", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E08_02");
-    v2XML.writeElementString("E08_02", val[0][0]);//NA    
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E08_03");
-    v2XML.writeElementString("E08_03", val[0][0]);//NA       
-    v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E08_04");
-    v2XML.writeElementString("E08_04", val[0][0]);
+    if (typeof TheCall.eScene["eScene.02"] != 'undefined') {
+        if (specVal.indexOf(TheCall.eScene["eScene.02"][0]) != -1) 
+        {
+            v2XML.writeElementString("E08_01", specMap[TheCall.eScene["eScene.02"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E08_01", TheCall.eScene["eScene.02"][0]);
+        }
+    };
+
+
+    if (typeof TheCall.eScene["eScene.04"] != 'undefined') {
+        if (specVal.indexOf(TheCall.eScene["eScene.04"][0]) != -1) 
+        {
+            v2XML.writeElementString("E08_02", specMap[TheCall.eScene["eScene.04"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E08_02",  setV2(TheCall.eScene["eScene.04"][0]));
+        }
+    };
+    //The date/time differential between the initial responder and the EMS unit arriving on the scene, if applicable.
+    console.log("time between eTimes.05 and eTimes.06");
+    v2XML.writeElementString("E08_03",  "-10");
+
+    if (typeof TheCall.eScene["eScene.05"] != 'undefined') {
+        if ((TheCall.eScene["eScene.05"][0]== null) &&(TheCall.eScene["eScene.05"][0]== "")) 
+        {
+            v2XML.writeElementString("E08_04",  "");
+        }
+        else 
+        {
+            v2XML.writeElementString("E08_04",  setV2(TheCall.eScene["eScene.04"][0]));
+        }
+    };
+
+    if (typeof TheCall.eScene["eScene.06"] != 'undefined') {
+        if (specVal.indexOf(TheCall.eScene["eScene.04"][0]) != -1) 
+        {
+            v2XML.writeElementString("E08_05", specMap[TheCall.eScene["eScene.06"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E08_05",  setV2(TheCall.eScene["eScene.06"][0]));
+        }
+    };
+
+    if (typeof TheCall.eScene["eScene.07"] != 'undefined') {
+        if (specVal.indexOf(TheCall.eScene["eScene.04"][0]) != -1) 
+        {
+            v2XML.writeElementString("E08_06", specMap[TheCall.eScene["eScene.07"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E08_06",  setV2(TheCall.eScene["eScene.07"][0]));
+        }
+    };
+
+
+    if (typeof TheCall.eScene["eScene.09"] != 'undefined') {
+        if (specVal.indexOf(TheCall.eScene["eScene.05"][0]) != -1) 
+        {
+            v2XML.writeElementString("E08_07", specMap[TheCall.eScene["eScene.09"][0]]);
+        }                
+        else 
+        {
+            v2XML.writeElementString("E08_07",  setV2(TheCall.eScene["eScene.09"][0]));
+        }
+    };
+    /*
+    NEIL
+
     v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E08_05");
     v2XML.writeElementString("E08_05", val[0][0]);//NA        
     v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E08_07");
@@ -1896,7 +2637,7 @@ var setV2XML = function (ArrayOfVersion2Objects) {
     v2XML.writeEndElement("E08_11_0");
     v2XML.writeEndElement("E08");
 
-
+    
     //Situation
     v2XML.writeStartElement("E09");
     v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E09_01");
@@ -2150,6 +2891,7 @@ var setV2XML = function (ArrayOfVersion2Objects) {
     };
 
     //Assessment/ Injury 
+    
     v2XML.writeStartElement("E16");
     v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E16_01");
     for (var j = 0; j < v2obj.length; j++) {
@@ -2160,7 +2902,7 @@ var setV2XML = function (ArrayOfVersion2Objects) {
         v2XML.writeElementString("E16_02", val[0][0]);//NA        
     };
     v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E16_03");
-    for (var j = 0; j < v2obj.length; j++) {
+    for (var j = 0; j < v2obj.length; 7j++) {
         v2XML.writeElementString("E16_03", val[0][0]);//NATIONAL - NA           
     };
     v2obj = getVersion221Values(ArrayOfVersion2Objects.eDisposition.V221Array, "E16_04");
@@ -2397,7 +3139,7 @@ var setV2XML = function (ArrayOfVersion2Objects) {
         v2XML.writeElementString("E19_14", val[0][0]);//NA
     };
 
-    */
+    
     //Disposition 
 
     v2XML.writeStartElement("E20");
@@ -2468,7 +3210,7 @@ var setV2XML = function (ArrayOfVersion2Objects) {
         v2XML.writeElementString("E20_12", v2obj.val[0].toString());//NA
         //}
     };
-    /*
+    
     v2obj = getVersion221Values(ArrayOfVersion2Objects, "E20_13");
     if (v2obj.HasValue == true) {
         v2XML.writeElementString("E20_13", v2obj.val[0]);//NA
@@ -2491,7 +3233,7 @@ var setV2XML = function (ArrayOfVersion2Objects) {
     };
     
     v2XML.writeEndElement("E20");
-    /*        /*
+  
         //Medical Device Data 
         for (var i = 0; i < v2obj.length; i++) {
             v2XML.writeStartElement("E21");
@@ -2613,7 +3355,9 @@ var setV2XML = function (ArrayOfVersion2Objects) {
     v2XML.writeEndElement();
     //XML.writeAttributeString('timeStamp', Data);
     var XMLDoc = v2XML.flush()
-    console.log(XMLDoc)
+    //console.log(XMLDoc)
+    return v2XML;
+
 
 };
 var getVersion221Values = function (AllVersion221ObjectArray, valueElement) {
@@ -4700,4 +5444,1895 @@ eVitals31 = {
     "3331001": "3305",
     "3331003": "3310",
     "3331005": "3315"
+};
+var setV3XML = function (TheCall) {
+
+    var specMap = {
+        "7701001": "-5",
+        "7701003": "-15",
+        "7701005": "-20",
+        "8801005": "-10",
+        "8801013": "-10",
+        "8801015": "-10",
+        "8801017": "-10",
+        "8801019": "-10",
+        "8801021": "-10",
+        "8801023": "-10"
+    };
+    var specVal = ["7701001", "7701003", "7701005", "8801005", "8801013", "8801015", "8801017", "8801019", "8801021", "8801023"];
+
+    var XML = new XMLWriter('UTF-8', '1.0');
+    XML.writeStartDocument();
+    XML.writeStartElement('EMSDataSet');
+    //XML.writeAttributeString('xmlns', "http://www.nemsis.org  xsi:schemaLocation=http://www.nemsis.org http://nemsis.org/media/XSD_v3/_nemsis_v3.3.4/3.3.4.140328/XSDs/NEMSIS_XSDs_v3.3.4.140328/EMSDataSet_v3.xsd  xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance") 
+    XML.writeAttributeString('xmlns', 'http://www.nemsis.org'); 8
+    XML.writeAttributeString('xsi:schemaLocation', '="http://www.nemsis.org http://www.nemsis.org/media/XSD/EMSDataSet.xsd');
+    XML.writeAttributeString('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+
+
+    XML.writeStartElement("Header");
+    XML.writeStartElement("PatientCareReport");
+    if (typeof TheCall.eRecord != undefined) {
+        XML.writeStartElement("eRecord");
+
+        if (TheCall.eRecord["eRecord.01"].IsNull == false) {
+            XML.writeElementString("eRecord.01", TheCall.eRecord["eRecord.01"].vSet[0]);
+        };
+        XML.writeStartElement("eRecord.SoftwareApplicationGroup");
+        if (TheCall.eRecord["eRecord.02"].IsNull == false) {
+            XML.writeElementString("eRecord.02", TheCall.eRecord["eRecord.02"].vSet[0]);
+        };
+        if (TheCall.eRecord["eRecord.03"].IsNull == false) {
+            XML.writeElementString("eRecord.03", TheCall.eRecord["eRecord.03"].vSet[0]);
+        };
+        if (TheCall.eRecord["eRecord.04"].IsNull == false) {
+            XML.writeElementString("eRecord.04", TheCall.eRecord["eRecord.04"].vSet[0]);
+        };
+        XML.writeEndElement();
+        XML.writeEndElement("eRecord");
+    };
+    //Dispatch
+    if (typeof TheCall.eDispatch != undefined) {
+        XML.writeStartElement("eDispatch");
+        if (TheCall.eDispatch["eDispatch.01"].IsNull == false) {
+            XML.writeElementString("eDispatch.01", TheCall.eDispatch["eDispatch.01"].vSet[0]);
+        }
+        else {
+            if (TheCall.eDispatch["eDispatch.02"].NV == true) {
+            }
+            XML.writeStartElement('eDispatch.02');
+            XML.writeAttributeString('xsi:nil', 'true');
+            XML.writeAttributeString('NV', TheCall.eDispatch["eDispatch.02"].vSet[0]);
+            XML.writeEndElement();
+        };
+
+        if (TheCall.eDispatch["eDispatch.03"].IsNull == false) {
+            XML.writeElementString("eDispatch.03", TheCall.eDispatch["eDispatch.03"].vSet[0]);
+        };
+        if (TheCall.eDispatch["eDispatch.04"].IsNull == false) {
+            XML.writeElementString("eDispatch.04", TheCall.eDispatch["eDispatch.04"].vSet[0]);
+        };
+
+        if (TheCall.eDispatch["eDispatch.05"].IsNull == false) {
+            XML.writeElementString("eDispatch.05", TheCall.eDispatch["eDispatch.05"].vSet[0]);
+        };
+
+        XML.writeEndElement("eDispatch");
+    };
+    //Disposition
+    if (typeof TheCall.eDisposition != undefined) {
+        XML.writeStartElement("eDisposition");
+        XML.writeStartElement("eDisposition.DestinationGroup");
+
+        if (TheCall.eDisposition["eDisposition.01"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.01"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.01", TheCall.eDisposition["eDisposition.01"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.01"].NV == true) {
+                    XML.writeStartElement('eDisposition.01');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.01"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.02"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.02"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.02", TheCall.eDisposition["eDisposition.02"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.02"].NV == true) {
+                    XML.writeStartElement('eDisposition.02');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.02"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (TheCall.eDisposition["eDisposition.03"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.03"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.03", TheCall.eDisposition["eDisposition.03"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.03"].NV == true) {
+                    XML.writeStartElement('eDisposition.03');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.03"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.04"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.04"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.04", TheCall.eDisposition["eDisposition.04"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.04"].NV == true) {
+                    XML.writeStartElement('eDisposition.04');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.04"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.05"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.05"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.05", TheCall.eDisposition["eDisposition.05"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.05"].NV == true) {
+                    XML.writeStartElement('eDisposition.05');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.05"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.06"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.06"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.06", TheCall.eDisposition["eDisposition.06"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.06"].NV == true) {
+                    XML.writeStartElement('eDisposition.06');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.06"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.07"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.07"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.07", TheCall.eDisposition["eDisposition.07"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.07"].NV == true) {
+                    XML.writeStartElement('eDisposition.07');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.07"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.08"] != undefined) 
+        {
+            if (TheCall.eDisposition["eDisposition.08"].IsNull == false) 
+            {
+                XML.writeElementString("eDisposition.08", TheCall.eDisposition["eDisposition.08"].vSet[0]);
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.09"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.09"].IsNull == false) {
+                XML.writeElementString("eDisposition.09", TheCall.eDisposition["eDisposition.09"].vSet[0]);
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.10"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.10"].IsNull == false) {
+                XML.writeElementString("eDisposition.10", TheCall.eDisposition["eDisposition.10"].vSet[0]);
+            }
+        };
+
+
+        XML.writeEndElement();
+        /////////////////
+        
+        if (TheCall.eDisposition["eDisposition.11"] != 'undefined')
+        {
+            if (TheCall.eDisposition["eDisposition.11"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.11", TheCall.eDisposition["eDisposition.11"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.11"].NV == true) {
+                    XML.writeStartElement('eDisposition.11');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.11"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        
+        if (TheCall.eDisposition["eDisposition.12"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.12"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.12", TheCall.eDisposition["eDisposition.12"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.12"].NV == true) {
+                    XML.writeStartElement('eDisposition.12');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.12"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (TheCall.eDisposition["eDisposition.13"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.13"].IsNull == false) {
+                for (var d = 0; d < TheCall.eDisposition["eDisposition.13"].vSet.length; d++) {
+                    XML.writeElementString("eDisposition.13", TheCall.eDisposition["eDisposition.13"].vSet[d]);
+                }
+            }
+            else {
+                XML.writeElementString("eDisposition.13", "");
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.14"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.14"].IsNull == false) {
+                for (var d = 0; d < TheCall.eDisposition["eDisposition.14"].vSet.length; d++) {
+                    XML.writeElementString("eDisposition.14", TheCall.eDisposition["eDisposition.14"].vSet[d]);
+                }
+            }
+            else {
+                XML.writeElementString("eDisposition.14", "");
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.15"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.15"].IsNull == false) {
+                XML.writeElementString("eDisposition.15", TheCall.eDisposition["eDisposition.15"].vSet[0]);
+            }
+            else {
+                XML.writeElementString("eDisposition.15", "");
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.16"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.16"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.16", TheCall.eDisposition["eDisposition.16"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.16"].NV == true) {
+                    XML.writeStartElement('eDisposition.16');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.16"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (TheCall.eDisposition["eDisposition.17"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.17"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.17", TheCall.eDisposition["eDisposition.17"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.17"].NV == true) {
+                    XML.writeStartElement('eDisposition.17');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.17"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eDisposition["eDisposition.18"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.18"].IsNull == false) {
+                for (var d = 0; d < TheCall.eDisposition["eDisposition.18"].vSet.length; d++) {
+                    XML.writeElementString("eDisposition.18", TheCall.eDisposition["eDisposition.18"].vSet[d]);
+                }
+            }
+            else {
+                if (TheCall.eDisposition["eDisposition.18"].NV == true) {
+                    XML.writeStartElement('eDisposition.18');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.18"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (TheCall.eDisposition["eDisposition.19"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.19"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.19", TheCall.eDisposition["eDisposition.19"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.19"].NV == true) {
+                    XML.writeStartElement('eDisposition.19');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.19"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (TheCall.eDisposition["eDisposition.20"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.20"].IsNull == false) {
+                for (var d = 0; d < TheCall.eDisposition["eDisposition.20"].vSet.length; d++) {
+                    XML.writeElementString("eDisposition.20", TheCall.eDisposition["eDisposition.20"].vSet[d]);
+                }
+
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.20"].NV == true) {
+                    XML.writeStartElement('eDisposition.20');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.20"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (TheCall.eDisposition["eDisposition.21"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.21"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.21", TheCall.eDisposition["eDisposition.21"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.21"].NV == true) {
+                    XML.writeStartElement('eDisposition.21');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.21"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (TheCall.eDisposition["eDisposition.22"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.22"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.22", TheCall.eDisposition["eDisposition.22"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.22"].NV == true) {
+                    XML.writeStartElement('eDisposition.22');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.22"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (TheCall.eDisposition["eDisposition.23"] != undefined) {
+            if (TheCall.eDisposition["eDisposition.23"].IsNull == false) {
+
+                XML.writeElementString("eDisposition.23", TheCall.eDisposition["eDisposition.23"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eDisposition["eDisposition.23"].NV == true) {
+                    XML.writeStartElement('eDisposition.23');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eDisposition["eDisposition.23"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (typeof TheCall.eDisposition.HospitalTeamActivationGroup != undefined)
+        {
+            for (var i = 0; i< TheCall.eDisposition.HospitalTeamActivationGroup.length; i++)
+            {
+                XML.writeStartElement("eDisposition.HospitalTeamActivationGroup");
+                if (TheCall.eDisposition.HospitalTeamActivationGroup[i]["eDisposition.24"] != undefined) {
+                    if (TheCall.eDisposition.HospitalTeamActivationGroup[i]["eDisposition.24"].IsNull == false) {
+
+                        XML.writeElementString("eDisposition.23", TheCall.eDisposition.HospitalTeamActivationGroup[i]["eDisposition.24"].vSet[0]);
+                    }
+
+                    else {
+                        if (TheCall.eDisposition["eDisposition.24"].NV == true) {
+                            XML.writeStartElement('eDisposition.24');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', TheCall.eDisposition.HospitalTeamActivationGroup[i]["eDisposition.24"].vSet[0]);
+                            XML.writeEndElement();
+                        }
+                    }
+                };
+                if (TheCall.eDisposition.HospitalTeamActivationGroup[i]["eDisposition.25"] != undefined) {
+                    if (TheCall.eDisposition.HospitalTeamActivationGroup[i]["eDisposition.25"].IsNull == false)
+                    {                     
+                        XML.writeElementString("eDisposition.23", TheCall.eDisposition.HospitalTeamActivationGroup[i]["eDisposition.25"].vSet[0]);
+                    }
+
+                    else {
+                        if (TheCall.eDisposition["eDisposition.25"].NV == true) {
+                            XML.writeStartElement('eDisposition.25');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', TheCall.eDisposition.HospitalTeamActivationGroup[i]["eDisposition.25"].vSet[0]);
+                            XML.writeEndElement();
+                        }
+                    }
+                };
+                XML.writeEndElement();
+            };
+        };
+        if (TheCall.eDisposition["eDisposition.26"] != 'undefined')
+        {
+            if (TheCall.eDisposition["eDisposition.26"].IsNull == false)
+            {
+                for (var d = 0; d < TheCall.eDisposition["eDisposition.26"].vSet.length; d++)
+                {
+                    XML.writeElementString("eDisposition.26", TheCall.eDisposition["eDisposition.26"].vSet[d]);
+                }
+            }
+        }
+        else
+        {
+            XML.writeElementString("eDisposition.26", "");
+        };
+        XML.writeEndElement();
+    };  
+    //eTimes
+    if (typeof TheCall.eTimes != undefined)
+    {
+        XML.writeStartElement("eTimes");
+        if (TheCall.eTimes["eTimes.01"] != undefined) {
+            if (TheCall.eTimes["eTimes.01"].IsNull == false)
+            {
+                XML.writeElementString("eTimes.01", TheCall.eTimes["eTimes.01"].vSet[0]);
+            }
+            else
+            {
+                if (TheCall.eTimes["eTimes.01"].NV == true) {
+
+                    XML.writeStartElement('eTimes.01');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eTimes["eTimes.01"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.02"] != undefined) {
+            if (TheCall.eTimes["eTimes.02"].IsNull == false) {
+                XML.writeElementString("eTimes.02", TheCall.eTimes["eTimes.02"].vSet[0]);
+            }
+            else {
+                XML.writeElementString("eTimes.02", "");
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.03"] != undefined) {
+            if (TheCall.eTimes["eTimes.03"].IsNull == false) {
+                XML.writeElementString("eTimes.03", TheCall.eTimes["eTimes.03"].vSet[0]);
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.04"] != undefined) {
+            if (TheCall.eTimes["eTimes.04"].IsNull == false) {
+                XML.writeElementString("eTimes.04", TheCall.eTimes["eTimes.04"].vSet[0]);
+            }
+            else {
+                XML.writeElementString("eTimes.04", "");
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.05"] != undefined) {
+            if (TheCall.eTimes["eTimes.05"].IsNull == false) {
+                XML.writeElementString("eTimes.05", TheCall.eTimes["eTimes.05"].vSet[0]);
+            }
+            else {
+                if (TheCall.eTimes["eTimes.05"].NV == true) {
+                }
+                XML.writeStartElement('eTimes.05');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eTimes["eTimes.05"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.06"] != undefined) {
+            if (TheCall.eTimes["eTimes.06"].IsNull == false) {
+                XML.writeElementString("eTimes.06", TheCall.eTimes["eTimes.06"].vSet[0]);
+            }
+            else {
+                if (TheCall.eTimes["eTimes.06"].NV == true) {
+                }
+                XML.writeStartElement('eTimes.06');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eTimes["eTimes.06"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.07"] != undefined) {
+            if (TheCall.eTimes["eTimes.07"].IsNull == false) {
+                XML.writeElementString("eTimes.07", TheCall.eTimes["eTimes.07"].vSet[0]);
+            }
+            else {
+                if (TheCall.eTimes["eTimes.07"].NV == true) {
+                }
+                XML.writeStartElement('eTimes.07');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eTimes["eTimes.07"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.08"] != undefined) {
+            if (TheCall.eTimes["eTimes.08"].IsNull == false) {
+                XML.writeElementString("eTimes.08", TheCall.eTimes["eTimes.08"].vSet[0]);
+            }
+            else {
+                if (TheCall.eTimes["eTimes.08"].NV == true) {
+                }
+                XML.writeStartElement('eTimes.08');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eTimes["eTimes.08"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+        if (TheCall.eTimes["eTimes.09"] != undefined) {
+            if (TheCall.eTimes["eTimes.09"].IsNull == false) {
+                XML.writeElementString("eTimes.09", TheCall.eTimes["eTimes.09"].vSet[0]);
+            }
+            else {
+                if (TheCall.eTimes["eTimes.09"].NV == true) {
+                }
+                XML.writeStartElement('eTimes.09');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eTimes["eTimes.09"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.10"] != undefined) {
+            if (TheCall.eTimes["eTimes.10"].IsNull == false) {
+                XML.writeElementString("eTimes.10", TheCall.eTimes["eTimes.10"].vSet[0]);
+            }
+            else {
+                XML.writeElementString("eTimes.10", "");
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.11"] != undefined) {
+            if (TheCall.eTimes["eTimes.11"].IsNull == false) {
+                XML.writeElementString("eTimes.11", TheCall.eTimes["eTimes.11"].vSet[0]);
+            }
+            else {
+                if (TheCall.eTimes["eTimes.11"].NV == true) {
+                }
+                XML.writeStartElement('eTimes.11');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eTimes["eTimes.11"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.12"] != undefined) {
+            if (TheCall.eTimes["eTimes.12"].IsNull == false) {
+                XML.writeElementString("eTimes.12", TheCall.eTimes["eTimes.12"].vSet[0]);
+            }
+            else {
+                if (TheCall.eTimes["eTimes.12"].NV == true) {
+                }
+                XML.writeStartElement('eTimes.12');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eTimes["eTimes.12"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.13"] != undefined) {
+            if (TheCall.eTimes["eTimes.13"].IsNull == false) {
+                XML.writeElementString("eTimes.13", TheCall.eTimes["eTimes.13"].vSet[0]);
+            }
+            else {
+                XML.writeElementString("eTimes.13", "");
+            }
+        };
+        if (TheCall.eTimes["eTimes.14"] != undefined) {
+            if (TheCall.eTimes["eTimes.14"].IsNull == false) {
+                XML.writeElementString("eTimes.14", TheCall.eTimes["eTimes.4"].vSet[0]);1
+            }
+            else {
+                XML.writeElementString("eTimes.14", "");
+            }
+        };
+        if (TheCall.eTimes["eTimes.15"] != undefined) {
+            if (TheCall.eTimes["eTimes.15"].IsNull == false) {
+                XML.writeElementString("eTimes.15", TheCall.eTimes["eTimes.15"].vSet[0]);
+            }
+            else {
+                XML.writeElementString("eTimes.15", "");
+            }
+        };
+
+        if (TheCall.eTimes["eTimes.16"] != undefined) {
+            if (TheCall.eTimes["eTimes.16"].IsNull == false) {
+                XML.writeElementString("eTimes.16", TheCall.eTimes["eTimes.16"].vSet[0]);
+            }
+            else {
+                XML.writeElementString("eTimes.16", "");
+            }
+        };
+        XML.writeEndElement()
+        /////////////////////Response
+    };
+    //Response
+    if (typeof TheCall.eResponse != undefined)
+    {
+        XML.writeStartElement("eResponse");
+        XML.writeStartElement("eResponse.AgencyGroup");
+        if (typeof TheCall.eResponse["eResponse.01"] != undefined) {
+            if (TheCall.eResponse["eResponse.01"].IsNull == false) {
+                XML.writeElementString("eResponse.01", TheCall.eResponse["eResponse.01"].vSet[0]);
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.02"] != undefined) {
+            if (TheCall.eResponse["eResponse.02"].IsNull == false) {
+                XML.writeElementString("eResponse.02", TheCall.eResponse["eResponse.02"].vSet[0]);
+            }
+            else {
+                if (TheCall.eResponse["eResponse.02"].NV == true) {
+                }
+                XML.writeStartElement('eResponse.02');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eResponse["eResponse.02"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+        XML.writeEndElement();
+        if (typeof TheCall.eResponse["eResponse.03"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.03"].IsNull == false) {
+                XML.writeElementString("eResponse.03", TheCall.eResponse["eResponse.03"].vSet[0]);
+            }
+            else {
+                if (TheCall.eResponse["eResponse.03"].NV == true) {
+                }
+                XML.writeStartElement('eResponse.03');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eResponse["eResponse.03"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+        
+
+        if (typeof TheCall.eResponse["eResponse.04"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.04"].IsNull == false) {
+                XML.writeElementString("eResponse.04", TheCall.eResponse["eResponse.04"].vSet[0]);
+            }
+            else {
+                if (TheCall.eResponse["eResponse.04"].NV == true) {
+                }
+                XML.writeStartElement('eResponse.04');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eResponse["eResponse.04"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+
+        XML.writeStartElement("eResponse.AgencyServiceGroup");
+        if (typeof TheCall.eResponse["eResponse.05"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.05"].IsNull == false) {
+                XML.writeElementString("eResponse.05", TheCall.eResponse["eResponse.05"].vSet[0]);
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.06"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.06"].IsNull == false) {
+                XML.writeElementString("eResponse.06", TheCall.eResponse["eResponse.06"].vSet[0]);
+            }
+            else {
+                if (TheCall.eResponse["eResponse.06"].NV == true) {
+                }
+                XML.writeStartElement('eResponse.06');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.eResponse["eResponse.06"].vSet[0]);
+                XML.writeEndElement();
+            }
+        };
+        XML.writeEndElement();
+    
+        if (typeof TheCall.eResponse["eResponse.07"] != 'undefined')
+        {
+            //    console.log(TheCall.eResponse["eResponse.07"].IsNull)
+            if (TheCall.eResponse["eResponse.07"].IsNull == false)
+            {
+                XML.writeElementString("eResponse.07", TheCall.eResponse["eResponse.07"].vSet[0]);
+            }
+        };
+
+
+        if (typeof TheCall.eResponse["eResponse.08"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.08"].IsNull == false) {
+                for (var d = 0; d < TheCall.eResponse["eResponse.08"].vSet.length; d++) {
+                    XML.writeElementString("eResponse.08", TheCall.eResponse["eResponse.08"].vSet[d]);
+                }
+
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.08"].NV == true) {
+                    XML.writeStartElement('eResponse.08');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.08"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.09"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.09"].IsNull == false) {
+                for (var d = 0; d < TheCall.eResponse["eResponse.09"].vSet.length; d++) {
+                    XML.writeElementString("eResponse.09", TheCall.eResponse["eResponse.09"].vSet[d]);
+                }
+
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.09"].NV == true) {
+                    XML.writeStartElement('eResponse.09');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.09"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.10"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.10"].IsNull == false) {
+                for (var d = 0; d < TheCall.eResponse["eResponse.10"].vSet.length; d++) {
+                    XML.writeElementString("eResponse.10", TheCall.eResponse["eResponse.10"].vSet[d]);
+                }
+
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.10"].NV == true) {
+                    XML.writeStartElement('eResponse.10');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.10"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        if (typeof TheCall.eResponse["eResponse.11"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.11"].IsNull == false) {
+                for (var d = 0; d < TheCall.eResponse["eResponse.11"].vSet.length; d++) {
+                    XML.writeElementString("eResponse.11", TheCall.eResponse["eResponse.11"].vSet[d]);
+                }
+            }
+            else {
+                if (TheCall.eResponse["eResponse.11"].NV == true) {
+                    XML.writeStartElement('eResponse.11');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.11"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.12"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.12"].IsNull == false) {
+                for (var d = 0; d < TheCall.eResponse["eResponse.12"].vSet.length; d++) {
+                    XML.writeElementString("eResponse.12", TheCall.eResponse["eResponse.12"].vSet[d]);
+                }
+
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.12"].NV == true) {
+                    XML.writeStartElement('eResponse.12');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.12"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+
+
+        if (typeof TheCall.eResponse["eResponse.13"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.13"].IsNull == false) {
+                XML.writeElementString("eResponse.13", TheCall.eResponse["eResponse.13"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.13"].NV == true) {
+                    XML.writeStartElement('eResponse.13');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.13"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.14"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.14"].IsNull == false) {
+                XML.writeElementString("eResponse.14", TheCall.eResponse["eResponse.14"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.14"].NV == true) {
+                    XML.writeStartElement('eResponse.14');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.14"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.15"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.15"].IsNull == false) {
+                XML.writeElementString("eResponse.15", TheCall.eResponse["eResponse.15"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.15"].NV == true) {
+                    XML.writeStartElement('eResponse.15');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.15"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.16"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.16"].IsNull == false) {
+                XML.writeElementString("eResponse.16", TheCall.eResponse["eResponse.16"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.16"].NV == true) {
+                    XML.writeStartElement('eResponse.16');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.16"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.17"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.17"].IsNull == false) {
+                XML.writeElementString("eResponse.17", TheCall.eResponse["eResponse.17"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.17"].NV == true) {
+                    XML.writeStartElement('eResponse.17');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.17"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.18"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.18"].IsNull == false) {
+                XML.writeElementString("eResponse.18", TheCall.eResponse["eResponse.18"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.18"].NV == true) {
+                    XML.writeStartElement('eResponse.18');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.18"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.19"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.19"].IsNull == false) {
+                XML.writeElementString("eResponse.19", TheCall.eResponse["eResponse.19"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.19"].NV == true) {
+                    XML.writeStartElement('eResponse.19');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.19"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.20"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.20"].IsNull == false) {
+                XML.writeElementString("eResponse.20", TheCall.eResponse["eResponse.20"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.20"].NV == true) {
+                    XML.writeStartElement('eResponse.20');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.20"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.21"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.21"].IsNull == false) {
+                XML.writeElementString("eResponse.21", TheCall.eResponse["eResponse.21"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.21"].NV == true) {
+                    XML.writeStartElement('eResponse.21');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.21"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.22"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.22"].IsNull == false) {
+                XML.writeElementString("eResponse.22", TheCall.eResponse["eResponse.22"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.22"].NV == true) {
+                    XML.writeStartElement('eResponse.22');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.22"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (typeof TheCall.eResponse["eResponse.23"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.23"].IsNull == false) {
+                XML.writeElementString("eResponse.23", TheCall.eResponse["eResponse.23"].vSet[0]);
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.23"].NV == true) {
+                    XML.writeStartElement('eResponse.23');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.23"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+
+        if (typeof TheCall.eResponse["eResponse.24"] != 'undefined') {
+            if (TheCall.eResponse["eResponse.24"].IsNull == false) {
+                for (var d = 0; d < TheCall.eResponse["eResponse.24"].vSet.length; d++) {
+                    XML.writeElementString("eResponse.24", TheCall.eResponse["eResponse.24"].vSet[d]);
+                }
+
+            }
+
+            else {
+                if (TheCall.eResponse["eResponse.24"].NV == true) {
+                    XML.writeStartElement('eResponse.24');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eResponse["eResponse.24"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            };
+            XML.writeEndElement();
+        }
+    };
+    //Patient
+    if (typeof TheCall.ePatient != undefined) {
+        XML.writeStartElement("ePatient")
+        if (typeof TheCall.ePatient != 'undefined') {
+
+            if (typeof TheCall.ePatient["ePatient.01"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.01"].IsNull == false) {
+                    XML.writeElementString("ePatient.01", TheCall.ePatient["ePatient.01"].vSet[0]);
+                }
+            };
+
+            XML.writeStartElement("ePatient.PatientNameGroup")
+            if (typeof TheCall.ePatient["ePatient.02"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.02"].IsNull == false) {
+                    XML.writeElementString("ePatient.02", TheCall.ePatient["ePatient.02"].vSet[0]);
+                }
+                else {
+                    if (TheCall.ePatient["ePatient.02"].NV == true) {
+
+                        XML.writeStartElement('ePatient.02');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', TheCall.ePatient["ePatient.02"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                    else if (TheCall.ePatient["ePatient.02"].PN == true) {
+                        XML.writeStartElement('ePatient.02');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('PN', TheCall.ePatient["ePatient.02"].vSet[0]);
+                        XML.writeEndElement();
+
+                    }
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.03"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.03"].IsNull == false) {
+                    XML.writeElementString("ePatient.03", TheCall.ePatient["ePatient.03"].vSet[0]);
+                }
+                else {
+                    if (TheCall.ePatient["ePatient.03"].NV == true) {
+
+                        XML.writeStartElement('ePatient.03');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', TheCall.ePatient["ePatient.03"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                    else if (TheCall.ePatient["ePatient.03"].PN == true) {
+                        XML.writeStartElement('ePatient.03');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('PN', TheCall.ePatient["ePatient.03"].vSet[0]);
+                        XML.writeEndElement();
+
+                    }
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.04"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.04"].IsNull == false) {
+                    XML.writeElementString("ePatient.04", TheCall.ePatient["ePatient.04"].vSet[0]);
+                }
+            };
+            XML.writeEndElement();
+
+            if (typeof TheCall.ePatient["ePatient.05"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.05"].IsNull == false) {
+                    XML.writeElementString("ePatient.05", TheCall.ePatient["ePatient.05"].vSet[0]);
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.06"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.06"].IsNull == false) {
+                    XML.writeElementString("ePatient.06", TheCall.ePatient["ePatient.06"].vSet[0]);
+                }
+            };
+
+            if (TheCall.ePatient["ePatient.07"].IsNull == false) {
+                XML.writeElementString("ePatient.07", TheCall.ePatient["ePatient.07"].vSet[0]);
+            }
+            else {
+                if (TheCall.ePatient["ePatient.07"].NV == true) {
+                }
+                XML.writeStartElement('ePatient.07');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.ePatient["ePatient.07"].vSet[0]);
+                XML.writeEndElement();
+            };
+
+            if (TheCall.ePatient["ePatient.08"].IsNull == false) {
+                XML.writeElementString("ePatient.08", TheCall.ePatient["ePatient.08"].vSet[0]);
+            }
+            else {
+                if (TheCall.ePatient["ePatient.08"].NV == true) {
+                }
+                XML.writeStartElement('ePatient.08');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.ePatient["ePatient.08"].vSet[0]);
+                XML.writeEndElement();
+            };
+
+            if (TheCall.ePatient["ePatient.09"].IsNull == false) {
+                XML.writeElementString("ePatient.09", TheCall.ePatient["ePatient.09"].vSet[0]);
+            }
+            else {
+                if (TheCall.ePatient["ePatient.09"].NV == true) {
+                }
+                XML.writeStartElement('ePatient.09');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.ePatient["ePatient.09"].vSet[0]);
+                XML.writeEndElement();
+            };
+
+            if (typeof TheCall.ePatient["ePatient.10"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.10"].IsNull == false) {
+                    XML.writeElementString("ePatient.10", TheCall.ePatient["ePatient.10"].vSet[0]);
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.11"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.11"].IsNull == false) {
+                    XML.writeElementString("ePatient.11", TheCall.ePatient["ePatient.11"].vSet[0]);
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.12"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.12"].IsNull == false) {
+                    XML.writeElementString("ePatient.12", TheCall.ePatient["ePatient.12"].vSet[0]);
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.13"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.13"].IsNull == false) {
+                    XML.writeElementString("ePatient.13", TheCall.ePatient["ePatient.13"].vSet[0]);
+                }
+                else {
+                    if (TheCall.ePatient["ePatient.13"].NV == true) {
+                    }
+                    XML.writeStartElement('ePatient.13');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.ePatient["ePatient.13"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.14"] != 'undefined') 
+            {
+                if (TheCall.ePatient["ePatient.14"].IsNull == false) {
+                    XML.writeElementString("ePatient.14", TheCall.ePatient["ePatient.14"].vSet[0]);
+                }
+                else {
+                    if (TheCall.ePatient["ePatient.14"].NV == true) {
+                    }
+                    XML.writeStartElement('ePatient.14');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.ePatient["ePatient.14"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            };
+
+            XML.writeStartElement("ePatient.AgeGroup")
+            
+            if (typeof TheCall.ePatient["ePatient.15"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.15"].IsNull == false) {
+                    XML.writeElementString("ePatient.15", TheCall.ePatient["ePatient.15"].vSet[0]);
+                }
+                else {
+                    if (TheCall.ePatient["ePatient.15"].NV == true) {
+                    }
+                    XML.writeStartElement('ePatient.15');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.ePatient["ePatient.15"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.16"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.16"].IsNull == false) {
+                    XML.writeElementString("ePatient.16", TheCall.ePatient["ePatient.16"].vSet[0]);
+                }
+                else {
+                    if (TheCall.ePatient["ePatient.16"].NV == true) {
+                    }
+                    XML.writeStartElement('ePatient.16');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.ePatient["ePatient.16"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            };
+            XML.writeEndElement()
+            if (typeof TheCall.ePatient["ePatient.17"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.17"].IsNull == false) {
+                    XML.writeElementString("ePatient.17", TheCall.ePatient["ePatient.17"].vSet[0]);
+                }
+                else {
+                    if (TheCall.ePatient["ePatient.17"].NV == true) {
+                    }
+                    XML.writeStartElement('ePatient.17');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.ePatient["ePatient.17"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.18"] != 'undefined') {
+                if (TheCall.ePatient["ePatient.18"].IsNull == false) {
+                    for (var i = 0; i <= TheCall.ePatient["ePatient.18"].vSet.length - 1; i++) {
+                        if (TheCall.ePatient["ePatient.18"].vSet[i].PhoneNumberType != "") {
+                            XML.writeStartElement('ePatient.18');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('PhoneNumberType', TheCall.ePatient["ePatient.18"].vSet[i].val);
+                            XML.writeEndElement();
+                        }
+                        else {
+
+                            XML.writeElementString("ePatient.18", TheCall.ePatient["ePatient.18"].vSet[i].val);
+                        }
+                    }
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.19"] != 'undefined') {
+            
+                if (TheCall.ePatient["ePatient.19"].IsNull == false) {
+                    for (var i = 0; i <= TheCall.ePatient["ePatient.19"].vSet.length - 1; i++) {
+                        if (TheCall.ePatient["ePatient.19"].vSet[i].PhoneNumberType != "") {
+                            XML.writeStartElement('ePatient.19');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('EMailAddressType', TheCall.ePatient["ePatient.19"].vSet[i].val);
+                            XML.writeEndElement();
+                        }
+                        else {
+
+                            XML.writeElementString("ePatient.18", TheCall.ePatient["ePatient.18"].vSet[i].val);
+                        }
+                    }
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.20"] != 'undefined') {
+                if (typeof TheCall.ePatient["ePatient.20"] != 'undefined') {
+                    if (TheCall.ePatient["ePatient.20"].IsNull == false) {
+                        XML.writeElementString("ePatient.20", TheCall.ePatient["ePatient.20"].vSet[0]);
+                    }
+                }
+            };
+
+            if (typeof TheCall.ePatient["ePatient.21"] != 'undefined') {
+                if (typeof TheCall.ePatient["ePatient.21"] != 'undefined') {
+                    if (TheCall.ePatient["ePatient.21"].IsNull == false) {
+                        XML.writeElementString("ePatient.21", TheCall.ePatient["ePatient.21"].vSet[0]);
+                    }
+                }
+            };
+        };
+
+
+        XML.writeEndElement
+    };
+    //History
+    if (typeof TheCall.eHistory != undefined) {
+        XML.writeStartElement("eHistory")
+        if (TheCall.eHistory["eHistory.01"] != undefined) {
+            if (TheCall.eHistory["eHistory.01"].IsNull == false) {
+                for (var d = 0; d < TheCall.eHistory["eHistory.01"].vSet.length; d++) {
+                    XML.writeElementString("eHistory.01", TheCall.eHistory["eHistory.01"].vSet[d]);
+                }
+            }
+
+            else {
+                if (TheCall.eHistory["eHistory.01"].NV == true) {
+                    XML.writeStartElement('eHistory.01');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eHistory["eHistory.01"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        
+        if (typeof TheCall.eHistory["PractitionerGroup"] != 'undefined')
+        {
+            for (var d = 0; d < TheCall.eHistory["PractitionerGroup"].length ; d++) 
+            {
+                XML.writeStartElement("eHistory.PractitionerGroup")
+
+                if (typeof TheCall.eHistory["PractitionerGroup"][d]["eHistory.02"] != 'undefined') {
+                    if (TheCall.eHistory["PractitionerGroup"][d]["eHistory.02"].IsNull == false) {
+                        XML.writeElementString("eHistory.02", TheCall.eHistory["PractitionerGroup"][d]["eHistory.02"].vSet[0]);
+                    }
+                };
+
+                if (typeof TheCall.eHistory["PractitionerGroup"][d]["eHistory.03"] != 'undefined') {
+                    if (TheCall.eHistory["PractitionerGroup"][d]["eHistory.03"].IsNull == false) {
+                        XML.writeElementString("eHistory.03", TheCall.eHistory["PractitionerGroup"][d]["eHistory.03"].vSet[0]);
+                    }
+                };
+                if (typeof TheCall.eHistory["PractitionerGroup"][d]["eHistory.04"] != 'undefined') {
+                    if (TheCall.eHistory["PractitionerGroup"][d]["eHistory.04"].IsNull == false) {
+                        XML.writeElementString("eHistory.04", TheCall.eHistory["PractitionerGroup"][d]["eHistory.04"].vSet[0]);
+                    }
+                };
+                XML.writeEndElement()       
+            }
+        };
+        
+
+        if (TheCall.eHistory["eHistory.05"] != undefined) {
+            if (TheCall.eHistory["eHistory.05"].IsNull == false) {
+                for (var d = 0; d < TheCall.eHistory["eHistory.05"].vSet.length; d++) {
+                    XML.writeElementString("eHistory.05", TheCall.eHistory["eHistory.05"].vSet[d]);
+                }
+            }
+
+            else {
+                if (TheCall.eHistory["eHistory.05"].NV == true) {
+                    XML.writeStartElement('eHistory.0');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eHistory["eHistory.05"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+
+        if (typeof TheCall.eHistory["eHistory.06"] != 'undefined') {
+            if (TheCall.eHistory["eHistory.06"].IsNull == false) {
+                XML.writeElementString("eHistory.06", TheCall.eHistory["eHistory.06"].vSet[0]);
+            }
+            else
+            {
+                if (TheCall.eHistory["eHistory.06"].NV == true)
+                {
+
+                    XML.writeStartElement('eHistory.06');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eHistory["eHistory.06"].vSet[0]);
+                    XML.writeEndElement();
+                }
+                else if (TheCall.eHistory["eHistory.06"].PN == true)
+                {
+                    XML.writeStartElement('eHistory.06');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('PN', TheCall.eHistory["eHistory.06"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+
+        if (TheCall.eHistory["eHistory.07"] != undefined)
+        {
+            if (TheCall.eHistory["eHistory.07"].IsNull == false)
+            {
+                for (var d = 0; d < TheCall.eHistory["eHistory.07"].vSet.length; d++)
+                {
+                    XML.writeElementString("eHistory.07", TheCall.eHistory["eHistory.07"].vSet[d]);
+                }
+            }
+        };
+        
+        if (TheCall.eHistory["eHistory.08"] != undefined) 
+        {
+            if (TheCall.eHistory["eHistory.08"].IsNull == false) {
+                for (var d = 0; d < TheCall.eHistory["eHistory.08"].vSet.length; d++) {
+                    XML.writeElementString("eHistory.08", TheCall.eHistory["eHistory.08"].vSet[d]);
+                }
+            }
+            else {
+                if (TheCall.eHistory["eHistory.08"].NV == true) {
+                    XML.writeStartElement('eHistory.08');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eHistory["eHistory.08"].vSet[0]);
+                    XML.writeEndElement();
+                }
+                else if (TheCall.eHistory["eHistory.08"].PN == true) {
+                    XML.writeStartElement('eHistory.08');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('PN', TheCall.eHistory["eHistory.08"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+        if (TheCall.eHistory["eHistory.09"] != undefined) {
+            if (TheCall.eHistory["eHistory.09"].IsNull == false) {
+                for (var d = 0; d < TheCall.eHistory["eHistory.09"].vSet.length; d++) {
+                    XML.writeElementString("eHistory.09", TheCall.eHistory["eHistory.09"].vSet[d]);
+                }
+            }
+        };
+
+
+        
+        if (typeof TheCall.eHistory["ImmunizationsGroup"] != 'undefined') {
+            for (var d = 0; d < TheCall.eHistory["ImmunizationsGroup"].length ; d++) {
+                XML.writeStartElement("eHistory.ImmunizationsGroup")
+
+                if (typeof TheCall.eHistory["ImmunizationsGroup"][d]["eHistory.10"] != 'undefined') {
+                    if (TheCall.eHistory["ImmunizationsGroup"][d]["eHistory.10"].IsNull == false) {
+                        XML.writeElementString("eHistory.10", TheCall.eHistory["ImmunizationsGroup"][d]["eHistory.10"].vSet[0]);
+                    }
+                };
+
+                if (typeof TheCall.eHistory["ImmunizationsGroup"][d]["eHistory.11"] != 'undefined') {
+                    if (TheCall.eHistory["ImmunizationsGroup"][d]["eHistory.11"].IsNull == false) {
+                        XML.writeElementString("eHistory.11", TheCall.eHistory["ImmunizationsGroup"][d]["eHistory.11"].vSet[0]);
+                    }
+                };
+                XML.writeEndElement()
+            }
+        };
+
+        console.log(TheCall.eHistory["CurrentMedsGroup"].length)
+
+        if (typeof TheCall.eHistory["CurrentMedsGroup"] != 'undefined') {
+            for (var d = 0; d < TheCall.eHistory["CurrentMedsGroup"].length ; d++)
+            {
+               
+                XML.writeStartElement("eHistory.CurrentMedsGroup")
+
+                if (TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.12"].IsNull == false)
+                {
+                    XML.writeElementString("eHistory.12", TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.12"].vSet[0]);
+                }
+                else 
+                {
+                    if (TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.12"].NV == true) {
+                        XML.writeStartElement('eHistory.12');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.12"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                    else if (TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.12"].PN == true) {
+                        XML.writeStartElement('eHistory.12');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('PN', TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.12"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                }
+            
+
+                if (typeof TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.13"] != 'undefined')
+                {
+                    if (TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.13"].IsNull == false)
+                    {
+                        XML.writeElementString("eHistory.13", TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.13"].vSet[0]);
+                    }
+                };
+                if (typeof TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.14"] != 'undefined')
+                {
+                    if (TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.14"].IsNull == false)
+                    {
+                        XML.writeElementString("eHistory.14", TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.14"].vSet[0]);
+                    }
+                };
+
+                if (typeof TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.15"] != 'undefined')
+                {
+                    if (TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.15"].IsNull == false)
+                    {
+                        XML.writeElementString("eHistory.15", TheCall.eHistory["CurrentMedsGroup"][d]["eHistory.15"].vSet[0]);
+                    }
+                };
+
+                XML.writeEndElement()
+            }
+        };
+
+
+        if (TheCall.eHistory["eHistory.16"] != undefined) {
+            if (TheCall.eHistory["eHistory.16"].IsNull == false) {
+                XML.writeElementString("eHistory.16", TheCall.eHistory["eHistory.16"].vSet[0]);
+            }
+        };
+
+        if (typeof TheCall.eHistory["eHistory.17"] != 'undefined') {
+            if (TheCall.eHistory["eHistory.17"].IsNull == false) {
+                XML.writeElementString("eHistory.17", TheCall.eHistory["eHistory.17"].vSet[0]);
+            }
+            else {
+                if (TheCall.eHistory["eHistory.17"].NV == true) {
+
+                    XML.writeStartElement('eHistory.17');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('NV', TheCall.eHistory["eHistory.17"].vSet[0]);
+                    XML.writeEndElement();
+                }
+                else if (TheCall.eHistory["eHistory.17"].PN == true) {
+                    XML.writeStartElement('eHistory.17');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('PN', TheCall.eHistory["eHistory.17"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+
+
+        if (typeof TheCall.eHistory["eHistory.18"] != 'undefined') {
+            if (TheCall.eHistory["eHistory.18"].IsNull == false) {
+                XML.writeElementString("eHistory.18", TheCall.eHistory["eHistory.18"].vSet[0]);
+            }
+            else
+            {
+                if (TheCall.eHistory["eHistory.18"].PN == true)
+                {
+                    XML.writeStartElement('eHistory.18');
+                    XML.writeAttributeString('xsi:nil', 'true');
+                    XML.writeAttributeString('PN', TheCall.eHistory["eHistory.18"].vSet[0]);
+                    XML.writeEndElement();
+                }
+            }
+        };
+        console.log(TheCall.eHistory["eHistory.19"])
+        if (TheCall.eHistory["eHistory.19"] != undefined) {
+            if (TheCall.eHistory["eHistory.19"].IsNull == false) {
+                XML.writeElementString("eHistory.19", TheCall.eHistory["eHistory.19"].vSet[0]);
+            }
+        };
+
+        XML.writeEndElement()
+        };
+    XML.writeEndElement
+    //};
+    //Payment
+    XML.writeStartElement("ePayment")
+    if (typeof TheCall.ePayment["ePayment.01"] != 'undefined')
+    {
+        if (TheCall.ePayment["ePayment.01"].IsNull == false)
+        {
+            XML.writeElementString("ePayment.01", TheCall.ePayment["ePayment.01"].vSet[0]);
+            }
+        else
+        {
+            if (TheCall.ePayment["ePayment.01"].NV == true) {
+                XML.writeStartElement('ePayment.01');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('NV', TheCall.ePayment["ePayment.01"].vSet[0]);
+                XML.writeEndElement();
+            }
+            else if (TheCall.ePayment["ePayment.01"].PN == true) {
+                XML.writeStartElement('ePayment.01');
+                XML.writeAttributeString('xsi:nil', 'true');
+                XML.writeAttributeString('PN', TheCall.ePayment["ePayment.01"].vSet[0]);
+                XML.writeEndElement();
+            }
+        }
+    };
+    XML.writeStartElement("ePayment.CertificateGroup")
+    if (TheCall.ePayment["ePayment.02"] != undefined) {
+        if (TheCall.ePayment["ePayment.02"].IsNull == false) {
+            XML.writeElementString("ePayment.02", TheCall.ePayment["ePayment.02"].vSet[0]);
+        }
+    };
+    if (TheCall.ePayment["ePayment.03"] != undefined) {
+        if (TheCall.ePayment["ePayment.03"].IsNull == false) {
+            XML.writeElementString("ePayment.03", TheCall.ePayment["ePayment.03"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.04"] != undefined) {
+        if (TheCall.ePayment["ePayment.04"].IsNull == false) {
+            for (var d = 0; d < TheCall.ePayment["ePayment.04"].vSet.length; d++) {
+                XML.writeElementString("ePayment.04", TheCall.ePayment["ePayment.04"].vSet[d]);
+            }
+        }
+    }
+    if (TheCall.ePayment["ePayment.05"] != undefined) {
+        if (TheCall.ePayment["ePayment.05"].IsNull == false) {
+            XML.writeElementString("ePayment.05", TheCall.ePayment["ePayment.05"].vSet[0]);
+        }
+    };
+    if (TheCall.ePayment["ePayment.06"] != undefined) {
+        if (TheCall.ePayment["ePayment.06"].IsNull == false) {
+            XML.writeElementString("ePayment.06", TheCall.ePayment["ePayment.06"].vSet[0]);
+        }
+    };
+    if (TheCall.ePayment["ePayment.07"] != undefined) {
+        if (TheCall.ePayment["ePayment.07"].IsNull == false) {
+            XML.writeElementString("ePayment.07", TheCall.ePayment["ePayment.07"].vSet[0]);
+        }
+    };
+    XML.writeEndElement();
+    if (TheCall.ePayment["ePayment.08"] != undefined) {
+        if (TheCall.ePayment["ePayment.08"].IsNull == false) {
+            XML.writeElementString("ePayment.08", TheCall.ePayment["ePayment.08"].vSet[0]);
+        }
+    };
+    console.log(TheCall.ePayment["InsuranceGroup"].length)
+    if (typeof TheCall.ePayment["InsuranceGroup"] != 'undefined') {
+        for (var d = 0; d < TheCall.ePayment["InsuranceGroup"].length ; d++)
+        {
+            XML.writeStartElement("ePayment.InsuranceGroup")
+
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.09"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.09"].IsNull == false) {
+                    XML.writeElementString("ePayment.09", TheCall.ePayment["InsuranceGroup"][d]["ePayment.09"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.10"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.10"].IsNull == false) {
+                    XML.writeElementString("ePayment.10", TheCall.ePayment["InsuranceGroup"][d]["ePayment.10"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.11"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.11"].IsNull == false) {
+                    XML.writeElementString("ePayment.11", TheCall.ePayment["InsuranceGroup"][d]["ePayment.11"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.12"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.12"].IsNull == false) {
+                    XML.writeElementString("ePayment.12", TheCall.ePayment["InsuranceGroup"][d]["ePayment.12"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.13"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.13"].IsNull == false) {
+                    XML.writeElementString("ePayment.13", TheCall.ePayment["InsuranceGroup"][d]["ePayment.13"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.14"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.14"].IsNull == false) {
+                    XML.writeElementString("ePayment.14", TheCall.ePayment["InsuranceGroup"][d]["ePayment.14"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.15"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.15"].IsNull == false) {
+                    XML.writeElementString("ePayment.15", TheCall.ePayment["InsuranceGroup"][d]["ePayment.15"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.16"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.16"].IsNull == false) {
+                    XML.writeElementString("ePayment.16", TheCall.ePayment["InsuranceGroup"][d]["ePayment.16"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.17"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.17"].IsNull == false) {
+                    XML.writeElementString("ePayment.17", TheCall.ePayment["InsuranceGroup"][d]["ePayment.17"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.18"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.18"].IsNull == false) {
+                    XML.writeElementString("ePayment.18", TheCall.ePayment["InsuranceGroup"][d]["ePayment.18"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.19"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.19"].IsNull == false) {
+                    XML.writeElementString("ePayment.19", TheCall.ePayment["InsuranceGroup"][d]["ePayment.19"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.20"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.20"].IsNull == false) {
+                    XML.writeElementString("ePayment.20", TheCall.ePayment["InsuranceGroup"][d]["ePayment.20"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.21"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.21"].IsNull == false) {
+                    XML.writeElementString("ePayment.21", TheCall.ePayment["InsuranceGroup"][d]["ePayment.21"].vSet[0]);
+                }
+            };
+            if (typeof TheCall.ePayment["InsuranceGroup"][d]["ePayment.22"] != 'undefined') {
+                if (TheCall.ePayment["InsuranceGroup"][d]["ePayment.22"].IsNull == false) {
+                    XML.writeElementString("ePayment.22", TheCall.ePayment["InsuranceGroup"][d]["ePayment.22"].vSet[0]);
+                }
+            };
+
+            XML.writeEndElement();
+        }
+    };
+
+    XML.writeStartElement("ePayment.ClosestRelativeGroup")
+    if (TheCall.ePayment["ePayment.23"] != undefined) {
+        if (TheCall.ePayment["ePayment.23"].IsNull == false) {
+            XML.writeElementString("ePayment.23", TheCall.ePayment["ePayment.23"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.24"] != undefined) {
+        if (TheCall.ePayment["ePayment.24"].IsNull == false) {
+            XML.writeElementString("ePayment.24", TheCall.ePayment["ePayment.24"].vSet[0]);
+        }
+    };
+    if (TheCall.ePayment["ePayment.25"] != undefined) {
+        if (TheCall.ePayment["ePayment.25"].IsNull == false) {
+            XML.writeElementString("ePayment.25", TheCall.ePayment["ePayment.25"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.26"] != undefined) {
+        if (TheCall.ePayment["ePayment.26"].IsNull == false) {
+            XML.writeElementString("ePayment.26", TheCall.ePayment["ePayment.26"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.27"] != undefined) {
+        if (TheCall.ePayment["ePayment.27"].IsNull == false) {
+            XML.writeElementString("ePayment.27", TheCall.ePayment["ePayment.27"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.28"] != undefined) {
+        if (TheCall.ePayment["ePayment.28"].IsNull == false) {
+            XML.writeElementString("ePayment.28", TheCall.ePayment["ePayment.28"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.29"] != undefined) {
+        if (TheCall.ePayment["ePayment.29"].IsNull == false) {
+            XML.writeElementString("ePayment.29", TheCall.ePayment["ePayment.29"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.30"] != undefined) {
+        if (TheCall.ePayment["ePayment.30"].IsNull == false) {
+            XML.writeElementString("ePayment.30", TheCall.ePayment["ePayment.30"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.31"] != undefined) {
+        if (TheCall.ePayment["ePayment.31"].IsNull == false) {
+            for (var d = 0; d < TheCall.ePayment["ePayment.31"].vSet.length; d++) {
+                XML.writeElementString("ePayment.31", TheCall.ePayment["ePayment.31"].vSet[d]);
+            }
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.32"] != undefined) {
+        if (TheCall.ePayment["ePayment.32"].IsNull == false) {
+            XML.writeElementString("ePayment.32", TheCall.ePayment["ePayment.32"].vSet[0]);
+        }
+    };
+
+    XML.writeEndElement();
+
+    XML.writeStartElement("ePayment.EmployerGroup")
+    if (TheCall.ePayment["ePayment.33"] != undefined) {
+        if (TheCall.ePayment["ePayment.33"].IsNull == false) {
+            XML.writeElementString("ePayment.33", TheCall.ePayment["ePayment.33"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.34"] != undefined) {
+        if (TheCall.ePayment["ePayment.34"].IsNull == false) {
+            XML.writeElementString("ePayment.34", TheCall.ePayment["ePayment.34"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.35"] != undefined) {
+        if (TheCall.ePayment["ePayment.35"].IsNull == false) {
+            XML.writeElementString("ePayment.35", TheCall.ePayment["ePayment.35"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.36"] != undefined) {
+        if (TheCall.ePayment["ePayment.36"].IsNull == false) {
+            XML.writeElementString("ePayment.36", TheCall.ePayment["ePayment.36"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.37"] != undefined) {
+        if (TheCall.ePayment["ePayment.37"].IsNull == false) {
+            XML.writeElementString("ePayment.37", TheCall.ePayment["ePayment.37"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.38"] != undefined) {
+        if (TheCall.ePayment["ePayment.38"].IsNull == false) {
+            XML.writeElementString("ePayment.38", TheCall.ePayment["ePayment.38"].vSet[0]);
+        }
+    };
+
+    XML.writeEndElement();
+
+    if (TheCall.ePayment["ePayment.40"] != undefined) {
+        if (TheCall.ePayment["ePayment.40"].IsNull == false) {
+            XML.writeElementString("ePayment.40", TheCall.ePayment["ePayment.40"].vSet[0]);
+        }
+    };
+    if (TheCall.ePayment["ePayment.41"] != undefined) {
+        if (TheCall.ePayment["ePayment.41"].IsNull == false) {
+            for (var d = 0; d < TheCall.ePayment["ePayment.41"].vSet.length; d++) {
+                XML.writeElementString("ePayment.41", TheCall.ePayment["ePayment.41"].vSet[d]);
+            }
+        }
+    };
+    if (TheCall.ePayment["ePayment.42"] != undefined) {
+        if (TheCall.ePayment["ePayment.42"].IsNull == false) {
+            for (var d = 0; d < TheCall.ePayment["ePayment.42"].vSet.length; d++) {
+                XML.writeElementString("ePayment.42", TheCall.ePayment["ePayment.42"].vSet[d]);
+            }
+        }
+    };
+    if (TheCall.ePayment["ePayment.43"] != undefined) {
+        if (TheCall.ePayment["ePayment.43"].IsNull == false) {
+            XML.writeElementString("ePayment.43", TheCall.ePayment["ePayment.43"].vSet[0]);
+        }
+    };
+    if (TheCall.ePayment["ePayment.44"] != undefined) {
+        if (TheCall.ePayment["ePayment.44"].IsNull == false) {
+            for (var d = 0; d < TheCall.ePayment["ePayment.44"].vSet.length; d++) {
+                XML.writeElementString("ePayment.44", TheCall.ePayment["ePayment.44"].vSet[d]);
+            }
+        }
+    };
+    if (TheCall.ePayment["ePayment.45"] != undefined) {
+        if (TheCall.ePayment["ePayment.45"].IsNull == false) {
+            XML.writeElementString("ePayment.45", TheCall.ePayment["ePayment.45"].vSet[0]);
+        }
+    }
+    if (TheCall.ePayment["ePayment.46"] != undefined) {
+        if (TheCall.ePayment["ePayment.46"].IsNull == false) {
+            XML.writeElementString("ePayment.46", TheCall.ePayment["ePayment.46"].vSet[0]);
+        }
+    }
+    if (TheCall.ePayment["ePayment.47"] != undefined) {
+        if (TheCall.ePayment["ePayment.47"].IsNull == false) {
+            for (var d = 0; d < TheCall.ePayment["ePayment.47"].vSet.length; d++) {
+                XML.writeElementString("ePayment.47", TheCall.ePayment["ePayment.47"].vSet[d]);
+            }
+        }
+    }
+    if (TheCall.ePayment["ePayment.48"] != undefined) {
+        if (TheCall.ePayment["ePayment.48"].IsNull == false) {
+            XML.writeElementString("ePayment.48", TheCall.ePayment["ePayment.48"].vSet[0]);
+        }
+    }
+    if (TheCall.ePayment["ePayment.49"] != undefined) {
+        if (TheCall.ePayment["ePayment.49"].IsNull == false) {
+            XML.writeElementString("ePayment.49", TheCall.ePayment["ePayment.49"].vSet[0]);
+        }
+    }
+    if (TheCall.ePayment["ePayment.51"] != undefined) {
+        if (TheCall.ePayment["ePayment.51"].IsNull == false) {
+            for (var d = 0; d < TheCall.ePayment["ePayment.51"].vSet.length; d++) {
+                XML.writeElementString("ePayment.51", TheCall.ePayment["ePayment.51"].vSet[d]);
+            }
+        }
+    }
+
+    if (TheCall.ePayment["ePayment.52"] != undefined) {
+        if (TheCall.ePayment["ePayment.52"].IsNull == false) {
+            for (var d = 0; d < TheCall.ePayment["ePayment.52"].vSet.length; d++) {
+                XML.writeElementString("ePayment.52", TheCall.ePayment["ePayment.52"].vSet[d]);
+            }
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.53"] != undefined) {
+        if (TheCall.ePayment["ePayment.53"].IsNull == false) {
+            XML.writeElementString("ePayment.53", TheCall.ePayment["ePayment.53"].vSet[0]);
+        }
+    };
+
+    if (TheCall.ePayment["ePayment.54"] != undefined) {
+        if (TheCall.ePayment["ePayment.54"].IsNull == false) {
+            XML.writeElementString("ePayment.54", TheCall.ePayment["ePayment.54"].vSet[0]);
+        }
+    };
+
+    if (typeof TheCall.ePayment["SupplyItemGroup"] != 'undefined') {
+        for (var d = 0; d < TheCall.ePayment["SupplyItemGroup"].length ; d++)
+        {
+            XML.writeStartElement("ePayment.SupplyItemGroup")
+            console.log(TheCall.ePayment["SupplyItemGroup"][d])
+            if (typeof TheCall.ePayment["SupplyItemGroup"][d]["ePayment.55"] != 'undefined')
+            {
+                if (TheCall.ePayment["SupplyItemGroup"][d]["ePayment.55"].IsNull == false) {
+                    XML.writeElementString("ePayment.55", TheCall.ePayment["SupplyItemGroup"][d]["ePayment.55"].vSet[0]);
+                }
+            };
+
+            if (typeof TheCall.ePayment["SupplyItemGroup"][d]["ePayment.56"] != 'undefined') {
+                if (TheCall.ePayment["SupplyItemGroup"][d]["ePayment.56"].IsNull == false) {
+                    XML.writeElementString("ePayment.56", TheCall.ePayment["SupplyItemGroup"][d]["ePayment.56"].vSet[0]);
+                }
+            };
+            XML.writeEndElement();
+        }
+    };
+
+
+    XML.writeEndElement();
+    XML.writeEndElement();
+    XML.writeEndElement();
+    XML.writeEndElement();
+    XML.writeEndElement();
+    //XML.writeAttributeString('timeStamp', Data);
+    var XMLDoc = XML.flush()
+   console.log(XMLDoc)
+    return XML;
+
+
 };
