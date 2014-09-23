@@ -1,351 +1,3 @@
-//Create the highest level Object:  Call
-//Call.PCR:  PCR Object
-//Call.Name Call Date/Time/Rig
-//Call.PCR.V334XML = EMS XMLWriter Object
-//Call.PCR.V221XML = EMS XMLWriter Object
-//Call.PCR.eCAD = CAD XMLWriter Object
-//Call.PCR.eMED = eMED XMLWriter Object
-//Call.PCRStatus:  Complete/Incomplete
-//Call.Status[]: Cancelled, InProgress, 
-/*
-ALS Emergency
-ALS Non Emergency
-BLS Emergency
-BLS Non-Emergency
-RMA
-Wheelchair
-Paramedic Intercept
-Contract Standby
-Standby
-
-NEED TREATMENT INVENTORY - HasAirway, HasArrest
-
-*/
-var createTheCall = function (parseObject)
-{
-    var Call = new Object();
-    var TheServiceType = new Object();
-
-    console.log(parseObject)
-    //Call.Inventory = setCallInventory(parseObject);
-    //    console.log(Call.Inventory)
-    /////////////////////////////////
-    /////////////////////////////////
-    var d = new Date();
-    var d2 = new Date();
-    var d3 = new Date();
-    d2.setHours(d.getHours() - 2);
-    d3.setHours(d.getHours() - 1);
-    Call.StartAirwayTime = d2;
-    Call.EndAirwayTime = d3;
-    /////////////////////////////////
-    /////////////////////////////////
-    var eDispatchObject = new Object();
-    var eDispositionObject = new Object();
-    var eRecordObject = new Object();
-    var eTimesObject = new Object();
-    var eScenebject = new Object();
-    var TheCall = new Object();
-
-
-    var allOn = true;
-    if (allOn == true) {
-        TheCall["IsValid"] = false;
-        //// ///////////////eRecord
-        eRecordObject = getObjectFromOLTPExtract(parseObject, "eRecord");
-        eRecordObject.HasDataSet = false;
-        if (eRecordObject.IsUndefined != true) {
-            eRecordObject.HasDataSet = true;
-        }
-        else {
-        };
-        TheCall.pRecord = eRecordObject;
-        TheCall.eRecord = seteRecord(TheCall);
-        TheCall.PCRID = TheCall.eRecord["eRecord.01"];
-        TheCall.IsValid = TheCall.eRecord.IsValid;
-
-        if (TheCall.eRecord.HasErrors == true) {
-            if (TheCall.eRecord.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eRecord.Errors.length; i++) {
-                }
-            }
-        };
-        
-        ////////////////////////Dispatch
-        //Manadotory:  Determins Call Priority, EMD
-        eDispatchObject = getObjectFromOLTPExtract(parseObject, "eDispatch");
-        eDispatchObject.HasDataSet = false;
-        if (eDispatchObject.IsUndefined != true) {
-            eDispatchObject.HasDataSet = true;
-        }
-        else {
-        };
-        TheCall.pDispatch = eDispatchObject;
-        TheCall.eDispatch = seteDispatch(TheCall);
-        TheCall.CallType = TheCall.eDispatch.CallType;
-//        TheCall.StartAirwayTime = false;
-//        TheCall.EndAirwayTime = false;
-        if (TheCall.eDispatch.HasErrors == true) {
-            if (TheCall.eDispatch.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eDispatch.Errors.length; i++) {
-                }
-            }
-        };
-        if (typeof TheCall.eDispatch.CallType != 'undefined') {
-            TheCall.CallType = TheCall.eDispatch.CallType;
-        }
-        else {
-            TheCall.IsValid = false;
-        };
-
-        ////////////////////////eResponse//////////////////////////////
-        eResponseObject = getObjectFromOLTPExtract(parseObject, "eResponse");
-        eResponseObject.HasDataSet = false;
-        if (eResponseObject.IsUndefined != true) {
-            eResponseObject.HasDataSet = true;
-        }
-        else { };
-        //MUST have eDisposition - contains a Mandatory Element
-        TheCall.pResponse = eResponseObject;
-        TheCall.eResponse = seteResponse(TheCall);
-
-        if (TheCall.eResponse.HasErrors == true) {
-            if (TheCall.eResponse.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eResponse.Errors.length; i++)
-                { }
-            }
-        };
-
-        ////////////////////////////////////////////////////////////////
-        ///////////////////////eDisposition    
-        eDispositionObject = getObjectFromOLTPExtract(parseObject, "eDisposition");
-        eDispositionObject.HasDataSet = false;
-        if (eDispositionObject.IsUndefined != true) {
-            eDispositionObject.HasDataSet = true;
-        }
-        else {
-        };
-
-        TheCall.pDisposition = eDispositionObject;
-        TheCall.eDisposition = seteDisposition(TheCall);
-
-        if (TheCall.eDisposition.HasErrors == true) {
-            if (TheCall.eDisposition.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eDisposition.Errors.length; i++) {
-                }
-            }
-        };
-        TheCall.CallDisposition = TheCall.eDisposition.CallDisposition;
-        TheCall.TransportType = TheCall.eDispatch.TransportType;
-
-        
-
-        ////////////////////////eTimes
-        eTimesObject = getObjectFromOLTPExtract(parseObject, "eTimes");
-        eTimesObject.HasDataSet = false;
-        if (eTimesObject.IsUndefined != true) {
-            eTimesObject.HasDataSet = true;
-        }
-        else { };
-
-        TheCall.pTimes = eTimesObject;
-        TheCall.eTimes = seteTimes(TheCall);
-
-        if (TheCall.eTimes.HasErrors == true) {
-            if (TheCall.eTimes.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eTimes.Errors.length; i++) {
-                }
-            }
-        };
-      
-        ////////////////////////eSituation
-        eSituationObject = getObjectFromOLTPExtract(parseObject, "eSituation");
-        eSituationObject.HasDataSet = false;
-        if (eSituationObject.IsUndefined != true) {
-            eSituationObject.HasDataSet = true;
-        }
-        else {
-        };
-
-        TheCall.pSituation = eSituationObject;
-        TheCall.eSituation = seteSituation(TheCall);
-
-        if (TheCall.eSituation.HasErrors == true) {
-            if (TheCall.eSituation.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eSituation.Errors.length; i++) {
-                }
-            }
-        };
-
-        ////////////////////////eScene
-        eSceneObject = getObjectFromOLTPExtract(parseObject, "eScene");
-        eSceneObject.HasDataSet = false;
-        if (eSceneObject.IsUndefined != true) {
-            eSceneObject.HasDataSet = true;
-        }
-        else {
-        };
-
-        TheCall.pScene = eSceneObject;
-        TheCall.eScene = seteScene(TheCall);
-
-        if (TheCall.eScene.HasErrors == true) {
-            if (TheCall.eScene.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eScene.Errors.length; i++) {
-                }
-            }
-        };
-
-        ///////////////////////////////////eAirway
-        eAirwayObject = getObjectFromOLTPExtract(parseObject, "eAirway");
-        eAirwayObject.HasDataSet = false;
-        if (eAirwayObject.IsUndefined != true) {
-            eAirwayObject.HasDataSet = true;
-        }
-        else { };
-
-        TheCall.pAirway = eAirwayObject;
-        TheCall.eAirway = seteAirway(TheCall);
-        if (TheCall.eAirway.HasErrors == true) {
-            if (TheCall.eAirway.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eAirway.Errors.length; i++) {
-                }
-            }
-        };
-        var Treatment = new Object;
-        /*Treatment[AirwayStartTime] = TheCall.eAirway.AirwayStartTime;
-        Treatment[AirwayEndTime] = TheCall.eAirway.AirwayEndTime;
-        TheCall.Treatment = Treatment;
-        */
-
-        ///////////////////////////////////eArrest
-        eArrestObject = getObjectFromOLTPExtract(parseObject, "eArrest");
-        eArrestObject.HasDataSet = false;
-        if (eArrestObject.IsUndefined != true) {
-            eArrestObject.HasDataSet = true;
-        }
-        else { };
-
-        TheCall.pArrest = eArrestObject;
-        TheCall.eArrest = seteArrest(TheCall);
-        if (TheCall.eArrest.HasErrors == true) {
-            if (TheCall.eArrest.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eArrest.Errors.length; i++) {
-                }
-            }
-        };
-        var Treatment = new Object;
-
-        /*
-        ///////////////////////////////////ePatient
-        ePatientObject = getObjectFromOLTPExtract(parseObject, "ePatient");
-        ePatientObject.HasDataSet = false;
-        if (ePatientObject.IsUndefined != true) {
-            ePatientObject.HasDataSet = true;
-        }
-        else { };
-
-        TheCall.pPatient = ePatientObject;
-        TheCall.ePatient = setePatient(TheCall);
-        if (TheCall.ePatient.HasErrors == true) {
-            if (TheCall.ePatient.Errors.length > 0) {
-                for (var i = 0; i < TheCall.ePatient.Errors.length; i++) {
-                }
-            }
-        };
-
-        ////////////////////////////////eHistory
-        eHistoryObject = getObjectFromOLTPExtract(parseObject, "eHistory");
-        eHistoryObject.HasDataSet = false;
-        if (eHistoryObject.IsUndefined != true) {
-            eHistoryObject.HasDataSet = true;
-        }
-        else {
-            //MUST have eDispatch - contains a Mandatory Element
-        };
-
-        TheCall.pHistory = eHistoryObject;
-        TheCall.eHistory = seteHistory(TheCall);
-        if (TheCall.eHistory.HasErrors == true) {
-            if (TheCall.eHistory.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eHistory.Errors.length; i++) {
-                              
-                }
-            }
-        };
-
-        ///////////////////////////////////ePayment
-        ePaymentObject = getObjectFromOLTPExtract(parseObject, "ePayment");
-        ePaymentObject.HasDataSet = false;
-        if (ePaymentObject.IsUndefined != true) {
-            ePaymentObject.HasDataSet = true;
-        }
-        else {
-            //MUST have eDispatch - contains a Mandatory Element
-        };
-
-        TheCall.pPayment = ePaymentObject;
-        TheCall.ePayment = setePayment(TheCall);
-
-
-      
-       
-       
-       
-    };//allon
-    //console.log(TheCall)
-    /////////////////////////////////eDevice       
-    eDeviceObject = getObjectFromOLTPExtract(parseObject, "eDevice");
-    eDeviceObject.HasDataSet = false;
-    if (eDeviceObject.IsUndefined != true) {
-        eDeviceObject.HasDataSet = true;
-    }
-    else {
-        //MUST have eDispatch - contains a Mandatory Element
-    };
-
-    TheCall.pDevice = eDeviceObject;
-    TheCall.eDevice = seteDevice(TheCall);
-
-   //
-   */
-    };
-    b = setV3XML(TheCall);
- //   c=setV2XML(TheCall)
-};
-var getObjectFromOLTPExtract = function (businessObject, sectionName) {
-    //Returns an array of index values for a given sectionName within a sectionObject
-    // if sectionName does not exist within the sectionObject, return -1
-
-    var _retValue = new Object();
-    if (typeof businessObject != undefined) {
-
-        _retValue.IsUndefined = true;
-
-        for (var d = 0; d <= businessObject.attributes.sections.length - 1; d++) {
-            if (businessObject.attributes.sections[d].attributes.name == sectionName) {
-                _retValue = businessObject.attributes.sections[d];
-                _retValue.IsUndefined = false;
-            }
-        };
-    };
-    return _retValue;
-};
-var getSectionIndex = function (sectionObject, sectionName) {
-    //Returns an array of index values for a given sectionName within a sectionObject
-    // if sectionName does not exist within the sectionObject, return -1
-    var _retValue = [];
-    for (var d = 0; d < sectionObject.attributes.sections.length; d++) {
-
-        if (sectionObject.attributes.sections[d].attributes.name == sectionName) {
-            _retValue.push(d);
-        }
-    }
-    if (_retValue.length == 0) {
-        _retValue.push(-1);
-    };
-    return _retValue;
-};
 var seteRecord = function (TheCall) 
 {
     var eRecord = new Object();
@@ -447,7 +99,6 @@ var seteRecord = function (TheCall)
         eRecord.Errors = ErrorList.slice(0);
 
     };
-    
     return eRecord;
 };
 var seteDisposition = function (TheCall) 
@@ -455,205 +106,197 @@ var seteDisposition = function (TheCall)
     var eDisposition = new Object();
     var CallDisposition = new Object();
     var TransportType = '';
-   
+    var ErrorList = [];
     
     var pDisposition = TheCall.pDisposition;
     var HospitalTeamActivationGroup = new Object();
     var HospitalTeamActivationGroupArray = [];
     
-
+    eDisposition["IsValid"] = false
     if (pDisposition.HasDataSet == false)
     {
-        eDisposition["IsValid"] = false;
+        
         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eDisposition", Description: "Missing Mandatory.  eDisposition.HasDataSet = false" })
-        eDisposition.Errors = ErrorList.slice(0);
-        return eDisposition;
-    }
-    else
+    };
+    
+    if (pDisposition.HasDataSet == true)
     {
-        _elementList = pDisposition.attributes.elements;
-        var ErrorList = [];
-
+        if (typeof pDisposition.attributes.elements != 'undefined') {
+            var _eL = [];
+            _eL = pDisposition.attributes.elements;
+            if (_eL.length > 0)
+            {
+                eDisposition["IsValid"] = true;
+            }
+        }
+    }
         //eDisposition.12
 
         var _val = [];
         var _dispo = [];
         var valObj = {};
-        _dispo = getValue(_elementList, "eDisposition.12");
+        if (eDisposition["IsValid"] == true)
+        {
+            _dispo = getValue(_eL, "eDisposition.12");
 
-        if (_dispo.IsNull == true)
-        {
-            eDisposition["IsValid"] = false;
-            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eDisposition.12", Description: "Incident/CallDisposition Disposition Mandatory" })
-        }
-        else 
-        {
-            _val.push(_dispo.ValueArray[0].val);
-            if (_dispo.IsNull != true) {
-                valObj.IsNull = false;
+            if (_dispo.IsNull == true)
+            {
+                eDisposition["IsValid"] = false;
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eDisposition.12", Description: "Incident/CallDisposition Disposition Mandatory" })
+            }
+            else 
+            {
+                _val.push(_dispo.ValueArray[0].val);
+                if (_dispo.IsNull != true) {
+                    valObj.IsNull = false;
                
-                switch (_val[0].toString())
-                {
+                    switch (_val[0].toString())
+                    {
                  
-                    case "4212007":
-                        var CallDisposition = new Object();
-                        var Cancelled = new Object();
-                        eDispostion.Cancelled = "PriorToScene";
-                        break;
-                    case "4212009":
-                        var Cancelled = new Object();
-                        eDispostion.Cancelled = "OnScene";
-                        break;
-                    case "4212011":
-                        eDisposition["Cancelled"] = "OnScene";
-                        var Cancelled = new Object();
-                        eDispostion.Cancelled = "OnScene";
-                        break;
-                    case "4212013":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = false;
-                        CallDisposition["HasTransport"] = true;
-                        CallDisposition["IsDead"] = true;
-                        break;
-                    case "4212015":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = false;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = true;
-                        break;
+                        case "4212007":
+                            var CallDisposition = new Object();
+                            CallDisposition.Cancelled = "PriorToScene";
+                            break;
+                        case "4212009":
+                            var CallDisposition = new Object();
+                            CallDisposition.Cancelled = "OnScene";
+                            break;
+                        case "4212011":
+                            var CallDisposition = new Object();
+                            CallDisposition.Cancelled = "OnScene";
+                            break;
+                        case "4212013":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = false;
+                            CallDisposition["HasTransport"] = true;
+                            CallDisposition["IsDead"] = true;
+                            break;
+                        case "4212015":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = false;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = true;
+                            break;
 
-                    case "4212017":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = true;
-                        CallDisposition["HasTransport"] = true;
-                        CallDisposition["IsDead"] = true;
-                        break;
-                    case "4212019":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = true;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = true;
-                        break;
-                    case "4212021":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = false;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212023":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = false;
-                        CallDisposition["HasTransport"] = true;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212025":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = false;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212027":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = true;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212029":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = true;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212031":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = true;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212033":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = true;
-                        CallDisposition["HasTransport"] = true;
-                        CallDisposition["IsDead"] = false;
+                        case "4212017":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = true;
+                            CallDisposition["HasTransport"] = true;
+                            CallDisposition["IsDead"] = true;
+                            break;
+                        case "4212019":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = true;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = true;
+                            break;
+                        case "4212021":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = false;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212023":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = false;
+                            CallDisposition["HasTransport"] = true;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212025":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = false;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212027":
+                            CallDisposition["HasCallDisposition"] = true;
+                            CallDisposition["HasTreatment"] = true;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212029":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = true;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212031":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = true;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212033":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = true;
+                            CallDisposition["HasTransport"] = true;
+                            CallDisposition["IsDead"] = false;
 
-                        break;
-                    case "4212035":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = true;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212037":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = true;
-                        CallDisposition["HasTreatment"] = true;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212039":
-                        var CallDisposition = new Object();
-                        //Should this be a rule?  
-                        //if (TheCall.CallType == StandBy?)
-                        CallDisposition["HasCallDisposition"] = false;
-                        CallDisposition["HasTreatment"] = false;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false; break;
-                    case "4212041":
-                        var CallDisposition = new Object();
-                        //Should this be a rule?  
-                        //if (TheCall.CallType == StandBy?)
-                        CallDisposition["HasCallDisposition"] = false;
-                        CallDisposition["HasTreatment"] = false;
-                        CallDisposition["HasTransport"] = false;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    case "4212043":
-                        var CallDisposition = new Object();
-                        CallDisposition["HasCallDisposition"] = false;
-                        CallDisposition["HasTreatment"] = false;
-                        CallDisposition["HasTransport"] = true;
-                        CallDisposition["IsDead"] = false;
-                        break;
-                    default:
-                }
-            };
-            valObj.vSet = _val.slice(0);
-            eDisposition["IsValid"] = true;
-            eDisposition["eDisposition.12"] = valObj;
-            delete valObj;                    
-        };        
+                            break;
+                        case "4212035":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasCallDisposition"] = true;
+                            CallDisposition["HasTreatment"] = true;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212037":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = true;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212039":
+                            var CallDisposition = new Object();
+                            //Should this be a rule?  
+                            //if (TheCall.CallType == StandBy?)
+                            CallDisposition["HasTreatment"] = false;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false; break;
+                        case "4212041":
+                            var CallDisposition = new Object();
+                            //Should this be a rule?  
+                            //if (TheCall.CallType == StandBy?)
+                            CallDisposition["HasTreatment"] = false;
+                            CallDisposition["HasTransport"] = false;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        case "4212043":
+                            var CallDisposition = new Object();
+                            CallDisposition["HasTreatment"] = false;
+                            CallDisposition["HasTransport"] = true;
+                            CallDisposition["IsDead"] = false;
+                            break;
+                        default:
+                    }
+                };
+                valObj.vSet = _val.slice(0);
+                eDisposition["IsValid"] = true;
+                eDisposition["eDisposition.12"] = valObj;
+                delete valObj;                    
+            }
+        };
         ///////////////////////eDisposition.DestinationGroup
         eDisposition["DestinationGroup"] = -1;
-        if (typeof pDisposition.attributes.sections != 'undefined')
-        {
-            var _sI = [];
-            _sI = getSectionIndex(pDisposition, "eDisposition.DestinationGroup");          
-            if (_sI[0] != -1)
-            {
+        if (eDisposition["IsValid"] == true) {
+            if (typeof pDisposition.attributes.sections != undefined) {
+                var _sI = [];
+                _sI = getSectionIndex(pDisposition, "eDisposition.DestinationGroup");
+                if (_sI[0] != -1) {
 
-                eDisposition.IsValid = true;
-                var _dEl = [];
-                _dEl = pDisposition.attributes.sections[_sI[0]].attributes.elements;
-                if (_dEl.length == -1) {
-                    eDisposition["DestinationGroup"] = -1;
-                }
-                else {
-                    eDisposition["DestinationGroup"] = 1;
+                    eDisposition.IsValid = true;
+                    var _dEl = [];
+                    _dEl = pDisposition.attributes.sections[_sI[0]].attributes.elements;
+                    if (_dEl.length == -1) {
+                        eDisposition["DestinationGroup"] = -1;
+                    }
+                    else {
+                        eDisposition["DestinationGroup"] = 1;
+                    }
                 }
             }
         };
+    
         //eDisposition.01///////////////////////////////////////////////////////////
         var _val = [];
         var _dispo = [];
@@ -699,7 +342,7 @@ var seteDisposition = function (TheCall)
         var valObj = {};
         valObj.IsNull = true;
 
-        if ((CallDisposition.HasTransport == true) && (eDisposition["DestinationGroup"] == 1))
+        if ((CallDisposition.HasTransport == true) && (eDisposition["DestinationGroup"] == 1 ))
         {
             _dispo = getValue(_dEl, "eDisposition.02");
             if (_dispo.IsNull == true)
@@ -739,7 +382,7 @@ var seteDisposition = function (TheCall)
         var valObj = {};
         valObj.IsNull = true;
 
-        if ((CallDisposition.HasTransport == true) && (eDisposition["DestinationGroup"] == 1))
+        if ((CallDisposition.HasTransport == true) && (eDisposition["DestinationGroup"] == 1))        
         {
             _dispo = getValue(_dEl, "eDisposition.03");
 
@@ -952,17 +595,18 @@ var seteDisposition = function (TheCall)
                 delete valObj;
             }
         }            
-    };
-        
+    //};
+     
     //eDisposition.11/////////////////////////////////////////////////
     var _val = [];
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
     
-    _dispo = getValue(_elementList, "eDisposition.11");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.11");
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.11") == true) {
                 _val.push("7701003");
@@ -995,9 +639,10 @@ var seteDisposition = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
     
-    _dispo = getValue(_elementList, "eDisposition.13");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
-        {
+    {
+        _dispo = getValue(_eL, "eDisposition.13");
         if (_dispo.IsNull != true) {
             for (var i = 0; i <= _dispo.Count - 1; i++) {
                 if ((_dispo.ValueArray[i].HasValue == true) && (_val.indexOf(_dispo.ValueArray[i].val) == -1)) {
@@ -1016,15 +661,17 @@ var seteDisposition = function (TheCall)
     valObj.vSet = _val.slice(0);
     eDisposition["eDisposition.13"] = valObj;
     delete valObj;
+
     //eDisposition.14//////////////////////////////////
     var _val = [];
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
     
-    _dispo = getValue(_elementList, "eDisposition.14");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.14");
         if (_dispo.IsNull != true) {
             for (var i = 0; i < _dispo.ValueArray.length; i++) {
                 if ((_dispo.ValueArray[i].HasValue == true) && (_val.indexOf(_dispo.ValueArray[i].val) == -1)) {
@@ -1049,9 +696,10 @@ var seteDisposition = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
     
-    _dispo = getValue(_elementList, "eDisposition.15");
+    
     if (CallDisposition.HasTransport == true)
     {
+        _dispo = getValue(_eL, "eDisposition.15");
         if (_dispo.IsNull != true) {
             _val.push(_dispo.ValueArray[0].val);
             valObj.IsNull = false;                
@@ -1074,10 +722,11 @@ var seteDisposition = function (TheCall)
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
-    _dispo = getValue(_elementList, "eDisposition.16");
+    
 
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.16");
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.16") == true) {
                 _val.push("7701003");
@@ -1118,9 +767,9 @@ var seteDisposition = function (TheCall)
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
-    _dispo = getValue(_elementList, "eDisposition.17");
     if (CallDisposition.HasTransport == true) //if have a transport,
     {
+        _dispo = getValue(_eL, "eDisposition.17");    
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.17") == true) {
                 _val.push("7701003")
@@ -1150,9 +799,10 @@ var seteDisposition = function (TheCall)
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
-    _dispo = getValue(_elementList, "eDisposition.18");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.18");
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.18") == true) 
             {
@@ -1173,9 +823,6 @@ var seteDisposition = function (TheCall)
     }
     else
     {
-        if (_dispo.ValueArray.length == 0) {
-            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eDisposition.18", Description: "Additional Transport Method/Transport Type Conflict  " });    
-        };
         _val.push("7701001");
         valObj.IsNull = true;
         valObj.NV = true;    
@@ -1189,9 +836,10 @@ var seteDisposition = function (TheCall)
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
-    _dispo = getValue(_elementList, "eDisposition.19");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.19");
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.19") == true) {
                 _val.push("7701003")
@@ -1220,9 +868,10 @@ var seteDisposition = function (TheCall)
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
-    _dispo = getValue(_elementList, "eDisposition.20");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.20");
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.20") == true) {
                 _val.push("7701003")
@@ -1258,9 +907,10 @@ var seteDisposition = function (TheCall)
     valObj.IsNull = true;
     var _val = [];
     var _dispo = [];
-    _dispo = getValue(_elementList, "eDisposition.21");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.21");
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.21") == true) {
                 valObj.NV = true;
@@ -1291,9 +941,10 @@ var seteDisposition = function (TheCall)
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
-    _dispo = getValue(_elementList, "eDisposition.22");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.22");
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.22") == true) {
                 _val.push("7701003")
@@ -1322,9 +973,10 @@ var seteDisposition = function (TheCall)
     var _dispo = [];
     var valObj = {};
     valObj.IsNull = true;
-    _dispo = getValue(_elementList, "eDisposition.23");
+    
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.23");
         if (_dispo.IsNull == true) {
             if (isRequiredStateElement("eDisposition.23") == true) {
                 _val.push("7701003")
@@ -1354,10 +1006,10 @@ var seteDisposition = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    _dispo = getValue(_elementList, "eDisposition.26");
-        
+            
     if ((CallDisposition.HasTransport == true) && (eDisposition.IsValid == true))
     {
+        _dispo = getValue(_eL, "eDisposition.26");
         if (_dispo.IsNull != true) {
             for (var i = 0; i < _dispo.ValueArray.length; i++) {
                 if ((_dispo.ValueArray[i].HasValue == true) && (_val.indexOf(_dispo.ValueArray[i].val) == -1)) {
@@ -1464,7 +1116,8 @@ var seteDisposition = function (TheCall)
         if (typeof CallDisposition != 'undefined') {
             eDisposition.CallDisposition = CallDisposition;
         };
-        eDisposition.TransportType = TransportType;                     
+   
+    eDisposition.TransportType = TransportType;                     
     return eDisposition;
 };
 var seteDispatch = function (TheCall)
@@ -1613,7 +1266,7 @@ var seteDispatch = function (TheCall)
 };
 var seteTimes = function (TheCall) 
 {
-   var eTimes = new Object();
+    var eTimes = new Object();
     var ErrorList = [];
     pTimes = TheCall.pTimes;
     if (pTimes.HasDataSet == false) 
@@ -1671,87 +1324,86 @@ var seteTimes = function (TheCall)
 
 
     //eTimes.02/////////////////////////////////////////////////////////
-        var _val = [];
-        var _times = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eTimes.IsValid == true)
-        {
-            _times = getValue(_el, "eTimes.02");
-            if (_times.IsNull != true) 
-            {
-                _val.push(_times.ValueArray[0].val);
-                if (TheCall.isEmergant == true) 
-                {
-                    Times.HasErrors = true;
-                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "eTimes.02 - Dispatch not 911 " })
-                }
-                else 
-                {
-                    valObj.IsNull = false;
-                }
-            }
-        };
-        valObj.vSet = _val.slice(0);
-        eTimes["eTimes.02"] = valObj;
-        delete valObj;
-        
-        //eTimes.03//////////////////////////////////////////////////////
-        var _val = [];
-        var _times = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eTimes.IsValid == true)
-        {
-            _times = getValue(_el, "eTimes.03");
-            if (_times.IsNull == true) 
-            {            
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eTimes", Description: "eTimes.03 - Mandatory" })
-            }
-            else 
-            {
-                /////////////////////////////////////////////
-                if (typeof TheCall.StartAirwayTime != undefined) 
-                {
-                    if (TheCall.StartAirwayTime >= _val[0]) 
-                    {                    
-                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "eTimes.02 Validation Error: eAirway.10 Date/Time decision to Manage the Patient with an Invasive Airway should not occur prior to: Unit Notified by Dispatch Date/Time" });
-                    };
-
-                    if (typeof TheCall.EndAirwayTime != undefined) {
-                        if (TheCall.EndAirwayTime >= _val[0]) {                     
-                            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Validation Error: eAirway.11: Date/Time Invasive Airway Placement Attempts Abandoned should not occur prior to: Date/Time Decision to Manage the Patient with an Invasive Airway, Unit Notified by Dispatch Date/Time" });
-                        }
-                    };
-                    _val.push(_times.ValueArray[0].val);
-                    valObj.IsNull = false;
-                }
-            };
-        
-            valObj.vSet = _val.slice(0);
-            eTimes["eTimes.03"] = valObj;
-            delete valObj;
-        };
-       
-        //eTimes.04//////////////////////////////////////////////////
-        var _val = [];
-        var _times = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        _times = getValue(_el, "eTimes.04");
+    var _val = [];
+    var _times = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eTimes.IsValid == true)
+    {
+        _times = getValue(_el, "eTimes.02");
         if (_times.IsNull != true) 
         {
             _val.push(_times.ValueArray[0].val);
-            if (typeof eTimes["eTimes.03"] != 'undefined') 
+            if (TheCall.isEmergant == true) 
             {
-                if (_val[0] > eTimes["eTimes.03"]) 
-                {
-                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Validation Error: eAirway.11: eTimes.03:  Dispatch Acknowledged prior to notification."});
+                Times.HasErrors = true;
+                ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "eTimes.02 - Dispatch not 911 " })
+            }
+            else 
+            {
+                valObj.IsNull = false;
+            }
+        }
+    
+    valObj.vSet = _val.slice(0);
+    eTimes["eTimes.02"] = valObj;
+    delete valObj;
+    };
+        
+    //eTimes.03//////////////////////////////////////////////////////
+    var _val = [];
+    var _times = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eTimes.IsValid == true)
+    {
+        _times = getValue(_el, "eTimes.03");
+        if (_times.IsNull == true) 
+        {            
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eTimes", Description: "eTimes.03 - Mandatory" })
+        }
+        else 
+        {
+            /////////////////////////////////////////////
+            if (typeof TheCall.StartAirwayTime != undefined) 
+            {
+                if (TheCall.StartAirwayTime >= _val[0]) 
+                {                    
+                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "eTimes.02 Validation Error: eAirway.10 Date/Time decision to Manage the Patient with an Invasive Airway should not occur prior to: Unit Notified by Dispatch Date/Time" });
+                };
+
+                if (typeof TheCall.EndAirwayTime != undefined) {
+                    if (TheCall.EndAirwayTime >= _val[0]) {                     
+                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Validation Error: eAirway.11: Date/Time Invasive Airway Placement Attempts Abandoned should not occur prior to: Date/Time Decision to Manage the Patient with an Invasive Airway, Unit Notified by Dispatch Date/Time" });
+                    }
+                };
+                _val.push(_times.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        };
+        
+        valObj.vSet = _val.slice(0);
+        eTimes["eTimes.03"] = valObj;
+        delete valObj;
+    };
+       
+    //eTimes.04//////////////////////////////////////////////////
+    var _val = [];
+    var _times = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eTimes.IsValid == true) {
+        _times = getValue(_el, "eTimes.04");
+        if (_times.IsNull != true)
+        {
+            _val.push(_times.ValueArray[0].val);
+            if (typeof eTimes["eTimes.03"] != 'undefined') {
+                if (_val[0] > eTimes["eTimes.03"]) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Validation Error: eAirway.11: eTimes.03:  Dispatch Acknowledged prior to notification." });
                 }
             };
 
-            if (TheCall.EndAirwayTime >= _val[0]) 
-            {            
+            if (TheCall.EndAirwayTime >= _val[0]) {
                 ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Validation Error: eAirway.11: eAirway.11: Date/Time Invasive Airway Placement Attempts Abandoned should not occur prior to: Dispatch Acknowledged Date/Time" });
             }
             valObj.IsNull = false;
@@ -1759,7 +1411,8 @@ var seteTimes = function (TheCall)
         valObj.vSet = _val.slice(0);
         eTimes["eTimes.04"] = valObj;
         delete valObj;
-        
+    };
+
         //eTimes.05//////////////////////////////////////////////////
         var _val = [];
         var _times = [];
@@ -1833,7 +1486,7 @@ var seteTimes = function (TheCall)
     var _times = [];
     var valObj = {};
     valObj.IsNull = true;
-    if ((eTimes.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled != 'undefefined'))
+    if ((eTimes.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled != 'undefined'))
     {
         _times = getValue(_el, "eTimes.07");
         if (_times.IsNull == true) 
@@ -1875,7 +1528,7 @@ var seteTimes = function (TheCall)
     var _times = [];
     var valObj = {};
     valObj.IsNull = true;
-    if ((eTimes.IsValid == true) && (TheCall.PatientTransfer = true) && (typeof TheCall.CallDisposition.Cancelled != 'undefefined'))
+    if ((eTimes.IsValid == true) && (TheCall.PatientTransfer = true) && (typeof TheCall.CallDisposition.Cancelled != 'undefined'))
     {
         _times = getValue(_el, "eTimes.08");
         if (_times.IsNull == true) 
@@ -1915,7 +1568,7 @@ var seteTimes = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
             
-    if ((eTimes.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled != 'undefefined'))
+    if ((eTimes.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled != 'undefined'))
     {
         _times = getValue(_el, "eTimes.09");
         if (_times.IsNull == true) 
@@ -1949,7 +1602,7 @@ var seteTimes = function (TheCall)
     var _times = [];
     var valObj = {};
     valObj.IsNull = true;
-    if ((eTimes.IsValid == true) && (TheCall.AirTransport == true) && (typeof TheCall.CallDisposition.Cancelled != 'undefefined'))
+    if ((eTimes.IsValid == true) && (TheCall.AirTransport == true) && (typeof TheCall.CallDisposition.Cancelled != 'undefined'))
     {
         _times = getValue(_el, "eTimes.10");
         if (_times.IsNull != true) 
@@ -2030,83 +1683,82 @@ var seteTimes = function (TheCall)
     var _val = [];
     var _times = [];
     var valObj = {};
-    valObj.IsNull = true;            
-    _times = getValue(_el, "eTimes.13");
-    //alert("when Cancelled, set this time value")
-    if (_times.IsNull == true) 
-    {            
-        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Unit Back in Service Date/Time Mandatory Value " });
-    }
-    else 
-    {
-        _val.push(_times.ValueArray[0].val);
-        valObj.IsNull = false;
+    valObj.IsNull = true;
+    if (eTimes.IsValid == true) {
+        _times = getValue(_el, "eTimes.13");
+        //alert("when Cancelled, set this time value")
+        if (_times.IsNull == true) {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Unit Back in Service Date/Time Mandatory Value " });
+        }
+        else {
+            _val.push(_times.ValueArray[0].val);
+            valObj.IsNull = false;
+        };
+        valObj.vSet = _val.slice(0);
+        eTimes["eTimes.13"] = valObj;
+        delete valObj;
     };
-    valObj.vSet = _val.slice(0);
-    eTimes["eTimes.13"] = valObj;
-    delete valObj;
 
     //eTimes.14//////////////////
     var _val = [];
     var _times = [];
     var valObj = {};
     valObj.IsNull = true;
-    _times = getValue(_el, "eTimes.14");
-    if (typeof TheCall.CallDisposition.Cancelled != 'undefefined')
-    {
-        if (_times.IsNull == true) 
-        {
-            if (isRequiredStateElement("eTimes.14")) 
-            {
-                ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Unit Canceled Date/Time:  eTimes 14 Mandatory" });
+    if (eTimes.IsValid == true) {
+        _times = getValue(_el, "eTimes.14");
+        if (typeof TheCall.CallDisposition.Cancelled != 'undefefined') {
+            if (_times.IsNull == true) {
+                if (isRequiredStateElement("eTimes.14")) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Unit Canceled Date/Time:  eTimes 14 Mandatory" });
+                }
+            }
+            else {
+                _val.push(_times.ValueArray[0].val);
+                valObj.IsNull = false;
             }
         }
-        else 
-        {
-            _val.push(_times.ValueArray[0].val);
-            valObj.IsNull = false;
-        }
-    }
-    else 
-    {
-        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Unit Canceled Date/Time:  Call Not Cancelled " });               
+        else {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eTimes", Description: "Unit Canceled Date/Time:  Call Not Cancelled " });
+        };
+        valObj.vSet = _val.slice(0);
+        eTimes["eTimes.14"] = valObj;
+        delete valObj;
     };
-    valObj.vSet = _val.slice(0);
-    eTimes["eTimes.14"] = valObj;
-    delete valObj;
 
     //eTimes.15//////////////////
     var _val = [];
     var _times = [];
     var valObj = {};
     valObj.IsNull = true;
-    _times = getValue(_el, "eTimes.15");
+    if (eTimes.IsValid == true) {
+        _times = getValue(_el, "eTimes.15");
 
-    if (_times.IsNull != true) 
-    {
-        _val.push(_times.ValueArray[0].val);
-        valObj.IsNull = false;
+        if (_times.IsNull != true) {
+            _val.push(_times.ValueArray[0].val);
+            valObj.IsNull = false;
 
+        };
+        valObj.vSet = _val.slice(0);
+        eTimes["eTimes.15"] = valObj;
+        delete valObj;
     };
-    valObj.vSet = _val.slice(0);
-    eTimes["eTimes.15"] = valObj;
-    delete valObj;
 
     //eTimes.16/////////////////
     var _val = [];
     var _times = [];
     var valObj = {};
     valObj.IsNull = true;
-    _times = getValue(_el, "eTimes.16");
-    if (_times.IsNull != true) 
-    {
-        _val.push(_times.ValueArray[0].val);
-        valObj.IsNull = false;
+
+    if (eTimes.IsValid == true) {
+        _times = getValue(_el, "eTimes.16");
+        if (_times.IsNull != true) {
+            _val.push(_times.ValueArray[0].val);
+            valObj.IsNull = false;
+        };
+        valObj.vSet = _val.slice(0);
+        eTimes["eTimes.16"] = valObj;
+        delete valObj;
     };
-    valObj.vSet = _val.slice(0);
-    eTimes["eTimes.16"] = valObj;
-    delete valObj;
-            
     eTimes.Errors = ErrorList.slice(0)
     
     return eTimes;
@@ -2120,35 +1772,39 @@ var seteResponse = function (TheCall)
     var TheServiceType = new Object();
     eResponse["HasDelay"] = false;
     eResponse["IsValid"] = false;
+    var CallCancelled = false
+    if(typeof TheCall.CallDisposition !='undefined')
+    {
+        CallCancelled=TheCall.CallDisposition.Cancelled;
+    };
+
     if (pResponse.HasDataSet == false) 
     {
-
         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse", Description: "eResponse.HasDataSet =false  " });
     };
+    if ( pResponse.HasData == true) {
+        if (typeof pResponse.attributes.elements != 'undefined') {
+            _eL = pResponse.attributes.elements;
+            eResponse["AgencyGroup"] = -1;
+            _sectionAG = getSectionIndex(pResponse, "eResponse.AgencyGroup");
+            if (_sectionAG != -1) {
+                var _AG = [];
+                var _AG = pResponse.attributes.sections[_sectionAG].attributes.elements;
+                eResponse["AgencyGroup"] = 1;
+                eResponse["IsValid"] = true;
+            };
 
-    if(typeof pResponse.attributes.elements !='undefined')            
-    {
-        _eL = pResponse.attributes.elements;
-        eResponse["AgencyGroup"] = -1;
-        _sectionAG = getSectionIndex(pResponse, "eResponse.AgencyGroup");
-        if (_sectionAG != -1) 
-        {
-            var _AG = [];
-            var _AG = pResponse.attributes.sections[_sectionAG].attributes.elements;
-            eResponse["AgencyGroup"] = 1;
-            eResponse["IsValid"] = true;
-        };
-        
-        eResponse["ServiceGroup"] = -1;
-        _sectionSG = getSectionIndex(pResponse, "eResponse.ServiceGroup");
-        if (_sectionSG != -1) 
-        {
-            var _SG = [];
-            var _SG = pResponse.attributes.sections[_sectionSG].attributes.elements;  
-            eResponse["ServiceGroup"] = 1;
-            eResponse["IsValid"] = true;
-        };
+            eResponse["ServiceGroup"] = -1;
+            _sectionSG = getSectionIndex(pResponse, "eResponse.ServiceGroup");
+            if (_sectionSG != -1) {
+                var _SG = [];
+                var _SG = pResponse.attributes.sections[_sectionSG].attributes.elements;
+                eResponse["ServiceGroup"] = 1;
+                eResponse["IsValid"] = true;
+            };
+        }
     };
+    
     //////////////////////eResponse.05    
     if (eResponse["IsValid"] == true) 
     {    
@@ -2165,36 +1821,38 @@ var seteResponse = function (TheCall)
         {
             _val.push(_response.ValueArray[0].val);
             valObj.IsNull = false;
-            if (_val[0] == "2205001") //StandBy
+            if (_val[0] == "2205001") 
             {
                 TheServiceType = "911";
             };
-            if (_val[0] == "2205003") //StandBy
+            if (_val[0] == "2205003") 
             {
                 TheServiceType = "Intercept";
             };
-            if (_val[0] == "2205005") //StandBy
+            if (_val[0] == "2205005") 
             {
                 TheServiceType = "InterFacility";
             };
-            if (_val[0] == "2205007") //StandBy
+            if (_val[0] == "2205007") 
             {
                 TheServiceType = "MedicalTransport";
             };
-            if (_val[0] == "2205009") //StandBy
+            if (_val[0] == "2205009") 
             {
                 TheServiceType = "MutualAide";
             };
 
-            if (_val[0] == "2205009") //StandBy
+            if (_val[0] == "2205009") 
             {
                 TheServiceType = "PublicAssistance";
             };
 
-            if (_val[0] == "2205013") //StandBy
+            if (_val[0] == "2205013") 
             {
                 TheServiceType = "Standby";
             };
+            eResponse.ServiceType = TheServiceType;
+
             valObj.vSet = _val.slice(0);
             eResponse["eResponse.05"] = valObj;
             delete valObj;
@@ -2204,13 +1862,13 @@ var seteResponse = function (TheCall)
     {
         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.05", Description: "Type of Service Request  MANDATORY" })
     };
-
+    
     //////////////////////eResponse.06
     var _response = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (TheCall.CallType != "StandBy")
+    if ((TheCall.CallType != "StandBy") &&(eResponse.IsValid==true))
     {
         _response = getValue(_SG, "eResponse.06");
         if (_response.IsNull != true) 
@@ -2228,7 +1886,7 @@ var seteResponse = function (TheCall)
         ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.06", Description: "Stand By Purpose/Type of Service Conflict " })
     };   
     
-  
+    
     if(eResponse.IsValid == true)
     {
         //////////////////////eResponse.01
@@ -2328,109 +1986,102 @@ var seteResponse = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    //if (TheServiceType == "StandBy")
-    //{
-    _response = getValue(_eL, "eResponse.04");
-    if (_response.IsNull == true) 
-    {
-        if (isRequiredStateElement("eResponse.04") == true) 
-        {
-            _val.push("7701003");
-            valObj.IsNull = true;
-            valObj.NV = true;
+    if (eResponse.IsValid == true) {
+        _response = getValue(_eL, "eResponse.04");
+        if (_response.IsNull == true) {
+            if (isRequiredStateElement("eResponse.04") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
+            }
         }
-        else 
-        {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        }
-    }
-    else 
-    {
-        _val.push(_response.ValueArray[0].val);
-        valObj.IsNull = false;
-    }
-//};
-        //else 
-        //{
-            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.04", Description: "Stand By Response Number/Type of Service Conflict " });
-        //};
-     
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.04"] = valObj;
-        delete valObj;
-        
-        //////////////////////eResponse.07
-        var _response = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = false;
-        _response = getValue(_eL, "eResponse.07");
-        if (_response.IsNull == true)
-        {
-            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.07", Description: "Primary Role of the Unit MANDATORY" });        
-        }
-        else
-        {
-            _val.push(_response.ValueArray[0].val);            
+        else {
+            _val.push(_response.ValueArray[0].val);
             valObj.IsNull = false;
-          
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+     
+    valObj.vSet = _val.slice(0);
+    eResponse["eResponse.04"] = valObj;
+    delete valObj;
+        
+    //////////////////////eResponse.07
+    var _response = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = false;
+
+    if (eResponse.IsValid == true) {
+        _response = getValue(_eL, "eResponse.07");
+        if (_response.IsNull == true) {
+            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.07", Description: "Primary Role of the Unit MANDATORY" });
+        }
+        else {
+            _val.push(_response.ValueArray[0].val);
+            valObj.IsNull = false;
+
         };
         valObj.vSet = _val.slice(0);
         eResponse["eResponse.07"] = valObj;
         delete valObj;
+    };
         
-        //alert("A dispatch delay is any time delay that occurs from the time of PSAP call (eTimes.01) to the time the unit is notified by dispatch (eTimes.03).")
-        //////////////////////eResponse.08
-        //When a delay for a particular phase of a response is "None/No Delay", no other 
-        //delays should be recorded for that phase.
-        //eResponse.08[. = '2208013'
-        var _response = [];
-        var _val = [];
-        var valObj = {};
-        _response = getValue(_eL, "eResponse.08");       
-        if (TheCall.CallType != "StandBy")
+    //alert("A dispatch delay is any time delay that occurs from the time of PSAP call (eTimes.01) to the time the unit is notified by dispatch (eTimes.03).")
+    //////////////////////eResponse.08
+    //When a delay for a particular phase of a response is "None/No Delay", no other 
+    //delays should be recorded for that phase.
+    //eResponse.08[. = '2208013'
+    var _response = [];
+    var _val = [];
+    var valObj = {};
+    if ((eResponse.Servicetype != "StandBy") && (eResponse.IsValid == true)) {
+    _response = getValue(_eL, "eResponse.08");       
+    
+        if (_response.IsNull == true)
         {
-            if (_response.IsNull == true)
+            if (isRequiredStateElement("eResponse.08") == true) 
             {
-                if (isRequiredStateElement("eResponse.08") == true) 
-                {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;                
-                }
-            }
-            else {
-                for (var i = 0; i < _response.ValueArray.length; i++) {
-                    if ((_response.ValueArray[i].HasValue == true) && (_val.indexOf(_response.ValueArray[i].val) == -1)) {
-                        _val.push(_response.ValueArray[i].val)
-                        if (_val[0] == '2208013') {
-                            eResponse.HasDelay == false;
-                        }                        
-                        valObj.IsNull = false;
-                        
-                    }
-                };
-
-                if (_val.indexOf('2208013') == -1) {
-                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.08", Description: "Dispatch Delay Type Conflict" })
-        
-                };
-                //  v2Array.push({ section: "E02", element: "E02_06", val: arr2.slice(0) });
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;                
             }
         }
-        else 
-        {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.08"] = valObj;
-        delete valObj;
+        else {
+            for (var i = 0; i < _response.ValueArray.length; i++)
+            {
+                if ((_response.ValueArray[i].HasValue == true) && (_val.indexOf(_response.ValueArray[i].val) == -1))
+                {
+                    _val.push(_response.ValueArray[i].val)
+                    if (_val[0] == '2208013')
+                    {
+                        eResponse.HasDelay = false;
+                    };
+                    valObj.IsNull = false;                        
+                }
+            };
+
+            if (_val.indexOf('2208013') == -1) {
+                ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.08", Description: "Dispatch Delay Type Conflict" })
+        
+            };
+        }
+    }
+    else 
+    {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eResponse["eResponse.08"] = valObj;
+    delete valObj;
     
-        //////////////////////eResponse.09
+    //////////////////////eResponse.09
         var _response = [];
         var _val = [];
         var valObj = {};
@@ -2441,49 +2092,41 @@ var seteResponse = function (TheCall)
 
         //alert("A response delay is any time delay that occurs from the time the unit is notified by dispatch (eTimes.03) to the time the unit arrived on scene (eTimes.06).")
         eResponse.HasDelay = false;
-        _response = getValue(_eL, "eResponse.09");
+        if (eResponse.IsValid == true) {
+            _response = getValue(_eL, "eResponse.09");
 
-        if (eResponse.HasDelay == false) 
-        {
-            if (_response.IsNull == true) 
-            {
-                if (isRequiredStateElement("eResponse.09") == true) 
-                {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
+            if (eResponse.HasDelay == false) {
+                if (_response.IsNull == true) {
+                    if (isRequiredStateElement("eResponse.09") == true) {
+                        _val.push("7701003");
+                        valObj.IsNull = true;
+                        valObj.NV = true;
+                    }
+                }
+                else {
+                    for (var i = 0; i < _response.ValueArray.length; i++) {
+                        if ((_response.ValueArray[i].HasValue == true) && (_val.indexOf(_response.ValueArray[i].val) == -1)) {
+                            _val.push(_response.ValueArray[i].val)
+
+                            if (_val == '2209011') {
+                                eResponse.HasDelay = false;
+                            }
+                        }
+                    };
+
+                    valObj.IsNull = false;
+                    valObj.vSet = _val.slice(0);
+                    if ('2209011' in _val) //if None, than None only
+                    {
+                        if (_val.length > 1) {
+                            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.09", Description: "Response Delay Type Conflict" })
+                        }
+                    };
+                    //v2Array.push({ section: "E02", element: "E02_07", val: arr2.slice(0) });
                 }
             }
-            else 
-            {
-                for (var i = 0; i < _response.ValueArray.length; i++) 
-                {
-                    if ((_response.ValueArray[i].HasValue == true) && (_val.indexOf(_response.ValueArray[i].val) == -1)) {
-                        _val.push(_response.ValueArray[i].val)
-
-                        if (_val == '2209011') 
-                        {
-                            eResponse.HasDelay == false;
-                        }
-                    }
-                };
-                
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                if ('2209011' in _val) //if None, than None only
-                {
-                    if (_val.length > 1) 
-                    {
-                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.09", Description: "Response Delay Type Conflict" })
-                        eResponse.Errors = ErrorList.push();
-                        eResponse.HasErrors = true;
-                    }
-                };
-                //v2Array.push({ section: "E02", element: "E02_07", val: arr2.slice(0) });
-            }
         }
-        else 
-        {
+        else {
             _val.push("7701001");
             valObj.IsNull = true;
             valObj.NV = true;
@@ -2502,47 +2145,40 @@ var seteResponse = function (TheCall)
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.10");
-        if (TheCall.CallType != "StandBy")
-        {
-            if (_response.IsNull == true) 
-            {
-                if (isRequiredStateElement("eResponse.10") == true) 
-                {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else 
-            {
-                for (var i = 0; i < _response.ValueArray.length; i++) 
-                {
-                    if ((_response.ValueArray[i].HasValue == true) && (_val.indexOf(_response.ValueArray[i].val) == -1)) 
-                    {
-                        _val.push(_response.ValueArray[i].val);
-                        if (_val[0] == '2210017') 
-                        {
-                            Call.HasDelay == false;
-                        }
+        if (eResponse.IsValid == true) {
+            _response = getValue(_eL, "eResponse.10");
+            if (TheCall.CallType != "StandBy") {
+                if (_response.IsNull == true) {
+                    if (isRequiredStateElement("eResponse.10") == true) {
+                        _val.push("7701003");
+                        valObj.IsNull = true;
+                        valObj.NV = true;
                     }
-                };
-                
-                valObj.IsNull = false;
-                
+                }
+                else {
+                    for (var i = 0; i < _response.ValueArray.length; i++) {
+                        if ((_response.ValueArray[i].HasValue == true) && (_val.indexOf(_response.ValueArray[i].val) == -1)) {
+                            _val.push(_response.ValueArray[i].val);
+                            if (_val[0] == '2210017') {
+                                eResponse.HasDelay = false;
+                            }
+                        }
+                    };
 
-                if ('2210017' in _val) //if None, than None only
-                {
-                    if (_val[0].length > 1) 
+                    valObj.IsNull = false;
+
+
+                    if ('2210017' in _val) //if None, than None only
                     {
-                        ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.18", Description: "Scene Delay Type Conflict" })
-        
+                        if (_val[0].length > 1) {
+                            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eResponse.18", Description: "Scene Delay Type Conflict" })
+
+                        }
                     }
                 }
             }
         }
-        else 
-        {
+        else {
             _val.push("7701001");
             valObj.IsNull = true;
             valObj.NV = true;
@@ -2560,10 +2196,11 @@ var seteResponse = function (TheCall)
         //This rule fires when there is an instance of eResponse.11 Type of Transport Delay set to 
         //"None/No Delay".
 
-        //alert("A transport delay is any time delay that occurs from the time the unit left the scene (eTimes.09) to the time the patient arrived at the destination (eTimes.10).")
-        _response = getValue(_eL, "eResponse.11");
-        if (TheCall.CallType != "StandBy") //we have no delay
-        {
+    //alert("A transport delay is any time delay that occurs from the time the unit left the scene (eTimes.09) to the time the patient arrived at the destination (eTimes.10).")
+    
+        if ((TheCall.CallType != "StandBy") &&(eResponse.IsValid == true))
+        {        
+            _response = getValue(_eL, "eResponse.11");
             if (_response.IsNull == true) 
             {
                 if (isRequiredStateElement("eResponse.11") == true) 
@@ -2583,7 +2220,7 @@ var seteResponse = function (TheCall)
 
                         if (_val[0] == '2211011') 
                         {
-                            Call.HasDelay == true
+                            eResponse.HasDelay = true
                         };
                     }
                 };
@@ -2607,15 +2244,16 @@ var seteResponse = function (TheCall)
         eResponse["eResponse.11"] =  valObj;
         delete valObj;
 
-        
+    
         //////////////////////eResponse.12
         var _response = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.12");
-        if (TheCall.CallType != "StandBy")
-        {
+        if ((TheCall.CallType != "StandBy") &&(eResponse.IsValid == true))
+        {        
+            _response = getValue(_eL, "eResponse.12");
+    
             if (_response.IsNull == true)
             {
                 if (isRequiredStateElement("eResponse.12") == true) 
@@ -2633,7 +2271,7 @@ var seteResponse = function (TheCall)
                         _val.push(_response.ValueArray[i].val);
 
                         if (_val[0] == "2212015") {
-                            Call.HasDelay == true
+                            eResponse.HasDelay = true
                         }
                     }
                 };
@@ -2657,68 +2295,75 @@ var seteResponse = function (TheCall)
         valObj.vSet = _val.slice(0);
         eResponse["eResponse.12"] =  valObj;
         delete valObj
-        
+            
         //////////////////////eResponse.13
         var _response = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.13");
-        if (_response.IsNull == true) 
-        {
-            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.13", Description: "EMS Unit number MANDATORY" })
-        }
-        else 
-        {
-            _val.push(_response.ValueArray[0].val);            
-            valObj.IsNull = false;
+        if (eResponse.IsValid == true)
+        {        
+            _response = getValue(_eL, "eResponse.13");
+            if (_response.IsNull == true) 
+            {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.13", Description: "EMS Unit number MANDATORY" })
+            }
+            else 
+            {
+                _val.push(_response.ValueArray[0].val);            
+                valObj.IsNull = false;
           
-            //v2Array.push({ section: "E02", element: "E02_11", val: _val });            
+                //v2Array.push({ section: "E02", element: "E02_11", val: _val });            
+            };
+            valObj.vSet = _val.slice(0);
+            eResponse["eResponse.13"] =  valObj;
+            delete valObj
         };
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.13"] =  valObj;
-        delete valObj
 
         //////////////////////eResponse.14
         var _response = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.14");
-        if (_val == null) 
-        {
-            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.14", Description: "EMS Unit Call Sign MANDATORY" })
+        if (eResponse.IsValid == true)
+        {        
+            _response = getValue(_eL, "eResponse.14");
+            if (_val == null) 
+            {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.14", Description: "EMS Unit Call Sign MANDATORY" })
 
-        }
-        else 
-        {
-            _val.push(_response.ValueArray[0].val);            
-            valObj.IsNull = false;
+            }
+            else 
+            {
+                _val.push(_response.ValueArray[0].val);            
+                valObj.IsNull = false;
+            };
+            valObj.vSet = _val.slice(0);
+            eResponse["eResponse.14"] =  valObj;
+            delete valObj;
         };
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.14"] =  valObj;
-        delete valObj
         
         //////////////////////eResponse.15
         var _response = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-
-        _response = getValue(_eL, "eResponse.15");
-        if (_val == null) 
-        {
-            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.15", Description: "Unit Level of Care MANDATORY" })        
-        }
-        else 
-        {
-            _val.push(_response.ValueArray[0].val);            
-            valObj.IsNull = false;        
+        if (eResponse.IsValid == true)
+        {        
+            _response = getValue(_eL, "eResponse.15");
+            if (_val == null) 
+            {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eResponse.15", Description: "Unit Level of Care MANDATORY" })        
+            }
+            else 
+            {
+                _val.push(_response.ValueArray[0].val);            
+                valObj.IsNull = false;        
+            };
+            valObj.vSet = _val.slice(0);
+            eResponse["eResponse.15"] =  valObj;
+            delete valObj
         };
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.15"] =  valObj;
-        delete valObj
-
         
         //////////////////////eResponse.16
         var _response = [];
@@ -2726,54 +2371,63 @@ var seteResponse = function (TheCall)
         var valObj = {};
         valObj.IsNull = true;
 
-        _response = getValue(_eL, "eResponse.16");
-        if (_response.IsNull != true) 
-        {
-            _val = _response.ValueArray[0].val;            
-            valObj.IsNull = false;
+        if (eResponse.IsValid == true)
+        {        
+            _response = getValue(_eL, "eResponse.16");
+            if (_response.IsNull != true) 
+            {
+                _val = _response.ValueArray[0].val;            
+                valObj.IsNull = false;
+            };
+            valObj.vSet = _val.slice(0);
+            eResponse["eResponse.16"] =  valObj;
+            delete valObj
         };
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.16"] =  valObj;
-        delete valObj
-        
         //////////////////////eResponse.17
         var _response = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.17");
-        if (_response.IsNull != true) 
-        {
-            _val.push(_response.ValueArray[0].val);           
-            valObj.IsNull = false;
+        if (eResponse.IsValid == true)
+        {        
+            _response = getValue(_eL, "eResponse.17");
+            if (_response.IsNull != true) 
+            {
+                _val.push(_response.ValueArray[0].val);           
+                valObj.IsNull = false;
+            };
+            valObj.vSet = _val.slice(0);
+            eResponse["eResponse.17"] =  valObj;
+            delete valObj
         };
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.17"] =  valObj;
-        delete valObj
-      
         //////////////////////eResponse.18
         var _response = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.18");
-        if (_response.IsNull != true) 
-        {
-            _val.push(_response.ValueArray[0].val);            
-            valObj.IsNull = false;
+        if (eResponse.IsValid == true)
+        {        
+            _response = getValue(_eL, "eResponse.18");
+            if (_response.IsNull != true) 
+            {
+                _val.push(_response.ValueArray[0].val);            
+                valObj.IsNull = false;
+            };
+            valObj.vSet = _val.slice(0);
+            eResponse["eResponse.18"] =  valObj;
+            delete valObj
         };
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.18"] =  valObj;
-        delete valObj
-        
+    
         //////////////////////eResponse.19
         var _response = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.19");
-       // if (TheCall.IsCancelled == false)
-       // {
+        if (eResponse.IsValid == true)
+        {        
+            _response = getValue(_eL, "eResponse.19");
+            // if (TheCall.IsCancelled == false)
+            // {
             if (_response.IsNull == true)
             {
                 if (isRequiredStateElement("eResponse.19") == true) 
@@ -2787,19 +2441,21 @@ var seteResponse = function (TheCall)
                 var bOd = _val[0];
                 valObj.IsNull = false;
             }
-      //  };
-        valObj.vSet = _val.slice(0);
-        eResponse["eResponse.19"] =  valObj;
-        delete valObj
+            //  };
+            valObj.vSet = _val.slice(0);
+            eResponse["eResponse.19"] =  valObj;
+            delete valObj
+        };
 
         //////////////////////eResponse.20
         var _response = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.20");
-        if (TheCall.CallType != "PriorToScene")  //if Cancelled prior to arrival on Scene, no data
-        {
+        if ((eResponse.IsValid == true)&& (CallCancelled != "PriorToScene"))  //if Cancelled prior to arrival on Scene, no data
+        {        
+            _response = getValue(_eL, "eResponse.20");
+            
             if (_response.IsNull == true) 
             {
                 if (isRequiredStateElement("eResponse.20") == true) 
@@ -2823,8 +2479,7 @@ var seteResponse = function (TheCall)
             valObj.vSet = _val.slice(0);
             eResponse["eResponse.20"] =  valObj;
             delete valObj
-        };
-     
+        };  
 
         
         //////////////////////eResponse.21
@@ -2832,9 +2487,10 @@ var seteResponse = function (TheCall)
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.21");
-        if (TheCall.CallType != "PriorToScene")   //if Cancelled prior to arrival on Scene, no data
+        
+        if ((CallCancelled != "PriorToScene")&& (eResponse.IsValid == true))             
         {
+            _response = getValue(_eL, "eResponse.21");
             if (_response.IsNull == true) 
             {
                 if (isRequiredStateElement("eResponse.21") == true) 
@@ -2865,10 +2521,11 @@ var seteResponse = function (TheCall)
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.22");
-        if (TheCall.CallType != "PriorToScene")  //if Cancelled prior to arrival on Scene, no data
+        
+        if ((CallCancelled != "PriorToScene")&& (eResponse.IsValid == true))
         {
-            if (_response.IsNull == true) 
+            _response = getValue(_eL, "eResponse.22");
+            if (_response.IsNull == true)
             {
                 if (isRequiredStateElement("eResponse.22") == true) 
                 {
@@ -2899,7 +2556,7 @@ var seteResponse = function (TheCall)
         var valObj = {};
         valObj.IsNull = true;
     
-        if (TheCall.CallType != "PriorToScene")    //if Cancelled prior to arrival on Scene, no data
+        if ((CallCancelled != "PriorToScene")&& (eResponse.IsValid == true))
         {
             _response = getValue(_eL, "eResponse.23");
             if (_response.IsNull == true) 
@@ -2922,9 +2579,9 @@ var seteResponse = function (TheCall)
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        _response = getValue(_eL, "eResponse.24");
-        if (TheCall.CallType != "PriorToScene")   //if Cancelled prior to arrival on Scene, no data
+        if ((CallCancelled != "PriorToScene")&& (eResponse.IsValid == true))
         {
+            _response = getValue(_eL, "eResponse.24");
             if (_response.IsNull == true) 
             {
                 if (isRequiredStateElement("eResponse.24") == true) 
@@ -2954,8 +2611,7 @@ var seteResponse = function (TheCall)
         };
         valObj.vSet = _val.slice(0);
         eResponse["eResponse.24"] = valObj;
-        delete valObj
-    
+        delete valObj            
     return eResponse;
 };
 var seteState = function (TheCall) 
@@ -3080,12 +2736,20 @@ var seteSituation = function (TheCall)
     };
 
     ///////////////////////////////////////////////////
+    var IsCancelled = false;
+    if (TheCall.CallDisposition.Cancelled != 'undefined')
+    {
+        IsCancelled = true;
+
+    }
+
     //////////////////////eSituation.01
+    
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
     if (eSituation["IsValid"] == true) {
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
         if (eSituation.IsValid == true) {
             _situation = getValue(_eL, "eSituation.01");
             if (_situation.IsNull == true) {
@@ -3105,435 +2769,435 @@ var seteSituation = function (TheCall)
         _val.push("7701001");
         valObj.NV = true;
     };
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.01"] = valObj;
-        delete valObj;
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.01"] = valObj;
+    delete valObj;
 
-        //////////////////////eSituation.02
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eSituation.IsValid == true)
-        {
-            _situation = getValue(_eL, "eSituation.02");
-            if (_situation.IsNull == true) {
-                if (isRequiredStateElement("eSituation.02")) {
-                    _val.push("7701003");
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_situation.ValueArray[0].val);
-                valObj.IsNull = false;
+    //////////////////////eSituation.02
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eSituation.IsValid == true)
+    {
+        _situation = getValue(_eL, "eSituation.02");
+        if (_situation.IsNull == true) {
+            if (isRequiredStateElement("eSituation.02")) {
+                _val.push("7701003");
+                valObj.NV = true;
             }
         }
         else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.02"] = valObj;
-        delete valObj;
+            _val.push(_situation.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.02"] = valObj;
+    delete valObj;
 
-        eSituation["PatientComplaintGroup"] = -1;
-        eSituation.IsComplaint = false;
-        ///////////////////////////////////////eSituation.PatientComplaintGroup
+    eSituation["PatientComplaintGroup"] = -1;
+    eSituation.IsComplaint = false;
+    ///////////////////////////////////////eSituation.PatientComplaintGroup
+    if (pSituation.HasDataSet == true) {
         if (typeof pSituation.attributes.sections != 'undefined') {
             var _pCG = [];
             _pCG = getSectionIndex(pSituation, "eSituation.PatientComplaintGroup");
 
-            if (_pCG[0] != -1)
-            {
+            if (_pCG[0] != -1) {
                 eSituation["PatientComplaintGroup"] = _pCG.length;
                 eSituation.IsComplaint = true;
             };
-        };
+        }
+    };
         
-        if (eSituation["eSituation.PatientComplaintGroup"] != -1)
+    if (eSituation["PatientComplaintGroup"] != -1)
+    {
+        if (eSituation.IsComplaint == true) 
         {
-            if (eSituation.IsComplaint == true) 
-            {
-                var PGArray = [];
-                for (var i = 0; i < _pCG.length; i++) {
-                    var PCGroup = new Object();
-                    var _eRG = [];
-                    _eRG = pSituation.attributes.sections[_pCG[i]].attributes.elements
+            var PGArray = [];
+            for (var i = 0; i < _pCG.length; i++) {
+                var PCGroup = new Object();
+                var _eRG = [];
+                _eRG = pSituation.attributes.sections[_pCG[i]].attributes.elements
 
-                    //////////////////////eSituation.03
-                    var _situation = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
+                //////////////////////eSituation.03
+                var _situation = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
 
-                    if ((eSituation.IsComplaint == true) && (TheCall.IsCancelled != true)) {
-                        _situation = getValue(_eRG, "eSituation.03");
-                        if (_situation.IsNull == true) {
-                            if (isRequiredStateElement("eSituation.03") == true) {
-                                _val.push("7701003");
-                                valObj.IsNull = true;
-                                valObj.NV = true;
-                            }
-                            else {
-                                _val.push("7701005");
-                                valObj.IsNull = true;
-                                valObj.NV = true;
-                            }
+                if ((eSituation.IsComplaint == true) && (IsCancelled == false)) {
+                    _situation = getValue(_eRG, "eSituation.03");
+                    if (_situation.IsNull == true) {
+                        if (isRequiredStateElement("eSituation.03") == true) {
+                            _val.push("7701003");
+                            valObj.IsNull = true;
+                            valObj.NV = true;
                         }
                         else {
-                            _val.push(_situation.ValueArray[0].val)
-                            valObj.IsNull = false;
+                            _val.push("7701005");
+                            valObj.IsNull = true;
+                            valObj.NV = true;
                         }
                     }
                     else {
-                        _val.push("7701001");
-                        valObj.IsNull = true;
-                        valObj.NV = true;
-                    };
-
-                    valObj.vSet = _val.slice(0);
-                    PCGroup["eSituation.03"] = valObj;
-                    delete valObj;
-
-                    //////////////////////eSituation.04
-                    var _situation = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    if ((eSituation.IsComplaint == true) && (TheCall.IsCancelled != true))
-                    {
-                        _situation = getValue(_eRG, "eSituation.04");
-                        if (_situation.IsNull == true) {
-                            if (isRequiredStateElement("eSituation.04") == true) {
-                                _val.push("7701003");
-                                valObj.IsNull = true;
-                                valObj.NV = true;
-                            }
-                            else {
-                                _val.push("7701005");
-                                valObj.IsNull = true;
-                                valObj.NV = true;
-                            }
-                        }
-                        else {
-                            _val.push(_situation.ValueArray[0].val)
-                            valObj.IsNull = false;
-                        }
+                        _val.push(_situation.ValueArray[0].val)
+                        valObj.IsNull = false;
                     }
-                    else {
-                        _val.push("7701001");
-                        valObj.IsNull = true;
-                        valObj.NV = true;
-                    };
-
-                    valObj.vSet = _val.slice(0);
-                    PCGroup["eSituation.04"] = valObj;
-                    delete valObj;
-
-                    //////////////////////eSituation.05    
-                    var _situation = [];
-                    var _val = [];
-                    var valObj = {};
+                }
+                else {
+                    _val.push("7701001");
                     valObj.IsNull = true;
-
-                    if ((eSituation.IsComplaint == true) && (TheCall.IsCancelled != true)) {
-                        _situation = getValue(_eRG, "eSituation.05");
-                        if (_situation.IsNull == true) {
-                            if (isRequiredStateElement("eSituation.05") == true) {
-                                _val.push("7701003");
-                                valObj.IsNull = true;
-                                valObj.NV = true;
-                            }
-                            else {
-                                _val.push("7701005");
-                                valObj.IsNull = true;
-                                valObj.NV = true;
-                            }
-                        }
-                        else {
-                            _val.push(_situation.ValueArray[0].val)
-                            valObj.IsNull = false;
-                        }
-                    }
-                    else {
-                        _val.push("7701001");
-                        valObj.IsNull = true;
-                        valObj.NV = true;
-                    };
-
-                    valObj.vSet = _val.slice(0);
-                    PCGroup["eSituation.05"] = valObj;
-                    delete valObj;
-
-
-                    //////////////////////eSituation.06
-                    var _situation = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    if ((eSituation.IsComplaint == true) && (TheCall.IsCancelled != true)) {
-                        _situation = getValue(_eRG, "eSituation.06");
-                        if (_situation.IsNull == true) {
-                            if (isRequiredStateElement("eSituation.06") == true) {
-                                _val.push("7701003");
-                                valObj.IsNull = true;
-                                valObj.NV = true;
-                            }
-                            else {
-                                _val.push("7701005");
-                                valObj.IsNull = true;
-                                valObj.NV = true;
-                            }
-                        }
-                        else {
-                            _val.push(_situation.ValueArray[0].val)
-                            valObj.IsNull = false;
-                        }
-                    }
-                    else {
-                        _val.push("7701001");
-                        valObj.IsNull = true;
-                        valObj.NV = true;
-                    };
-
-                    valObj.vSet = _val.slice(0);
-                    PCGroup["eSituation.06"] = valObj;
-                    delete valObj;
-
-
-                    PGArray.push(PCGroup);
-
+                    valObj.NV = true;
                 };
-                eSituation["PatientComplaintGroup"] = PGArray.slice();
-            }
-        };
+
+                valObj.vSet = _val.slice(0);
+                PCGroup["eSituation.03"] = valObj;
+                delete valObj;
+
+                //////////////////////eSituation.04
+                var _situation = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                if ((eSituation.IsComplaint == true) && (IsCancelled == false))
+                {
+                    _situation = getValue(_eRG, "eSituation.04");
+                    if (_situation.IsNull == true) {
+                        if (isRequiredStateElement("eSituation.04") == true) {
+                            _val.push("7701003");
+                            valObj.IsNull = true;
+                            valObj.NV = true;
+                        }
+                        else {
+                            _val.push("7701005");
+                            valObj.IsNull = true;
+                            valObj.NV = true;
+                        }
+                    }
+                    else {
+                        _val.push(_situation.ValueArray[0].val)
+                        valObj.IsNull = false;
+                    }
+                }
+                else {
+                    _val.push("7701001");
+                    valObj.IsNull = true;
+                    valObj.NV = true;
+                };
+
+                valObj.vSet = _val.slice(0);
+                PCGroup["eSituation.04"] = valObj;
+                delete valObj;
+
+                //////////////////////eSituation.05    
+                var _situation = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                if ((eSituation.IsComplaint == true) && (IsCancelled == false)) {
+                    _situation = getValue(_eRG, "eSituation.05");
+                    if (_situation.IsNull == true) {
+                        if (isRequiredStateElement("eSituation.05") == true) {
+                            _val.push("7701003");
+                            valObj.IsNull = true;
+                            valObj.NV = true;
+                        }
+                        else {
+                            _val.push("7701005");
+                            valObj.IsNull = true;
+                            valObj.NV = true;
+                        }
+                    }
+                    else {
+                        _val.push(_situation.ValueArray[0].val)
+                        valObj.IsNull = false;
+                    }
+                }
+                else {
+                    _val.push("7701001");
+                    valObj.IsNull = true;
+                    valObj.NV = true;
+                };
+
+                valObj.vSet = _val.slice(0);
+                PCGroup["eSituation.05"] = valObj;
+                delete valObj;
+
+
+                //////////////////////eSituation.06
+                var _situation = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                if ((eSituation.IsComplaint == true) && (IsCancelled == false)) {
+                    _situation = getValue(_eRG, "eSituation.06");
+                    if (_situation.IsNull == true) {
+                        if (isRequiredStateElement("eSituation.06") == true) {
+                            _val.push("7701003");
+                            valObj.IsNull = true;
+                            valObj.NV = true;
+                        }
+                        else {
+                            _val.push("7701005");
+                            valObj.IsNull = true;
+                            valObj.NV = true;
+                        }
+                    }
+                    else {
+                        _val.push(_situation.ValueArray[0].val)
+                        valObj.IsNull = false;
+                    }
+                }
+                else {
+                    _val.push("7701001");
+                    valObj.IsNull = true;
+                    valObj.NV = true;
+                };
+
+                valObj.vSet = _val.slice(0);
+                PCGroup["eSituation.06"] = valObj;
+                delete valObj;
+
+
+                PGArray.push(PCGroup);
+
+            };
+            eSituation["PatientComplaintGroup"] = PGArray.slice();
+        }
+    };
         
-        ////////////////////////////////////
+    ////////////////////////////////////
 
 
 
-        //////////////////////eSituation.07
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
-            _situation = getValue(_eL, "eSituation.07");
+    //////////////////////eSituation.07
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eSituation.IsValid == true) && (IsCancelled == false)) {
+        _situation = getValue(_eL, "eSituation.07");
 
-            if (_situation.IsNull == true) {
+        if (_situation.IsNull == true) {
 
-                _val.push("7701003");
-                valObj.NV = true;
+            _val.push("7701003");
+            valObj.NV = true;
 
-            }
-            else {
-                _val.push(_situation.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
         }
         else {
-            _val.push("7701001");
+            _val.push(_situation.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.07"] = valObj;
+    delete valObj;
+
+    //////////////////////eSituation.08
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eSituation.IsValid == true) && (IsCancelled == false)) {
+        _situation = getValue(_eL, "eSituation.08");
+        if (_situation.IsNull == true) {
+
+            _val.push("7701003");
             valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.07"] = valObj;
-        delete valObj;
 
-        //////////////////////eSituation.08
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
-            _situation = getValue(_eL, "eSituation.08");
-            if (_situation.IsNull == true) {
-
-                _val.push("7701003");
-                valObj.NV = true;
-
-            }
-            else {
-                _val.push(_situation.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
         }
         else {
-            _val.push("7701001");
+            _val.push(_situation.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.08"] = valObj;
+    delete valObj;
+
+
+    //////////////////////eSituation.09
+        
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+        
+    if ((eSituation.IsValid == true) && (IsCancelled == false)) {
+        _situation = getValue(_eL, "eSituation.09");
+        if (_situation.IsNull == true) {
+
+            _val.push("7701003");
             valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.08"] = valObj;
-        delete valObj;
 
-
-        //////////////////////eSituation.09
-        
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        
-        if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
-            _situation = getValue(_eL, "eSituation.09");
-            if (_situation.IsNull == true) {
-
-                _val.push("7701003");
-                valObj.NV = true;
-
-            }
-            else {
-                _val.push(_situation.ValueArray[0].val)
-                valObj.IsNull = false;
-            }
         }
         else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.09"] = valObj;
-        delete valObj;
+            _val.push(_situation.ValueArray[0].val)
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.09"] = valObj;
+    delete valObj;
 
 
-        //////////////////////eSituation.10
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
+    //////////////////////eSituation.10
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
        
 
-        if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true))
+    if ((eSituation.IsValid == true) && (IsCancelled == false))
+    {
+        _situation = getValue(_eL, "eSituation.10");
+        if (_situation.IsNull == true)
         {
-            _situation = getValue(_eL, "eSituation.10");
-            if (_situation.IsNull == true)
-            {
-                _val.push("7701003");
-                valObj.IsNull = true;
-                valObj.NV = true;
-            }
-            else
-            {
-                for (var i = 0; i < _situation.ValueArray.length; i++)
-                {
-                    if ((_situation.ValueArray[i].HasValue == true) && (_val.indexOf(_situation.ValueArray[i].val) == -1)) {
-                        _val.push(_situation.ValueArray[i]);
-                    };
-                    valObj.IsNull = false;
-                }
-            }                         
-        }
-        else {
-            _val.push("7701001");
+            _val.push("7701003");
             valObj.IsNull = true;
             valObj.NV = true;
-        };
-
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.10"] = valObj;
-        delete valObj;
-
-        //////////////////////eSituation.11
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
-            _situation = getValue(_eL, "eSituation.11");
-            if (_situation.IsNull == true) {
-
-                _val.push("7701003");
-                valObj.NV = true;
-
-            }
-            else {
-                _val.push(_situation.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
         }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.11"] = valObj;
-        delete valObj;
-        
-
-        //////////////////////eSituation.12
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
-            _situation = getValue(_eL, "eSituation.12");
-            if (_situation.IsNull == true) {
-
-                _val.push("7701003");
-                valObj.NV = true;
-
-            }
-            else {
-                for (var i = 0; i < _situation.ValueArray.length; i++) {
-                    if ((_situation.ValueArray[i].HasValue == true) && (_val.indexOf(_situation.ValueArray[i].val) == -1)) {
-                        _val.push(_situation.ValueArray[i]);
-                    };
-                    valObj.IsNull = false;
-                }
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.12"] = valObj;
-        delete valObj;
-
-        //////////////////////eSituation.13
-        var _situation = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
-            _situation = getValue(_eL, "eSituation.13");
-            if (_situation.IsNull == true) {
-
-                _val.push("7701003");
-                valObj.NV = true;
-
-            }
-            else {
-                _val.push(_situation.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eSituation["eSituation.13"] = valObj;
-        delete valObj;
-        
-        eSituation["WorkRelatedGroup"] = -1
-        ///////////////////////////////////////eSituation.WorkRelatedGroup
-        if (typeof pSituation.attributes.sections != 'undefined')
+        else
         {
+            for (var i = 0; i < _situation.ValueArray.length; i++)
+            {
+                if ((_situation.ValueArray[i].HasValue == true) && (_val.indexOf(_situation.ValueArray[i].val) == -1)) {
+                    _val.push(_situation.ValueArray[i]);
+                };
+                valObj.IsNull = false;
+            }
+        }                         
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.10"] = valObj;
+    delete valObj;
+
+    //////////////////////eSituation.11
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eSituation.IsValid == true) && (IsCancelled == false)) {
+        _situation = getValue(_eL, "eSituation.11");
+        if (_situation.IsNull == true) {
+
+            _val.push("7701003");
+            valObj.NV = true;
+
+        }
+        else {
+            _val.push(_situation.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.11"] = valObj;
+    delete valObj;
+        
+
+    //////////////////////eSituation.12
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eSituation.IsValid == true) && (IsCancelled == false)) {
+        _situation = getValue(_eL, "eSituation.12");
+        if (_situation.IsNull == true) {
+
+            _val.push("7701003");
+            valObj.NV = true;
+
+        }
+        else {
+            for (var i = 0; i < _situation.ValueArray.length; i++) {
+                if ((_situation.ValueArray[i].HasValue == true) && (_val.indexOf(_situation.ValueArray[i].val) == -1)) {
+                    _val.push(_situation.ValueArray[i]);
+                };
+                valObj.IsNull = false;
+            }
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.12"] = valObj;
+    delete valObj;
+
+    //////////////////////eSituation.13
+    var _situation = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eSituation.IsValid == true) && (IsCancelled == false)) {
+        _situation = getValue(_eL, "eSituation.13");
+        if (_situation.IsNull == true) {
+
+            _val.push("7701003");
+            valObj.NV = true;
+
+        }
+        else {
+            _val.push(_situation.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eSituation["eSituation.13"] = valObj;
+    delete valObj;
+        
+    eSituation["WorkRelatedGroup"] = -1
+    ///////////////////////////////////////eSituation.WorkRelatedGroup
+    if (pSituation.HasDataSet == true) {
+        if (typeof pSituation.attributes.sections != 'undefined') {
             var _wRG = [];
             _wRG = getSectionIndex(pSituation, "eSituation.WorkRelatedGroup");
-            if (_wRG[0] != -1)
-            {
+            if (_wRG[0] != -1) {
                 var _eWRG = [];
                 _eWRG = pSituation.attributes.sections[_wRG].attributes.elements;
                 eSituation.IsValid = false;
                 eSituation["WorkRelatedGroup"] = 1;
             }
-            else
-            {
+            else {
                 eSituation.IsValid = true;
             };
-        };
+        }
+    };
 
         if (eSituation["WorkRelatedGroup"] != -1)
         {
@@ -3579,7 +3243,7 @@ var seteSituation = function (TheCall)
             valObj.IsNull = true;
 
             _situation = getValue(_eWRG, "eSituation.15");
-            if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
+            if ((eSituation.IsValid == true) && (IsCancelled == false)) {
                 if (_situation.IsNull != true) {
                     _val.push(_situation.ValueArray[i].val)
                     valObj.IsNull = false;
@@ -3595,7 +3259,7 @@ var seteSituation = function (TheCall)
             var valObj = {};
             valObj.IsNull = true;
             _situation = getValue(_eWRG, "eSituation.16");
-            if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
+            if ((eSituation.IsValid == true) && (IsCancelled == false)) {
                 if (_situation.IsNull != true) {
                     _val.push(_situation.ValueArray[0].val)
                     valObj.IsNull = false;
@@ -3608,7 +3272,7 @@ var seteSituation = function (TheCall)
         };
         
 
-        if ((eSituation.IsValid == true) && (TheCall.IsCancelled != true)) {
+        if ((eSituation.IsValid == true) && (IsCancelled == false)) {
             var _situation = [];
             var _val = [];
             var valObj = {};
@@ -3641,4 +3305,111 @@ var seteSituation = function (TheCall)
             valObj.NV = true;
         };
     return eSituation;
+};
+var seteCrew = function (TheCall) {
+
+    var eCrew = new Object()
+
+    var CrewGroup = new Object();
+    if (pCrew.HasDataSet == true) {
+        eCrew.IsValid = false;
+        var _sI = [];
+        _sI = getSectionIndex(pCrew, "eCrew.CrewGroup")
+
+
+        var _vg = [];
+        var _eL = pCrew.attributes.sections[_sectionIndex[xx]].attributes.elements;
+        var CrewGroupArray = [];
+        if (_eL.length > 0) {
+            eCrew["CrewGroup"] = _eL.length;
+            grpCount = _eL.length;
+            eCrew.IsValid = true;
+        }
+        else {
+            eCrew["CrewGroup"] = -1;
+            grpCount = 1
+
+        }
+    };
+    for (var xx = 0; xx < grpCount; xx++) {
+        ///////////Crew.01////////
+        var _crew = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        Crew["IsValid"] = false;
+        _crew = getValue(elementList, "eCrew.01");
+        if (eCrew.IsValid == true) {
+
+            if (_crew.IsNull == true) {
+                _val.push("7701003")
+                valObj.NV = true;
+            }
+            else {
+                _val = _crew.ValueArray[0].val;
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001")
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        CrewGroup["eCrew.01"] = valObj;
+        delete valObj;
+
+
+        ///////////Crew.02////////
+        var _crew = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        _crew = getValue(elementList, "eCrew.02");
+        if (eCrew["IsValid"] == true) {
+            if (_crew.IsNull == true) {
+                __val.push("7701003")
+                valObj.NV = true;
+
+            }
+            else {
+                _val = _crew.ValueArray[0].val;
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001")
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        CrewGroup["eCrew.02"] = valObj;
+        delete valObj;
+
+        ///////////Crew.03////////
+        var _crew = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        _crew = getValue(elementList, "eCrew.03");
+        if (eCrew["IsValid"] == true) {
+            if (_crew.IsNull == true) {
+                __val.push("7701003")
+                valObj.NV = true;
+
+            }
+            else {
+                _val = _crew.ValueArray[0].val;
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001")
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        CrewGroup["eCrew.03"] = valObj;
+        delete valObj;
+
+
+    };
+    return eProtocol;
 };
