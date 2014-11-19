@@ -1,28 +1,24 @@
-var seteAirway = function (TheCall) 
-{  
-    var eAirway =                   new Object();
-    var pAirway =                   new Object();
-    var AirwayGroup =               new Object();
-    var AirwayGroupArray =          new Array();
-    var ConfirmationGroup =         new Object();
+var seteAirway = function (TheCall) {
+    var eAirway = new Object();
+    var pAirway = new Object();
+    var AirwayGroup = new Object();
+    var AirwayGroupArray = new Array();
+    var ConfirmationGroup = new Object();
     var ConfirmationGroupArray = new Array();
     var CGroupArray = [];
-    
+    var ErrorList = [];
     pAirway = TheCall.pAirway;
     eAirway.IsValid = false;
-    if (pAirway.HasDataSet == true)
-    {
-        if(typeof pAirway.attributes.sections !='undefined')
-        {
-            var _eL =[];
+    if (pAirway.HasDataSet == true) {
+        if (typeof pAirway.attributes.sections != 'undefined') {
+            var _eL = [];
             _eL = pAirway.attributes.sections[0].attributes.elements;
-            if(_eL.length != -1)
-            {
+            if (_eL.length != -1) {
                 eAirway.IsValid = true;
             }
-        }            
+        }
     };
-   
+
     if (eAirway.IsValid == true) {
 
         /////eAirway.01
@@ -106,7 +102,7 @@ var seteAirway = function (TheCall)
 
         if (eAirway["ConfirmationGroup"] != -1) {
             eAirway.IsValid = true;
-            
+
 
             for (var y = 0; y < _sI.length; y++) {
 
@@ -184,18 +180,18 @@ var seteAirway = function (TheCall)
                     }
                 }
                 else {
-                //    if (eAirway["HasAirwayDate"] == false) {
-               //         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eAirway.03", Description: "Validation Error: Placement Method Requires Confirmation Time" });
-              //      }
-              //      else {
-                        for (var i = 0; i < _airway.ValueArray.length; i++) {
-                            if ((_airway.ValueArray[i].HasValue == true) && (_val.indexOf(_airway.ValueArray[i].val) == -1)) {
-                                _val.push(_airway.ValueArray[i].val);
-                                valObj.IsNull = false;
-                            }
-                        };
-                        eAirway["HasAirway"] = true;
-                   // }
+                    //    if (eAirway["HasAirwayDate"] == false) {
+                    //         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eAirway.03", Description: "Validation Error: Placement Method Requires Confirmation Time" });
+                    //      }
+                    //      else {
+                    for (var i = 0; i < _airway.ValueArray.length; i++) {
+                        if ((_airway.ValueArray[i].HasValue == true) && (_val.indexOf(_airway.ValueArray[i].val) == -1)) {
+                            _val.push(_airway.ValueArray[i].val);
+                            valObj.IsNull = false;
+                        }
+                    };
+                    eAirway["HasAirway"] = true;
+                    // }
                 };
 
                 valObj.vSet = _val.slice(0);
@@ -230,10 +226,8 @@ var seteAirway = function (TheCall)
                 valObj.IsNull = true;
                 _airway = getValue(_eCG, "eAirway.06");
 
-                if (_airway.IsNull == true) 
-                {
-                    if (isRequiredStateElement("eAirway.06") == true) 
-                    {
+                if (_airway.IsNull == true) {
+                    if (isRequiredStateElement("eAirway.06") == true) {
                         _val.push("7701003");
                         valObj.NV = true;
                     }
@@ -243,15 +237,15 @@ var seteAirway = function (TheCall)
                     }
                 }
                 else {
-               //     if (eAirway["HasAirwayDate"] == false) {
-               //         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eAirway.06", Description: "Device Placement Requires Confirmation Time" });
-               //     }
-               //     else {
-                        _val.push(_airway.ValueArray[0].val);
-                        valObj.IsNull = false;
-             //       }
+                    //     if (eAirway["HasAirwayDate"] == false) {
+                    //         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eAirway.06", Description: "Device Placement Requires Confirmation Time" });
+                    //     }
+                    //     else {
+                    _val.push(_airway.ValueArray[0].val);
+                    valObj.IsNull = false;
+                    //       }
                 };
-                
+
                 valObj.vSet = _val.slice(0);
                 CGroup["eAirway.06"] = valObj;
                 delete valObj;
@@ -337,692 +331,678 @@ var seteAirway = function (TheCall)
         }
     };
 
-            
-            ConfirmationGroupArray.push        
-            //ConfirmationGroup Loop
-            if (CGroupArray.length > 0) {
-                AirwayGroup.ConfirmationGroup = CGroupArray;
-                eAirway.AirwayGroup = AirwayGroup;
-            };
-  
+
+    ConfirmationGroupArray.push
+    //ConfirmationGroup Loop
+    if (CGroupArray.length > 0) {
+        AirwayGroup.ConfirmationGroup = CGroupArray;
+        eAirway.AirwayGroup = AirwayGroup;
+    };
+    eAirway.ErrorList = ErrorList.slice(0);
     return eAirway;
 };
-var seteArrest = function (TheCall)
-{
+var seteArrest = function (TheCall) {
     var eArrest = new Object();
-    var pArrest=TheCall.pArrest;
+    var pArrest = TheCall.pArrest;
     var ErrorList = [];
-    if (pArrest.HasDataSet == false)
-    {
+    console.log(pArrest)
+    if (pArrest.HasDataSet == false) {
+
         eArrest["IsValid"] = false;
-      //  ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest", Description: "Missing Mandatory.  eArrest.HasDataSet = false" })
+        //    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient", Description: "Missing Mandatory.  ePatient.HasDataSet = false" })
+        var call = {};
+        call = seteArrestNull(TheCall)
+        eArrest = call.eArrest;
+        return eArrest;
     }
-    else 
-    {
+    else {
         eArrest["IsValid"] = true;
     };
-        /////////////eArrest.01
-        var  _arrest=[];
-        var  _val=[];
-        
-        if (typeof pArrest.attributes!= 'undefined') {
-            _eL = [];
-            _eL = pArrest.attributes.elements;
-        };
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eArrest["IsValid"] == true) {
-            _arrest = getValue(_eL, "eArrest.01");
+    /////////////eArrest.01
+    var _arrest = [];
+    var _val = [];
 
-            if (_arrest.IsNull == true) 
+    if (typeof pArrest.attributes != 'undefined') {
+        _eL = [];
+        _eL = pArrest.attributes.elements;
+    };
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.01");
+
+        if (_arrest.IsNull == true) {
+            eArrest.HasArrest = false; //set Values to Not Applicable
+            _val.push("7701003")
+            valObj.NV = true;
+        }
+
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false;
+            eArrest.HasArrestRecord = true;   //We have an eArrest 
+            if (_val == "3001001") {
+                eArrest["IsCardiacArrest"] = false;
+            }
+            else {
+                eArrest["IsCardiacArrest"] = true;
+            }
+        }
+    }
+    else {
+        eArrest.HasArrest = false; //set Values to Not Applicable
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.01"] = valObj;
+    delete valObj;
+
+    //When eArrest.01 Cardiac Arrest is "Yes...", other elements in the eArrest section are recorded, 
+    //When eArrest.01 Cardiac Arrest is not "Yes...", other elements in the eArrest section are not recorded
+
+    /////////////eArrest.02
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.02");
+        if (_arrest.IsNull == true) {
+            _val.push("7701003");
+            valObj.NV = true;
+        }
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.02"] = valObj;
+    delete valObj;
+
+    /////////////eArrest.03
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    //Resuscitation Attempted By EMS does not contain "Attempted/Initiated..." and "Not Attempted..." in the same record
+
+    eArrest["ResuscitationAttempted"] = false;
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.03");
+        if (_arrest.IsNull == true) {
+            _val.push("7701003")
+            valObj.NV = true;
+        }
+        else {
+            var arrAttempt = ["3003001", "3003003", "3003005"];
+            for (var i = 0; i < _arrest.ValueArray.length; i++) {
+                if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
+                    _val.push(_arrest.ValueArray[i].val);
+                    valObj.IsNull = false
+                }
+            };
+
+
+            //Check for an Attempt with list of No Attempts
+            var arrNotAttempt = ["3003007", "3003009", "3003011"];
+            //  if (eArrest["HasbResuscitationAttempted"] == true) {
+            //      for (var i = 0; i < _val.length; i++) {
+            //          if (arrNotAttempt.indexOf(arr1[i]) != -1) {
+            //             ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.03", Description: "Conflicting values:  Attempted/Not Attempted" })
+            //         }
+            //     }
+            // }
+        }
+    }
+
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+
+    eArrest["eArrest.03"] = valObj;
+    delete valObj;
+
+
+    /////////////eArrest.04
+
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    var bArrestWitnessedBy = false;
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.04");
+        if (_arrest.IsNull == true) {
+            _val.push("7701003");
+            valObj.NV = true;
+        }
+        else {
+            for (var i = 0; i < _arrest.ValueArray.length; i++) {
+                if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
+                    _val.push(_arrest.ValueArray[i].val);
+                    valObj.IsNull = false
+                }
+            };
+        }
+    }
+    else {
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.04"] = valObj;
+    delete valObj;
+
+    /////////////eArrest.05
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    eArrest["CPRProvided"] = false; //can only be True when isArrest is True
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.05");
+        if (_arrest.IsNull == true) {
+            _val.push("7701003")
+            valObj.NV = true;
+        }
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            if (_val == "9923003") {
+                eArrest["CPRProvided"] = true;
+            }
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.05"] = valObj;
+    delete valObj;
+
+
+    /////////////eArrest.06
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.06");
+        if (_arrest.IsNull != true) {
+            for (var i = 0; i < _arrest.ValueArray.length; i++) {
+                if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
+                    _val.push(_arrest.ValueArray[i].val);
+                    valObj.IsNull = false
+                }
+            };
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.06"] = valObj;
+    delete valObj;
+
+    /////////////eArrest.07
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    eArrest["AEDProvided"] = false;
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.07");
+        console.log(_arrest)
+        if (_arrest.IsNull == true) {
+            _val.push("7701003");
+            valObj.NV = true;
+        }
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            if (_val[0] != "3007001") {
+                eArrest["AEDProvided"] = true;
+            };
+            valObj.IsNull = false
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.07"] = valObj;
+    delete valObj;
+
+
+    /////////////eArrest.08
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.08");
+
+        if (eArrest["AEDProvided"] == true)  //
+        {
+            if (_arrest.IsNull != true) {
+                for (var i = 0; i < _arrest.ValueArray.length; i++) {
+                    if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
+                        _val.push(_arrest.ValueArray[i].val);
+                        valObj.IsNull = false
+                    }
+                }
+            }
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.08"] = valObj;
+    delete valObj;
+
+    //eArrest.03 Resuscitation Attempted By EMS should contain "Initiated Chest Compressions" 
+    //when eArrest.09 Type of CPR Provided contains "Compressions..." and should contain "Attempted Ventilation" 
+    //when eArrest.09 Type of CPR Provided contains "Ventilation...".</sch:title>
+    // This rule fires when there are non-empty instances of eArrest.09 within eArrest. -->  
+    //:eArrest.03 = '3003005' or not(nem:eArrest.09 = ('3009001', '3009003', '3009005', '3009007', 
+    //'3009009', '3009011'))">
+
+
+    //Assert that eArrest.03 Resuscitation Attempted by EMS should contain "Attempted Ventilation" when eArrest.09 
+    //Type of CPR Provided contains "Ventilation...".  -->
+
+    //eArrest.03 = '3003003' or not(nem:eArrest.09 = ('3009013', '3009015', '3009017', '3009019'))">
+    //should contain "Attempted Ventilation" when .
+
+
+    /////////////eArrest.09
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true) && (eArrest["CPRProvided"] == true)) {
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.09");
+        if (_arrest.IsNull == true) {
+            _val.push("7701003");
+            valObj.NV = true;
+        }
+        else {
+            for (var i = 0; i < _arrest.ValueArray.length; i++) {
+                if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
+                    _val.push(_arrest.ValueArray[i].val);
+                    valObj.IsNull = false
+                }
+            };
+
+            bError = false;
+            //Check for Compression 3003005, if eArrest.03 values = Compression
+            arrCompression = ["3009001", "3009003", "3009005", "3009007", "3009009", "3009011"]; //Compression values
+            if (eArrest["eArrest.03"] == "3003005") //Compression
             {
-                eArrest.HasArrest = false; //set Values to Not Applicable
+                if (arrCompression.indexOf(_val) != -1) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain " / "Initiated Chest Compressions" / "" });
+                }
+            };
+
+            //Check for Compression 3003005, if eArrest.03 values = Ventilation
+            arrVent = ["3009013", "3009015", "3009017", "3009019"]; //Ventilation values
+            if (eArrest["eArrest.03"] == "3003003") //Ventilation
+            {
+                if (arrVent.indexOf(_val) != -1) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain " / "Initiated Chest Compressions" / "" });
+                }
+            };
+
+            //Check for VENTILATION 3003005, if eArrest.03 values = Compression
+            arrCompression = ["3009001", "3009003", "3009005", "3009007", "3009009", "3009011"]; //Compression values
+            if (eArrest["eArrest.03"] == "3003005") //Compression
+            {
+                if (arrNotAttempt.indexOf(_val) != -1) {
+                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain " / "Initiated Chest Compressions" / "" });
+                }
+            };
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.09"] = valObj;
+    delete valObj;
+
+
+    /////////////eArrest.10
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.10");
+        if (_arrest.IsNull == true) {
+            if (isRequiredStateElement("eArrest.10") == true) {
+                _val.push("7701003");
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.10"] = valObj;
+    delete valObj;
+
+
+    /////////////eArrest.11
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.11");
+        if (_arrest.IsNull == true) {
+            _val.push("7701003");
+            valObj.NV = true;
+        }
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.11"] = valObj;
+    delete valObj;
+
+    /////////////eArrest.12
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    //if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    if (eArrest["IsValid"] == true) {
+        _arrest = getValue(_eL, "eArrest.12");
+        if (_arrest.IsNull == true) {
+            if (isRequiredStateElement("eArrest.12") == true) {
                 _val.push("7701003")
                 valObj.NV = true;
             }
-
-            else 
-            {
-                _val = _arrest.ValueArray[0].val;
-                valObj.IsNull = false;
-                eArrest.HasArrestRecord = true;   //We have an eArrest 
-                if (_val == "3001001") 
-                {
-                    eArrest["IsCardiacArrest"] = false;
-                }
-                else 
-                {
-                    eArrest["IsCardiacArrest"] = true;
-                }
-            }
         }
-        else
-        {
-            eArrest.HasArrest = false; //set Values to Not Applicable
-            _val.push("7701001")
-            valObj.NV = true;        
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.01"] = valObj;
-        delete valObj;
+        else {
+            for (var i = 0; i < _arrest.ValueArray.length; i++) {
+                if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
+                    _val.push(_arrest.ValueArray[i].val);
+                    valObj.IsNull = false
+                }
+            };
 
-        //When eArrest.01 Cardiac Arrest is "Yes...", other elements in the eArrest section are recorded, 
-        //When eArrest.01 Cardiac Arrest is not "Yes...", other elements in the eArrest section are not recorded
+            if (_val.length >= 1) {
+                // if(_val.indexOf("3012001") != -1)
+                // {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.12", Description: "Validation //Error:Conflicting values.  Any Return of Spontaneous Circulation Contains Conflicting Values" })
+                // }
+            };
+        }
+    }
+    else {
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.12"] = valObj;
+    delete valObj;
 
-        /////////////eArrest.02
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
+    /////////////eArrest.13
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    {
+        _arrest = getValue(_eL, "eArrest.13");
+        if (_arrest.IsNull != true) {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
+        }
+    }
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.13"] = valObj;
+    delete valObj;
 
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.02");
-            if (_arrest.IsNull == true)
-            {
+    /////////////eArrest.14
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    {
+        _arrest = getValue(_eL, "eArrest.14");
+        if (_arrest.IsNull == true) {
+            if (isRequiredStateElement("eArrest.14") == true) {
                 _val.push("7701003");
-                valObj.NV = true;                
+                valObj.NV = true;
             }
-            else 
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                valObj.IsNull = false
-            }            
         }
-        else 
-        {            
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.02"] = valObj;
-        delete valObj;
-    
-        /////////////eArrest.03
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        //Resuscitation Attempted By EMS does not contain "Attempted/Initiated..." and "Not Attempted..." in the same record
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.14"] = valObj;
+    delete valObj;
 
-        eArrest["ResuscitationAttempted"] = false;
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.03");
-            if (_arrest.IsNull == true) {
+    /////////////eArrest.15
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))//&& (eArrest["ResuscitationAttempted"] == true))
+    {
+        _arrest = getValue(_eL, "eArrest.15");
+
+        if (_arrest.IsNull == true) {
+            if (isRequiredStateElement("eArrest.15") == true) {
+                _val.push("7701003")
+                valObj.NV = true
+            }
+            else {
+                _val.push("7701005")
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
+        }
+    }
+    else {
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.15"] = valObj;
+    delete valObj;
+
+    /////////////eArrest.16
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))//&&(eArrest["CPRProvided"] ==true))  //Yes value for eArrest.01
+    {
+        _arrest = getValue(_eL, "eArrest.16");
+        if (_arrest.IsNull == true) {
+            if (isRequiredStateElement("eArrest.16") == true) {
                 _val.push("7701003")
                 valObj.NV = true;
             }
             else {
-                var arrAttempt = ["3003001", "3003003", "3003005"];
-                for (var i = 0; i < _arrest.ValueArray.length; i++) {
-                    if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
-                        _val.push(_arrest.ValueArray[i].val);
-                        valObj.IsNull = false
-                    }
-                };
-
-
-                //Check for an Attempt with list of No Attempts
-                var arrNotAttempt = ["3003007", "3003009", "3003011"];
-                if (eArrest["HasbResuscitationAttempted"] == true) {
-                    for (var i = 0; i < _val.length; i++) {
-                        if (arrNotAttempt.indexOf(arr1[i]) != -1) {
-                            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.03", Description: "Conflicting values:  Attempted/Not Attempted" })
-                        }
-                    }
-                }
-            }
-        }
-
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.03"] = valObj;
-        delete valObj;
-
-
-        /////////////eArrest.04
-
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        var bArrestWitnessedBy = false;
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.04");
-            if(_arrest.IsNull==true) 
-            {
-                _val.push("7701003");
+                _val.push("7701005")
                 valObj.NV = true;
             }
-            else 
-            {                
-                for (var i = 0; i < _arrest.ValueArray.length; i++) {
-                    if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
-                        _val.push(_arrest.ValueArray[i].val);                       
-                        valObj.IsNull = false
-                    }
-                };
-            }
         }
-        else 
-        {
-            _val.push("7701001")
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
+        }
+    }
+    else {
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.16"] = valObj;
+    delete valObj;
+
+    /////////////eArrest.17
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
+    {
+        _arrest = getValue(_eL, "eArrest.17");
+
+        if (_arrest.IsNull == true) {
+            _val.push("7701003")
             valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.04"] = valObj;
-        delete valObj;
-    
-        /////////////eArrest.05
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        eArrest["CPRProvided"] = false; //can only be True when isArrest is True
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.05");
-            if(_arrest.IsNull==true) 
-            {
-                _val.push("7701003")
-                valObj.NV = true;
-            }
-            else 
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                if (_val == "9923003") 
-                {
-                    eArrest["CPRProvided"] = true;
+
+        }
+        else {
+            var arr2 = [];
+            for (var i = 0; i < _arrest.ValueArray.length; i++) {
+                if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
+                    _val.push(_arrest.ValueArray[i].val);
+                    valObj.IsNull = false
                 }
-                _val.push(_arrest.ValueArray[0].val);               
-                valObj.IsNull = false
-            }
+            };
         }
-        else 
-        {
-            _val.push("7701001");
+    }
+
+    else {
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.17"] = valObj;
+    delete valObj;
+
+    /////////////eArrest.18
+    var _arrest = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true)) {
+        _arrest = getValue(_eL, "eArrest.18");
+        if (_arrest.IsNull == true) {
+            _val.push("7701003")
             valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.05"] = valObj;
-        delete valObj;
-
-
-        /////////////eArrest.06
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.06");
-            if(_arrest.IsNull!=true) 
-            {
-                for (var i = 0; i < _arrest.ValueArray.length; i++)
-                {
-                    if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1)) {
-                        _val.push(_arrest.ValueArray[i].val);
-                        valObj.IsNull = false
-                    }
-                };
-            }
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.06"] = valObj;
-        delete valObj;
-        
-        /////////////eArrest.07
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        eArrest["AEDProvided"] = false;
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.07");
-            if (_arrest.IsNull == true)
-            {
-                _val.push("7701003");
-                valObj.NV = true;            }
-            else 
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                if (_val[0] != "3007001") 
-                {
-                    eArrest["AEDProvided"] = true;
-                };
-                valObj.IsNull = false
-            }
         }
-        else 
-        {
-            _val.push("7701001");
-            valObj.NV = true;
+        else {
+            _val.push(_arrest.ValueArray[0].val);
+            valObj.IsNull = false
         };
+    }
+    else {
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eArrest["eArrest.18"] = valObj;
+    delete valObj;
 
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.07"] = valObj;
-        delete valObj;
+    eArrest.ErrorList = ErrorList.slice(0);
 
-    
-        /////////////eArrest.08
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.08");
-
-            if (eArrest["AEDProvided"] == true)  //
-            {
-                if (_arrest.IsNull != true)
-                {
-                    for (var i = 0; i < _arrest.ValueArray.length; i++)
-                    {
-                        if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1))
-                        {
-                            _val.push(_arrest.ValueArray[i].val);
-                            valObj.IsNull = false
-                        }
-                    }
-                }
-            }
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.08"] = valObj;
-        delete valObj;
-
-        //eArrest.03 Resuscitation Attempted By EMS should contain "Initiated Chest Compressions" 
-        //when eArrest.09 Type of CPR Provided contains "Compressions..." and should contain "Attempted Ventilation" 
-        //when eArrest.09 Type of CPR Provided contains "Ventilation...".</sch:title>
-        // This rule fires when there are non-empty instances of eArrest.09 within eArrest. -->  
-        //:eArrest.03 = '3003005' or not(nem:eArrest.09 = ('3009001', '3009003', '3009005', '3009007', 
-        //'3009009', '3009011'))">
-
-
-        //Assert that eArrest.03 Resuscitation Attempted by EMS should contain "Attempted Ventilation" when eArrest.09 
-        //Type of CPR Provided contains "Ventilation...".  -->
-
-        //eArrest.03 = '3003003' or not(nem:eArrest.09 = ('3009013', '3009015', '3009017', '3009019'))">
-        //should contain "Attempted Ventilation" when .
-
-
-        /////////////eArrest.09
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true) && (eArrest["CPRProvided"] == true))
-        {
-            _arrest = getValue(_eL, "eArrest.09");
-            if (_arrest.IsNull == true)
-            {
-                _val.push("7701003");
-                valObj.NV = true;
-            }
-            else
-            {
-                for (var i = 0; i < _arrest.ValueArray.length; i++)
-                {
-                    if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1))
-                    {
-                        _val.push(_arrest.ValueArray[i].val);
-                        valObj.IsNull = false
-                    }
-                };
-
-                bError = false;
-                //Check for Compression 3003005, if eArrest.03 values = Compression
-                arrCompression = ["3009001", "3009003", "3009005", "3009007", "3009009", "3009011"]; //Compression values
-                if (eArrest["eArrest.03"] = "3003005") //Compression
-                {
-                    if (arrCompression.indexOf(_val) != -1) 
-                    {
-                        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain " / "Initiated Chest Compressions" / "" })  ;      
-                    }
-                };
-
-                //Check for Compression 3003005, if eArrest.03 values = Ventilation
-                arrVent = ["3009013", "3009015", "3009017", "3009019"]; //Ventilation values
-                if (eArrest["eArrest.03"] = "3003003") //Ventilation
-                {
-                    if (arrVent.indexOf(_val) != -1) 
-                    {
-                        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain " / "Initiated Chest Compressions" / "" }) ;                                   
-                    }
-                };
-
-                //Check for VENTILATION 3003005, if eArrest.03 values = Compression
-                arrCompression = ["3009001", "3009003", "3009005", "3009007", "3009009", "3009011"]; //Compression values
-                if (eArrest["eArrest.03"] = "3003005") //Compression
-                {
-                    if (arrNotAttempt.indexOf(_val) != -1) 
-                    {
-                        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.09", Description: "Validation Error:Conflicting values.  Resuscitation Attempted By EMS should contain " / "Initiated Chest Compressions" / "" });
-                    }
-                };
-            }
-        }
-        else 
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.09"] = valObj;
-        delete valObj;
-
-
-        /////////////eArrest.10
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.10");           
-            if(_arrest.IsNull==true)
-            {
-                if (isRequiredStateElement("eArrest.10") == true) 
-                {
-                    _val.push("7701003");
-                    valObj.NV = true;
-                }
-            }
-            else
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                valObj.IsNull = false
-            }            
-        }
-        else        
-        {
-            _val.push("7701001");
-            valObj.NV = true;        
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.10"] = valObj;
-        delete valObj;
-
-        
-        /////////////eArrest.11
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) &&(eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.11");
-            if(_arrest.IsNull==true)
-            {
-                _val.push("7701003");
-                valObj.NV = true;            }
-            else
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                valObj.IsNull = false
-            }
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.11"] = valObj;
-        delete valObj;
-        
-        /////////////eArrest.12
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) &&(eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.12");
-            if(_arrest.IsNull==true)
-            {
-                if (isRequiredStateElement("eArrest.12") == true)
-                {
-                    _val.push("7701003")       
-                    valObj.NV = true;
-                }                
-            }
-            else
-            {    
-                for (var i = 0; i < _arrest.ValueArray.length; i++)
-                {
-                    if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1))
-                    {
-                        _val.push(_arrest.ValueArray[i].val);
-                        valObj.IsNull = false
-                    }
-                };
-        
-                if (_val.length >=1) 
-                {
-                   // if(_val.indexOf("3012001") != -1)
-                   // {
-                        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eArrest.12", Description: "Validation //Error:Conflicting values.  Any Return of Spontaneous Circulation Contains Conflicting Values"  })
-                   // }
-                };
-            }
-        }
-        else
-        { 
-            _val.push("7701001")
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.12"] = valObj;
-        delete valObj;
-        
-        /////////////eArrest.13
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) && (eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.13");
-            if (_arrest.IsNull != true) {
-                _val.push(_arrest.ValueArray[0].val);
-                valObj.IsNull = false
-            }
-        }
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.13"] = valObj;              
-        delete valObj;
-
-    /////////////eArrest.14
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) &&(eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.14");
-            if (_arrest.IsNull == true) {
-                if (isRequiredStateElement("eArrest.14") == true)
-                {
-                    _val.push("7701003");
-                    valObj.NV = true;
-                }
-            }
-            else
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                valObj.IsNull = false
-            }
-        }
-        else
-        {        
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.14"] = valObj;
-        delete valObj;
-
-        /////////////eArrest.15
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) &&(eArrest["IsCardiacArrest"] == true))//&& (eArrest["ResuscitationAttempted"] == true))
-        {
-            _arrest = getValue(_eL, "eArrest.15");
-            
-            if(_arrest.IsNull==true)
-            {        
-                if (isRequiredStateElement("eArrest.15") == true) 
-                {           
-                    _val.push("7701003")
-                    valObj.NV = true
-                }
-                else
-                {
-                    _val.push("7701005")
-                    valObj.NV = true;
-                }          
-            }
-            else
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                valObj.IsNull = false
-            }
-        }
-        else
-        {        
-            _val.push("7701001")
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.15"] = valObj;
-        delete valObj;
-
-        /////////////eArrest.16
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) &&(eArrest["IsCardiacArrest"] == true))//&&(eArrest["CPRProvided"] ==true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.16");
-            if(_arrest.IsNull==true)
-            {
-                if (isRequiredStateElement("eArrest.16") == true)
-                {
-                    _val.push("7701003")
-                    valObj.NV = true;
-                }
-                else 
-                {            
-                    _val.push("7701005")
-                    valObj.NV = true;
-                }
-            }    
-            else
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                valObj.IsNull = false
-            }
-        }
-        else
-        {
-            _val.push("7701001")
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.16"] = valObj;
-        delete valObj;
-    
-        /////////////eArrest.17
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) &&(eArrest["IsCardiacArrest"] == true))  //Yes value for eArrest.01
-        {
-            _arrest = getValue(_eL, "eArrest.17");
-
-            if (_arrest.IsNull == true)
-            {
-                _val.push("7701003")
-                valObj.NV = true;
-
-            }
-            else
-            {       
-                var arr2 = [];
-                for (var i = 0; i < _arrest.ValueArray.length; i++)
-                {
-                    if ((_arrest.ValueArray[i].HasValue == true) && (_val.indexOf(_arrest.ValueArray[i].val) == -1))
-                    {
-                        _val.push(_arrest.ValueArray[i].val);
-                        valObj.IsNull = false
-                    }
-                };
-            }
-        }
-        
-        else
-        {
-            _val.push("7701001")
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.17"] = valObj;
-        delete valObj;
-
-        /////////////eArrest.18
-        var _arrest = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if ((eArrest["IsValid"] == true) &&(eArrest["IsCardiacArrest"] == true))
-        {
-            _arrest = getValue(_eL, "eArrest.18");       
-            if(_arrest.IsNull==true) 
-            {
-                _val.push("7701003")
-                valObj.NV = true;
-            }
-            else
-            {
-                _val.push(_arrest.ValueArray[0].val);
-                valObj.IsNull = false
-            };            
-        }
-        else
-        {
-            _val.push("7701001")
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eArrest["eArrest.18"] = valObj;
-        delete valObj;
-    //};
-    
     return eArrest;
+
 };
-var seteExam = function (TheCall) 
-{
+var seteArrestNull = function (TheCall) {
+    var CallObj = {};
+    var eArrest = {};
+    var ErrorList = [];
+    var _val = [];
+    var valObj = {};
+
+    var _val = [];
+    var valObj = {};
+    _val.push("7701001")
+    valObj.vSet = _val.slice(0);
+    valObj.IsNull = true;
+    valObj.NV = true;
+    eArrest["eArrest.01"] = valObj;
+    eArrest["eArrest.02"] = valObj;
+    eArrest["eArrest.03"] = valObj;
+    eArrest["eArrest.04"] = valObj;
+    eArrest["eArrest.05"] = valObj;
+    eArrest["eArrest.07"] = valObj;
+    eArrest["eArrest.09"] = valObj;
+    eArrest["eArrest.10"] = valObj;
+    eArrest["eArrest.11"] = valObj;
+    eArrest["eArrest.12"] = valObj;
+    eArrest["eArrest.14"] = valObj;
+    eArrest["eArrest.15"] = valObj;
+    eArrest["eArrest.16"] = valObj;
+    eArrest["eArrest.17"] = valObj;
+    eArrest["eArrest.18"] = valObj;
+
+    eArrest.ErrorList = ErrorList;
+
+    CallObj.eArrest = eArrest;
+    return CallObj;
+
+
+};
+var seteExam = function (TheCall) {
 
     var eExam = new Object();
     var pExam = TheCall.pExam;
     eExam["IsValid"] = false;
+    if (pExam.HasDataSet == false) {
+
+        eExam["IsValid"] = false;
+        //    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient", Description: "Missing Mandatory.  ePatient.HasDataSet = false" })
+        var call = {};
+        call = seteExamNull(TheCall)
+        eExam = call.eExam;
+        return eExam;
+    };
+
     if (pExam.HasDataSet == true) {
         if (typeof pExam.attributes.elements != 'undefined') {
             var _exArr = []
@@ -1072,8 +1052,7 @@ var seteExam = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (eExam.IsValid == true)
-    {
+    if (eExam.IsValid == true) {
         _exam = getValue(_exArr, "eExam.02");
         if (_exam.IsNull == true) {
             if (_exam.HasPN == true) {
@@ -1110,251 +1089,139 @@ var seteExam = function (TheCall)
     valObj.vSet = _val.slice(0);
     eExam["eExam.02"] = valObj;
     delete valObj;
-    var AssessmentArray = [];    
+    var AssessmentArray = [];
     ///////////////////////////////////////////////
     eExam["AssessmentGroup"] = -1;
     if (pExam.HasDataSet == true) {
         if (typeof pExam.attributes.sections != 'undefined') {
             var _sI = [];
             _sI = getSectionIndex(pExam, "eExam.AssessmentGroup");
+
             if (_sI != -1) {
                 eExam["AssessmentGroup"] = _sI.length;
             }
         }
     };
-    for (var xx = 0; xx < eExam["AssessmentGroup"]; xx++) {
+    if (eExam.IsValid == true) {
 
-        var _Ag = [];
-        var _assArr = pExam.attributes.sections[xx].attributes.elements;
+        for (var xx = 0; xx < _sI.length; xx++) {
+            var eyeGroupArray = [];
 
-        /////////eExam.03
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        _exam = getValue(_assArr, "eExam.03");
-        if (_exam.IsNull != true) {
-            _val.push(_exam.ValueArray[0].val);
-            valObj.IsNull = false;
-            _Ag.push({ section: "E16", element: "E16_03", val: _val });
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.03"] = valObj;;
-        delete valObj;
-
-        /////////eExam.04
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        _exam = getValue(_assArr, "eExam.04");
-        if (_exam.IsNull != true) {
-            for (var i = 0; i < _exam.ValueArray.length; i++) {
-                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                    _val.push(_exam.ValueArray[i].val);
-                    valObj.IsNull = false;
-                }
+            var _assArr = pExam.attributes.sections[xx].attributes.elements;
+            var AssessmentGroup = new Object();
+            /////////eExam.03
+            var _exam = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            _exam = getValue(_assArr, "eExam.03");
+            if (_exam.IsNull != true) {
+                _val.push(_exam.ValueArray[0].val);
+                valObj.IsNull = false;
             };
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.04"] = valObj;;
-        delete valObj;
-
-        /////////eExam.05
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        _exam = getValue(_assArr, "eExam.05");
-        if (_exam.IsNull != true) {
-            if (_exam.HasPN == true) {
-                _val.push("8801005");
-                valObj.PN = true;
-            }
-        }
-        else {
-            for (var i = 0; i < _exam.ValueArray.length; i++) {
-                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                    _val.push(_exam.ValueArray[i].val)
-                    valObj.IsNull = false;
-                }
-            };
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.05"] = valObj;;
-        delete valObj;
-
-        /////////eExam.06
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        _exam = getValue(_assArr, "eExam.06");
-        if (_exam.IsNull == true) {
-            if (_exam.HasPN == true) {
-                _val.push("8801005");
-                valObj.PN = true;
-            }
-        }
-        else {
-            var arr1 = [];
-            for (var i = 0; i < _exam.ValueArray.length; i++) {
-                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                    _val.push(_exam.ValueArray[i].val);
-                    valObj.IsNull = false;
-                }
-            };
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.06"] = valObj;;
-        delete valObj;
-
-        /////////eExam.07
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        _exam = getValue(_assArr, "eExam.07");
-        if (_exam.IsNull == true) {
-            if (_exam.HasPN == true) {
-                _val.push("8801005");
-                valObj.PN = true;
-            }
-        }
-        else {
-            for (var i = 0; i < _exam.ValueArray.length; i++) {
-                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                    _val.push(_exam.ValueArray[i].val);
-                    valObj.IsNull = false;
-                }
-            }
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.07"] = valObj;;
-        delete valObj;
-
-        /////////eExam.08
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        _exam = getValue(_assArr, "eExam.08");
-        if (_exam.IsNull == true) {
-            if (_exam.HasPN == true) {
-                _val.push("8801005");
-                valObj.PN = true;
-            }
-        }
-        else {
-            for (var i = 0; i < _exam.ValueArray.length; i++) {
-                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                    _val.push(_exam.ValueArray[i].val);
-                    valObj.IsNull = false;
-                }
-            };
-            _Ag.push({ section: "E16", element: "E16_07", val: arr2.slice(0) });
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.07"] = valObj;;
-        delete valObj;
-
-        /////////eExam.09
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        _exam = getValue(_assArr, "eExam.09");
-        if (_exam.IsNull == true) {
-            if (_exam.HasPN == true) {
-                _val.push("8801005");
-                valObj.NV = true;
-            }
-        }
-        else {
-            for (var i = 0; i < _exam.ValueArray.length; i++) {
-                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                    _val.push(_exam.ValueArray[i].val);
-                    valObj.IsNull = false;
-                };
-            }
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.09"] = valObj;;
-        delete valObj;
-
-        AssessmentGroup["AbdomenGroup"] = -1;
-        //AbdomenGroup////////////////////////////////////////////////////////////////////
-        var AbdomenGroup = {};
-
-        if (typeof pExam.attributes.sections[xx].attributes.sections != 'undefined') {
-            _s1 = getSectionIndex(pExam.attributes.sections[xx], "eExam.AbdomenGroup");
-            if (_s1 != -1) {
-                var AbdomenGroupArray = [];
-                AssessmentGroup["AbdomenGroup"] = _s1.length;
-                for (var x = 0; x <= _s1.length - 1; x++) {
-                    var _abdArr = [];
-
-                    _ex1 = pExam.attributes.sections[xx].attributes.sections[_s1[x]].attributes.elements;
-
-                    /////////eExam.10
-                    var _exam = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _exam = getValue(_ex1, "eExam.10");
-
-                    if (_exam.IsNull != true) {
-                        _val.push(_exam.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    AbdomenGroup["eExam.10"] = valObj;;
-                    delete valObj;
-
-                    /////////eExam.11
-                    var _exam = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _exam = getValue(_ex1, "eExam.11");
-                    if (_exam.IsNull == true) {
-                        if (_exam.HasPN == true) {
-                            _val.push("8801005");
-                            valObj.NV = true;
-                        }
-                    }
-                    else {
-                        for (var i = 0; i < _exam.ValueArray.length; i++) {
-                            if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                                _val.push(_exam.ValueArray[i].val);
-                                valObj.IsNull = false;
-                            }
-                        };
-                    };
-
-                    valObj.vSet = _val.slice(0);
-                    AbdomenGroup["eExam.10"] = valObj;;
-                    delete valObj;
-
-                    AbdomenGroupArray.push(AbdomenGroup);
-                };
-
-            };
-            AssessmentArray.push(AbdomenGroupArray);
-
-
-            /////////eExam.12
+            valObj.vSet = _val.slice(0);
+            AssessmentGroup["eExam.03"] = valObj;;
+            delete valObj;
+            /////////eExam.04
             var _exam = [];
             var _val = [];
             var valObj = {};
             valObj.IsNull = true;
 
-            _exam = getValue(_assArr, "eExam.12");
+            _exam = getValue(_assArr, "eExam.04");
+            if (_exam.IsNull != true) {
+                for (var i = 0; i < _exam.ValueArray.length; i++) {
+                    if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                        _val.push(_exam.ValueArray[i].val);
+                        valObj.IsNull = false;
+                    }
+                };
+            };
+            valObj.vSet = _val.slice(0);
+            AssessmentGroup["eExam.04"] = valObj;;
+            delete valObj;
+
+            /////////eExam.05
+            var _exam = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+
+            _exam = getValue(_assArr, "eExam.05");
+
+            if (_exam.IsNull == true) {
+                if (_exam.HasPN == true) {
+                    _val.push("8801005");
+                    valObj.PN = true;
+                }
+            }
+            else {
+                for (var i = 0; i < _exam.ValueArray.length; i++) {
+                    if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                        _val.push(_exam.ValueArray[i].val)
+                        valObj.IsNull = false;
+                    }
+                };
+            };
+            valObj.vSet = _val.slice(0);
+            AssessmentGroup["eExam.05"] = valObj;;
+            delete valObj;
+
+            /////////eExam.06
+            var _exam = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            _exam = getValue(_assArr, "eExam.06");
+            if (_exam.IsNull == true) {
+                if (_exam.HasPN == true) {
+                    _val.push("8801005");
+                    valObj.PN = true;
+                }
+            }
+            else {
+                var arr1 = [];
+                for (var i = 0; i < _exam.ValueArray.length; i++) {
+                    if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                        _val.push(_exam.ValueArray[i].val);
+                        valObj.IsNull = false;
+                    }
+                };
+            };
+            valObj.vSet = _val.slice(0);
+            AssessmentGroup["eExam.06"] = valObj;;
+            delete valObj;
+
+            /////////eExam.07
+            var _exam = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            _exam = getValue(_assArr, "eExam.07");
+            if (_exam.IsNull == true) {
+                if (_exam.HasPN == true) {
+                    _val.push("8801005");
+                    valObj.PN = true;
+                }
+            }
+            else {
+                for (var i = 0; i < _exam.ValueArray.length; i++) {
+                    if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                        _val.push(_exam.ValueArray[i].val);
+                        valObj.IsNull = false;
+                    }
+                }
+            };
+
+            valObj.vSet = _val.slice(0);
+            delete valObj;
+
+            /////////eExam.08
+            var _exam = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            _exam = getValue(_assArr, "eExam.08");
             if (_exam.IsNull == true) {
                 if (_exam.HasPN == true) {
                     _val.push("8801005");
@@ -1370,946 +1237,1082 @@ var seteExam = function (TheCall)
                 };
             };
             valObj.vSet = _val.slice(0);
-            AssessmentGroup["eExam.10"] = valObj;;
+            AssessmentGroup["eExam.08"] = valObj;
             delete valObj;
 
-            ////////////////////////////// Spine Group////////////////////
+            /////////eExam.09
+            var _exam = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+
+            _exam = getValue(_assArr, "eExam.09");
+            if (_exam.IsNull == true) {
+                if (_exam.HasPN == true) {
+                    _val.push("8801005");
+                    valObj.NV = true;
+                }
+            }
+            else {
+                for (var i = 0; i < _exam.ValueArray.length; i++) {
+                    if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                        _val.push(_exam.ValueArray[i].val);
+                        valObj.IsNull = false;
+                    };
+                }
+            };
+            valObj.vSet = _val.slice(0);
+            AssessmentGroup["eExam.09"] = valObj;
+            delete valObj;
+
+            AssessmentGroup["AbdomenGroup"] = -1;
             AssessmentGroup["SpineGroup"] = -1;
-            var SpineGroup = {};
-            _s2 = getSectionIndex(pExam.attributes.sections[xx], "eExam.SpineGroup");
-            if (_s2 != -1) {
-                for (var x = 0; x < _s2.length; x++) {
-                    var SpineGroupArray = [];
-                    AssessmentGroup["SpineGroup"] = _s2.length;
-                    var _spGrp = [];
-                    _spGrp = pExam.attributes.sections[xx].attributes.sections[_s2[x]].attributes.elements;
-
-                    /////////eExam.13
-                    var _exam = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _exam = getValue(_spGrp, "eExam.13");
-                    if (_exam.IsNull != true) {
-                        _val.push(_exam.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    SpineGroup["eExam.13"] = valObj;;
-                    delete valObj;
-
-                    /////////eExam.14
-                    var _exam = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _exam = getValue(_spGrp, "eExam.14");
-                    if (_exam.IsNull == true) {
-                        if (_exam.HasPN == true) {
-                            _val.push("8801005");
-                            valObj.PN = true;
-                        }
-                    }
-                    else {
-                        for (var i = 0; i < _exam.ValueArray.length; i++) {
-                            if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                                _val.push(_exam.ValueArray[i].val);
-                                valObj.IsNull = false;
-                            }
-                        };
-                        _eExam.Value = arr1.slice(0);
-                    };
-                    valObj.vSet = _val.slice(0);
-                    SpineGroup["eExam.14"] = valObj;;
-                    delete valObj;
-
-                    SpineGroupArray.push(SpineGroup)
-                }
-            };
-            AssessmentArray.push(SpineGroupArray);
-
-            ////////////////////////ExtremityGroup ////////////////////
             AssessmentGroup["ExtremityGroup"] = -1;
-            var ExtremityGroup = {};
-            _s3 = getSectionIndex(pExam.attributes.sections[xx], "eExam.ExtremityGroup");
-            if (_s3 != -1) {
-                for (var x = 0; x < _s3.length; x++) {
-                    var EGArray = [];
-                    AssessmentGroup["ExtremityGroup"] = _s3.length;
-                    var _ex2 = [];
-                    var _exGrp = [];
-                    _ex2 = pExam.attributes.sections[xx].attributes.sections[_s3[x]].attributes.elements;
-
-                    /////////eExam.15
-                    var _exam = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    var _ex1 = []
-                    _exam = getValue(_ex2, "eExam.15");
-                    if (_exam.IsNull != true) {
-                        _val.push(_exam.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    ExtremityGroup["eExam.15"] = valObj;;
-                    delete valObj;
-
-                    /////////eExam.16
-                    var _exam = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _exam = getValue(_ex2, "eExam.16");
-                    if (_exam.IsNull == true) {
-                        if (_exam.HasPN == true) {
-                            _val.push("8801005");
-                            valObj.PN = true;
-                        }
-                    }
-                    else {
-                        for (var i = 0; i < _exam.ValueArray.length; i++) {
-                            if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                                _val.push(_exam.ValueArray[i].val);
-                                valObj.IsNull = false;
-                            }
-                        };
-                    };
-                    valObj.vSet = _val.slice(0);
-                    ExtremityGroup["eExam.16"] = valObj;;
-                    delete valObj;
-
-                    EGArray.push(ExtremityGroup)
-                }
-            };
-
-            AssessmentArray.push(EGArray);
             AssessmentGroup["EyeGroup"] = -1;
-            /////////////////////////////////////////////EyeGroup
-            var EyeGArray = [];
-            var EyeGroup = {};
-            _s4 = getSectionIndex(pExam.attributes.sections[xx], "eExam.EyeGroup");
-            if (_s4 != -1) {
-                AssessmentGroup["_s4.length"] = -1;
-                for (var x = 0; x < _s4.length; x++) {
-                    var _ex3 = [];
-                    var _eyGrp = [];
-                    _ex3 = pExam.attributes.sections[xx].attributes.sections[_s4[x]].attributes.elements;
 
-                    /////////eExam.17
-                    var _exam = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
+            //AbdomenGroup////////////////////////////////////////////////////////////////////
+            var AbdomenGroup = {};
 
-                    _exam = getValue(_ex3, "eExam.17");
-                    if (_exam.IsNull != true) {
-                        _val.push(_exam.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    EyeGroup["eExam.17"] = valObj;;
-                    delete valObj;
+            if (typeof pExam.attributes.sections[xx].attributes.sections != 'undefined') {
+                //var _s1 = [];
 
+                _s1 = getSectionIndex(pExam.attributes.sections[xx], "eExam.AbdomenGroup");
+                AssessmentGroup["AbdomenGroup"] = _s1.length;
+                if (_s1 != -1) {
+                    var AbdomenGroupArray = [];
+                
+                    for (var x = 0; x <= _s1.length - 1; x++) {
+                        var _abdArr = [];
+                        var _ex1 = [];
+                        var AbdomenGroup = {};
+                        _ex1 = pExam.attributes.sections[xx].attributes.sections[_s1[x]].attributes.elements;
 
-                    /////////eExam.18
-                    var _exam = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
+                        /////////eExam.10
+                        var _exam = [];
+                        var _val = [];
+                        var valObj = {};
+                        valObj.IsNull = true;
 
-                    _exam = getValue(_ex3, "eExam.18");
-                    if (_exam.IsNull == true) {
-                        if (_exam.HasPN == true) {
-                            _val.push("8801005");
-                            valObj.NV = true;
-                        }
-                    }
-                    else {
-                        for (var i = 0; i < _exam.ValueArray.length; i++) {
-                            if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                                _val.push(_exam.ValueArray[i].val);
-                                valObj.IsNull = false;
-                            }
+                        _exam = getValue(_ex1, "eExam.10");
+
+                        if (_exam.IsNull != true) {
+                            _val.push(_exam.ValueArray[0].val);
+                            valObj.IsNull = false;
                         };
+                        valObj.vSet = _val.slice(0);
+                        AbdomenGroup["eExam.10"] = valObj;
+                        delete valObj;
+
+                        /////////eExam.11
+                        var _exam = [];
+                        var _val = [];
+                        var valObj = {};
+                        valObj.IsNull = true;
+
+                        _exam = getValue(_ex1, "eExam.11");
+                        if (_exam.IsNull == true) {
+                            if (_exam.HasPN == true) {
+                                _val.push("8801005");
+                                valObj.NV = true;
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < _exam.ValueArray.length; i++) {
+                                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                                    _val.push(_exam.ValueArray[i].val);
+                                    valObj.IsNull = false;
+                                }
+                            };
+                        };
+
+                        valObj.vSet = _val.slice(0);
+                        AbdomenGroup["eExam.11"] = valObj;
+                        delete valObj;
+
+                        AbdomenGroupArray.push(AbdomenGroup);
+                        delete AbdomenGroup
                     };
-                    valObj.vSet = _val.slice(0);
-                    EyeGroup["eExam.18"] = valObj;;
-                    delete valObj;
 
-                    EyeGArray.push(EyeGroup)
+                };
+                AssessmentGroup.AbdomenGroup = AbdomenGroupArray.slice(0);
+
+                /////////eExam.12
+                var _exam = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _exam = getValue(_assArr, "eExam.12");
+                if (_exam.IsNull == true) {
+                    if (_exam.HasPN == true) {
+                        _val.push("8801005");
+                        valObj.PN = true;
+                    }
                 }
+                else {
+                    for (var i = 0; i < _exam.ValueArray.length; i++) {
+                        if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                            _val.push(_exam.ValueArray[i].val);
+                            valObj.IsNull = false;
+                        }
+                    };
+                };
+                valObj.vSet = _val.slice(0);
+                AssessmentGroup["eExam.12"] = valObj;;
+                delete valObj;
+
+
+                ////////////////////////////// Spine Group////////////////////
+
+                var SpineGroupArray = [];
+                _s2 = getSectionIndex(pExam.attributes.sections[xx], "eExam.SpineGroup");
+                AssessmentGroup["SpineGroup"] = _s2.length;
+                if (_s2 != -1)
+                {
+                    for (var x = 0; x < _s2.length; x++) {
+                        var SpineGroup = {};
+                        
+                        var _spGrp = [];
+                        _spGrp = pExam.attributes.sections[xx].attributes.sections[_s2[x]].attributes.elements;
+                        /////////eExam.13
+                        var _exam = [];
+                        var _val = [];
+                        var valObj = {};
+                        valObj.IsNull = true;
+
+                        _exam = getValue(_spGrp, "eExam.13");
+                        if (_exam.IsNull != true) {
+                            _val.push(_exam.ValueArray[0].val);
+                            valObj.IsNull = false;
+                        };
+                        valObj.vSet = _val.slice(0);
+                        SpineGroup["eExam.13"] = valObj;;
+                        delete valObj;
+
+                        /////////eExam.14
+                        var _exam = [];
+                        var _val = [];
+                        var valObj = {};
+                        valObj.IsNull = true;
+                        _exam = getValue(_spGrp, "eExam.14");
+                        if (_exam.IsNull == true) {
+                            if (_exam.HasPN == true) {
+                                _val.push("8801005");
+                                valObj.PN = true;
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < _exam.ValueArray.length; i++) {
+                                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                                    _val.push(_exam.ValueArray[i].val);
+                                    valObj.IsNull = false;
+                                }
+                            };
+                        };
+                        valObj.vSet = _val.slice(0);
+                        SpineGroup["eExam.14"] = valObj;;
+                        delete valObj;
+                        SpineGroupArray.push(SpineGroup)
+                        delete SpineGroup;
+                    }
+                };
+
+                AssessmentGroup.SpineGroup = SpineGroupArray.slice(0);
+
+                ////////////////////////ExtremityGroup ////////////////////
+
+                var _s3 = [];
+                _s3 = getSectionIndex(pExam.attributes.sections[xx], "eExam.ExtremityGroup");
+                AssessmentGroup["ExtremityGroup"] = _s3.length;
+                if (_s3 != -1) {
+                    var ExtremityGroupArray = [];
+                    for (var x = 0; x < _s3.length; x++) {
+                        var ExtremityGroup = {};
+                        
+                        var _ex2 = [];
+                        _ex2 = pExam.attributes.sections[xx].attributes.sections[_s3[x]].attributes.elements;
+
+                        /////////eExam.15
+                        var _exam = [];
+                        var _val = [];
+                        var valObj = {};
+                        valObj.IsNull = true;
+                        var _ex1 = []
+                        _exam = getValue(_ex2, "eExam.15");
+                        if (_exam.IsNull != true) {
+                            _val.push(_exam.ValueArray[0].val);
+                            valObj.IsNull = false;
+                        };
+                        valObj.vSet = _val.slice(0);
+                        ExtremityGroup["eExam.15"] = valObj;;
+                        delete valObj;
+
+                        /////////eExam.16
+                        var _exam = [];
+                        var _val = [];
+                        var valObj = {};
+                        valObj.IsNull = true;
+
+                        _exam = getValue(_ex2, "eExam.16");
+                        if (_exam.IsNull == true) {
+                            if (_exam.HasPN == true) {
+                                _val.push("8801005");
+                                valObj.PN = true;
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < _exam.ValueArray.length; i++) {
+                                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                                    _val.push(_exam.ValueArray[i].val);
+                                    valObj.IsNull = false;
+                                }
+                            };
+                        };
+                        valObj.vSet = _val.slice(0);
+                        ExtremityGroup["eExam.16"] = valObj;;
+                        delete valObj;
+
+                        ExtremityGroupArray.push(ExtremityGroup)
+                        delete ExtremityGroup;
+                    }
+                };
+                AssessmentGroup.ExtremityGroup = ExtremityGroupArray;
+
+
+
+                /////////////////////////////////////////////EyeGroup
+                var EyeGArray = [];
+                var EyeGroup = {};
+                _s4 = getSectionIndex(pExam.attributes.sections[xx], "eExam.EyeGroup");
+
+                if (_s4 != -1) {
+                    AssessmentGroup["EyeGroup.length"] = -1;
+                    
+                    for (var x = 0; x < _s4.length; x++) {
+                        var _ex3 = [];
+                        var _eyGrp = [];
+                        _ex3 = pExam.attributes.sections[xx].attributes.sections[_s4[x]].attributes.elements;
+
+                        /////////eExam.17
+                        var _exam = [];
+                        var _val = [];
+                        var valObj = {};
+                        valObj.IsNull = true;
+
+                        _exam = getValue(_ex3, "eExam.17");
+                        if (_exam.IsNull != true) {
+                            _val.push(_exam.ValueArray[0].val);
+                            valObj.IsNull = false;
+                        };
+                        valObj.vSet = _val.slice(0);
+                        EyeGroup["eExam.17"] = valObj;;
+                        delete valObj;
+
+
+                        /////////eExam.18
+                        var _exam = [];
+                        var _val = [];
+                        var valObj = {};
+                        valObj.IsNull = true;
+
+                        _exam = getValue(_ex3, "eExam.18");
+                        if (_exam.IsNull == true) {
+                            if (_exam.HasPN == true) {
+                                _val.push("8801005");
+                                valObj.NV = true;
+                            }
+                        }
+                        else {
+                            for (var i = 0; i < _exam.ValueArray.length; i++) {
+                                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                                    _val.push(_exam.ValueArray[i].val);
+                                    valObj.IsNull = false;
+                                }
+                            };
+                        };
+                        valObj.vSet = _val.slice(0);
+                        EyeGroup["eExam.18"] = valObj;;
+                        delete valObj;
+
+                        EyeGArray.push(EyeGroup)
+                    }
+                    AssessmentGroup.EyeGroup = EyeGArray.slice(0);
+
+                };
             };
-            AssessmentArray.push(EyeGArray);
-        };
 
-        /////////eExam.19
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
 
-        _exam = getValue(_assArr, "eExam.19");
-        if (_exam.IsNull == true) {
-            if (_exam.HasPN == true) {
-                _val.push("8801005");
-                valObj.PN = true;
+            /////////eExam.19
+            var _exam = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+
+            _exam = getValue(_assArr, "eExam.19");
+            if (_exam.IsNull == true) {
+                if (_exam.HasPN == true) {
+                    _val.push("8801005");
+                    valObj.PN = true;
+                }
             }
-        }
-        else {
-            for (var i = 0; i < _exam.ValueArray.length; i++) {
-                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                    _val.push(_exam.ValueArray[i].val);
-                    valObj.IsNull = false;
-                }
+            else {
+                for (var i = 0; i < _exam.ValueArray.length; i++) {
+                    if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                        _val.push(_exam.ValueArray[i].val);
+                        valObj.IsNull = false;
+                    }
+                };
             };
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.19"] = valObj;;
-        delete valObj;
+            valObj.vSet = _val.slice(0);
+            AssessmentGroup["eExam.19"] = valObj;;
+            delete valObj;
 
 
-        /////////eExam.20
-        var _exam = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        _exam = getValue(_assArr, "eExam.20");
-        if (_exam.IsNull == true) {
-            if (_exam.HasPN == true) {
-                _val.push("8801005");
-                valObj.PN = true;
+            /////////eExam.20
+            var _exam = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            _exam = getValue(_assArr, "eExam.20");
+            if (_exam.IsNull == true) {
+                if (_exam.HasPN == true) {
+                    _val.push("8801005");
+                    valObj.PN = true;
+                }
             }
-        }
-        else {
-            var arr2 = [];
-            for (var i = 0; i < _exam.ValueArray.length; i++) {
-                if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
-                    _val.push(_exam.ValueArray[i].val);
-                    valObj.IsNull = false;
-                }
+            else {
+                var arr2 = [];
+                for (var i = 0; i < _exam.ValueArray.length; i++) {
+                    if ((_exam.ValueArray[i].HasValue == true) && (_val.indexOf(_exam.ValueArray[i].val) == -1)) {
+                        _val.push(_exam.ValueArray[i].val);
+                        valObj.IsNull = false;
+                    }
+                };
             };
-        };
-        valObj.vSet = _val.slice(0);
-        AssessmentGroup["eExam.20"] = valObj;;
-        delete valObj;
+
+            valObj.vSet = _val.slice(0);
+            AssessmentGroup["eExam.20"] = valObj;;
+            delete valObj;
+
+            AssessmentArray.push(AssessmentGroup)
+        }
     };
-    eExam
-    eExam.AssessmentGroup = AssessmentArray.slice(0);
-        
+
+    eExam.ErrorList = ErrorList.slice(0);
+    if (AssessmentArray.length > 0) {
+        eExam.AssessmentGroup = AssessmentArray.slice(0);
+    };
+    console.log(eExam)
     return eExam;
 };
-var seteInjury = function (TheCall) 
-{
+var seteExamNull = function (TheCall) {
+
+    var CallObj = {};
+    var eExam = {};
+    var ErrorList = [];
+
+    var _val = [];
+    var valObj = {};
+    _val.push("7701001")
+    valObj.vSet = _val.slice(0);
+    valObj.IsNull = true;
+    valObj.NV = true;
+    eExam["eExam.01"] = valObj;
+    eExam["eExam.02"] = valObj;
+
+    eExam.ErrorList = ErrorList;
+    CallObj.eExam = eExam;
+    return CallObj;
+};
+var seteInjury = function (TheCall) {
     var SeatGroupArray = new Array();
     var eInjury = new Object();
     var pInjury = new Object();
     eInjury.IsValid = false;
     pInjury = TheCall.pInjury;
-    if (pInjury.HasDataSet == true)
-    {
+    var ErrorList = [];
+    if (pInjury.HasDataSet == true) {
         eInjury.IsValid = true;
         var _eL = [];
         _eL = pInjury.attributes.elements;
-        if(_eL.length > 0)
-        {
+        if (_eL.length > 0) {
             eInjury.IsValid = true;
         }
-    
+
     };
-      
-                
-        //eInjury.01///////////////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-    
-        if (eInjury.IsValid == true) 
-        {
-            _injury = getValue(_eL, "eInjury.01");
-            if (_injury.IsNull == true) 
-            {
+
+
+    //eInjury.01///////////////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.01");
+        if (_injury.IsNull == true) {
+            _val.push("7701003");
+            valObj.NV = true;
+        }
+        else {
+            for (var i = 0; i < _injury.ValueArray.length; i++) {
+                if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) {
+                    _val.push(_injury.ValueArray[i].val);
+                    valObj.IsNull = false;
+                }
+            }
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+
+    valObj.vSet = _val.slice(0);
+    eInjury["eInjury.01"] = valObj;
+    delete valObj;
+
+    //eInjury.02///////////////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.02");
+        if (_injury.IsNull == true) {
+            if (isRequiredStateElement("eInjury.02")) {
                 _val.push("7701003");
                 valObj.NV = true;
             }
-            else 
-            {
-                for (var i = 0; i < _injury.ValueArray.length; i++)
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1))
-                    {
-                        _val.push(_injury.ValueArray[i].val);
-                        valObj.IsNull = false;
-                    }
-                }
-            }                
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;          
-        };
-                
-        valObj.vSet = _val.slice(0);
-        eInjury["eInjury.01"] = valObj;
-        delete valObj;     
-        
-        //eInjury.02///////////////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eInjury.IsValid == true) 
-        {
-            _injury = getValue(_eL, "eInjury.02");
-            if (_injury.IsNull == true) 
-            {
-                if (isRequiredStateElement("eInjury.02")) 
-                {
-                    _val.push("7701003");
-                    valObj.NV = true;          
-                }    
-                else 
-                {
-                    _val.push("7701005");
-                    valObj.NV = true;          
-                }
+            else {
+                _val.push("7701005");
+                valObj.NV = true;
             }
-            else 
-            {
-        
-                for (var i = 0; i < _injury.ValueArray.length; i++)
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1))
-                    {
-                        _val.push(_injury.ValueArray[i].val)
-                        TheCall.XML.writeElementString("eInjury.02", _val);
-                        arr2.push(setV2("eInjury.02", _val));
-                    }
+        }
+        else {
+
+            for (var i = 0; i < _injury.ValueArray.length; i++) {
+                if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) {
+                    _val.push(_injury.ValueArray[i].val)
+                    valObj.IsNull = false;
                 }
             }
         }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;          
-        };
-        valObj.vSet = _val.slice(0);
-        eInjury["eInjury.02"] = valObj;
-        delete valObj;     
-    
-        
-            
-        //eInjury.03///////////////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-    
-        if (eInjury.IsValid == true) //if have a transport, forgot the data, 
-        {
-            _injury = getValue(_eL, "eInjury.03");
-            if (_injury.IsNull == true) 
-            {
-                if (isRequiredStateElement("eInjury.03")) 
-                {
-                    _val.push("7701003");
-                    valObj.NV = true;
-                }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eInjury["eInjury.02"] = valObj;
+    delete valObj;
+
+
+
+    //eInjury.03///////////////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    if (eInjury.IsValid == true) //if have a transport, forgot the data, 
+    {
+        _injury = getValue(_eL, "eInjury.03");
+        if (_injury.IsNull == true) {
+            if (isRequiredStateElement("eInjury.03")) {
+                _val.push("7701003");
+                valObj.NV = true;
             }
-            else 
-            {
-                for (var i = 0; i < _injury.ValueArray.length; i++)
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1))
-                    {
-                        _val.push( _injury.ValueArray[i].val);
-                        valObj.IsNull = false;
-                    }
-                };
-                eInjury.HasInjury = true;
-            }                
         }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;          
-                
-        };
-        valObj.vSet = _val.slice(0);
-        eInjury["eInjury.03"] = valObj;
-        delete valObj;     
-    
-        
-        //eInjury.04///////////////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-    
-        
-        if (eInjury.IsValid == true) 
-        {
-            _injury = getValue(_eL, "eInjury.04");
-            if(_injury.IsNull == true)
-            {
-                if (_injury.HasPN == true) 
-                {
-                    {
-                        _val.push("8801005");
-                        valObj.PN = true;             
-                    }
+        else {
+            for (var i = 0; i < _injury.ValueArray.length; i++) {
+                if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) {
+                    _val.push(_injury.ValueArray[i].val);
+                    valObj.IsNull = false;
                 }
-                else {
-                    _val.push("7701003");
-                    valObj.NV = true;
+            };
+            eInjury.HasInjury = true;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+
+    };
+    valObj.vSet = _val.slice(0);
+    eInjury["eInjury.03"] = valObj;
+    delete valObj;
+
+
+    //eInjury.04///////////////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.04");
+        if (_injury.IsNull == true) {
+            if (_injury.HasPN == true) {
+                {
+                    _val.push("8801005");
+                    valObj.PN = true;
                 }
             }
             else {
-                for (var i = 0; i < _injury.ValueArray.length; i++)
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1))
-                    {
-                        _val.push( _injury.ValueArray[i].val);
-                        valObj.IsNull = false;
-                    }
-                };
-                    
-            };         
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };        
-        
-        valObj.vSet = _val.slice(0);
-        eInjury["eInjury.04"] = valObj;
-        delete valObj;     
-
-        ///eInjury.05////////////    
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-            
-        if (eInjury.IsValid == true) 
-        {
-            _injury = getValue(_eL, "eInjury.05");
-            if (_injury.IsNull != true)
-            {
-                
-                if ((_val[0] >= 1) && (_val[0] <= 12))
-                {
-                    eInjury.Error = "Validation Error:  Main Area of Impact must be between 1 and 12. "
-                }
-                else 
-                {                
-                    _val.push(_injury.ValueArray[0].val);
-                    valObj.IsNull = false;
-
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.05"] = valObj;
-                    delete valObj;     
-                }
+                _val.push("7701003");
+                valObj.NV = true;
             }
+        }
+        else {
+            for (var i = 0; i < _injury.ValueArray.length; i++) {
+                if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) {
+                    _val.push(_injury.ValueArray[i].val);
+                    valObj.IsNull = false;
+                }
+            };
+
         };
-    
-        
-        //eInjury.06///////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eInjury.IsValid == true)
-        {
-            _injury = getValue(_eL, "eInjury.06");
-            if (_injury.IsNull != true) 
-            {
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+
+    valObj.vSet = _val.slice(0);
+    eInjury["eInjury.04"] = valObj;
+    delete valObj;
+
+
+    ///eInjury.05////////////    
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.05");
+        if (_injury.IsNull != true) {
+
+            if ((_val[0] >= 1) && (_val[0] <= 12)) {
+                eInjury.Error = "Validation Error:  Main Area of Impact must be between 1 and 12. "
+            }
+            else {
                 _val.push(_injury.ValueArray[0].val);
                 valObj.IsNull = false;
 
                 valObj.vSet = _val.slice(0);
-                eInjury["eInjury.06"] = valObj;
-                delete valObj;     
+                eInjury["eInjury.05"] = valObj;
+                delete valObj;
             }
-        };
-    
-                
-    
-        //eInjury.07/////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-    
-        
-        if (eInjury.IsValid == true)
-        {
-            _injury = getValue(_eL, "eInjury.07");         
-            if (_injury.IsNull == true) 
-            {
-                if (isRequiredStateElement("eInjury.07")) 
-                {
-                    _val.push("7701003");
-                    valObj.NV = true;             
-                }
-                else
-                {
-                    _val.push("7701005");
-                    valObj.NV = true;             
-                }                 
-            }
-            else 
-            {
-                for (var i = 0; i < _injury.ValueArray.length; i++) {
-                    if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) {
-                        _val = _injury.ValueArray[i].val
-                        valObj.IsNull = false;
-                    }
-                }
-            }              
         }
-        else 
-        {
-            _val.push("7701001");
-            valObj.NV = true;             
+    };
+
+
+    //eInjury.06///////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.06");
+        if (_injury.IsNull != true) {
+            _val.push(_injury.ValueArray[0].val);
+            valObj.IsNull = false;
+
+            valObj.vSet = _val.slice(0);
+            eInjury["eInjury.06"] = valObj;
+            delete valObj;
+        }
+    };
+
+
+
+    //eInjury.07/////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.07");
+        if (_injury.IsNull == true) {
+            if (isRequiredStateElement("eInjury.07")) {
+                _val.push("7701003");
+                valObj.NV = true;
+            }
+            else {
+                _val.push("7701005");
+                valObj.NV = true;
+            }
+        }
+        else {
+            for (var i = 0; i < _injury.ValueArray.length; i++) {
+                if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) {
+                    _val.push(_injury.ValueArray[i].val);
+                }
+            }
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eInjury["eInjury.07"] = valObj;
+    delete valObj;
+
+
+    //eInjury.08//////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.08");
+        if (_injury.IsNull != true) {
+            for (var i = 0; i < _injury.ValueArray.length; i++) {
+                if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) {
+                    _val.push(_injury.ValueArray[i].val);
+                    valObj.IsNull = false;
+                }
+            };
+            eInjury.HasInjury = true;
+        }
+        valObj.vSet = _val.slice(0);
+        eInjury["eInjury.08"] = valObj;
+        delete valObj;
+    };
+
+
+    //eInjury.09/////////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.09");
+        if (_injury.IsNull != true) {
+            eInjury.HasInjury = true;
+            _val.push(_injury.ValueArray[0].val);
+            valObj.IsNull = false;
         };
         valObj.vSet = _val.slice(0);
-        eInjury["eInjury.07"] = valObj;
+        eInjury["eInjury.09"] = valObj;
         delete valObj;
+    };
 
 
-        //eInjury.08//////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;    
-        
-        if (eInjury.IsValid == true)
-        {
-            _injury = getValue(_eL, "eInjury.08");
-            if (_injury.IsNull != true) 
-            {        
-                for (var i = 0; i < _injury.ValueArray.length; i++) 
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) 
-                    {
-                        _val.push( _injury.ValueArray[i].val);
-                        valObj.IsNull = false;
-                    }
-                };
-                eInjury.HasInjury = true;
-            }                      
-            valObj.vSet = _val.slice(0);
-            eInjury["eInjury.08"] = valObj;
-            delete valObj;     
-        };
-                
-        
-        //eInjury.09/////////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;        
-        if (eInjury.IsValid == true)
-        {
-            _injury = getValue(_eL, "eInjury.09");
-            if (_injury.IsNull != true)            
-            {
-                eInjury.HasInjury = true;
-                _val.push(_injury.ValueArray[0].val);
-                valObj.IsNull = false;             
+    //eInjury.10///////////////
+    var _injury = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eInjury.IsValid == true) {
+        _injury = getValue(_eL, "eInjury.10");
+        if (_injury.IsNull != true) {
+            for (var i = 0; i < _injury.ValueArray.length; i++) {
+                if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1)) {
+                    _val.push(_injury.ValueArray[i].val);
+                    valObj.IsNull = false;
+                }
             };
-            valObj.vSet = _val.slice(0);
-            eInjury["eInjury.09"] = valObj;
-            delete valObj;     
+            eInjury.HasInjury = true;
         };
-            
-    
-        //eInjury.10///////////////
-        var _injury =[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;        
-        if (eInjury.IsValid == true)
-        {
-            _injury = getValue(_eL, "eInjury.10");
-            if (_injury.IsNull != true) 
-            {            
-                for (var i = 0; i < _injury.ValueArray.length; i++)
-                {
-                    if ((_injury.ValueArray[i].HasValue == true) && (_val.indexOf(_injury.ValueArray[i].val) == -1))
-                    {
-                        _val.push(_injury.ValueArray[i].val);
-                        valObj.IsNull = false;
-                    }
-                };
-                eInjury.HasInjury = true;
-            };
-            valObj.vSet = _val.slice(0);
-            eInjury["eInjury.10"] = valObj;
-            delete valObj;     
-        };
-    
-    
-        ////////////////////////////////////////
-        ////////////////////////////////////////
-    
+        valObj.vSet = _val.slice(0);
+        eInjury["eInjury.10"] = valObj;
+        delete valObj;
+    };
+
+
+    ////////////////////////////////////////
+    ////////////////////////////////////////
+
     ///////////////////////////////////////////            
-        eInjury["CollisionGroup"] = -1;
-        if (eInjury.IsValid == true) {
-            if (typeof pInjury.attributes.sections != 'undefined') {
-                var _cCG = [];  //if no sections, NA values                        
-                _cCG = getSectionIndex(pInjury.attributes.sections, "eInjury.CollisionGroup");
-                if (_cCG != -1) {
-                    var _eCCG = [];
-                    var _eCCG = pVitals.attributes.sections[_cCG].attributes.elements;
-                    eInjury["CollisionGroup"] = 1;
+    eInjury["CollisionGroup"] = -1;
+    if (eInjury.IsValid == true) {
+        if (typeof pInjury.attributes.sections != 'undefined') {
 
-                    //eInjury.11///////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCCG, "eInjury.11");
-                    if (_injury.IsNull != true) {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
+            var _cCG = [];  //if no sections, NA values                        
+            _cCG = getSectionIndex(pInjury, "eInjury.CollisionGroup");
 
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.11"] = valObj;
-                    delete valObj;
-                    //////////////////////////////
+            if (_cCG != -1) {
+                var _eCCG = [];
+                var _eCCG = pInjury.attributes.sections[_cCG].attributes.elements;
+                eInjury["CollisionGroup"] = 1;
 
-                    //alert("PhoneNumber")
+                //eInjury.11///////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.11");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
 
-                    //eInjury.12///////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCCG, "eInjury.12");
-                    if (_injury.IsNull == true) {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.12"] = valObj;
-                    delete valObj;
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.11"] = valObj;
+                delete valObj;
+                //////////////////////////////
 
-                    //eInjury.13/////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCCG, "eInjury.13");
-                    if (_injury.IsNull != true) {
-                        for (var i = 0; i <= _injury.ValueArray.length - 1; i++) {
-                            _val.push(_injury.ValueArray[i].val);
-                            valObj.IsNull = false;
+                //alert("PhoneNumber")
+
+                //eInjury.12///////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.12");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.12"] = valObj;
+                delete valObj;
+
+                //eInjury.13/////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.13");
+                if (_injury.IsNull != true) {
+                    for (var i = 0; i < _injury.ValueArray.length; i++) {
+                        var PhoneNumber = {};
+                        PhoneNumber.val = _injury.ValueArray[i].val
+                        if (typeof _injury.ValueArray[i].PhoneNumberType != 'undefined') {
+                            if (_injury.ValueArray[i].PhoneNumberType != null) {
+                                PhoneNumber.Type = _injury.ValueArray[i].PhoneNumberType;
+                            }
                         }
-                        eInjury.HasInjury = true;
+                        _val.push(PhoneNumber)
+                        delete PhoneNumber;
                     };
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.13"] = valObj;
-                    delete valObj;
+                    valObj.IsNull = false;
+                    eInjury.HasInjury = true;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.13"] = valObj;
+                delete valObj;
 
-                    //eInjury.14///////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCCG, "eInjury.14");
-                    if (_injury.IsNull != true) {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.14"] = valObj;
-                    delete valObj;
 
-                    //eInjury.15//////////////  
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCCG, "eInjury.15");
+                //eInjury.14///////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.14");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.14"] = valObj;
+                delete valObj;
+
+                //eInjury.15//////////////  
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.15");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.15"] = valObj;
+                delete valObj;
+
+                //eInjury.16//////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.16");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.16"] = valObj;
+                delete valObj;
+
+                //eInjury.17//////////////
+
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _injury = getValue(_eCCG, "eInjury.17");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.17"] = valObj;
+                delete valObj;
+
+                //eInjury.18//////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.18");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.18"] = valObj;
+                delete valObj;
+
+                //eInjury.19//////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _injury = getValue(_eCCG, "eInjury.19");
+                {
                     if (_injury.IsNull != true) {
                         eInjury.HasInjury = true;
                         _val.push(_injury.ValueArray[0].val);
                         valObj.IsNull = false;
                     }
 
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.15"] = valObj;
-                    delete valObj;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.19"] = valObj;
+                delete valObj;
+                //eInjury.20//////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.20");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.20"] = valObj;
+                delete valObj;
 
-                    //eInjury.16//////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCCG, "eInjury.16");
-                    if (_injury.IsNull != true) {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
+                //eInjury.21//////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.21");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.21"] = valObj;
+                delete valObj;
+
+                //eInjury.22//////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.22");
+
+                if (_injury.IsNull != true) {
+                    for (var i = 0; i < _injury.ValueArray.length; i++) {
+                        var DeltaVelocity = {};
+                        DeltaVelocity.val = _injury.ValueArray[i].val
+
+                        if (typeof _injury.ValueArray[i].Params != 'undefined') {
+
+                            if (typeof _injury.ValueArray[i].Params.VelocityUnit != 'undefined') {
+                                if (_injury.ValueArray[i].Params.VelocityUnit != null) {
+                                    DeltaVelocity.VelocityUnit = _injury.ValueArray[i].Params.VelocityUnit.value;
+                                }
+                            };
+
+                            if (typeof _injury.ValueArray[i].Params.DeltaVelocityOrdinal != 'undefined') {
+                                if (_injury.ValueArray[i].Params.DeltaVelocityOrdinal != null) {
+                                    DeltaVelocity.DeltaVelocityOrdinal = _injury.ValueArray[i].Params.DeltaVelocityOrdinal.value;
+                                }
+                            };
+                        }
                         valObj.IsNull = false;
+                        _val.push(DeltaVelocity)
+                        delete DeltaVelocity;
                     }
-
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.16"] = valObj;
-                    delete valObj;
-
-                    //eInjury.17//////////////
-
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _injury = getValue(_eCGP, "eInjury.17");
-                    if (_injury.IsNull != true) {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.17"] = valObj;
-                    delete valObj;
-
-                    //eInjury.18//////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCGP, "eInjury.18");
-                    if (_injury.IsNull != true) {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.18"] = valObj;
-                    delete valObj;
-
-                    //eInjury.19//////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _injury = getValue(_eCGP, "eInjury.19");
-                    {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
-                        valObj.IsNull = false;
-
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.19"] = valObj;
-                    delete valObj;
-
-                    //eInjury.20//////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCGP, "eInjury.20");
-                    if (_injury.IsNull != true) {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.20"] = valObj;
-                    delete valObj;
-
-                    //eInjury.21//////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCGP, "eInjury.21");
-                    if (_injury.IsNull != true) {
-                        eInjury.HasInjury = true;
-                        _val.push(_injury.ValueArray[0].val);
-                        valObj.IsNull = false;
-                    };
-
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.21"] = valObj;
-                    delete valObj;
-
-                    //eInjury.22//////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _injury = getValue(_eCGP, "eInjury.22");
-                    if (_injury.IsNull != true) {
-                        for (var i = 0; i <= _injury.ValueArray.length - 1; i++) {
-                            valObj.IsNull = false;
-                            _val.push(_injury.ValueArray[i].val)
-                        };
-                        _eInjury.HasInjury = true;
-                    };
-
                     valObj.vSet = _val.slice(0);
                     eInjury["eInjury.22"] = valObj;
                     delete valObj;
+                };
+                //eInjury.23///////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _injury = getValue(_eCCG, "eInjury.23");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val.push(_injury.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.23"] = valObj;
+                delete valObj;
 
-                    //eInjury.23///////////
+                //eInjury.24/////////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                if (eInjury.IsValid == true) {
+                    _injury = getValue(_eCCG, "eInjury.24");
+                    if (_injury.IsNull != true) {
+                        eInjury.HasInjury = true;
+                        _val.push(_injury.ValueArray[0].val);
+                        valObj.IsNull = false;
+                    }
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.24"] = valObj;
+                delete valObj;
+
+                //eInjury.25////////
+                var _injury = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _injury = getValue(_eCCG, "eInjury.25");
+                if (_injury.IsNull != true) {
+                    eInjury.HasInjury = true;
+                    _val = _einjury.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eInjury["eInjury.25"] = valObj;
+                delete valObj;
+
+            }
+        }
+    };
+
+    ///////////////////////////////////////////////                
+    ///////////////////////////////////////////   
+    eInjury["SeatGroup"] = -1;
+    if (eInjury.IsValid == true) {
+        if (typeof pInjury.attributes.sections != 'undefined') {
+            var _eSG = -1;  //if no sections, NA values   
+
+            _eSG = getSectionIndex(pInjury.attributes.sections[0], "eInjury.SeatGroup");
+
+            if (_eSG != -1) {
+                eInjury["SeatGroup"] = 1;
+                //var _eSG = [];
+                //var _eSG = pInjury.attributes.sections[0].attributes.sections[_cSG].attributes.elements;    
+                for (var x = 0; x <= _eSG.length - 1; x++) {
+                    var _elementList = [];
+                    _elementList = pInjury.attributes.sections[0].attributes.sections[_eSG[x]].attributes.elements;
+                    var SG = new Object();
+
+                    //eInjury.26////////     
                     var _injury = [];
                     var _val = [];
                     var valObj = {};
                     valObj.IsNull = true;
-                    _injury = getValue(_eCGP, "eInjury.23");
+                    _injury = getValue(_elementList, "eInjury.26");
+                    if (_injury.IsNull != true) {
+                        _val.push(_injury.ValueArray[0].val);
+                        valObj.IsNull = false;
+                    };
+                    valObj.vSet = _val.slice(0);
+                    SG["eInjury.26"] = valObj;
+                    delete valObj;
+
+
+                    //eInjury.27////////
+                    var _injury = [];
+                    var _val = [];
+                    var valObj = {};
+                    valObj.IsNull = true;
+                    _injury = getValue(_elementList, "eInjury.27");
+                    if (_injury.IsNull != true) {
+                        _val.push(_injury.ValueArray[0].val);
+                        valObj.IsNull = false;
+                    };
+                    valObj.vSet = _val.slice(0);
+                    SG["eInjury.27"] = valObj;
+                    delete valObj;
+
+                    //eInjury.28////////
+                    var _injury = [];
+                    var _val = [];
+                    var valObj = {};
+                    valObj.IsNull = true;
+
+                    _injury = getValue(_elementList, "eInjury.28");
                     if (_injury.IsNull != true) {
                         eInjury.HasInjury = true;
                         _val.push(_injury.ValueArray[0].val);
                         valObj.IsNull = false;
                     };
                     valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.23"] = valObj;
+                    SG["eInjury.28"] = valObj;
                     delete valObj;
 
-                    //eInjury.24/////////////
-                    var _injury = [];
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    if (eInjury.IsValid == true) {
-                        _injury = getValue(_eCGP, "eInjury.24");
-                        if (_injury.IsNull != true) {
-                            eInjury.HasInjury = true;
-                            _val.push(_injury.ValueArray[0].val);
-                            valObj.IsNull = false;
-                        }
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.24"] = valObj;
-                    delete valObj;
 
-                    //eInjury.25////////
+                    //eInjury.29////////
                     var _injury = [];
                     var _val = [];
                     var valObj = {};
                     valObj.IsNull = true;
 
-                    _injury = getValue(_eCCG, "eInjury.25");
+                    _injury = getValue(_elementList, "eInjury.29");
                     if (_injury.IsNull != true) {
                         eInjury.HasInjury = true;
-                        _val = _einjury.ValueArray[0].val;
+                        _val.push(_injury.ValueArray[0].val);
                         valObj.IsNull = false;
                     };
                     valObj.vSet = _val.slice(0);
-                    eInjury["eInjury.25"] = valObj;
+                    SG["eInjury.29"] = valObj;
                     delete valObj;
+
+
+                    SeatGroupArray.push(SG)
                 }
             }
-        };
-        
-        ///////////////////////////////////////////////                
-    ///////////////////////////////////////////   
-        
-        eInjury["SeatGroup"]=-1;
-        if (eInjury.IsValid == true) {
-            if(typeof pInjury.attributes.sections !='undefined')
-            {                        
-                var _cSG = -1;  //if no sections, NA values                        
-                _cSG = getSectionIndex(pInjury.attributes.sections, "eInjury.SeatGroup");                       
-                if (_cSG!= -1)
-                {        
-                    eInjury["SeatGroup"]=1;
-                    var _eSG = [];
-                    var _eSG = pVitals.attributes.sections[_cSG].attributes.elements;    
-                    for (var x = 0; x <= _sectionIndex3.length-1; x++)
-                    {
-                        var _elementList = [];
-                        _elementList = pInjury.attributes.sections[_sectionIndex1].attributes.sections[_sectionIndex3[x]].attributes.elements;                        
-                        var SG= new Object();
-    
-                        //eInjury.26////////     
-                        var _injury =[];
-                        var _val = [] ;       
-                        var valObj = {};
-                        valObj.IsNull = true;
-                        _injury = getValue(_elementList, "eInjury.26");
-                        if (_injury.IsNull != true)
-                        {
-                            _val.push(_injury.ValueArray[0].val);
-                            valObj.IsNull = false;
-                        };
-                        valObj.vSet = _val.slice(0);
-                        SG["eInjury.26"] = valObj;
-                        delete valObj;     
-                            
-                            
-                        //eInjury.27////////
-                        var _injury =[];
-                        var _val = [] ;       
-                        var valObj = {};
-                        valObj.IsNull = true;
-                        _injury = getValue(_elementList, "eInjury.27");
-                        if (_injury.IsNull != true)                    
-                        {
-                            _val.push(_injury.ValueArray[0].val);
-                            valObj.IsNull = false;
-                        };
-                        valObj.vSet = _val.slice(0);
-                        SG["eInjury.27"] = valObj;
-                        delete valObj;     
-    
-                        //eInjury.28////////
-                        var _injury =[];
-                        var _val = [] ;       
-                        var valObj = {};
-                        valObj.IsNull = true;
-    
-                        _injury = getValue(_elementList, "eInjury.28");
-                        if (_injury.IsNull != true) {
-                            eInjury.HasInjury = true;
-                            _val.push(_injury.ValueArray[0].val);
-                            valObj.IsNull = false;
-                        };
-                        valObj.vSet = _val.slice(0);
-                        SG["eInjury.28"] = valObj;
-                        delete valObj;     
-    
-    
-                        //eInjury.29////////
-                        var _injury =[];
-                        var _val = [] ;       
-                        var valObj = {};
-                        valObj.IsNull = true;
-    
-                        _injury = getValue(_elementList, "eInjury.29");
-                        if (_injury.IsNull != true) {                       
-                            eInjury.HasInjury = true;
-                            _val.push(_injury.ValueArray[0].val);
-                            valObj.IsNull = false;
-                        };
-                        valObj.vSet = _val.slice(0);
-                        SG["eInjury.29"] = valObj;
-                        delete valObj;     
-    
-    
-                        SeatGroupArray.push(SG)
-                    }
-                }
-            }
-        };
-        if (SeatGroupArray.length > 0) {
-            eInjury.SeatGroup = SeatGroupArray.slice(0)
-        };
+        }
+    };
+
+    if (SeatGroupArray.length > 0) {
+        eInjury.SeatGroup = SeatGroupArray.slice(0)
+    };
+
+    eInjury.ErrorList = ErrorList.slice(0);
     return eInjury;
 };
 var seteProcedures = function (TheCall) {
@@ -2319,361 +2322,302 @@ var seteProcedures = function (TheCall) {
     pProcedures = TheCall.pProcedures;
     var eProceduresGroup = new Object();
     var ProcedureGroupArray = new Array();
-     eProceduresGroup.IsValid = false;
-
-
-     ////////Check for cancelled calls, Standby, non-patient
-     if (pProcedures.HasDataSet == true)// && (TheCall.HasPatient == true) && (TheCall.HasTreatment == true) && (TheCall.IsStandBy == false)) 
-     {
-         eProcedures["ProcedureGroup"] = -1;
-         if(typeof pProcedures.attributes.sections !='undefined')
-         {
-             var _sI = [];
-             _sI = getSectionIndex(pProcedures, "eProcedures.ProcedureGroup")        
-             if(_sI.length >0)
-             {
-                 eProceduresGroup.IsValid = true;
-                 eProcedures["ProcedureGroup"]=_sI.length;
-                 grpLen = _sI.length;
-             }
-         }
-     }
-     else
-     {
-         grpLen = 1;
-     };
+    eProceduresGroup.IsValid = false;
+    var ErrorList = [];
+    ////////Check for cancelled calls, Standby, non-patient
+    if (pProcedures.HasDataSet == true)// && (TheCall.HasPatient == true) && (TheCall.HasTreatment == true) && (TheCall.IsStandBy == false)) 
+    {
+        eProcedures["ProcedureGroup"] = -1;
+        if (typeof pProcedures.attributes.sections != 'undefined') {
+            var _sI = [];
+            _sI = getSectionIndex(pProcedures, "eProcedures.ProcedureGroup")
+            if (_sI.length > 0) {
+                eProceduresGroup.IsValid = true;
+                eProcedures["ProcedureGroup"] = _sI.length;
+                grpLen = _sI.length;
+            }
+        }
+    }
+    else {
+        grpLen = 1;
+    };
 
     var ProceduresGroupArray = [];
-    for (var xx = 0; xx < grpLen; xx++) {
-        var ProcedureGroup = new Object();
 
-        if (pProcedures.HasDataSet == true) {
-            var elementList = [];
-            var elementList = pProcedures.attributes.sections[xx].attributes.elements;
-        };
-        //eProcedures.03////////////
-        eProcedures["ProcedureProvided"] = false
+    if (eProceduresGroup.IsValid == false) {
+        var ProcedureGroup = new Object();
         var _procedures = [];
         var _val = [];
         var valObj = {};
+        _val.push("7701001")
+        valObj.NV = true;
         valObj.IsNull = true;
-        if (eProceduresGroup.IsValid == true) {
-            _procedures = getValue(elementList, "eProcedures.03");
-            if (_procedures.IsNull == true) {
-                if (_procedures.HasPN == true) {
-                    if (_procedures.pn == "ContraindicationNoted") {
-                        valObj.PN = true;
-                        _val.push("8801001");
-                    }
-                    else if (_procedures.pn == "DeniedByOrder") {
-                        _val.push("8801003");
-                        valObj.PN = true;
-                    }
-                    else if (_procedures.pn == "Refused") {
-                        _val.push("8801019");
-                        valObj.PN = true;
+        valObj.vSet = _val.slice(0);
+        /*
+        ProcedureGroup["eProcedures.01"] = valObj;
+        ProcedureGroup["eProcedures.02"] = valObj;
+        ProcedureGroup["eProcedures.03"] = valObj;
+        ProcedureGroup["eProcedures.05"] = valObj;
+        ProcedureGroup["eProcedures.06"] = valObj;
+        ProcedureGroup["eProcedures.07"] = valObj;
+        ProcedureGroup["eProcedures.08"] = valObj;
+        ProcedureGroup["eProcedures.09"] = valObj;
+        ProcedureGroup["eProcedures.10"] = valObj;
+        ProcedureGroup["eProcedures.13"] = valObj;
+        ProcedureGroupArray.push(ProcedureGroup);
+        */
+    }
+    else
+    {
+        for (var xx = 0; xx < grpLen; xx++)
+        {
+            var ProcedureGroup = new Object();
 
-                    }
-                    else if (_procedures.pn == "UnabletoComplete") {
-                        _val.push("8801023");
-                        valObj.PN = true;
-                    }
-                };
+            if (pProcedures.HasDataSet == true)
+            {
+                var elementList = [];
+                var elementList = pProcedures.attributes.sections[xx].attributes.elements;
+                console.log(elementList)
+                eProceduresGroup.IsValid = true
+            };
+            //eProcedures.03////////////
+            eProcedures["ProcedureProvided"] = false
+            var _procedures     = [];
+            var _val            = [];
+            var valObj          = {};
+            valObj.IsNull       = true;
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.03");
+
+                console.log(_procedures)
 
                 if (_procedures.IsNull == true) {
-                    _val.push("7701003")
-                    valObj.NV = true;
+                    if (_procedures.HasPN == true) {
+                        if (_procedures.pn == "ContraindicationNoted") {
+                            valObj.PN = true;
+                            _val.push("8801001");
+                        }
+                        else if (_procedures.pn == "DeniedByOrder") {
+                            _val.push("8801003");
+                            valObj.PN = true;
+                        }
+                        else if (_procedures.pn == "Refused") {
+                            _val.push("8801019");
+                            valObj.PN = true;
+
+                        }
+                        else if (_procedures.pn == "UnabletoComplete") {
+                            _val.push("8801023");
+                            valObj.PN = true;
+                        }
+                    };
+
+                    if (_procedures.IsNull == true) {
+                        _val.push("7701003")
+                        valObj.NV = true;
+                    }
+                }
+                else {
+                    _val.push(_procedures.ValueArray[0].val);
+                    valObj.IsNull = false;
+                    eProcedures["ProcedureProvided"] = true;
                 }
             }
             else {
-                _val.push(_procedures.ValueArray[0].val);
-                valObj.IsNull = false;
-                eProcedures["ProcedureProvided"] = true;
-            }
-        }
-        else {
-            _val.push("7701001")
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.03"] = valObj;
-        delete valObj;
+                _val.push("7701001")
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.03"] = valObj;
+            delete valObj;
 
-        //eProcedures.01////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.01");
-            if (eProceduresGroup.IsValid == true) {
-                if (_procedures.IsNull == true) {
+            //eProcedures.01////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProceduresGroup.IsValid == true)
+            {
+                _procedures = getValue(elementList, "eProcedures.01");
+                console.log(_procedures)
+
+                    if (_procedures.IsNull == true) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+
+                    else {
+                        _val.push(_procedures.ValueArray[0].val);
+                        valObj.IsNull = false;
+                    }
+                }            
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.01"] = valObj;
+            delete valObj;
+
+
+            //eProcedures.02////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            //if (eProcedures["ProcedureProvided"] == true) {
+              
+            if (eProceduresGroup.IsValid == true)
+            {
+                _procedures = getValue(elementList, "eProcedures.02");
+                if (_procedures.IsNull == true)
+                {
                     _val.push("7701003");
                     valObj.NV = true;
                 }
-
                 else {
                     _val.push(_procedures.ValueArray[0].val);
                     valObj.IsNull = false;
                 }
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.01"] = valObj;
-        delete valObj;
+            }            
+            else
+            {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.02"] = valObj;
+            delete valObj;
 
 
-        //eProcedures.02////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.02");
+            //eProcedures.04////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+
             if (eProceduresGroup.IsValid == true) {
-                if (_procedures.IsNull == true) {
-                    _val.push("7701003");
-                    valObj.NV = true;
-                }
-                else {
-                    _val.push(_procedures.ValueArray[0].val);
-                    valObj.IsNull = false;
-                }
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.02"] = valObj;
-        delete valObj;
-
-
-        //eProcedures.04////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.04");
-            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.04");
                 if (_procedures.IsNull != true) {
                     _val.push(_procedures.ValueArray[0].val);
                     valObj.IsNull = false;
                 }
-            }
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.04"] = valObj;
-        delete valObj;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.04"] = valObj;
+            delete valObj;
 
-        //eProcedures.05////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.05");
-            if (_procedures.IsNull == true) {
-                _val.push("7701003");
-                valObj.NV = true;
-            }
-            else {
-                _val.push(_procedures.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.05"] = valObj;
-        delete valObj;
-
-        //eProcedures.06////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.06");
-            if (_procedures.IsNull == true) {
-                _val.push("7701003")
-            }
-            else {
-                _val.push(_procedures.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.06"] = valObj;
-        delete valObj;
-
-        //eProcedures.07////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.07");
-            if (_procedures.IsNull == true) {
-                _val.push("7701003");
-                valObj.NV = true;
-            }
-            else {
-                for (var i = 0; i < _procedures.ValueArray.length; i++) {
-                    if ((_procedures.ValueArray[i].HasValue == true) && (_val.indexOf(_procedures.ValueArray[i].val) == -1)) {
-                        _val = _procedures.ValueArray[i].val
-                        valObj.IsNull = false;
-                    }
-                };
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.07"] = valObj;
-        delete valObj;
-
-        //eProcedures.08////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.08");
-            if (_procedures.IsNull == true) {
-                _val.push("7701003");
-                valObj.NV = true;
-            }
-            else {
-                _val.push(_procedures.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.08"] = valObj;
-        delete valObj;
-
-        //eProcedures.09////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.09");
-            if (_procedures.IsNull == true) {
-                if (isRequiredStateElement("eProcedures.09")) {
+            //eProcedures.05////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            
+            
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.05");
+                if (_procedures.IsNull == true) {
                     _val.push("7701003");
                     valObj.NV = true;
                 }
                 else {
-                    _val.push("7701005");
-                    valObj.NV = true;
+                    _val.push(_procedures.ValueArray[0].val);
+                    valObj.IsNull = false;
                 }
             }
             else {
-                _val.push(_procedures.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.09"] = valObj;
-        delete valObj;
-
-
-        //eProcedures.10////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.10");
-            if (_procedures.IsNull == true) {
-                _val.push("7701003");
+                _val.push("7701001");
                 valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.05"] = valObj;
+            delete valObj;
+
+            //eProcedures.06////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.06");
+                if (_procedures.IsNull == true) {
+                    _val.push("7701003")
+                }
+                else {
+                    _val.push(_procedures.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
             }
             else {
-                _val.push(_procedures.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.10"] = valObj;
-        delete valObj;
+                _val.push("7701001");
+                valObj.NV = true;
+            };
 
-        //eProcedures.11////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.11");
-            if (_procedures.IsNull != true) {
-                _val.push(_procedures.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.11"] = valObj;
-        delete valObj;
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.06"] = valObj;
+            delete valObj;
 
-        //eProcedures.12////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.12");
-            if (_procedures.IsNull != true) {
-                _val.push(_procedures.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        ProcedureGroup["eProcedures.12"] = valObj;
-        delete valObj;
-
-        //eProcedures.13////////////
-        var _procedures = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProcedures["ProcedureProvided"] == true) {
-            _procedures = getValue(elementList, "eProcedures.13");
+            //eProcedures.07////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
             if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.07");
                 if (_procedures.IsNull == true) {
-                    if (isRequiredStateElement("eProcedures.13")) {
+                    _val.push("7701003");
+                    valObj.NV = true;
+                }
+                else {
+                    for (var i = 0; i < _procedures.ValueArray.length; i++) {
+                        if ((_procedures.ValueArray[i].HasValue == true) && (_val.indexOf(_procedures.ValueArray[i].val) == -1)) {
+                            _val.push(_procedures.ValueArray[i].val);
+                            valObj.IsNull = false;
+                        }
+                    };
+                }
+            }
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.07"] = valObj;
+            delete valObj;
+
+            //eProcedures.08////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.08");
+                if (_procedures.IsNull == true) {
+                    _val.push("7701003");
+                    valObj.NV = true;
+                }
+                else {
+                    _val.push(_procedures.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            }
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.08"] = valObj;
+            delete valObj;
+
+            //eProcedures.09////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.09");
+                if (_procedures.IsNull == true) {
+                    if (isRequiredStateElement("eProcedures.09")) {
                         _val.push("7701003");
                         valObj.NV = true;
                     }
@@ -2691,528 +2635,655 @@ var seteProcedures = function (TheCall) {
                 _val.push("7701001");
                 valObj.NV = true;
             };
-
             valObj.vSet = _val.slice(0);
-            ProcedureGroup["eProcedures.13"] = valObj;
+            ProcedureGroup["eProcedures.09"] = valObj;
             delete valObj;
-        };
-        ProcedureGroupArray.push(ProcedureGroup);
 
+
+            //eProcedures.10////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.10");
+                if (_procedures.IsNull == true) {
+                    _val.push("7701003");
+                    valObj.NV = true;
+                }
+                else {
+                    _val.push(_procedures.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            }
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.10"] = valObj;
+            delete valObj;
+
+            //eProcedures.11////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.11");
+                if (_procedures.IsNull != true) {
+                    _val.push(_procedures.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.11"] = valObj;
+            delete valObj;
+
+            //eProcedures.12////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.12");
+                if (_procedures.IsNull != true) {
+                    _val.push(_procedures.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            }
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProcedureGroup["eProcedures.12"] = valObj;
+            delete valObj;
+
+            //eProcedures.13////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProceduresGroup.IsValid == true) {
+                _procedures = getValue(elementList, "eProcedures.13");
+                if (eProceduresGroup.IsValid == true) {
+                    if (_procedures.IsNull == true) {
+                        if (isRequiredStateElement("eProcedures.13")) {
+                            _val.push("7701003");
+                            valObj.NV = true;
+                        }
+                        else {
+                            _val.push("7701005");
+                            valObj.NV = true;
+                        }
+                    }
+                    else {
+                        _val.push(_procedures.ValueArray[0].val);
+                        valObj.IsNull = false;
+                    }
+                }
+                else {
+                    _val.push("7701001");
+                    valObj.NV = true;
+                };
+
+                valObj.vSet = _val.slice(0);
+                ProcedureGroup["eProcedures.13"] = valObj;
+                delete valObj;
+            };
+
+            ProcedureGroupArray.push(ProcedureGroup);
+        }
     };
 
-        
-    eProcedures.ProcedureGroup = ProcedureGroupArray.slice(0)
-    return eProcedures     
+    eProcedures.ErrorList = ErrorList.slice(0);
+    if (ProcedureGroupArray.length > 0) {
+        eProcedures.ProcedureGroup = ProcedureGroupArray.slice(0)
+    }
+    else {
+        eProcedures.ProcedureGroup = ProcedureGroup;
+    }
+    return eProcedures
 };
 var seteMedications = function (TheCall) {
-    
+    var ErrorList = [];
     var pMedications = new Object();
-    var eMedications=new Object();
+    var eMedications = new Object();
     eMedications.IsValid = false;
-
     ////////Check for cancelled calls, Standby, non-patient
-    
+
     pMedications = TheCall.pMedications;
     eMedications.IsValid = false;
     var grpMed = 1;
     eMedications["MedicationGroup"] = -1;
     if (pMedications.HasDataSet == true) //&& (TheCall.HasPatient == true) && (TheCall.HasTreatment == true)) 
     {
-        if(typeof pMedications.attributes.sections !='undefined')
-        {
+        if (typeof pMedications.attributes.sections != 'undefined') {
             var _sI = [];
             _sI = getSectionIndex(pMedications, "eMedications.MedicationGroup");
-            if(_sI.length >0)
-            {
-                eMedications["MedicationGroup"]=_sI.length;
+            if (_sI.length != -1) {
+                eMedications["MedicationGroup"] = _sI.length;
                 eMedications.IsValid = true;
                 grpMed = _sI.length;
             }
         }
     };
-        
     var MedicationGroupArray = [];
-    for (var xx = 0; xx < grpMed; xx++) 
-    {
+    if (eMedications.IsValid == false) {
+        //if no meds, set Not value
+        var _meds = [];
+        var _val = [];
+        var valObj = {};
+        _val.push("7701001")
+        valObj.NV = true;
+        valObj.IsNull = true;
+
+        valObj.vSet = _val.slice(0);
         var MedicationGroup = new Object();
-        eMedications["MedsAdministered"] = false;
-        if (eMedications["MedicationGroup"] != -1) {
-            var _eL = pMedications.attributes.sections[grpMed[xx]].attributes.elements;            
-        };
-        //eMedications.03////////
-        var _meds= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eMedications.IsValid == true)
-        {
-            _meds = getValue(_eL, "eMedications.03");
-            if (_val == null) 
-            {
-                if (_eMeds.HasPN == true) 
-                {
-                    if (_eMeds.pn == "ContraindicationNoted") 
-                    {
-                        _val.push("8801001");
-                        valObj.PN = true;            
-                    }
-                    else if (_eMeds.pn == "DeniedByOrder") 
-                    {
-                        _val.push("8801001");
-                        valObj.PN = true;            
-                    }
-                    else if (_eMeds.pn == "Refused") 
-                    {
-                        _val.push("8801019");
-                        valObj.PN = true;            
-                    }
-                    else if (_eMeds.pn == "UnabletoComplete") 
-                    {
-                        _val.push("8801023");
-                        valObj.PN = true;            
-                    }
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eMedications.03")) {
-                        _val.push("7701003");
-                        valObj.NV = true;            
-                    }
-                }
-            }
-            else {
-                _val.push( _meds.ValueArray[0].val);
-                valObj.IsNull = false;
-                MedicationGroup["MedsAdministered"]=true;
-            }
-        }
-        else {
-            _val.push("7701001")
-            valObj.NV = true;            
-        };
-        valObj.vSet = _val.slice(0);
-        MedicationGroup["eMedications.03"] = valObj;
-        delete valObj;
-        
-        //eMedications.01////////
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eMedications["MedsAdministered"]==true)
-        {
-            _meds = getValue(_eL, "eMedications.01");
-            if (_meds.IsNull == true) {
-                _val.push("7701003");
-                valObj.NV = true;            
-            }
-            else {
-                _val.push( _meds.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }        
-        else 
-        {
-            _val.push("7701001");
-            valObj.NV = true;            
-        };
-        valObj.vSet = _val.slice(0);
+        var DosageGroup = new Object();
+
+
         MedicationGroup["eMedications.01"] = valObj;
-        delete valObj;
-
-
-        //eMedications.02////////
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        
-        if (eMedications["MedsAdministered"] == true)
-        {
-            _meds = getValue(_eL, "eMedications.02");
-        
-            if (_val == null) 
-            {
-                _val.push("7701003");
-                valObj.NV = true;            
-            }
-            else {
-                _val.push( _meds.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.NV = true;                        
-        };
-        valObj.vSet = _val.slice(0);
         MedicationGroup["eMedications.02"] = valObj;
-        delete valObj;
-        
-        //eMedications.04////////
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eMedications["MedsAdministered"]==true)
-        {
-            _meds = getValue(_eL, "eMedications.04");
-            if (_meds.IsNull == true) 
-            {
-                if (isRequiredStateElement("eMedications.04")) 
-                {                    
-                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eMedications.04", Description: "Validation Error: Medication Administered Route Required. " })
-                }
-                else 
-                {
-                    _val.push( _meds.ValueArray[0].val);
-                    valObj.IsNull = false;
-                }
-            }
-        };
-        valObj.vSet = _val.slice(0);
-        MedicationGroup["eMedications.04"] = valObj;
-        delete valObj;
-        //////////////////////////////////////////////
-        //////////////////////////////////////////////
-        
-        eMedications["DosageGroup"] = -1;
-        var _s1 = -1;
-        if (pMedications.HasDataSet == true) {
-            _s1 = getSectionIndex(pMedications.attributes.sections[xx], "eMedications.DosageGroup");
-
-        };
-        if (_s1 != -1) {
-            var _eD = pMedications.attributes.sections[grpMed[xx]].attributes.elements;            
-            eMedications["DosageGroup"]=1;
-        };
-            //eMedications.05/////////////
-            var _procedures= [];
-            var _val = [];
-            var valObj = {};
-            valObj.IsNull = true;
-            if(eMedications["MedsAdministered"]==true)
-            {
-                _meds = getValue(_eD, "eMedications.05");
-                if (_meds.IsNull == true) {
-                    _val.push("7701003");
-                    valObj.NV = true;                                }
-                else {
-                    _val.push( _meds.ValueArray[0].val);
-                    valObj.IsNull = false;
-                }
-            }
-            else 
-            {
-                _val.push("7701001");
-                valObj.NV = true;                            
-            };
-            valObj.vSet = _val.slice(0);
-            MedicationGroup["eMedications.05"] = valObj;
-            delete valObj;
-
-            //eMedications.06//////////////
-            var _procedures= [];
-            var _val = [];
-            var valObj = {};
-            valObj.IsNull = true;
-            if(eMedications["MedsAdministered"]==true)
-            {
-                _meds = getValue(_eD, "eMedications.06");
-                if (_meds.IsNull == true) {
-                    _val.push("7701003");
-                    valObj.NV = true;                                
-                }
-                else {
-                    _val.push( _meds.ValueArray[0].val);
-                    valObj.IsNull = false;
-                }
-            }
-            else {
-                _val.push("7701001");
-                valObj.NV = true;            
-            };
-            valObj.vSet = _val.slice(0);
-            MedicationGroup["eMedications.06"] = valObj;
-            delete valObj;
-        
-        
-        //eMedications.07/////////////////
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eMedications["MedsAdministered"]==true)
-        {
-            _meds = getValue(_eL, "eMedications.07");
-            if (_meds.IsNull == true) {
-                _val.push("7701003");
-                valObj.NV = true;            
-            }
-            else {
-                _val.push( _meds.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else 
-        {
-            _val.push("7701001");
-            valObj.NV = true;            
-        };
-        valObj.vSet = _val.slice(0);
+        MedicationGroup["eMedications.03"] = valObj;
+        DosageGroup["eMedications.05"] = valObj;
+        DosageGroup["eMedications.06"] = valObj;
         MedicationGroup["eMedications.07"] = valObj;
-        delete valObj;
+        MedicationGroup["eMedications.08"] = valObj;
+        MedicationGroup["eMedications.09"] = valObj;
+        MedicationGroup["eMedications.10"] = valObj;
+        MedicationGroup.DosageGroup = DosageGroup;
 
-        //eMedications.08////////////
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eMedications["MedsAdministered"]==true)
-        {
-            _meds = getValue(_eL, "eMedications.08");
-            {
-                if (_meds.IsNull == true) 
-                {
-                    _val.push("7701003");
-                    valObj.NV = true;            
-                }
-                else 
-                {            
-                    for (var i = 0; i < _meds.ValueArray.length; i++)
-                    {
-                        if ((_meds.ValueArray[i].HasValue == true) && (_val.indexOf(_meds.ValueArray[i].val) == -1)) 
-                        {
-                            _val.push(_meds.ValueArray[i].val);
-                            valObj.IsNull = false;
+
+    }
+    else {
+        for (var xx = 0; xx < grpMed; xx++) {
+            var MedicationGroup = new Object();
+            eMedications["MedsAdministered"] = false;
+            if (eMedications["MedicationGroup"] != -1) {
+                var _eL = pMedications.attributes.sections[xx].attributes.elements;
+            };
+
+            //eMedications.03////////
+            var _meds = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications.IsValid == true) {
+                _meds = getValue(_eL, "eMedications.03");
+                if (_meds.IsNull == true) {
+                    if (_eMeds.HasPN == true) {
+                        if (_eMeds.pn == "ContraindicationNoted") {
+                            _val.push("8801001");
+                            valObj.PN = true;
+                        }
+                        else if (_eMeds.pn == "DeniedByOrder") {
+                            _val.push("8801001");
+                            valObj.PN = true;
+                        }
+                        else if (_eMeds.pn == "Refused") {
+                            _val.push("8801019");
+                            valObj.PN = true;
+                        }
+                        else if (_eMeds.pn == "UnabletoComplete") {
+                            _val.push("8801023");
+                            valObj.PN = true;
+                        }
+                    }
+                    else {
+                        if (isRequiredStateElement("eMedications.03")) {
+                            _val.push("7701003");
+                            valObj.NV = true;
                         }
                     }
                 }
+                else {
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
+                    eMedications["MedsAdministered"] = true;
+                }
             }
-        }
-        else 
-        {
-            _val.push("7701001");
-            valObj.NV = true;            
-        };
+            else {
+                _val.push("7701001")
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            MedicationGroup["eMedications.03"] = valObj;
+            delete valObj;
 
-        valObj.vSet = _val.slice(0);
-        MedicationGroup["eMedications.08"] = valObj;
-        delete valObj;
-
-        //eMedications.09//////////////
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eMedications["MedsAdministered"]==true)
-        {
-            _meds = getValue(_eL, "eMedications.09");
-            if (_meds.IsNull == true) 
-            {
-                if (isRequiredStateElement("eMedications.09")) 
-                {
+            //eMedications.01////////
+            var _meds = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.01");
+                if (_meds.IsNull == true) {
                     _val.push("7701003");
-                    valObj.NV = true;                                
+                    valObj.NV = true;
                 }
                 else {
-                    _val.push("7701005");
-                    valObj.NV = true;                                
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
                 }
             }
             else {
-                _val.push( _meds.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else 
-        {
-            _val.push("7701001");
-            valObj.NV = true;                      
-        };
-        valObj.vSet = _val.slice(0);
-        MedicationGroup["eMedications.09"] = valObj;
-        delete valObj;
-
-        //eMedications.10////////////
-            
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eMedications["MedsAdministered"]==true)
-        {
-            _meds = getValue(_eL, "eMedications.10");
-            if (_meds.IsNull == true) 
-            {
-                _val.push("7701003")
-                valObj.NV = true;            
-
-            }
-            else {
-                _val.push( _meds.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-
-        }
-        else {
-            _val.push("7701001")
-            valObj.NV = true;            
-        };
-        valObj.vSet = _val.slice(0);
-        MedicationGroup["eMedications.10"] = valObj;
-        delete valObj;
-
-        //eMedications.11///////////
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eMedications["MedsAdministered"]==true)
-        {
-            _meds = getValue(_eL, "eMedications.11");
-            _val.push( _meds.ValueArray[0].val);
-            valObj.IsNull = false;
-            
-            valObj.vSet = _val.slice(0);
-            MedicationGroup["eMedications.11"] = valObj;
-            delete valObj;
-        };
-
-        //eMedications.12/////////////
-        var _procedures= [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eMedications["MedsAdministered"]==true)
-        {
-            _meds = getValue(_eL, "eMedications.12");
-            if (_meds.IsNull != true) 
-            {
-                _val.push( _meds.ValueArray[0].val);
-                valObj.IsNull = false;
+                _val.push("7701001");
+                valObj.NV = true;
             };
             valObj.vSet = _val.slice(0);
             MedicationGroup["eMedications.01"] = valObj;
             delete valObj;
+
+
+            //eMedications.02////////
+            var _meds = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.02");
+
+                if (_meds.IsNull == true) {
+                    _val.push("7701003");
+                    valObj.NV = true;
+                }
+                else {
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            }
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            MedicationGroup["eMedications.02"] = valObj;
+            delete valObj;
+
+            //eMedications.04////////
+            var _meds = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.04");
+                if (_meds.IsNull == true) {
+                    if (isRequiredStateElement("eMedications.04")) {
+                        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eMedications.04", Description: "Validation Error: Medication Administered Route Required. " })
+                    }
+                }
+                else {
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
+
+                }
+            };
+            valObj.vSet = _val.slice(0);
+            MedicationGroup["eMedications.04"] = valObj;
+            delete valObj;
+
+            //////////////////////////////////////////////
+            //////////////////////////////////////////////
+
+            MedicationGroup["DosageGroup"] = -1;
+            var _s1 = -1;
+            if (pMedications.HasDataSet == true) {
+                _s1 = getSectionIndex(pMedications.attributes.sections[xx], "eMedications.DosageGroup");
+
+            };
+
+            if (_s1 != -1) {
+                var MedsDosage = {};
+
+                var _eD = pMedications.attributes.sections[xx].attributes.sections[_s1].attributes.elements;
+                MedicationGroup["DosageGroup"] = 1;
+                //eMedications.05/////////////
+                var _meds = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                if (eMedications["MedsAdministered"] == true) {
+                    _meds = getValue(_eD, "eMedications.05");
+                    if (_meds.IsNull == true) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push(_meds.ValueArray[0].val);
+                        valObj.IsNull = false;
+                    }
+                }
+                else {
+                    _val.push("7701001");
+                    valObj.NV = true;
+                };
+                valObj.vSet = _val.slice(0);
+                MedsDosage["eMedications.05"] = valObj;
+                delete valObj;
+
+                //eMedications.06//////////////
+                var _meds = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                if (eMedications["MedsAdministered"] == true) {
+                    _meds = getValue(_eD, "eMedications.06");
+                    if (_meds.IsNull == true) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push(_meds.ValueArray[0].val);
+                        valObj.IsNull = false;
+                    }
+                }
+                else {
+                    _val.push("7701001");
+                    valObj.NV = true;
+                };
+                valObj.vSet = _val.slice(0);
+                MedsDosage["eMedications.06"] = valObj;
+                delete valObj;
+
+                var DosageGroup = {};
+                DosageGroup["eMedications.05"] = MedsDosage["eMedications.05"];
+                DosageGroup["eMedications.06"] = MedsDosage["eMedications.06"];
+                MedicationGroup.DosageGroup = DosageGroup;
+
+            }
+            else {
+                var MedsDosage = {};
+                var DosageGroup = {};
+
+                var _meds = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _val.push("7701001");
+                valObj.NV = true;
+
+                valObj.vSet = _val.slice(0);
+                MedsDosage["eMedications.05"] = valObj;
+                MedsDosage["eMedications.06"] = valObj;
+                DosageGroup["eMedications.05"] = MedsDosage["eMedications.05"];
+                DosageGroup["eMedications.06"] = MedsDosage["eMedications.06"];
+            };
+
+
+            //eMedications.07/////////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.07");
+                if (_meds.IsNull == true) {
+                    _val.push("7701003");
+                    valObj.NV = true;
+                }
+                else {
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            }
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            MedicationGroup["eMedications.07"] = valObj;
+            delete valObj;
+
+            //eMedications.08////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.08");
+                {
+                    if (_meds.IsNull == true) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        for (var i = 0; i < _meds.ValueArray.length; i++) {
+                            if ((_meds.ValueArray[i].HasValue == true) && (_val.indexOf(_meds.ValueArray[i].val) == -1)) {
+                                _val.push(_meds.ValueArray[i].val);
+                                valObj.IsNull = false;
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+
+            valObj.vSet = _val.slice(0);
+            MedicationGroup["eMedications.08"] = valObj;
+            delete valObj;
+
+            //eMedications.09//////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.09");
+                if (_meds.IsNull == true) {
+                    if (isRequiredStateElement("eMedications.09")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+                else {
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            }
+            else {
+                _val.push("7701001");
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            MedicationGroup["eMedications.09"] = valObj;
+            delete valObj;
+
+            //eMedications.10////////////
+
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.10");
+                if (_meds.IsNull == true) {
+                    _val.push("7701003")
+                    valObj.NV = true;
+
+                }
+                else {
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+
+            }
+            else {
+                _val.push("7701001")
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            MedicationGroup["eMedications.10"] = valObj;
+            delete valObj;
+
+            //eMedications.11///////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.11");
+                if (_meds.IsNull != true) {
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                MedicationGroup["eMedications.11"] = valObj;
+                delete valObj;
+            };
+
+            //eMedications.12/////////////
+            var _procedures = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eMedications["MedsAdministered"] == true) {
+                _meds = getValue(_eL, "eMedications.12");
+                if (_meds.IsNull != true) {
+                    _val.push(_meds.ValueArray[0].val);
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                MedicationGroup["eMedications.12"] = valObj;
+                delete valObj;
+            }
+
         }
-        MedicationGroupArray.push(MedicationGroup);
     };
+    MedicationGroupArray.push(MedicationGroup);
+
+    eMedications.ErrorList = ErrorList.slice(0);
     eMedications.MedicationGroup = MedicationGroupArray.slice(0);
     return eMedications;
 };
 var seteProtocols = function (TheCall) {
-    
+
     var eProtocols = new Object()
     var pProtocols = new Object()
-    
+    var ErrorList = [];
     var ProtocolGroupArray = new Array()
     pProtocols = TheCall.pProtocols;
-
     eProtocols["ProtocolGroup"] = -1;
     grpCount = 1
     eProtocols.IsValid = false;
 
-    if (pProtocols.HasDataSet == true) 
-    {
+    if (pProtocols.HasDataSet == true) {
         var _sI = [];
         _sI = getSectionIndex(pProtocols, "eProtocols.ProtocolGroup")
         if (_sI != -1) {
-            var _eL = pProtocols.attributes.sections[_sectionIndex[xx]].attributes.elements;
-        };
-        if(_eL.length>0)
-        {
-            eProtocols["ProtocolGroup"]=_eL.length;
-            grpCount = _eL.length;
+            grpCount = _sI.length;
             eProtocols.IsValid = true;
         };
-    };
-    for (var xx = 0; xx < grpCount; xx++) {
+    }
+    else {
         var ProtocolGroup = new Object();
 
-        ///////////eProtocols.01////////
-        var _protocol = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        eProtocols["IsValid"] = false;
-        if (eProtocols.IsValid == true)
-        {
-            _protocol = getValue(elementList, "eProtocols.01");        
-            if (_protocol.IsNull == true) {
-                _val.push("7701003")
-                valObj.NV = true;
-            }
-            else {
-                _val = _protocol.ValueArray[0].val;
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001")
-            valObj.NV = true;
-        };
+        _val.push("7701001")
+        valObj.NV = true;
         valObj.vSet = _val.slice(0);
+
         ProtocolGroup["eProtocols.01"] = valObj;
-        delete valObj;
-
-
-        ///////////eProtocols.02////////
-        var _protocol = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eProtocols["IsValid"] == true)
-        {
-            _protocol = getValue(elementList, "eProtocols.02");
-            if (_protocol.IsNull == true) {
-                __val.push("7701003")
-                valObj.NV = true;
-
-            }
-            else {
-                _val = _protocol.ValueArray[0].val;
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001")
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
         ProtocolGroup["eProtocols.02"] = valObj;
-        delete valObj;
         ProtocolGroupArray.push(ProtocolGroup)
     };
+    if (eProtocols.IsValid == true) {
+        for (var xx = 0; xx < grpCount; xx++) {
+            var ProtocolGroup = new Object();
+            var _eL = [];
+            if (typeof pProtocols.attributes.sections != 'undefined') {
+                var _eL = pProtocols.attributes.sections[_sI[xx]].attributes.elements;
+            };
+
+            ///////////eProtocols.01////////
+            var _protocol = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProtocols.IsValid == true) {
+                _protocol = getValue(_eL, "eProtocols.01");
+                if (_protocol.IsNull == true) {
+                    _val.push("7701003")
+                    valObj.NV = true;
+                }
+                else {
+                    _val.push(_protocol.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            }
+            else {
+                _val.push("7701001")
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProtocolGroup["eProtocols.01"] = valObj;
+            delete valObj;
+
+
+            ///////////eProtocols.02////////
+            var _protocol = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eProtocols["IsValid"] == true) {
+                _protocol = getValue(_eL, "eProtocols.02");
+                if (_protocol.IsNull == true) {
+                    _val.push("7701003")
+                    valObj.NV = true;
+
+                }
+                else {
+                    _val.push(_protocol.ValueArray[0].val);
+                    valObj.IsNull = false;
+                }
+            }
+            else {
+                _val.push("7701001")
+                valObj.NV = true;
+            };
+            valObj.vSet = _val.slice(0);
+            ProtocolGroup["eProtocols.02"] = valObj;
+            delete valObj;
+            ProtocolGroupArray.push(ProtocolGroup)
+        }
+    };
     eProtocols.ProtocolGroup = ProtocolGroupArray.slice(0);
+    eProtocols.ErrorList = ErrorList.slice(0);
     return eProtocols;
+
 };
-var seteScene = function (TheCall) 
-{
+var seteScene = function (TheCall) {
     var ErrorList = [];
     pScene = TheCall.pScene;
     var eScene = new Object();
     eScene["HasDelay"] = false;
     var ErrorList = [];
-    if (pScene.HasDataSet == false)
-    {
+    if (pScene.HasDataSet == false) {
         eScene["IsValid"] = false;
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eScene", Description: "eScene.HasDataSet =false  " });    
+        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eScene", Description: "eScene.HasDataSet =false  " });
     }
-    else
-    {
-        if (typeof pScene.attributes.elements != 'undefined')
-        {
+    else {
+        if (typeof pScene.attributes.elements != 'undefined') {
             var _eL = [];
             _eL = pScene.attributes.elements;
-            if (_eL[0] != -1)
-            {
+            if (_eL[0] != -1) {
                 eScene.IsValid = true;
             }
         }
     };
 
-    /* 
+
 
     ///////////////////////////////////////////////////   
     //////////////////////eScene.01
@@ -3220,15 +3291,12 @@ var seteScene = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (eScene.IsValid == true)
-    {
+    if (eScene.IsValid == true) {
         //This pattern verifies that the EMS Agency 
         //Number in eScene.01 matches the EMS Agency Number in dAgency.02.
         _scene = getValue(_eL, "eScene.01");
-        if (_scene.IsNull == true) 
-        {
-            if (isRequiredStateElement("eScene.01"))
-            {
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.01")) {
                 _val.push("7701003");
                 valObj.NV = true;
             }
@@ -3238,15 +3306,12 @@ var seteScene = function (TheCall)
             //                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eScene.01", Description: "EMS Agency Number  dAgency.02             Must equal eScene.01" })
             //            }            
             //
-        else
-
-        {
+        else {
             _val.push(_scene.ValueArray[0].val);
             valObj.IsNull = false;
         }
     }
-    else
-    {
+    else {
         _val.push("7701001");
         valObj.NV = true;
     };
@@ -3256,27 +3321,22 @@ var seteScene = function (TheCall)
 
     eScene["ResponderGroup"] = -1;
     ///////////////////////////////////////eScene.ResponderGroup
-    if (eScene.IsValid == true)
-    {
-        if (typeof pScene.attributes.sections != 'undefined') 
-        {
+    if (eScene.IsValid == true) {
+        if (typeof pScene.attributes.sections != 'undefined') {
             var _sRG = [];
             eScene["ResponderGroup"] = -1;
             _sRG = getSectionIndex(pScene, "eScene.ResponderGroup");
-    
-            if (_sRG[0] != -1) 
-            {
+
+            if (_sRG[0] != -1) {
                 eScene["ResponderGroup"] = _sRG.length;
             }
         }
     };
-    if (eScene["ResponderGroup"] !=-1)
-    {
+    if (eScene["ResponderGroup"] != -1) {
         RpdrGrpArray = [];
-        for (var i = 0; i < _sRG.length; i++)
-        {
+        for (var i = 0; i < _sRG.length; i++) {
             var ResponderGroup = new Object();
-            var _eRG=[];
+            var _eRG = [];
             _eRG = pScene.attributes.sections[_sRG[i]].attributes.elements
             //////////////////////eScene.02
             var _scene = [];
@@ -3331,602 +3391,602 @@ var seteScene = function (TheCall)
         }
         eScene.ResponderGroup = RpdrGrpArray;
     };
-    
-    
-        //////////////////////eScene.05    
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eScene.IsValid == true)
-        {
-            _scene = getValue(_eL, "eScene.05");
-            if (_scene.IsNull != true) 
-            {
-                _val.push(_scene.ValueArray[0].val);
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-            };
-        }
-
-      
-        eScene["eScene.05"] = valObj;
-        delete valObj;
-    
-            //////////////////////eScene.06
-        var _scene = [];  
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
 
 
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined'))
-        {
-            _scene = getValue(_eL, "eScene.06");
-            
-            if (_scene.IsNull == true) 
-            {
-                if (isRequiredStateElement("eScene.06") == true) 
-                {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else 
-            {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;                    
-            };
-
-            if (_val[0] == '2707003')
-            {
-                    ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eScene.08", Description: "Dispatch Delay Type Conflict" })
-                    eScene["HasPatients"] = false;
-            }
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
+    //////////////////////eScene.05    
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.05");
+        if (_scene.IsNull != true) {
+            _val.push(_scene.ValueArray[0].val);
+            valObj.IsNull = false;
+            valObj.vSet = _val.slice(0);
         };
-        valObj.vSet = _val.slice(0);
-        eScene["eScene.06"] = valObj;
-        delete valObj;
- 
+    }
 
-        //////////////////////eScene.07
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined'))
-        {
-            _scene = getValue(_eL, "eScene.07");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.07") == true) {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
+
+    eScene["eScene.05"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.06
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.06");
+
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.06") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
             }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-            };
-
         }
         else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
         };
-        valObj.vSet = _val.slice(0);
-       eScene["eScene.07"] = valObj;
-        delete valObj;
-    
+
+        if (_val[0] == '2707003') {
+            ErrorList.push({ Version: "3.3.4", Severity: "2", ElementID: "eScene.08", Description: "Dispatch Delay Type Conflict" })
+            eScene["HasPatients"] = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.06"] = valObj;
+    delete valObj;
+
+
+    //////////////////////eScene.07
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+    _scene = getValue(_eL, "eScene.07");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.07") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+        };
+
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.07"] = valObj;
+    delete valObj;
+
     //////////////////////eScene.08
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.08");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.08") == true) {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-            };
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
 
-        }
-        else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        eScene["eScene.08"] = valObj;
-        delete valObj;
-
-
-        //////////////////////eScene.09
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.09");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.09") == true) {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-            };
-
-        }
-        else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-
-        valObj.vSet = _val.slice(0);
-        eScene["eScene.09"] = valObj;
-        delete valObj;
-
-        //////////////////////eScene.10
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.10");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.10") == true) {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-                else {
-                    _val.push("7701005");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.08");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.08") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
             }
         }
         else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
         };
 
-        valObj.vSet = _val.slice(0);
-        eScene["eScene.10"] = valObj;
-        delete valObj;
-    
-        //////////////////////eScene.11
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
+    }
+    else {
+        _val.push("7701001");
         valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.10");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.10") == true) {
-                    //ErrorList.                
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.10"] = valObj;
-                delete valObj;
-            }
-        };
-
-        //////////////////////eScene.12
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.12");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.12") == true) {
-                    //ErrorList.                
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.12"] = valObj;
-                delete valObj;
-            }
-        };
-
-        //////////////////////eScene.13
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.13");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.13") == true) {
-                    //ErrorList.                
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.13"] = valObj;
-                delete valObj;
-            }
-        };
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.08"] = valObj;
+    delete valObj;
 
 
-        //////////////////////eScene.14
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
+    //////////////////////eScene.09
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
 
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.14");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.14") == true) {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.14"] = valObj;
-                delete valObj;
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.09");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.09") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
             }
         }
         else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
         };
 
-
-        //////////////////////eScene.15
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
+    }
+    else {
+        _val.push("7701001");
         valObj.IsNull = true;
+        valObj.NV = true;
+    };
 
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.15");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.15") == true) {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.15"] = valObj;
-                delete valObj;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-        //////////////////////eScene.16
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.09"] = valObj;
+    delete valObj;
 
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.16");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.16") == true) {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.16"] = valObj;
-                delete valObj;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
+    //////////////////////eScene.10
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
 
-        //////////////////////eScene.17
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.17");
-            if (_scene.IsNull == true) {
-                if (isRequiredStateElement("eScene.17") == true) {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.17"] = valObj;
-                delete valObj;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-        //////////////////////eScene.18
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
-            _scene = getValue(_eL, "eScene.18");
-            if (_scene.IsNull == true) {
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.10");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.10") == true) {
                 _val.push("7701003");
                 valObj.IsNull = true;
                 valObj.NV = true;
             }
             else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.18"] = valObj;
-                delete valObj;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-        //////////////////////eScene.19
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined'))
-        {
-            _scene = getValue(_eL, "eScene.19");
-            if (_scene.IsNull == true) 
-            {
-                _val.push("7701003");
+                _val.push("7701005");
                 valObj.IsNull = true;
                 valObj.NV = true;
             }
-            else 
-            {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.19"] = valObj;
-                delete valObj;
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.10"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.11
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.10");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.10") == true) {
+                //ErrorList.                
             }
         }
         else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-        //////////////////////eScene.20
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined'))
-        {
-            _scene = getValue(_eL, "eScene.20");
-            if (_scene.IsNull == true) 
-            {
-                if (isRequiredStateElement("eScene.20") == true) 
-                {
-                    _val.push("7701003");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-                else {
-                    _val.push("7701005");
-                    valObj.IsNull = true;
-                    valObj.NV = true;
-                }
-            }
-            else {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-
-        valObj.vSet = _val.slice(0);
-        eScene["eScene.20"] = valObj;
-        delete valObj;
-
-        //////////////////////eScene.21
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined'))
-        {
-            _scene = getValue(_eL, "eScene.21");
-            if (_scene.IsNull == true) 
-            {
-                _val.push("7701003");
-                valObj.IsNull = true;
-                valObj.NV = true;
-            }
-            else 
-            {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.21"] = valObj;
-                delete valObj;
-            }
-        }
-        else {
-            _val.push("7701001");
-            valObj.IsNull = true;
-            valObj.NV = true;
-        };
-
-        //////////////////////eScene.22
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined'))
-        {
-            _scene = getValue(_eL, "eScene.22");
-            if (_scene.IsNull != true) {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.22"] = valObj;
-                delete valObj;
-            }
-        };
-
-        //////////////////////eScene.23
-        var _scene = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-
-        
-        if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined'))
-        {
-            _scene = getValue(_eL, "eScene.23");
-            if (_scene.IsNull != true) 
-            {
-                _val.push(_scene.ValueArray[0].val)
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                eScene["eScene.23"] = valObj;
-                delete valObj;
-          }
-        };
-  */
-    return eScene;
-};
-var seteVitals = function (TheCall)
-{
-    
-    var eVitals = new Object();
-    var pVitals = TheCall.pVitals    
-    var VitalGroupArray = new Array();
-
-    eVitals.IsValid = false;
-    var grpCount = 1;
-
-    if (pVitals.HasDataSet == true) 
-    {    
-        if (typeof pVitals.attributes.sections !='undefined' ==false)
-        {
-            //if ((TheCall.HasPatient == true) && (TheCall.HasTreatment == true) && (TheCall.IsStandBy == false)) 
-            //{
-                eVitals["VitalGroup"]=-1;
-                var _sectionIndex = [];
-                _sI = getSectionIndex(pVitals, "eVitals.VitalGroup")        
-                
-                if(_sI.length > 0)
-                {                    
-                    eVitals["VitalGroup"]=_sI.length;
-                    eVitals.IsValid = true;
-                    grpCount = _sI.length;
-                };
-            //}
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+            valObj.vSet = _val.slice(0);
+            eScene["eScene.10"] = valObj;
+            delete valObj;
         }
     };
 
-    for (var xx = 0; xx < grpCount; xx++) 
-    {
+    //////////////////////eScene.12
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.12");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.12") == true) {
+                //ErrorList.                
+            }
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+            valObj.vSet = _val.slice(0);
+            eScene["eScene.12"] = valObj;
+            delete valObj;
+        }
+    };
+
+    //////////////////////eScene.13
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    // if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.13");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.13") == true) {
+                //ErrorList.                
+            }
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+            valObj.vSet = _val.slice(0);
+            eScene["eScene.13"] = valObj;
+            delete valObj;
+        }
+    };
+
+
+    //////////////////////eScene.14
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //   if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.14");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.14") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.14"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.15
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.15");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.15") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.15"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.16
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.16");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.16") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.16"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.17
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.17");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.17") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.17"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.18
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.18");
+        if (_scene.IsNull == true) {
+            _val.push("7701003");
+            valObj.IsNull = true;
+            valObj.NV = true;
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.18"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.19
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.19");
+        if (_scene.IsNull == true) {
+            _val.push("7701003");
+            valObj.IsNull = true;
+            valObj.NV = true;
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.19"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.20
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.20");
+        if (_scene.IsNull == true) {
+            if (isRequiredStateElement("eScene.20") == true) {
+                _val.push("7701003");
+                valObj.IsNull = true;
+                valObj.NV = true;
+            }
+            else {
+                _val.push("7701005");
+                valObj.IsNull = true;
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.20"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.21
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.21");
+        if (_scene.IsNull == true) {
+            _val.push("7701003");
+            valObj.IsNull = true;
+            valObj.NV = true;
+        }
+        else {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+
+        }
+    }
+    else {
+        _val.push("7701001");
+        valObj.IsNull = true;
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eScene["eScene.21"] = valObj;
+    delete valObj;
+
+    //////////////////////eScene.22
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.22");
+        if (_scene.IsNull != true) {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+            valObj.vSet = _val.slice(0);
+            eScene["eScene.22"] = valObj;
+            delete valObj;
+        }
+    };
+
+    //////////////////////eScene.23
+    var _scene = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+
+
+    //if ((eScene.IsValid == true) && (typeof TheCall.CallDisposition.Cancelled == 'undefined')) {
+    if (eScene.IsValid == true) {
+        _scene = getValue(_eL, "eScene.23");
+        if (_scene.IsNull != true) {
+            _val.push(_scene.ValueArray[0].val)
+            valObj.IsNull = false;
+            valObj.vSet = _val.slice(0);
+            eScene["eScene.23"] = valObj;
+            delete valObj;
+        }
+    };
+    eScene.ErrorList = ErrorList.slice(0);
+    return eScene;
+};
+var seteVitals = function (TheCall) {
+
+    var eVitals = new Object();
+    var pVitals = TheCall.pVitals
+    var VitalGroupArray = new Array();
+    var ErrorList = [];
+    eVitals.IsValid = false;
+    var grpCount = 1;
+
+    if (pVitals.HasDataSet == true) {
+        if (typeof pVitals.attributes.sections != 'undefined') {
+            //if ((TheCall.HasPatient == true) && (TheCall.HasTreatment == true) && (TheCall.IsStandBy == false)) 
+            //{
+            eVitals["VitalGroup"] = -1;
+            var _sectionIndex = [];
+            _sI = getSectionIndex(pVitals, "eVitals.VitalGroup")
+
+            if (_sI.length > 0) {
+                eVitals["VitalGroup"] = _sI.length;
+                eVitals.IsValid = true;
+                grpCount = _sI.length;
+            };
+            //}
+        }
+    };
+    for (var xx = 0; xx < grpCount; xx++) {
+
         var VitalGroup = new Object();
         eVitals["VitalsTaken"] = false;
-        if (eVitals.IsValid == true)
-        {
+        if (eVitals.IsValid == true) {
             var _eL = [];
             _eL = pVitals.attributes.sections[xx].attributes.elements;
         };
-
+        console.log(_eL)
         //eVital.01/////////////////////////////
         var _vitals = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        if (eVitals.IsValid == true)
-        {
+        if (eVitals.IsValid == true) {
             _vitals = getValue(_eL, "eVitals.01");
             if (_vitals.IsNull == true) {
                 _val.push("7701003");
@@ -3943,31 +4003,30 @@ var seteVitals = function (TheCall)
             valObj.NV = true;
         };
         valObj.vSet = _val.slice(0);
-        
         VitalGroup["eVitals.01"] = valObj;
         delete valObj;
-            
+
+
         //eVital.02/////////////////////////////
-        var _val=[];
-        var _vitals=[];
-        if(eVitals.IsValid == true)
-        {
+        var _val = [];
+        var _vitals = [];
+        var valObj = {};
+        valObj.IsNull = true;
+
+        if (eVitals.IsValid == true) {
             _vitals = getValue(_eL, "eVitals.02");
-    
-            if (_vitals.IsNull == true) 
-            {
+
+            if (_vitals.IsNull == true) {
                 _val.push("7701003");
                 valObj.NV = true;
             }
-            else
-            {
+            else {
                 _val.push(_vitals.ValueArray[0].val);
                 valObj.IsNull = false;
                 eVitals["VitalsTaken"] = true;
             }
         }
-        else
-        {
+        else {
             _val.push("7701001");
             valObj.NV = true;
         };
@@ -3976,433 +4035,394 @@ var seteVitals = function (TheCall)
         delete valObj;
 
         ///////////////Cardiac Rhythm Group
-        VitalGroup["CardiacRhythmGroup"]=-1;
-        eVitals["HasCRG"]=false;
-        if(eVitals.IsValid ==true)
-        {
-            if((typeof pVitals.attributes.sections[xx].attributes.sections !='undefined')  &&(eVitals["VitalsTaken"]==true))
-            {
-                var _cRG = [];  
+        VitalGroup["CardiacRhythmGroup"] = -1;
+        eVitals["HasCRG"] = false;
+        if (eVitals.IsValid == true) {
+            if ((typeof pVitals.attributes.sections[xx].attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
+                var _cRG = [];
                 _cRG = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.CardiacRhythmGroup")
-                eVitals["HasCRG"]=true;
-                VitalGroup["CardiacRhythmGroup"]=1;
+
+                var _eRG = [];
+                _eRG = pVitals.attributes.sections[xx].attributes.sections[_cRG].attributes.elements;
+                console.log(_eRG)
+                eVitals["HasCRG"] = true;
+                VitalGroup["CardiacRhythmGroup"] = 1;
+
             }
         };
 
         //eVital.03/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
         eVitals["ECG"] = false;
 
-        if (eVitals["HasCRG"]==true)
-        {
-            _vitals = getValue(_eCRG, "eVitals.03");                               
-            if (_vitals.IsNull == true)
-            {
-                if (_vitals.HasPN == true) 
-                {
-                    if (_vitals.pn == "Refused") 
-                    {
+        if (eVitals["HasCRG"] == true) {
+            _vitals = getValue(_eRG, "eVitals.03");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "Refused") {
                         _val.push("8801019")
                         valObj.PN = true;
                     }
-                    else if (_vitals.pn == "UnableToComplete") 
-                    {
+                    else if (_vitals.ValueArray[0].pn == "UnableToComplete") {
                         _val.push("8801023");
                         valObj.PN = true;
                     }
                 }
-                else
-                {
-                    if (isRequiredStateElement("eVital.03") == true)
-                    {
+                else {
+                    if (isRequiredStateElement("eVital.03") == true) {
                         _val.push("7701003");
-                        valObj.NV = true;                            
+                        valObj.NV = true;
                     }
                 }
             }
-            else
-            {
-                for (var i = 0; i <= _vitals.ValueArray.length-1; i++)
-                {
-                    if ((_vitals.ValueArray[i].HasValue == true) && (_val.indexOf(_vitals.ValueArray[i].val) == -1))
-                    {
-                        _val.push( _vitals.ValueArray[i].val);
+            else {
+                for (var i = 0; i <= _vitals.ValueArray.length - 1; i++) {
+                    if ((_vitals.ValueArray[i].HasValue == true) && (_val.indexOf(_vitals.ValueArray[i].val) == -1)) {
+                        _val.push(_vitals.ValueArray[i].val);
                         valObj.IsNull = false;
-                        eVitals["HasECG"] = true;                     
+                        eVitals["HasECG"] = true;
                     };
                 }
             }
         }
-        else
-        {
+        else {
             _val.push("7701001");
-            valObj.NV = true;           
+            valObj.NV = true;
         };
         valObj.vSet = _val.slice(0);
         VitalGroup["eVitals.03"] = valObj;
         delete valObj;
 
-        
+
         //eVital.04/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        if (eVitals["ECG"] == true) 
-        {
-            _vitals = getValue(_eCRG, "eVitals.04");
-                        
-            if (_vitals.IsNull == true) 
-            {
-                if (isRequiredStateElement("eVitals.04"))
-                {
+        if (eVitals["HasCRG"] == true) {
+            _vitals = getValue(_eRG, "eVitals.04");
+
+            if (_vitals.IsNull == true) {
+                if (isRequiredStateElement("eVitals.04")) {
                     _val.push("7701003");
-                    valObj.NV = true;                            
+                    valObj.NV = true;
                 }
             }
-            else
-            {
+            else {
                 _val.push(_vitals.ValueArray[0].val);
                 valObj.IsNull = false;
             }
         }
-        else
-        {
+        else {
             _val.push("7701001");
-            valObj.NV = true;                            
+            valObj.NV = true;
         };
         valObj.vSet = _val.slice(0);
         VitalGroup["eVitals.04"] = valObj;
-        delete valObj; 
-                
+        delete valObj;
+
         //eVital.05/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
 
-        if (eVitals["ECG"] == true)
-        {
-            _vitals = getValue(_eCRG, "eVitals.05");                
-            if (_vitals.IsNull == true) 
-            {
+        if (eVitals["HasCRG"] == true) {
+            _vitals = getValue(_eRG, "eVitals.05");
+            if (_vitals.IsNull == true) {
                 _val.push("7701003");
-                valObj.NV = true;                            
-            }            
-            else 
-            {            
-                for (var i = 0; i <= _vitals.ValueArray.length-1; i++)
-                {                           
-                    if ((_vitals.ValueArray[i].HasValue == true) && (_val.indexOf(_vitals.ValueArray[i].val) == -1))
-                    {
+                valObj.NV = true;
+            }
+            else {
+                for (var i = 0; i <= _vitals.ValueArray.length - 1; i++) {
+                    if ((_vitals.ValueArray[i].HasValue == true) && (_val.indexOf(_vitals.ValueArray[i].val) == -1)) {
                         _val.push(_vitals.ValueArray[i].val);
                         valObj.IsNull = false;
                     }
                 }
             }
         }
-        else
-        {
+        else {
             _val.push("7701001");
-            valObj.NV = true;    
+            valObj.NV = true;
         };
         valObj.vSet = _val.slice(0);
         VitalGroup["eVitals.05"] = valObj;
-        delete valObj; 
-               
+        delete valObj;
+
+
+ /*       ///////////////BloodPressureGroup
+        VitalGroup["BloodPressureGroup"] = -1;
+        eVitals["HasCRG"] = false;
+        if (eVitals.IsValid == true) {
+            if ((typeof pVitals.attributes.sections[xx].attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
+                var _bPI = [];
+                _bPI = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.BloodPressureGroup")
+                if (_bPI != -1) {
+                    var _eBP = [];
+                    _eBP = pVitals.attributes.sections[xx].attributes.sections[_bPI].attributes.elements;
+                    eVitals["HasCRG"] = true;
+                    VitalGroup["BloodPressureGroup"] = 1;
+                }
+            }
+        };
+        */
         ///////////////////////////////////////////eVitals.BloodPressureGroup
-        VitalGroup["BloodPressureGroup"]=-1
+        VitalGroup["BloodPressureGroup"] = -1
         eVitals["HasBP"] = false;
+        console.log(pVitals)
+        
         if (eVitals.IsValid == true) {
             if ((typeof pVitals.attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
                 var _bPi = -1;  //if no sections, NA values                        
                 _bPi = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.BloodPressureGroup");
+                console.log(_bPi)
                 if (_bPi != -1) {
-                    eVitals["HasBP"] = true
-                    VitalGroup["BloodPressureGroup"] = 1
                     var _eBP = [];
-                    var _eBP = pVitals.attributes.sections[_sectionIndex[xx]].attributes.sections[_bPi].attributes.elements;
-                }
+                    _eBP = pVitals.attributes.sections[xx].attributes.sections[_bPi].attributes.elements;
+                    eVitals["HasBP"] = true
+                    VitalGroup["BloodPressureGroup"] = 1                    
+               }
             }
         };
-            
+
         //eVital.06/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
         eVitals["SBP"] = false;
-    //if(eVitals["HasBP"] == true)
-    if(eVitals.IsValid==true)
+        if (eVitals["HasBP"] == true)
+            //if(eVitals.IsValid==true)
         {
-            _vitals= getValue(_eBP, "eVitals.06");                    
-            if (_vitals.IsNull == true) 
-            { 
-                if (_vitals.HasPN == true)
-                {
-                    if(_vitals.pn == "ExamFindingNotPresent")
-                    {                                
+            _vitals = getValue(_eBP, "eVitals.06");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "ExamFindingNotPresent") {
                         _val.push("8801005");
-                        valObj.PN = true;    
+                        valObj.PN = true;
 
                     }
-                    else if (_vitals.pn == "Refused")
-                    {
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
                         _val.push("8801019")
-                        valObj.PN = true;    
+                        valObj.PN = true;
                     }
-                    else if (_vitals.pn == "UnableToComplete")
-                    {
+                    else if (_vitals.ValueArray[0].pn == "UnableToComplete") {
                         _val.push("8801023")
-                        valObj.PN = true;                                    
+                        valObj.PN = true;
                     }
-                    else
-                    {
-                        if (isRequiredStateElement("eVitals.06"))
-                        {
+                    else {
+                        if (isRequiredStateElement("eVitals.06")) {
                             _val.push("7701003");
-                            valObj.NV = true;    
+                            valObj.NV = true;
                         }
-                        else
-                        {                                
+                        else {
                             _val.push("7701005");
-                            valObj.NV = true;    
+                            valObj.NV = true;
                         }
                     }
                 }
             }
-            else
-            {
+            else {
                 _val.push(_vitals.ValueArray[0].val);
                 valObj.IsNull = false;
                 eVitals["SBP"] = true;
             }
         }
-        else
-        {
-            _val.push("7701005");
-            valObj.NV = true;    
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
         };
         valObj.vSet = _val.slice(0);
         VitalGroup["eVitals.06"] = valObj;
-        delete valObj; 
-            
+        delete valObj;
+
         //eVitals.07/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
 
         eVitals["DBP"] = false;
-    //if(eVitals["HasBP"] == true)
-        if (eVitals.IsValid == true)
+        if (eVitals["HasBP"] == true)
+            //if (eVitals.IsValid == true)
         {
             _vitals = getValue(_eBP, "eVitals.07");
-            eVitals["DBP"] = false;eVitals["SBP"] = false;eVitals["SBP"] = false;eVitals["SBP"] = false;
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.HasPN == true)
-                {
-                    if (_vitals.pn == "ExamFindingNotPresent")
-                    {
+            eVitals["DBP"] = false; eVitals["SBP"] = false; eVitals["SBP"] = false; eVitals["SBP"] = false;
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "ExamFindingNotPresent") {
                         _val.push("8801005");
-                        valObj.PN = true;    
+                        valObj.PN = true;
                     }
-                    else if (_vitals.pn == "Refused")
-                    {
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
                         _val.push("8801019")
-                        valObj.PN = true;    
+                        valObj.PN = true;
                     }
-                    else if (_vitals.pn == "UnableToComplete")
-                    {
+                    else if (_vitals.ValueArray[0].pn == "UnableToComplete") {
                         _val.push("8801023")
-                        valObj.PN = true;    
-                    }                        
+                        valObj.PN = true;
+                    }
                 }
                 else {
-                    if (isRequiredStateElement("eVitals.07")) 
-                    {
+                    if (isRequiredStateElement("eVitals.07")) {
                         _val.push("7701003")
-                        valObj.NV = true;    
+                        valObj.NV = true;
                     }
-                    else 
-                    {
+                    else {
                         _val.push("7701005")
-                        valObj.NV = true;    
+                        valObj.NV = true;
                     }
                 }
             }
-            else 
-            {
+            else {
                 _val.push(_vitals.ValueArray[0].val);
                 valObj.IsNull = false;
                 eVitals["DBP"] = true;
             }
         }
-        else
-        {
+        else {
             _val.push("7701001")
-            valObj.NV = true;   
+            valObj.NV = true;
         };
         valObj.vSet = _val.slice(0);
         VitalGroup["eVitals.07"] = valObj;
-        delete valObj; 
+        delete valObj;
 
 
         //eVital.08/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
 
-        if(eVitals.HasBP==true)
-        {
+        if (eVitals.HasBP == true) {
             _vitals = getValue(_eBP, "eVitals.08");
-            if ((eVitals["DBP"] == true) &&(eVitals.SBP== true))   //We have good BP
+            if ((eVitals["DBP"] == true) && (eVitals.SBP == true))   //We have good BP
             {
-                if (_vitals.IsNull == true) 
-                {
+                if (_vitals.IsNull == true) {
                     if (isRequiredStateElement("eVitals.08")) {
                         _val.push("7701003");
-                        valObj.NV = true;    
+                        valObj.NV = true;
                     }
                 }
-                else 
-                {
+                else {
                     _val.push(_vitals.ValueArray[0].val);
                     valObj.IsNull = false;
                 }
             }
-            else
-            {
-                alert("ERROR:  ONE BP WITHOUT THE OTHER");
+            else {
+               // alert("ERROR:  ONE BP WITHOUT THE OTHER");
             }
-        }            
-        else
-        {
+        }
+        else {
             _val.push("7701001");
-            valObj.NV = true;    
+            valObj.NV = true;
         };
         valObj.vSet = _val.slice(0);
         VitalGroup["eVitals.08"] = valObj;
-        delete valObj; 
+        delete valObj;
 
 
-        
+
         //eVital.09/////////////////////////////               
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        if(eVitals.HasBP == true)
-        {
+        if (eVitals.HasBP == true) {
             _vitals = getValue(_eBP, "eVitals.09");
-            if (_vitals.IsNull != true) 
-            {            
+            if (_vitals.IsNull != true) {
                 valObj.vSet = _val.slice(0);
                 VitalGroup["eVitals.09"] = valObj;
-                delete valObj; 
+                delete valObj;
             }
         };
-            
-        
+
+
 
         ///////////////////////////////////////////            
         ///////////////////////////////////////////     
-        VitalGroup["HeartRateGroup"]=-1;                
+        ///////////////HeartRateGroup
+        VitalGroup["HeartRateGroup"] = -1;
         eVitals["HasHRG"] = false;
-        if(eVitals.IsValid==true)
-        {
-            if((typeof pVitals.attributes.sections !='undefined') && (eVitals["VitalsTaken"]==true))
-            {
-                var _bPi = -1;  //if no sections, NA values                        
-                _bPi = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.HeartRateGroup");                       
-                if (_bPi  != -1)
-                {        
+        if (eVitals.IsValid == true) {
+            if ((typeof pVitals.attributes.sections[xx].attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
+                var _bPI = [];
+                _bPI = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.HeartRateGroup")
+                if (_bPI != -1) {
+                    var _eHG = [];
+                    _eHG = pVitals.attributes.sections[xx].attributes.sections[_bPI].attributes.elements;
+
                     eVitals["HasHRG"] = true;
-                    VitalGroup["BloodPressureGroup"]=1
-                    var _eBP = [];
-                    var _eBP = pVitals.attributes.sections[_sectionIndex[xx]].attributes.sections[_bPi].attributes.elements;
+                    VitalGroup["HeartRateGroup"] = 1;
                 }
             }
         };
-            
+
+
         //eVital.10/////////////////////////////               
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
         eVitals.IsHeartRateMonitored = false;
 
-        if(eVitals["HasHRG"] == true)
-        {
-            _vitals = getValue(_eHG, "eVitals.10");                        
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.HasPN == true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
+        if (eVitals["HasHRG"] == true) {
+            _vitals = getValue(_eHG, "eVitals.10");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
                         _val.push("8801023");
-                        valObj.PN = true;    
+                        valObj.PN = true;
                     }
-                    else if (_vitals.pn == "Refused")
-                    {
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
                         _val.push("8801019");
-                        valObj.PN = true;    
+                        valObj.PN = true;
                     }
-                    else if (_vitals.pn == "ExamFindingNotPresent")
-                    {
+                    else if (_vitals.ValueArray[0].pn == "ExamFindingNotPresent") {
                         _val.push("8801005");
-                        valObj.PN = true;    
+                        valObj.PN = true;
                     }
                 }
-                else
-                {
-                    if (isRequiredStateElement("eVitals.10"))
-                    {
+                else {
+                    if (isRequiredStateElement("eVitals.10")) {
                         _val.push("7701003");
-                        valObj.NV = true; 
-                    }
-                    else
-                    {
-                        _val.push( "7701005");
                         valObj.NV = true;
                     }
-                }                            
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
             }
-            else
-            {
+            else {
                 _val.push(_vitals.ValueArray[0].val);
                 valObj.IsNull = false;
                 eVitals.IsHeartRateMonitored = true;
             }
         }
-        else
-        {
-            _val.push( "7701001");
+        else {
+            _val.push("7701001");
             valObj.NV = true;
         };
         valObj.vSet = _val.slice(0);
         VitalGroup["eVitals.10"] = valObj;
-        delete valObj;                                                             
-        
+        delete valObj;
+
         //eVital.11/////////////////////////////               
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
-        valObj.IsNull = true;                            
-        if(eVitals.HasHRG == true)
-        {
+        valObj.IsNull = true;
+        if (eVitals.HasHRG == true) {
             _vitals = getValue(_eHG, "eVitals.11");
-                
-            if(eVitals.IsHeartRateMonitored == true)
-            {
-                if (_vitals.IsNull != true) 
-                {
+
+            if (eVitals.IsHeartRateMonitored == true) {
+                if (_vitals.IsNull != true) {
                     _val.push(_vitals.ValueArray[0].val);
                     valObj.IsNull = false;
                 }
@@ -4410,1084 +4430,945 @@ var seteVitals = function (TheCall)
         };
         valObj.vSet = _val.slice(0);
         VitalGroup["eVitals.11"] = valObj;
-        delete valObj; 
-                        
+        delete valObj;
+
+
         //eVitals.12/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
+        var _vitals = [];
+        var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-        if(eVitals.VitalsTaken == true)
-        {
+        if (eVitals.VitalsTaken == true) {
             _vitals = getValue(_eL, "eVitals.12");
-            if (_vitals.IsNull == true) 
-            {
-                if(_vitals.HasPN==true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
                         _val.push("8801023")
                         valObj.PN = true;
                     }
-                    else if (_vitals.pn == "Refused")
-                    {
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
                         _val.push("8801019");
                         valObj.PN = true;
                     }
-                    else if (_vitals.pn == "ExamFindingNotPresent")
-                    {
+                    else if (_vitals.ValueArray[0].pn == "ExamFindingNotPresent") {
                         _val.push("8801005")
                         valObj.PN = true;
                     }
                 }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.12")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true;
-
-                    }
-                    else 
-                    {
-                        _val.push("7701005");
-                        valObj.NV = true;
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.12"] = valObj;
-        delete valObj;                                                                         
-
-        //eVital.13/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-
-        if(eVitals.VitalsTaken == true)
-        {
-            _vitals = getValue(_eL, "eVitals.13");
-            if (_vitals.IsNull != true) 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            };
-            valObj.vSet = _val.slice(0);
-            VitalGroup["eVitals.13"] = valObj;
-            delete valObj;                                                             
-        };
-
-          
-        //eVitals.14/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eVitals.VitalsTaken == true) 
-        {
-            _vitals = getValue(_eL, "eVitals.14");            
-            if (_vitals.IsNull == true) 
-            {
-                if(_vitals.HasPN==true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
-                        _val.push("8801023")
-                        valObj.PN = true;
-                    }
-                    else if (_vitals.pn == "Refused")
-                    {
-                        _val.push("8801019")
-                        valObj.PN = true;
-                    }
-                    else if (_vitals.pn == "ExamFindingNotPresent")
-                    {
-                        _val.push("8801005");
-                        valObj.PN = true;                                
-                    }
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.14")) 
-                    {                            
-                        _val.push( "7701003");
-                        valObj.NV = true;
-
-                    }
-                    else {
-                        _val.push( "7701005");
-                        valObj.NV = true;
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else                
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.14"] = valObj;
-        delete valObj;                                                             
-
-            
-        //eVital.15/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eVitals.VitalsTaken == true) 
-        {
-            _vitals = getValue(businessObject.elements, "eVitals.15");
-            if (_vitals.IsNull != true)                 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-                
-                valObj.vSet = _val.slice(0);
-                VitalGroup["eVitals.15"] = valObj;
-                delete valObj;                                                             
-            }
-        };
-            
-        /////////////eVital.16
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eVitals.VitalsTaken == true) 
-        {
-            _vitals = getValue(_eL, "eVitals.16");
-            if (_vitals.IsNull == true) 
-            {
-                if(_vitals.HasPN ==true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
-                        _val.push("8801023")
-                        valObj.PN = true;
-                    }
-                    else if (_vitals.pn == "Refused")
-                    {
-                        _val.push("8801019")
-                        valObj.PN = true;
-                    }
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.16")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true;
-                    }
-                    else 
-                    {                             
-                        _val.push("7701005");
-                        valObj.NV = true;
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }          
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.16"] = valObj;
-        delete valObj;       
-            
-        //eVitals.17/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eVitals.VitalsTaken == true) 
-        {
-            _vitals = getValue(_eL, "eVitals.17");
-            if (_vitals.IsNull == true) 
-            {
-                if(_vitals.HasPN ==true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
-                        _val.push("8801023");
-                        valObj.PN = true;
-
-                    }
-                    else if (_vitals.pn == "Refused")
-                    {
-                        _val.push("8801019");
-                        valObj.PN = true;                            
-                    }
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.17")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true;
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true;
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.17"] = valObj;
-        delete valObj;       
-
-            
-        //eVitals.18/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eVitals.VitalsTaken == true) 
-        {
-
-            _vitals = getValue(_eL, "eVitals.18");
-            if (_vitals.IsNull == true) 
-            {
-                if(_vitals.HasPN ==true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
-                        _val.push("8801023");
-                        valObj.PN = true; 
-                    }
-                    else if (_vitals.pn == "Refused")
-                    {
-                        _val.push("8801019")
-                        valObj.PN = true; 
-                    }
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.18")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true; 
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true; 
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.18"] = valObj;
-        delete valObj;       
-                     
-        ///////////////////////////eVitals.GlasgowScoreGroup////////////////            
-        VitalGroup["GlasgowScoreGroup"]=-1
-        eVitals["HasGCS"] = false;
-        if(eVitals.IsValid==true)
-        {
-            if((typeof pVitals.attributes.sections !='undefined')&& (eVitals["VitalsTaken"]==true))
-            {
-                if(eVitals["VitalsTaken"]==true)
-                {                    
-                    var _tG = [];  //if no sections, NA values                        
-                    _tG= getSectionIndex(pVitals.attributes.sections[xx], "eVitals.GlasgowScoreGroup");                       
-                    if (_tG!= -1)
-                    {        
-                        var _eTG = [];
-                        var _eTG = pVitals.attributes.sections[_sectionIndex[xx]].attributes.sections[_tG].attributes.elements;
-                        eVitals["HasGCS"] = true;
-                    }
-                }
-            }
-        };
-
-
-        //eVitals.19/////////////////////////////
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals["HasGCS"] == true)
-        {
-            _vitals = getValue(_eGCS, "eVitals.19");
-            if (_vitals.IsNull == true) 
-            {
-                if(_vitals.HasPN ==true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
-                        _val.push("8801023");
-                        valObj.PN = true;                                            
-                    }
-                    else if (_vitals.pn == "Refused")
-                    {
-                        _val.push("8801019")
-                        valObj.PN = true; 
-                    }
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.19")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true; 
-
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true; 
-
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            };
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true; 
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.19"] = valObj;
-        delete valObj;       
-                                                          
-            
-        //eVital.20/////////////////////////////        
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals["HasGCS"] == true)
-        {
-            _vitals = getValue(_eGCS, "eVitals.20");
-            if (_vitals.IsNull == true) 
-            {
-                if(_vitals.HasPN ==true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
-                        _val.push("8801023")
-                        valObj.PN = true; 
-                    }
-                    else if (_vitals.pn == "Refused")
-                    {
-                        _val.push("8801019")
-                        valObj.PN = true; 
-                    }
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.20")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true; 
-
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true; 
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }                
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true; 
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.20"] = valObj;
-        delete valObj;       
-
-
-        //eVital.21/////////////////////////////        
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals.HasGCS == true)
-        {
-            _vitals = getValue(_eGCS, "eVitals.21");
-            if (_vitals.IsNull == true) 
-            {
-                if(_vitals.HasPN ==true)
-                {
-                    if (_vitals.pn== "UnabletoComplete")
-                    {
-                        _val.push("8801023")
-                        valObj.PN = true; 
-                    }
-                    else if (_vitals.pn == "Refused")
-                    {
-                        _val.push("8801019")
-                        valObj.PN = true; 
-                    }
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.21")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true; 
-
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true; 
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            };                
-        }
-         
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true; 
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.21"] = valObj;
-        delete valObj;       
-
-                
-         
-        //eVital.22/////////////////////////////        
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals.HasGCS == true)
-        {
-            _vitals = getValue(_eGCS, "eVitals.22");
-            
-            if (_vitals.IsNull == true) 
-            {                    
-                if (isRequiredStateElement("eVitals.22")) 
-                {
-                    _val.push("7701003");
-                    valObj.NV = true; 
-                }
                 else {
-                    _val.push("7701005");
-                    valObj.NV = true; 
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }    
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true; 
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.22"] = valObj;
-        delete valObj;       
-                
-
-        eVitals["eVitals.22"]=_val;
-        //eVital.23/////////////////////////////        
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals.HasGCS == true)
-        {
-
-            _vitals = getValue(_eGCS, "eVitals.23");
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.pn== "UnabletoComplete")
-                {
-                    _val.push("8801023")
-                    valObj.PN = true; 
-                }
-                else if (_vitals.pn == "Refused")
-                {
-                    _val.push("8801019");
-                    valObj.PN = true; 
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.23")) 
-                    {
-                            
+                    if (isRequiredStateElement("eVitals.12")) {
                         _val.push("7701003");
-                        valObj.NV = true; 
+                        valObj.NV = true;
 
                     }
                     else {
                         _val.push("7701005");
-                        valObj.NV = true; 
+                        valObj.NV = true;
                     }
                 }
             }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }                
-        }        
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true; 
-        };
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.23"] = valObj;
-        delete valObj;       
-
-
-
-        ///////////////////////////////////////////            
-        ///////////////////////////////////////////            
-        VitalGroup["TemperatureGroup"] = -1;
-        eVitals["HasTG"] = false;
-        if (eVitals.IsValid == true) {
-            if (typeof pVitals.attributes.sections != 'undefined') {
-                if (eVitals.IsValid == true) {
-                    var _tG = -1;  //if no sections, NA values                        
-                    _tG = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.TemperatureGroup");
-                    if (_tG != -1) {
-                        var _eTG = [];
-                        var _eTG = pVitals.attributes.sections[_sectionIndex[xx]].attributes.sections[_tG].attributes.elements;
-                        eVitals["HasTG"] = true;
-                    }
-                }
-            }
-        };
-
-        //eVital.24/////////////////////////////        
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-
-        eVitals["Temperature"] == false;
-        if(eVitals.IsValid==true)
-        {
-            _vitals = getValue(_eTGP, "eVitals.24");
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.pn== "UnabletoComplete")
-                {
-                    _val.push("8801023")
-                    valObj.NV = true; 
-                }
-                else if (_vitals.pn == "Refused")
-                {
-                    _val.push("8801019")
-                    valObj.NV = true; 
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.24")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true; 
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true; 
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-                eVitals["Temperature"] = true;
-            }
-        }
-        else
-        {             
-            _val.push("7701001");
-            valObj.NV = true;         
-        };
-                    
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.24"] = valObj;
-        delete valObj;       
-
-        //eVital.25/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eVitals["Temperature"] == true) 
-        {            
-        _vitals = getValue(_eTGP, "eVitals.25");
-            if (_vitals.IsNull != true) 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else
-        {
-            ErrorList.push({ Version: "3.3.4", Severity: "3", ElementID: "eVitals.25", Description: "Temperature Method not defined" })
-        };
-   
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.25"] = valObj;
-        delete valObj;       
-
-        //eVital.26/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals["VitalsTaken"]==true)
-        {
-            _val = getValue(_eL, "eVitals.26");
-            if (_vitals.IsNull == true) 
-            {
-                _val.push("7701003");
-                valObj.NV = true; 
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else
-            
-        {             
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-                    
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.26"] = valObj;
-        delete valObj;       
-
-
-        ///////////////////////////////////////////            
-        ///////////////////////////////////////////            
-        eVitals["HasPSG"] = false;
-        VitalGroup["PainScaleGroup"]=-1
-        if (eVitals.IsValid == true) 
-        {
-            if((typeof pVitals.attributes.sections !='undefined') &&(eVitals["VitalsTaken"]==true))
-            {
-                var _pSG = [];  //if no sections, NA values                        
-                _pSG= getSectionIndex(pVitals.attributes.sections[xx], "eVitals.PainScaleGroup");
-                if (_pSG!= -1)
-                {        
-                    VitalGroup["PainScaleGroup"]=11
-                    var _ePSG = [];
-                    var _ePSG = pVitals.attributes.sections[_sectionIndex[xx]].attributes.sections[_pSG].attributes.elements;
-                    if(eVitals["VitalsTaken"]==true)
-                    {
-                        eVitals["HasPSG"] = true;
-                    }    
-                }
-            }
-        };
-
-        //eVital.27/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-
-        if(eVitals["HasPSG"] ==true)
-        {
-            _vitals = getValue(_ePSG, "eVitals.27");
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.pn== "UnabletoComplete")
-                {
-                    _val.push("8801023")
-                    valObj.PN = true; 
-                }
-                else if (_vitals.pn == "Refused")
-                {
-                    _val.push("8801019");
-                    valObj.PN = true; 
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.27")) 
-                    {                           
-                        _val.push("7701003");
-                        valObj.NV = true; 
-
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true; 
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }                    
-        }
-        else
-        {             
-            _val.push("7701001");
-            valObj.NV = true;         
-        };
-                    
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.27"] = valObj;
-        delete valObj;       
-
-
-        //eVital.28/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals["HasPSG"] ==true)
-        {
-            _vitals = getValue(_ePSG, "eVitals.28");
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.pn== "UnabletoComplete")
-                {
-                    _val.push("8801023");
-                    valObj.PN = true; 
-                }
-                else if (_vitals.pn == "Refused")
-                {
-                    _val.push("8801019");
-                    valObj.PN = true;                         
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.28")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true;                             
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true;                             
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }                
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-
-        };
-                    
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.28"] = valObj;
-        delete valObj;       
-
-            
-        /////////////////////////////////////////// StrokeScaleGroup           
-    
-        eVitals["HasSSG"] = false;
-        VitalGroup["StrokeScaleGroup"]=-1
-        if (eVitals.IsValid == true) 
-        {
-
-            if((typeof pVitals.attributes.sections !='undefined') &&(eVitals["VitalsTaken"]==true))
-            {
-                var _pSG = [];  //if no sections, NA values                        
-                _pSG= getSectionIndex(pVitals.attributes.sections[xx], "eVitals.StrokeScaleGroup");
-                if (_pSG!= -1)
-                {        
-                    VitalGroup["StrokeScaleGroup"]=11
-                    var _ePSG = [];
-                    var _ePSG = pVitals.attributes.sections[_sectionIndex[xx]].attributes.sections[_pSG].attributes.elements;
-                    if(eVitals["VitalsTaken"]==true)
-                    {
-                        eVitals["HasSSG"] = true;
-                    }    
-                }
-            }
-        };
-
-        
-        //eVital.29/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals["HasSSG"] ==true)
-        {
-            _vitals = getValue(_eL, "eVitals.29");
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.pn == "UnabletoComplete") 
-                {
-                    _val.push("8801023");
-                    valObj.PN = true; 
-                }
-                else if (_vitals.pn == "Refused") {
-                    _val.push("8801019");
-                    valObj.PN = true; 
-                }
-                else {
-                    if (isRequiredStateElement("eVitals.29")) {
-                        _val.push("7701003");
-                        valObj.NV = true; 
-                    }
-                    else {
-                        _val.push("7701005");
-                        valObj.NV = true; 
-                    }
-                }
-            }
-            else {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;                        
-            }     
-        }
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;
-        };
-                    
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.29"] = valObj;
-        delete valObj;       
-
-
-        //eVital.30/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals["HasSSG"] ==true)
-        {
-            _vitals = getValue(_eL, "eVitals.30");
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.pn == "UnabletoComplete") 
-                {
-                    _val.push("8801023");
-                    valObj.PN = true; 
-
-                }
-                else if (_vitals.pn == "Refused") 
-                {
-                    _val.push("8801019");
-                    valObj.PN = true; 
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.30")) 
-                    {
-                        _val.push("7701003");
-                        valObj.NV = true; 
-
-                    }
-                    else 
-                    {
-                        _val.push("7701005");
-                        valObj.NV = true; 
-
-                    }
-                }
-            }
-            else {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            }
-        }
-        else 
-        {
-            _val.push("7701001");
-            valObj.NV = true; 
-        }
-            
-                
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.30"] = valObj;
-        delete valObj;       
-       
-        //eVital.31/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals["VitalsTaken"] ==true)
-        {
-            _vitals = getValue(_eL, "eVitals.31");
-            if (_vitals.IsNull == true) 
-            {
-                if (_vitals.pn== "UnabletoComplete")
-                {
-                    _val.push("8801023");
-                    valObj.PN = true;             
-                }
-                else if (_vitals.pn == "Refused")
-                {
-                    _val.push("8801019");
-                    valObj.PN = true;             
-                }
-                else 
-                {
-                    if (isRequiredStateElement("eVitals.31")) 
-                    {                           
-                        _val.push("7701003");
-                        valObj.NV = true;             
-
-                    }
-                    else 
-                    {
-                        _val.push("7701005");
-                        valObj.NV = true;  
-                    }
-                }
-            }
-            else 
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            };
-     
-        }   
-        else
-        {
-            _val.push("7701001");
-            valObj.NV = true;  
-        
-        };
-     
-        valObj.vSet = _val.slice(0);
-        VitalGroup["eVitals.31"] = valObj;
-        delete valObj;       
-
-
-        //eVital.32/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if(eVitals["VitalsTaken"] ==true)
-        {
-            _vitals = getValue(_eL, "eVitals.32 ");
-            if (_vitals.IsNull == true)    
-            {
-                if (_vitals.HasPN == true)
-                {                     
-                    _val.push("8801023");
-                    valObj.PN = true;             
-                }
-            }                
-            else
-            {
-                _val.push(_vitals.ValueArray[0].val);
-                valObj.IsNull = false;
-            };
-            
-            valObj.vSet = _val.slice(0);
-            VitalGroup["eVitals.32"] = valObj;
-            delete valObj;       
-        };
-        //eVital.33/////////////////////////////   
-        var _vitals=[];
-        var _val = [] ;       
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eVitals["VitalsTaken"] == true) {
-            _vitals = getValue(_eL, "eVitals.33");
-            if (_vitals.IsNull == true) {
-                if (_vitals.HasPN == true) {
-                    if (_vitals.pn == "Refused") {
-                        _val.push("8801019");
-                        valObj.PN = true;
-                    }
-                    else if (_PNValue == "UnabletoComplete") {
-                        _val.push("8801023");
-                        valObj.PN = true;
-                    }
-                }
-            }
-
             else {
                 _val.push(_vitals.ValueArray[0].val);
                 valObj.IsNull = false;
             }
         }
         else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.12"] = valObj;
+        delete valObj;
+
+        //eVital.13/////////////////////////////
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+
+        if (eVitals.VitalsTaken == true) {
+            _vitals = getValue(_eL, "eVitals.13");
+            if (_vitals.IsNull != true) {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            };
+            valObj.vSet = _val.slice(0);
+            VitalGroup["eVitals.13"] = valObj;
+            delete valObj;
+        };
+
+
+        //eVitals.14/////////////////////////////
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals.VitalsTaken == true) {
+            _vitals = getValue(_eL, "eVitals.14");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                        _val.push("8801023")
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019")
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "ExamFindingNotPresent") {
+                        _val.push("8801005");
+                        valObj.PN = true;
+                    }
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.14")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.14"] = valObj;
+        delete valObj;
+
+
+        //eVital.15/////////////////////////////
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals.VitalsTaken == true) {
+            _vitals = getValue(_eL, "eVitals.15");
+            if (_vitals.IsNull != true) {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+
+                valObj.vSet = _val.slice(0);
+                VitalGroup["eVitals.15"] = valObj;
+                delete valObj;
+            }
+        };
+
+        /////////////eVital.16
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals.VitalsTaken == true) {
+            _vitals = getValue(_eL, "eVitals.16");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                        _val.push("8801023")
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019")
+                        valObj.PN = true;
+                    }
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.16")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.16"] = valObj;
+        delete valObj;
+
+        //eVitals.17/////////////////////////////
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals.VitalsTaken == true) {
+            _vitals = getValue(_eL, "eVitals.17");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                        _val.push("8801023");
+                        valObj.PN = true;
+
+                    }
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019");
+                        valObj.PN = true;
+                    }
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.17")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.17"] = valObj;
+        delete valObj;
+
+
+        //eVitals.18/////////////////////////////
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals.VitalsTaken == true) {
+
+            _vitals = getValue(_eL, "eVitals.18");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                        _val.push("8801023");
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019")
+                        valObj.PN = true;
+                    }
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.18")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.18"] = valObj;
+        delete valObj;
+
+
+
+        ///////////////HeartRateGroup
+        VitalGroup["GlasgowScoreGroup"] = -1;
+        eVitals["HasGCS"] = false;
+        if (eVitals.IsValid == true) {
+            if ((typeof pVitals.attributes.sections[xx].attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
+                var _tG = [];
+                _tG = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.GlasgowScoreGroup")
+                if (_tG != -1) {
+                    var _eGCS = [];
+                    _eGCS = pVitals.attributes.sections[xx].attributes.sections[_tG].attributes.elements;
+                    console.log(_eGCS)
+                    eVitals["HasGCS"] = true;
+                    VitalGroup["GlasgowScoreGroup"] = 1;
+                }
+            }
+        };
+
+
+        //eVitals.19/////////////////////////////
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["HasGCS"] == true) {
+            _vitals = getValue(_eGCS, "eVitals.19");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                        _val.push("8801023");
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019")
+                        valObj.PN = true;
+                    }
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.19")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            };
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.19"] = valObj;
+        delete valObj;
+
+
+        //eVital.20/////////////////////////////        
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["HasGCS"] == true) {
+            _vitals = getValue(_eGCS, "eVitals.20");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                        _val.push("8801023")
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019")
+                        valObj.PN = true;
+                    }
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.20")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.20"] = valObj;
+        delete valObj;
+
+
+        //eVital.21/////////////////////////////        
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals.HasGCS == true) {
+            _vitals = getValue(_eGCS, "eVitals.21");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                        _val.push("8801023")
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019")
+                        valObj.PN = true;
+                    }
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.21")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            };
+        }
+
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.21"] = valObj;
+        delete valObj;
+
+
+
+        //eVital.22/////////////////////////////        
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals.HasGCS == true) {
+            _vitals = getValue(_eGCS, "eVitals.22");
+
+            if (_vitals.IsNull == true) {
+                if (isRequiredStateElement("eVitals.22")) {
+                    _val.push("7701003");
+                    valObj.NV = true;
+                }
+                else {
+                    _val.push("7701005");
+                    valObj.NV = true;
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.22"] = valObj;
+        delete valObj;
+
+        //eVital.23/////////////////////////////        
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals.HasGCS == true) {
+
+            _vitals = getValue(_eGCS, "eVitals.23");
+            if (_vitals.IsNull == true) {
+                if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                    _val.push("8801023")
+                    valObj.PN = true;
+                }
+                else if (_vitals.ValueArray[0].pn == "Refused") {
+                    _val.push("8801019");
+                    valObj.PN = true;
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.23")) {
+
+                        _val.push("7701003");
+                        valObj.NV = true;
+
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.23"] = valObj;
+        delete valObj;
+
+
+        ///////////////HeartRateGroup
+        VitalGroup["TemperatureGroup"] = -1;
+        eVitals["HasTG"] = false;
+        if (eVitals.IsValid == true) {
+            if ((typeof pVitals.attributes.sections[xx].attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
+                var _tG = [];
+                _tG = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.TemperatureGroup")
+                if (_tG != -1) {
+                    var _eTGP = [];
+
+                    _eTGP = pVitals.attributes.sections[xx].attributes.sections[_tG].attributes.elements;
+
+                    eVitals["HasTG"] = true;
+                    VitalGroup["TemperatureGroup"] = 1;
+                }
+            }
+        };
+
+
+        //eVital.24/////////////////////////////        
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+
+        eVitals["Temperature"] == false;
+        if (eVitals["HasTG"] == true) {
+            _vitals = getValue(_eTGP, "eVitals.24");
+            if (_vitals.IsNull == true) {
+                if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                    _val.push("8801023")
+                    valObj.NV = true;
+                }
+                else if (_vitals.ValueArray[0].pn == "Refused") {
+                    _val.push("8801019")
+                    valObj.NV = true;
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.24")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+                eVitals["Temperature"] = true;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.24"] = valObj;
+        delete valObj;
+
+        //eVital.25/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["HasTG"] == true) {
+            _vitals = getValue(_eTGP, "eVitals.25");
+            if (_vitals.IsNull != true) {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            ErrorList.push({ Version: "3.3.4", Severity: "3", ElementID: "eVitals.25", Description: "Temperature Method not defined" })
+        };
+
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.25"] = valObj;
+        delete valObj;
+
+        //eVital.26/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["VitalsTaken"] == true) {
+            _vitals = getValue(_eL, "eVitals.26");
+            if (_vitals.IsNull == true) {
+                _val.push("7701003");
+                valObj.NV = true;
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.26"] = valObj;
+        delete valObj;
+
+
+        ///////////////PainScaleGroup
+        VitalGroup["PainScaleGroup"] = -1;
+        eVitals["HasPSG"] = false;
+        if (eVitals.IsValid == true) {
+            if ((typeof pVitals.attributes.sections[xx].attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
+                var _pSG = [];
+                _pSG = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.PainScaleGroup")
+                if (_pSG != -1) {
+                    var _ePSG = [];
+
+                    _ePSG = pVitals.attributes.sections[xx].attributes.sections[_pSG].attributes.elements;
+
+                    eVitals["HasPSG"] = true;
+                    VitalGroup["PainScaleGroup"] = 1;
+                }
+            }
+        };
+
+
+        ///////////////////////////////////////////            
+        ///////////////////////////////////////////            
+        eVitals["HasPSG"] = false;
+        VitalGroup["PainScaleGroup"] = -1
+        if (eVitals.IsValid == true) {
+            if ((typeof pVitals.attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
+                var _pSG = [];  //if no sections, NA values                        
+                _pSG = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.PainScaleGroup");
+                if (_pSG != -1) {
+                    VitalGroup["PainScaleGroup"] = 1;
+                    var _ePSG = [];
+                    var _ePSG = pVitals.attributes.sections[_sectionIndex[xx]].attributes.sections[_pSG].attributes.elements;
+                    if (eVitals["VitalsTaken"] == true) {
+                        eVitals["HasPSG"] = true;
+                    }
+                }
+            }
+        };
+
+        //eVital.27/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+
+        if (eVitals["HasPSG"] == true) {
+            _vitals = getValue(_ePSG, "eVitals.27");
+            if (_vitals.IsNull == true) {
+                if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                    _val.push("8801023")
+                    valObj.PN = true;
+                }
+                else if (_vitals.ValueArray[0].pn == "Refused") {
+                    _val.push("8801019");
+                    valObj.PN = true;
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.27")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.27"] = valObj;
+        delete valObj;
+
+
+        //eVital.28/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["HasPSG"] == true) {
+            _vitals = getValue(_ePSG, "eVitals.28");
+            if (_vitals.IsNull == true) {
+                if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                    _val.push("8801023");
+                    valObj.PN = true;
+                }
+                else if (_vitals.ValueArray[0].pn == "Refused") {
+                    _val.push("8801019");
+                    valObj.PN = true;
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.28")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+
+        };
+
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.28"] = valObj;
+        delete valObj;
+
+
+        /////////////////////////////////////////// StrokeScaleGroup      
+        eVitals["HasSSG"] = false;
+        VitalGroup["StrokeScaleGroup"] = -1
+        if (eVitals.IsValid == true) {
+            if ((typeof pVitals.attributes.sections != 'undefined') && (eVitals["VitalsTaken"] == true)) {
+                var _pSG = [];  //if no sections, NA values                        
+                _pSG = getSectionIndex(pVitals.attributes.sections[xx], "eVitals.StrokeScaleGroup");
+                if (_pSG != -1) {
+                    VitalGroup["StrokeScaleGroup"] = 1;
+                    var _eSSG = [];
+                    var _eSSG = pVitals.attributes.sections[_sectionIndex[xx]].attributes.sections[_pSG].attributes.elements;
+                    if (eVitals["VitalsTaken"] == true) {
+                        eVitals["HasSSG"] = true;
+                    }
+                }
+            }
+        };
+
+
+
+        //eVital.29/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["HasSSG"] == true) {
+            _vitals = getValue(_eSSG, "eVitals.29");
+            if (_vitals.IsNull == true) {
+                if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                    _val.push("8801023");
+                    valObj.PN = true;
+                }
+                else if (_vitals.ValueArray[0].pn == "Refused") {
+                    _val.push("8801019");
+                    valObj.PN = true;
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.29")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        };
+
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.29"] = valObj;
+        delete valObj;
+
+
+        //eVital.30/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["HasSSG"] == true) {
+            _vitals = getValue(_eSSG, "eVitals.30");
+            if (_vitals.IsNull == true) {
+                if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                    _val.push("8801023");
+                    valObj.PN = true;
+
+                }
+                else if (_vitals.ValueArray[0].pn == "Refused") {
+                    _val.push("8801019");
+                    valObj.PN = true;
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.30")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+        }
+
+
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.30"] = valObj;
+        delete valObj;
+
+        //eVital.31/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["VitalsTaken"] == true) {
+            _vitals = getValue(_eL, "eVitals.31");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "UnableToComplete") {
+                        _val.push("8801023");
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019");
+                        valObj.PN = true;
+                    }
+                }
+                else {
+                    if (isRequiredStateElement("eVitals.31")) {
+                        _val.push("7701003");
+                        valObj.NV = true;
+
+                    }
+                    else {
+                        _val.push("7701005");
+                        valObj.NV = true;
+                    }
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            };
+
+        }
+        else {
+            _val.push("7701001");
+            valObj.NV = true;
+
+        };
+
+        valObj.vSet = _val.slice(0);
+        VitalGroup["eVitals.31"] = valObj;
+        delete valObj;
+        //eVital.32/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["VitalsTaken"] == true) {
+            _vitals = getValue(_eL, "eVitals.32");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    _val.push("8801023");
+                    valObj.PN = true;
+                }
+            }
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            };
+
             valObj.vSet = _val.slice(0);
             VitalGroup["eVitals.32"] = valObj;
             delete valObj;
         };
+
+        //eVital.33/////////////////////////////   
+        var _vitals = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        if (eVitals["VitalsTaken"] == true) {
+            _vitals = getValue(_eL, "eVitals.33");
+            if (_vitals.IsNull == true) {
+                if (_vitals.HasPN == true) {
+                    if (_vitals.ValueArray[0].pn == "Refused") {
+                        _val.push("8801019");
+                        valObj.PN = true;
+                    }
+                    else if (_vitals.ValueArray[0].pn == "UnabletoComplete") {
+                        _val.push("8801023");
+                        valObj.PN = true;
+                    }
+                }
+            }
+
+            else {
+                _val.push(_vitals.ValueArray[0].val);
+                valObj.IsNull = false;
+            };
+            valObj.vSet = _val.slice(0);
+            VitalGroup["eVitals.33"] = valObj;
+            delete valObj;
+        }
+
+
+
+
         VitalGroupArray.push(VitalGroup);
+
     };
-    eVitals.VitalGroup = VitalGroupArray.slice();
-    
+
+    eVitals.ErrorList = ErrorList.slice(0);
     eVitals.VitalGroup = VitalGroupArray.slice(0);
-    return eVitals;                
-    
-};        
+    return eVitals;
+
+};

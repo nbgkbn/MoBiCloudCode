@@ -1,37 +1,39 @@
-var setePatient = function (TheCall) 
-{    
+var setePatient = function (TheCall) {
     var pPatient = new Object()
     var ePatient = new Object()
+    var ErrorList = [];
+
     
     pPatient = TheCall.pPatient;
-    
-    if (pPatient.HasDataSet == false)
-    {
+    console.log(pPatient)
+    if (pPatient.HasDataSet == false) {
 
         ePatient["IsValid"] = false;
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient", Description: "Missing Mandatory.  ePatient.HasDataSet = false" })   
-    }
-    else
-    {
+        //    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient", Description: "Missing Mandatory.  ePatient.HasDataSet = false" })
+        var call = {};
+        call = setePatientNull(TheCall)
+        ePatient = call.ePatient;
+        return ePatient;
+    };
+
+
+    if (pPatient.HasDataSet == true) {
         ePatient["IsValid"] = false;
         var _eL = []
         _eL = pPatient.attributes.elements;
-        if(_eL.length !=-1)
-        {
+        if (_eL.length != -1) {
             ePatient["IsValid"] = true;
         }
     };
-    
+
     //////////////////////ePatient.01
     var _patient = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true) 
-    {
+    if (ePatient["IsValid"] == true) {
         _patient = getValue(_eL, "ePatient.01");
-        if (_patient.IsNull != true)
-        {
+        if (_patient.IsNull != true) {
             valObj.IsNull = false;
             _val.push(_patient.ValueArray[0].val);
 
@@ -47,14 +49,11 @@ var setePatient = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
 
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_eL, "ePatient.05");        
-        if (_patient.IsNull == true)
-        {
-            if (isRequiredStateElement("ePatient.05") == true)
-            {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient", Description: "Missing Mandatory.  Patient Address" })                    
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.05");
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.05") == true) {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient", Description: "Missing Mandatory.  Patient Address" })
             }
         }
         else {
@@ -69,24 +68,20 @@ var setePatient = function (TheCall)
 
 
     ///////////ePatient.06////////
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_eL, "ePatient.06");            
-        if (_patient.IsNull == true)
-        {
-            if (isRequiredStateElement("ePatient.06") == true)
-            {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.06");
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.06") == true) {
                 ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient", Description: "Missing Mandatory.  Patient Address" })
             }
         }
-        else
-        {
+        else {
             _val.push(_patient.ValueArray[0].val[0]);
             valObj.IsNull = false;
         }
-            valObj.vSet = _val.slice(0);
-            ePatient["ePatient.06"] = valObj;
-            delete valObj;        
+        valObj.vSet = _val.slice(0);
+        ePatient["ePatient.06"] = valObj;
+        delete valObj;
     };
 
 
@@ -96,13 +91,10 @@ var setePatient = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
 
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_eL, "ePatient.07");            
-        if (_patient.IsNull == true) 
-        {
-            if (isRequiredStateElement("ePatient.07")) 
-            {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.07");
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.07")) {
                 _val.push("7701003");
                 valObj.NV = true;
             }
@@ -112,8 +104,7 @@ var setePatient = function (TheCall)
             valObj.IsNull = false;
         }
     }
-    else 
-    {
+    else {
         _val.push("7701001");
         valObj.NV = true;
     };
@@ -126,25 +117,20 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true) 
-    {
+    if (ePatient["IsValid"] == true) {
         _patient = getValue(_eL, "ePatient.08");
-        if (_patient.IsNull == true)
-        {
-            if (isRequiredStateElement("ePatient.08"))
-            {
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.08")) {
                 _val.push("7701003");
                 valObj.NV = true;
             }
         }
-        else 
-        {
+        else {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
     }
-    else 
-    {
+    else {
         _val.push("7701001");
         valObj.NV = true;
     };
@@ -158,19 +144,15 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
+    if (ePatient["IsValid"] == true) {
         _patient = getValue(_eL, "ePatient.09");
-        if (_patient.IsNull == true)
-        {
-            if (isRequiredStateElement("ePatient.09"))
-            {
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.09")) {
                 _val.push("7701003");
                 valObj.NV = true;
             }
         }
-        else
-        {
+        else {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -183,17 +165,15 @@ var setePatient = function (TheCall)
     ePatient["ePatient.09"] = valObj;
     delete valObj;
 
-    
+
     ///////////ePatient.10////////
     var _patient = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
+    if (ePatient["IsValid"] == true) {
         _patient = getValue(_eL, "ePatient.10");
-        if (_patient.IsNull != true)
-        {
+        if (_patient.IsNull != true) {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -207,11 +187,9 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
-         _patient = getValue(_eL, "ePatient.11");
-        if (_patient.IsNull != true)
-        {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.11");
+        if (_patient.IsNull != true) {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -225,11 +203,9 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
+    if (ePatient["IsValid"] == true) {
         _patient = getValue(_eL, "ePatient.12");
-        if (_patient.IsNull != true)
-        {
+        if (_patient.IsNull != true) {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -243,25 +219,20 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_eL, "ePatient.13");            
-        if (_patient.IsNull == true)
-        {
-            if (isRequiredStateElement("ePatient.13"))
-            {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.13");
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.13")) {
                 _val.push("7701003");
                 valObj.NV = true;
             }
         }
-        else
-        {
+        else {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
     }
-    else 
-    {
+    else {
         _val.push("7701001");
         valObj.NV = true;
     };
@@ -274,27 +245,21 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_eL, "ePatient.14");            
-        if (_patient.IsNull == true) 
-        {
-            if (isRequiredStateElement("ePatient.14")) 
-            {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.14");
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.14")) {
                 _val.push("7701003")
                 valObj.NV = true;
             }
         }
-        else 
-        {
-            for (var i = 0; i < _patient.ValueArray.length; i++)
-            {
-                if ((_patient.ValueArray[i].HasValue == true) && (_val.indexOf(_patient.ValueArray[i].val) == -1))
-                {
+        else {
+            for (var i = 0; i < _patient.ValueArray.length; i++) {
+                if ((_patient.ValueArray[i].HasValue == true) && (_val.indexOf(_patient.ValueArray[i].val) == -1)) {
                     _val.push(_patient.ValueArray[i].val);
                     valObj.IsNull = false;
                 }
-            };         
+            };
         }
     }
     else {
@@ -304,39 +269,31 @@ var setePatient = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePatient["ePatient.14"] = valObj;
     delete valObj;
-    
+
     ///////////ePatient.17////////
     var _patient = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_eL, "ePatient.17");            
-        if (_patient.IsNull == true)
-        {
-            if (_patient.HasPN == true)
-            {
-                if (_patient.ValueArray[0].pn[0] == "D")
-                {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.17");
+        if (_patient.IsNull == true) {
+            if (_patient.HasPN == true) {
+                if (_patient.ValueArray[0].pn[0] == "D") {
                     _val.push("8801003")
                     valObj.PN = true;
                 }
-                else if (_patient.ValueArray[0].pn[0] == "R")
-                {
+                else if (_patient.ValueArray[0].pn[0] == "R") {
                     _val.push("8801019")
                     valObj.PN = true;
                 }
-                else if (_patient.ValueArray[0].pn[0] == "U")
-                {
+                else if (_patient.ValueArray[0].pn[0] == "U") {
                     _val.push("8801023")
                     valObj.PN = true;
                 }
             }
-            else
-            {
-                if (isRequiredStateElement("ePatient.17"))
-                {
+            else {
+                if (isRequiredStateElement("ePatient.17")) {
                     _val.push("7701003")
                     valObj.NV = true;
                 }
@@ -346,14 +303,12 @@ var setePatient = function (TheCall)
                 }
             }
         }
-        else
-        {
+        else {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
     }
-    else
-    {
+    else {
         _val.push("7701001")
         valObj.NV = true;
     };
@@ -368,13 +323,10 @@ var setePatient = function (TheCall)
     var valObj = {};
     ph = [];
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
+    if (ePatient["IsValid"] == true) {
         _patient = getValue(_eL, "ePatient.18");
-        if (_patient.IsNull != true)
-        {
-            for (var i = 0; i < _patient.ValueArray.length; i++)
-            {
+        if (_patient.IsNull != true) {
+            for (var i = 0; i < _patient.ValueArray.length; i++) {
                 ph = [];
                 if (typeof _patient.ValueArray[i].PhoneNumberType != 'undefined') {
                     ph.PhoneNumberType = _patient.ValueArray[i].PhoneNumberType;
@@ -384,28 +336,24 @@ var setePatient = function (TheCall)
                 _val.push(ph)
             }
         };
-        
+
     };
     valObj.vSet = _val.slice(0);
     ePatient["ePatient.18"] = valObj;
     delete valObj;
-    
+
     //ePatient.19////////////
     var _patient = [];
     var _val = [];
     var valObj = {};
     ph = [];
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
+    if (ePatient["IsValid"] == true) {
         _patient = getValue(_eL, "ePatient.19");
-        if (_patient.IsNull != true) 
-        {
-            for (var i = 0; i < _patient.ValueArray.length; i++) 
-            {
+        if (_patient.IsNull != true) {
+            for (var i = 0; i < _patient.ValueArray.length; i++) {
                 ph = [];
-                if (typeof _patient.ValueArray[i].EMailType != 'undefined') 
-                {
+                if (typeof _patient.ValueArray[i].EMailType != 'undefined') {
                     ph.EmailType = _patient.ValueArray[i].EMailType;
                 };
                 ph.val = _patient.ValueArray[i].val;
@@ -423,11 +371,9 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_eL, "ePatient.20");            
-        if (_patient.IsNull != true) 
-        {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.20");
+        if (_patient.IsNull != true) {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -441,39 +387,33 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_eL, "ePatient.21");            
-        if (_patient.IsNull != true) 
-        {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_eL, "ePatient.21");
+        if (_patient.IsNull != true) {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
     };
     valObj.vSet = _val.slice(0);
-    ePatient["ePatient.20"] = valObj;
+    ePatient["ePatient.21"] = valObj;
     delete valObj;
 
-  
+
     ////////////////////////////////////NAME GROUP////////////////////////////
     ePatient["PatientNameGroup"] = -1;
-    if (pPatient.HasDataSet == true)
-    {
-        if (typeof pPatient.attributes.sections != 'undefined') 
-        {
+    if (pPatient.HasDataSet == true) {
+        if (typeof pPatient.attributes.sections != 'undefined') {
             _nI = getSectionIndex(pPatient, "ePatient.PatientNameGroup");
-            if (_nI != -1) 
-            {
+            if (_nI != -1) {
                 _PNG = []
                 var _PNG = pPatient.attributes.sections[_nI].attributes.elements;
-                if (_PNG.length != -1) 
-                {
+                if (_PNG.length != -1) {
                     ePatient["PatientNameGroup"] = 1;
                 }
             }
         }
     };
-
+    console.log(_PNG)
     //////////////////////ePatient.02
     var _patient = [];
     var _val = [];
@@ -481,26 +421,20 @@ var setePatient = function (TheCall)
     valObj.IsNull = true;
     if (ePatient["IsValid"] == true)
     {
-        _patient = getValue(_PNG, "ePatient.02");        
-        if (_patient.IsNull == true) 
-        {
-            if (_patient.HasPN == true) 
-            {
-                if (_patient.ValueArray[0].pn[0] == "R") 
-                {
+        _patient = getValue(_PNG, "ePatient.02");
+        if (_patient.IsNull == true) {
+            if (_patient.HasPN == true) {
+                if (_patient.ValueArray[0].pn[0] == "R") {
                     _val.push("8801019")
                     valObj.PN = true;
                 }
-                else if (_patient.ValueArray[0].pn[0] == "U") 
-                {
+                else if (_patient.ValueArray[0].pn[0] == "U") {
                     _val.push("8801023");
                     valObj.PN = true;
                 }
             }
-            else 
-            {
-                if (isRequiredStateElement("ePatient.02")) 
-                {
+            else {
+                if (isRequiredStateElement("ePatient.02")) {
                     _val.push("7701003");
                     valObj.NV = true;
                 }
@@ -528,46 +462,36 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_PNG, "ePatient.03");        
-        if (_patient.IsNull == true) 
-        {
-            if (_patient.HasPN == true) 
-            {
-                if (_patient.ValueArray[0].pn[0] == "R") 
-                {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_PNG, "ePatient.03");
+        if (_patient.IsNull == true) {
+            if (_patient.HasPN == true) {
+                if (_patient.ValueArray[0].pn[0] == "R") {
                     _val.push("8801019");
                     valObj.PN = true;
                 }
-                else if (_patient.ValueArray[0].pn[0] == "U") 
-                {
+                else if (_patient.ValueArray[0].pn[0] == "U") {
                     _val.push("8801023");
                     valObj.PN = true;
                 }
             }
-            else 
-            {
-                if (isRequiredStateElement("ePatient.03")) 
-                {
+            else {
+                if (isRequiredStateElement("ePatient.03")) {
                     _val.push("7701003");
                     valObj.NV = true;
                 }
-                else 
-                {
+                else {
                     _val.push("7701005")
                     valObj.NV = true;
                 }
             }
         }
-        else 
-        {
+        else {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
     }
-    else 
-    {
+    else {
         _val.push("7701001");
         valObj.NV = true;
     };
@@ -582,11 +506,9 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["IsValid"] == true)
-    {
-        _patient = getValue(_PNG, "ePatient.04");        
-        if (_patient.IsNull != true)
-        {
+    if (ePatient["IsValid"] == true) {
+        _patient = getValue(_PNG, "ePatient.04");
+        if (_patient.IsNull != true) {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -595,17 +517,14 @@ var setePatient = function (TheCall)
     ePatient["ePatient.04"] = valObj;
     delete valObj;
 
-        //////////////////////AGE GROUP
-        ////////////////////////////////////NAME GROUP////////////////////////////
+    //////////////////////AGE GROUP
+    ////////////////////////////////////NAME GROUP////////////////////////////
     ePatient["AgeGroup"] = -1
-    if (pPatient.HasDataSet == true) 
-    {
-        if (typeof pPatient.attributes.sections != 'undefined') 
-        {
+    if (pPatient.HasDataSet == true) {
+        if (typeof pPatient.attributes.sections != 'undefined') {
             var _sI = [];
             _sI = getSectionIndex(pPatient, "ePatient.AgeGroup");
-            if (_sI[0] >= 0) 
-            {
+            if (_sI[0] >= 0) {
                 ePatient["AgeGroup"] = 1;
                 _PAG = []
                 var _PAG = pPatient.attributes.sections[_sI].attributes.elements;
@@ -617,19 +536,15 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["AgeGroup"] == 1) 
-    {
+    if (ePatient["AgeGroup"] == 1) {
         _patient = getValue(_PAG, "ePatient.15");
-        if (_patient.IsNull == true) 
-        {
-            if (isRequiredStateElement("ePatient.15")) 
-            {
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.15")) {
                 _val.push("7701003")
                 valObj.NV = true;
             }
         }
-        else 
-        {
+        else {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -647,46 +562,71 @@ var setePatient = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePatient["AgeGroup"] == 1) 
-    {
+    if (ePatient["AgeGroup"] == 1) {
         _patient = getValue(_PAG, "ePatient.16");
-        if (_patient.IsNull == true) 
-        {
-            if (isRequiredStateElement("ePatient.16")) 
-            {
+        if (_patient.IsNull == true) {
+            if (isRequiredStateElement("ePatient.16")) {
                 _val.push("7701003")
                 valObj.NV = true;
             }
         }
-        else 
-        {
+        else {
             _val.push(_patient.ValueArray[0].val);
             valObj.IsNull = false;
         }
     }
-    else 
-    {
+    else {
         _val.push("7701001")
         valObj.NV = true;
     };
     valObj.vSet = _val.slice(0);
     ePatient["ePatient.16"] = valObj;
     delete valObj;
-    
-       
-    if (ErrorList.length != 0)
-    {
-        ePatient.Errors = ErrorList.slice(0);
-        ePatient.HasErrors =true
-        ePatient.ErrorCount = ErrorList.length;
-    };
 
+
+    ePatient.ErrorList = ErrorList.length;
+    console.log(ePatient)
     return ePatient;
 };
-var seteHistory = function (TheCall) 
-{
+var setePatientNull = function (TheCall) {
+
+    var CallObj = {};
+    var ePatient = {};
+    var PatientNameGroup = {};
+    var AgeGroup = {};
+    var ErrorList = [];
+
+    var _val = [];
+    var valObj = {};
+    _val.push("7701001")
+    valObj.vSet = _val.slice(0);
+    valObj.IsNull = true;
+    valObj.NV = true;
+    PatientNameGroup["ePatient.02"] = valObj;
+    PatientNameGroup["ePatient.03"] = valObj;
+    ePatient["ePatient.05"] = valObj;
+    ePatient["ePatient.06"] = valObj;
+    ePatient["ePatient.07"] = valObj;
+    ePatient["ePatient.08"] = valObj;
+    ePatient["ePatient.09"] = valObj;
+    ePatient["ePatient.10"] = valObj;
+    ePatient["ePatient.13"] = valObj;
+    ePatient["ePatient.14"] = valObj;
+    AgeGroup["ePatient.15"] = valObj;
+    AgeGroup["ePatient.16"] = valObj;
+    ePatient["ePatient.17"] = valObj;
+    ePatient.AgeGroup = AgeGroup;
+    ePatient.PatientNameGroup = PatientNameGroup;
+
+    ePatient.ErrorList = ErrorList;
+    CallObj.ePatient = ePatient;
+    return CallObj;
+
+
+};
+var seteHistory = function (TheCall) {
     TheCall["HasPatient"] = true
-    
+
     var eHistory = new Object();
     var pHistory = new Object();
     pHistory = TheCall.pHistory;
@@ -695,6 +635,10 @@ var seteHistory = function (TheCall)
     if (pHistory.HasDataSet == false) {
         ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eHistory", Description: "Missing Mandatory.  eHistory.HasDataSet = false" })
         eHistory["IsValid"] = false;
+        var call = {};
+        call = seteHistoryNull(TheCall)
+        eHistory = call.eHistory;
+        return eHistory;
     };
 
     if (pHistory.HasDataSet == true) {
@@ -704,20 +648,17 @@ var seteHistory = function (TheCall)
             eHistory["IsValid"] = true;
         }
     };
-    
+
 
     ////////eHistory.01
     var _history = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if ((eHistory.IsValid == true) && (TheCall["HasPatient"] == true))
-    {
-        _history = getValue(_eL, "eHistory.01");        
-        if (_history.IsNull == true)
-        {
-            if (isRequiredStateElement("eHistory.01") == true)
-            {
+    if ((eHistory.IsValid == true) && (TheCall["HasPatient"] == true)) {
+        _history = getValue(_eL, "eHistory.01");
+        if (_history.IsNull == true) {
+            if (isRequiredStateElement("eHistory.01") == true) {
                 _val.push("7701003")
                 valObj.NV = true;
             }
@@ -727,16 +668,14 @@ var seteHistory = function (TheCall)
 
             }
         }
-        else 
-        {
-            for (var i = 0; i < _history.ValueArray.length; i++) 
-            {
+        else {
+            for (var i = 0; i < _history.ValueArray.length; i++) {
                 if ((_history.ValueArray[i].HasValue == true) && (_val.indexOf(_history.ValueArray[i].val) == -1)) {
                     _val.push(_history.ValueArray[i].val)
                     valObj.IsNull = false;
                 }
             };
-            
+
         }
     }
     else {
@@ -747,14 +686,14 @@ var seteHistory = function (TheCall)
     valObj.vSet = _val.slice(0);
     eHistory["eHistory.01"] = valObj;
     delete valObj;
-    
+
+
     ////////eHistory.05
     var _history = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if ((eHistory.IsValid == true)&&(TheCall["HasPatient"]==true))
-    {
+    if ((eHistory.IsValid == true) && (TheCall["HasPatient"] == true)) {
         _history = getValue(_eL, "eHistory.05");
 
         if (_history.IsNull == true) {
@@ -774,7 +713,7 @@ var seteHistory = function (TheCall)
                     valObj.IsNull = false;
                 }
             };
-            
+
         }
     }
     else {
@@ -785,19 +724,17 @@ var seteHistory = function (TheCall)
     valObj.vSet = _val.slice(0);
     eHistory["eHistory.05"] = valObj;
     delete valObj;
-    
+
+
     ////////eHistory.06
     var _history = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if ((eHistory.IsValid == true)&&(TheCall["HasPatient"]==true))
-    {            
+    if ((eHistory.IsValid == true) && (TheCall["HasPatient"] == true)) {
         _history = getValue(_eL, "eHistory.06");
-        if (_history.IsNull == true)
-        {
-            if (_history.HasPN == true)
-            {
+        if (_history.IsNull == true) {
+            if (_history.HasPN == true) {
                 if (_history.ValueArray[0].pn[0] == "R") {
                     _val.push("8801019");
                     valObj.PN = true;
@@ -822,12 +759,9 @@ var seteHistory = function (TheCall)
                 }
             }
         }
-        else
-        {
-            for (var i = 0; i < _history.ValueArray.length; i++)
-            {
-                if ((_history.ValueArray[i].HasValue == true) && (_val.indexOf(_history.ValueArray[i].val) == -1))
-                {
+        else {
+            for (var i = 0; i < _history.ValueArray.length; i++) {
+                if ((_history.ValueArray[i].HasValue == true) && (_val.indexOf(_history.ValueArray[i].val) == -1)) {
                     _val.push(_history.ValueArray[i].val)
                     valObj.IsNull = false;
                 }
@@ -844,16 +778,17 @@ var seteHistory = function (TheCall)
     eHistory["eHistory.06"] = valObj;
     delete valObj;
 
+
     ////////eHistory.07
+
     var _history = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if ((eHistory.IsValid == true)&&(TheCall["HasPatient"]==true))
-    {
+
+    if ((eHistory.IsValid == true) && (TheCall["HasPatient"] == true)) {
         _history = getValue(_eL, "eHistory.07");
-        if (_history.IsNull != true)
-        {
+        if (_history.IsNull != true) {
             for (var i = 0; i < _history.ValueArray.length; i++) {
                 if ((_history.ValueArray[i].HasValue == true) && (_val.indexOf(_history.ValueArray[i].val) == -1)) {
                     _val.push(_history.ValueArray[i].val)
@@ -866,8 +801,8 @@ var seteHistory = function (TheCall)
     valObj.vSet = _val.slice(0);
     eHistory["eHistory.07"] = valObj;
     delete valObj;
-    
-    
+
+    /*
     ////////eHistory.08
     var _history = [];
     var _val = [];
@@ -1293,11 +1228,15 @@ var seteHistory = function (TheCall)
                     valObj.vSet = _val.slice(0);
                     CurrentMedsGroup["eHistory.15"] = valObj;
                     delete valObj;
-
+                
                     CurrentMedsGroupArray.push(CurrentMedsGroup)
+                    
                 }                        
+                
             }
+            
         };
+        
     if ((typeof ImmunGroupArray != 'undefined') && (ImmunGroupArray.length > 0)) {
         eHistory.ImmunizationsGroup = ImmunGroupArray;
     };
@@ -1308,50 +1247,72 @@ var seteHistory = function (TheCall)
         eHistory.PractitionerGroup = PractitionerGroupArray;
     };        
 };
+*/
+    eHistory.ErrorList = ErrorList.slice(0);
 
-    if (ErrorList.length > 0)
-    {
-        eHistory.HasErrors = true;
-        eHistory.Errors = ErrorList.slice(0);
-        eHistory.ErrorCount = ErrorList.length;
-    };
-    
-return eHistory;
-  
-}; 
-var seteOutcome = function (TheCall)
-{
+    return eHistory;
+
+};
+var seteHistoryNull = function (TheCall) {
+
+    var CallObj = {};
+    var eHistory = {};
+    var ErrorList = [];
+
+    var _val = [];
+    var valObj = {};
+    _val.push("7701001")
+    valObj.vSet = _val.slice(0);
+    valObj.IsNull = true;
+    valObj.NV = true;
+    eHistory["eHistory.01"] = valObj;
+    eHistory["ePatient.17"] = valObj;
+
+    eHistory.ErrorList = ErrorList;
+    CallObj.eHistory = eHistory;
+    return CallObj;
+
+
+};
+var seteOutcome = function (TheCall) {
 
     var pOutcome = new Object();
     var eOutcome = new Object();
     pOutcome = TheCall.pOutcome
+
+
+    if (pOutcome.HasDataSet == false) {
+        //ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eHistory", Description: "Missing Mandatory.  eHistory.HasDataSet = false" })
+        eOutcome["IsValid"] = false;
+        var call = {};
+        call = seteOutcomeNull(TheCall)
+        eOutcome = call.eOutcome;
+        return eOutcome;
+    };
     var _vg = [];
     eOutcome.IsValid = false;
-    
+
     var _outcome = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (pOutcome.HasDataSet == true) 
-    {
-        if(typeof pOutcome.attributes.elements !='undefined')
-        {
+    if (pOutcome.HasDataSet == true) {
+        if (typeof pOutcome.attributes.elements != 'undefined') {
             var _eL = [];
             _eL = pOutcome.attributes.elements;
-            if(_eL[0] !=-1)
-            {
+            if (_eL[0] != -1) {
                 eOutcome.IsValid = true;
             }
         }
     };
-    
+
     //eOutcome.01/////////
     var _outcome = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
     if (eOutcome.IsValid == true) {
-        _outcome = getValue(_eL, "eOutcome.01");        
+        _outcome = getValue(_eL, "eOutcome.01");
         if (_outcome.IsNull == true) {
             _val.push("7701003")
             valObj.NV = true;
@@ -1376,11 +1337,9 @@ var seteOutcome = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
 
-    if (eOutcome.IsValid == true) 
-    {
+    if (eOutcome.IsValid == true) {
         _outcome = getValue(_eL, "eOutcome.02");
-        if (_outcome.IsNull == true) 
-        {
+        if (_outcome.IsNull == true) {
             _val.push("7701003")
             valObj.NV = true;
         }
@@ -1401,18 +1360,14 @@ var seteOutcome = function (TheCall)
     /////////////////////////////////
     eOutcome["ExternalDataGroup"] = -1;
     var OutcomeGroupArray = [];
-    if ((eOutcome.IsValid == true) &&(typeof pOutcome.attributes.sections !='undefined'))
-    {
+    if ((eOutcome.IsValid == true) && (typeof pOutcome.attributes.sections != 'undefined')) {
         _s1 = getSectionIndex(pOutcome, "eOutcome.ExternalDataGroup");
-        if (_s1 != -1) 
-        {            
+        if (_s1 != -1) {
             eOutcome["ExternalDataGroup"] = _s1.length;
         }
     };
-    if (eOutcome["ExternalDataGroup"] != -1)
-    {
-        for (var x = 0; x <= _s1.length - 1; x++)
-        {
+    if (eOutcome["ExternalDataGroup"] != -1) {
+        for (var x = 0; x <= _s1.length - 1; x++) {
             var ExternalDataGroup = new Object();
             var _eDG = []
             _eDG = pOutcome.attributes.sections[_s1[x]].attributes.elements;
@@ -1467,7 +1422,7 @@ var seteOutcome = function (TheCall)
     if (OutcomeGroupArray.length > 0) {
         eOutcome.ExternalDataGroup = OutcomeGroupArray.slice(0);
     };
-    
+
     //////////////////////////////////////////
     //eOutcome.06/////////
     var _outcome = [];
@@ -1475,16 +1430,14 @@ var seteOutcome = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
 
-    if (eOutcome.IsValid == true)
-    {
+    if (eOutcome.IsValid == true) {
         _outcome = getValue(_eL, "eOutcome.06");
-        if (_outcome.IsNull != true) 
-        {
+        if (_outcome.IsNull != true) {
             _val.push(_outcome.ValueArray[0].val);
             valObj.IsNull = false;
             valObj.vSet = _val.slice(0);
         };
-            
+
         eOutcome["eOutcome.06"] = valObj;
         delete valObj;
     };
@@ -1496,36 +1449,32 @@ var seteOutcome = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
 
-    if (eOutcome.IsValid == true) 
-    {
+    if (eOutcome.IsValid == true) {
         _outcome = getValue(_eL, "eOutcome.07");
-          
-        if (_outcome.IsNull != true) 
-        {
+
+        if (_outcome.IsNull != true) {
             _val.push(_outcome.ValueArray[0].val);
             valObj.IsNull = false;
             valObj.vSet = _val.slice(0);
-        };                        
+        };
         eOutcome["eOutcome.07"] = valObj;
         delete valObj;
     };
-    
+
     //eOutcome.08/////////
     var _outcome = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    
-    if (eOutcome.IsValid == true) 
-    {
-        _outcome = getValue(_eL, "eOutcome.08");    
-        if (_outcome.IsNull != true) 
-        {
+
+    if (eOutcome.IsValid == true) {
+        _outcome = getValue(_eL, "eOutcome.08");
+        if (_outcome.IsNull != true) {
             _val.push(_outcome.ValueArray[0].val);
             valObj.IsNull = false;
             valObj.vSet = _val.slice(0);
         }
-    };            
+    };
     eOutcome["eOutcome.08"] = valObj;
     delete valObj;
 
@@ -1534,16 +1483,12 @@ var seteOutcome = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (eOutcome.IsValid == true)
-    {
+    if (eOutcome.IsValid == true) {
         _outcome = getValue(_eL, "eOutcome.09");
-        
-        if (_outcome.IsNull != true)
-        {
-            for (var i = 0; i < _outcome.ValueArray.length; i++)
-            {
-                if ((_outcome.ValueArray[i].HasValue == true) && (_val.indexOf(_outcome.ValueArray[i].val) == -1))
-                {
+
+        if (_outcome.IsNull != true) {
+            for (var i = 0; i < _outcome.ValueArray.length; i++) {
+                if ((_outcome.ValueArray[i].HasValue == true) && (_val.indexOf(_outcome.ValueArray[i].val) == -1)) {
                     _val.push(_outcome.ValueArray[i].val);
                     valObj.IsNull = false;
                 }
@@ -1561,7 +1506,7 @@ var seteOutcome = function (TheCall)
     var valObj = {};
     valObj.IsNull = true;
     if (eOutcome.IsValid == true) {
-        _outcome = getValue(_eL, "eOutcome.10");            
+        _outcome = getValue(_eL, "eOutcome.10");
         if (_outcome.IsNull != true) {
             for (var i = 0; i < _outcome.ValueArray.length; i++) {
                 if ((_outcome.ValueArray[i].HasValue == true) && (_val.indexOf(_outcome.ValueArray[i].val) == -1)) {
@@ -1572,7 +1517,7 @@ var seteOutcome = function (TheCall)
             valObj.vSet = _val.slice(0);
         }
     };
-            
+
     eOutcome["eOutcome.10"] = valObj;
     delete valObj;
 
@@ -1583,18 +1528,17 @@ var seteOutcome = function (TheCall)
     valObj.IsNull = true;
 
     if (eOutcome.IsValid == true) {
-        _outcome = getValue(_eL, "eOutcome.11");            
-        if (_outcome.IsNull != true) 
-        {
+        _outcome = getValue(_eL, "eOutcome.11");
+        if (_outcome.IsNull != true) {
             _val.push(_outcome.ValueArray[0].val);
             valObj.IsNull = false;
             valObj.vSet = _val.slice(0);
         }
     };
-            
+
     eOutcome["eOutcome.11"] = valObj;
     delete valObj;
-    
+
     //eOutcome.12/////////
     var _outcome = [];
     var _val = [];
@@ -1602,7 +1546,7 @@ var seteOutcome = function (TheCall)
     valObj.IsNull = true;
 
     if (eOutcome.IsValid == true) {
-        _outcome = getValue(_eL, "eOutcome.12");            
+        _outcome = getValue(_eL, "eOutcome.12");
         if (_outcome.IsNull != true) {
             for (var i = 0; i < _outcome.ValueArray.length; i++) {
                 if ((_outcome.ValueArray[i].HasValue == true) && (_val.indexOf(_outcome.ValueArray[i].val) == -1)) {
@@ -1622,7 +1566,7 @@ var seteOutcome = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-            
+
     if (eOutcome.IsValid == true) {
         _outcome = getValue(_eL, "eOutcome.13");
         if (_outcome.IsNull != true) {
@@ -1635,7 +1579,7 @@ var seteOutcome = function (TheCall)
             valObj.vSet = _val.slice(0);
         }
     };
-            
+
     eOutcome["eOutcome.13"] = valObj;
     delete valObj;
 
@@ -1644,9 +1588,8 @@ var seteOutcome = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (eOutcome.IsValid == true)
-    {
-        _outcome = getValue(_eL, "eOutcome.14");    
+    if (eOutcome.IsValid == true) {
+        _outcome = getValue(_eL, "eOutcome.14");
         if (_outcome.IsNull != true) {
             _val.push(_outcome.ValueArray[0].val);
             valObj.IsNull = false;
@@ -1662,10 +1605,9 @@ var seteOutcome = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    
-    if (eOutcome.IsValid == true)
-    {
-        _outcome = getValue(_eL, "eOutcome.15");    
+
+    if (eOutcome.IsValid == true) {
+        _outcome = getValue(_eL, "eOutcome.15");
         if (_outcome.IsNull != true) {
             _val.push(_outcome.ValueArray[0].val);
             valObj.IsNull = false;
@@ -1696,8 +1638,7 @@ var seteOutcome = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (eOutcome.IsValid == true)
-    {
+    if (eOutcome.IsValid == true) {
         _outcome = getValue(_eL, "eOutcome.17");
         if (_outcome.IsNull != true) {
             _val.push(_outcome.ValueArray[0].val);
@@ -1707,53 +1648,76 @@ var seteOutcome = function (TheCall)
     };
     eOutcome["eOutcome.17"] = valObj;
     delete valObj;
-    return eOutcome;
-    
-};  
-var seteOther = function (TheCall) 
-{    
-    var eOther = new Object();
 
+    eOutcome.ErrorList = ErrorList;
+    return eOutcome;
+
+};
+var seteOutcomeNull = function (TheCall) {
+
+    var CallObj = {};
+    var eOutcome = {};
+    var ErrorList = [];
+
+    var _val = [];
+    var valObj = {};
+    _val.push("7701001")
+    valObj.vSet = _val.slice(0);
+    valObj.IsNull = true;
+    valObj.NV = true;
+    eOutcome["eOutcome.01"] = valObj;
+    eOutcome["eOutcome.02"] = valObj;
+
+    eOutcome.ErrorList = ErrorList;
+    CallObj.eOutcome = eOutcome;
+    return CallObj;
+
+};
+var seteOther = function (TheCall) {
+    var eOther = new Object();
+    var ErrorList = [];
     var pOther = new Object();
     pOther = TheCall.pOther
     eOther.IsValid = false;
 
+    if (pOther.HasDataSet == false) {
+        //ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "eHistory", Description: "Missing Mandatory.  eHistory.HasDataSet = false" })
+        eOther["IsValid"] = false;
+        var call = {};
+        call = seteOtherNull(TheCall)
+        eOther = call.eOther;
+        return eOther;
+    };
 
 
-    if (pOther.HasDataSet == true)
-    {
-        if (typeof pOther.attributes.elements != 'undefined')
-        {
+    if (pOther.HasDataSet == true) {
+        if (typeof pOther.attributes.elements != 'undefined') {
             var _eL = []
             _eL = pOther.attributes.elements
-            if (_eL != -1)
-            {
+            if (_eL != -1) {
                 eOther.IsValid = true;
             }
         }
     }
-    else
-    {
+    else {
         eOther.IsValid = false;
     };
-         
+
     //eOther.01////////
     var _other = []
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if(eOther.IsValid==true)
-    {
+    if (eOther.IsValid == true) {
         _other = getValue(_eL, "eOther.01");
-        if (_other.IsNull != true)
-        {
+        if (_other.IsNull != true) {
             _val = _other.ValueArray[0].val;
             valObj.IsNull = false;
             valObj.vSet = _val.slice(0);
         };
-             
+
     };
-    
+
     eOther["eOther.01"] = valObj;
     delete valObj;
 
@@ -1762,63 +1726,56 @@ var seteOther = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if(eOther.IsValid==true)
-    {
+    if (eOther.IsValid == true) {
         _other = getValue(_eL, "eOther.02");
-        if (_other.IsNull != true) 
-        {
-            for (var i = 0; i < _other.ValueArray.length; i++) 
-            {
-                if ((_other.ValueArray[i].HasValue == true) && (_val.indexOf(_other.ValueArray[i].val) == -1)) 
-                {
+        if (_other.IsNull != true) {
+            for (var i = 0; i < _other.ValueArray.length; i++) {
+                if ((_other.ValueArray[i].HasValue == true) && (_val.indexOf(_other.ValueArray[i].val) == -1)) {
                     _val.push(_other.ValueArray[i].val);
                     valObj.IsNull = false;
                 }
             };
             valObj.vSet = _val.slice(0);
         }
-    };            
+    };
     eOther["eOther.02"] = valObj;
     delete valObj;
 
-          
+
     eOther["EMSCrewMemberGroup"] = -1
     var EMSCrewMemberGroupArray = []
     ///////////////////eOther.EMSCrewMemberGroup
-    if (eOther.IsValid== true)
-    {
+    if (eOther.IsValid == true) {
         if (typeof pOther.attributes.sections != 'undefined') {
             _sectionIndex = [];
             _sectionIndex = getSectionIndex(pOther, "eOther.EMSCrewMemberGroup");
-            if (_sectionIndex.length >0)
-            {
+            if (_sectionIndex.length > 0) {
                 eOther["EMSCrewMemberGroup"] = _sectionIndex.length
-            }            
+            }
         }
     };
-    if (eOther["EMSCrewMemberGroup"] == -1)
-    {
+    if (eOther["EMSCrewMemberGroup"] == -1) {
         var EMSCrewMemberGP = new Object();
         var _other = []
         var _val = [];
         var valObj = {};
-        if (typeof TheCall.Cancelled == 'undefined')
-        {
+        valObj.IsNull = true;
+
+        if (typeof TheCall.Cancelled == 'undefined') {
             _val.push("7701001");
             valObj.NV = true;
         }
-        else
-        {
+        else {
             _val.push("7701003");
             valObj.NV = true;
         }
         valObj.vSet = _val.slice(0);
         EMSCrewMemberGP["eOther.05"] = valObj;
+        EMSCrewMemberGroupArray.push(EMSCrewMemberGP);
+
     }
-    else
-    {
-        for (var x = 0; x < _sectionIndex.length; x++) 
-        {
+    else {
+        for (var x = 0; x < _sectionIndex.length; x++) {
             var EMSCrewMemberGP = new Object();
             var _EMSC = [];
             _EMSC = pOther.attributes.sections[_sectionIndex[x]].attributes.elements
@@ -1863,18 +1820,16 @@ var seteOther = function (TheCall)
             valObj.IsNull = true;
             _other = getValue(_EMSC, "eOther.05");
             eOther["WorkInjury"] = false;
-            if (_other.IsNull == true)
-            {
+            if (_other.IsNull == true) {
                 _val.push("7701003");
                 valObj.NV = true;
             }
-            else
-            {
+            else {
                 _val = _other.ValueArray[0].val;
                 valObj.IsNull = false;
                 EMSCrewMemberGP["WorkInjury"] = true;
             };
-                
+
             valObj.vSet = _val.slice(0);
             eOther["eOther.05"] = valObj;
             delete valObj;
@@ -1884,647 +1839,643 @@ var seteOther = function (TheCall)
             var _val = [];
             var valObj = {};
             valObj.IsNull = true;
-            if (eOther.WorkInjury == true) 
-            {
-                _other = getValue(_EMSC, "eOther.06");      
-                if (_other.IsNull == true) 
-                {
-                    if (isRequiredStateElement("eOther.06")) 
-                    {
+            if (eOther.WorkInjury == true) {
+                _other = getValue(_EMSC, "eOther.06");
+                if (_other.IsNull == true) {
+                    if (isRequiredStateElement("eOther.06")) {
                         _val.push("7701003")
                         valObj.NV = true;
                     }
-                    else 
-                    {
+                    else {
                         _val.push("7701005")
                         valObj.NV = true;
                     }
                 }
-                else 
-                {
-                    for (var i = 0; i < _other.ValueArray.length; i++) 
-                    {
-                        if ((_other.ValueArray[i].HasValue == true) && (_val.indexOf(_other.ValueArray[i].val) == -1)) 
-                        {
+                else {
+                    for (var i = 0; i < _other.ValueArray.length; i++) {
+                        if ((_other.ValueArray[i].HasValue == true) && (_val.indexOf(_other.ValueArray[i].val) == -1)) {
                             _val.push(_other.ValueArray[i].val);
                             valObj.IsNull = false;
                         }
                     };
-          
+
                 }
             }
-            else 
-            {
+            else {
                 _val.push("7701001")
                 valObj.NV = true;
             };
             valObj.vSet = _val.slice(0);
             EMSCrewMemberGP["eOther.06"] = valObj;
             delete valObj;
+        };
+        EMSCrewMemberGroupArray.push(EMSCrewMemberGP);
+    };
 
-            EMSCrewMemberGroupArray.push(EMSCrewMemberGP);
+    eOther.EMSCrewMemberGroup = EMSCrewMemberGroupArray.slice();
+
+    ///////////////////////////
+    //eOther.07////////
+    var _other = []
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eOther.IsValid == true) {
+        _other = getValue(_eL.elements, "eOther.07");
+        if (_other.IsNull != true) {
+            for (var i = 0; i < _other.ValueArray.length; i++) {
+                if ((_other.ValueArray[i].HasValue == true) && (_val.indexOf(_other.ValueArray[i].val) == -1)) {
+                    _val.push(_other.ValueArray[i].val);
+                    valObj.IsNull = false;
+                }
+            };
+            valObj.vSet = _val.slice(0);
         }
     };
-   
-    eOther.EMSCrewMemberGroup=EMSCrewMemberGroupArray.slice();
+    eOther["eOther.07"] = valObj;
+    delete valObj;
 
-        ///////////////////////////
-        //eOther.07////////
-        var _other = []
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true; 
-        if (eOther.IsValid == true) 
-        {
-        _other = getValue(businessObject.elements, "eOther.07");        
-            if (_other.IsNull != true) {
-                for (var i = 0; i < _other.ValueArray.length; i++) {
-                    if ((_other.ValueArray[i].HasValue == true) && (_val.indexOf(_other.ValueArray[i].val) == -1)) {
-                        _val.push(_other.ValueArray[i].val);
-                        valObj.IsNull = false;
-                    }
-                };
-                valObj.vSet = _val.slice(0);
+    //eOther..08//////////
+    var _other = []
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (eOther.IsValid == true) {
+        _other = getValue(_eL.elements, "eOther.08");
+        if (_other.IsNull == true) {
+            if (isRequiredStateElement("eOther.08")) {
+                _val.push("7701003")
+                valObj.NV = true;
             }
-        };        
-        eOther["eOther.07"] = valObj;
-        delete valObj;
-
-        //eOther..08//////////
-        var _other = []
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eOther.IsValid == true)  
-        {
-            _other = getValue(businessObject.elements, "eOther.08");        
-            if (_other.IsNull == true) 
-            {
-                if (isRequiredStateElement("eOther.08")) 
-                {
-                    _val.push("7701003")
-                    valObj.NV = true;
-                }
-                else 
-                {
-                    _val.push("7701005")
-                    valObj.NV = true;
-                }
-            }
-            else 
-            {
-                _val = _other.ValueArray[0].val;
-                valObj.IsNull = false;
+            else {
+                _val.push("7701005")
+                valObj.NV = true;
             }
         }
-        else 
-        {
-            _val.push("7701001")
-            valObj.NV = true;
-        };        
-        valObj.vSet = _val.slice(0);
-        eOther["eOther.08"] = valObj;
-        delete valObj;
+        else {
+            _val = _other.ValueArray[0].val;
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    eOther["eOther.08"] = valObj;
+    delete valObj;
 
 
-        ///////////////////eOther.FileGroup
-        eOther["FileGroup"] =-1;
-        if ((eOther.IsCallValid == true) && (typeof pOther.attributes.sections !='undefined'))
-        {
-            var _sI = [];
-            _sI = getSectionIndex(pOther.attributes.sections, "eOther.FileGroup");
-            if (_sI != -1) 
-            {
-                var FGArray = [];
-                eOther["FileGroup"] =_sI.length;
+    ///////////////////eOther.FileGroup
+    eOther["FileGroup"] = -1;
+    if ((eOther.IsCallValid == true) && (typeof pOther.attributes.sections != 'undefined')) {
+        var _sI = [];
+        _sI = getSectionIndex(pOther.attributes.sections, "eOther.FileGroup");
+        if (_sI != -1) {
+            var FGArray = [];
+            eOther["FileGroup"] = _sI.length;
 
-                for (var x = 0; x < _sI.length; x++) 
-                {                    
-                    var _eFG = [];
-                    _eFG = pOther.attributes.sections[_sectionIndex[x]].attributes.elements
+            for (var x = 0; x < _sI.length; x++) {
+                var _eFG = [];
+                _eFG = pOther.attributes.sections[_sectionIndex[x]].attributes.elements
 
-                    var FileGroup = new Object();
+                var FileGroup = new Object();
 
-                    //eOther.09//////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
+                //eOther.09//////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
 
-                    _other = getValue(_eFG, "eOther.09");
-                    if (_other.IsNull != true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    FileGroup["eOther.09"] = valObj;
-                    delete valObj;
-
-                    //eOther.10//////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eFG, "eOther.10");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    FileGroup["eOther.10"] = valObj;
-                    delete valObj;
-
-
-                    //eOther.11//////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-                    _other = getValue(_eFG, "eOther.11");
-                    if (_other.IsNull != true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    FileGroup["eOther.11"] = valObj;
-                    delete valObj;
-
-                    FGArray.push(FileGroup)
+                _other = getValue(_eFG, "eOther.09");
+                if (_other.IsNull != true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
                 };
-                eOther.FileGroup = FGArray.slice(0);
+                valObj.vSet = _val.slice(0);
+                FileGroup["eOther.09"] = valObj;
+                delete valObj;
+
+                //eOther.10//////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eFG, "eOther.10");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                FileGroup["eOther.10"] = valObj;
+                delete valObj;
+
+
+                //eOther.11//////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                _other = getValue(_eFG, "eOther.11");
+                if (_other.IsNull != true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                FileGroup["eOther.11"] = valObj;
+                delete valObj;
+
+                FGArray.push(FileGroup)
+            };
+            eOther.FileGroup = FGArray.slice(0);
+        }
+    };
+
+    /////////////////////////////
+    eOther["SignatureGroup"] = -1
+    if ((typeof TheCall.Patient != 'undefined') && (typeof pOther.attributes.sections != 'undefined')) {
+        var _s2 = [];
+        _s2 = getSectionIndex(pOther.attributes.sections, "eOther.SignatureGroup");
+        if (_s2 != -1) {
+            for (var x = 0; x < _s2.length; x++) {
+                var _sig = []
+                var _eSG = pOther.attributesbusinessObject.sections[_s2[x]].attributes.elements
+
+                //Other.12////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.12");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.12"] = valObj;
+                delete valObj;
+
+                //eOther.13
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.13");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.13"] = valObj;
+                delete valObj;
+
+
+                //ether.14/////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.14");
+                if (_other.IsNull != true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.14"] = valObj;
+                delete valObj;
+
+
+                //eOther.15//////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.15");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.15"] = valObj;
+                delete valObj;
+
+                //eOther.16/////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.16");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.16"] = valObj;
+                delete valObj;
+
+                //eOther.17////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.17");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.17"] = valObj;
+                delete valObj;
+
+                //eOther.18///////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.18");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.18"] = valObj;
+                delete valObj;
+
+                //eOther.19//////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.19");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.19"] = valObj;
+                delete valObj;
+
+                //eOther.20///////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.20");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.20"] = valObj;
+                delete valObj;
+
+                //eOther.21/////////
+                var _other = []
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+
+                _other = getValue(_eSG, "eOther.21");
+                if (_other.IsNull == true) {
+                    _val = _other.ValueArray[0].val;
+                    valObj.IsNull = false;
+                };
+                valObj.vSet = _val.slice(0);
+                eOther["eOther.21"] = valObj;
+                delete valObj;
             }
-        };
+        }
+    };
+    eOther.ErrorList = ErrorList;
+    return eOther
+};
+var seteOtherNull = function (TheCall) {
 
-        /////////////////////////////
-        eOther["SignatureGroup"]=-1
-        if ((typeof TheCall.Patient != 'undefined') &&(typeof pOther.attributes.sections !='undefined'))
-        {
-            var _s2=[];
-            _s2 = getSectionIndex(pOther.attributes.sections, "eOther.SignatureGroup");
-            if (_s2 != -1) 
-            {
-                for (var x = 0; x < _s2.length; x++) 
-                {
-                    var _sig = []
-                    var _eSG = pOther.attributesbusinessObject.sections[_s2[x]].attributes.elements
+    var CallObj = {};
+    var eOther = {};
+    var EMSCrewMemberGroup = {};
+    var ErrorList = [];
 
-                    //Other.12////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
+    var _val = [];
+    var valObj = {};
+    _val.push("7701001")
+    valObj.vSet = _val.slice(0);
+    valObj.IsNull = true;
+    valObj.NV = true;
+    EMSCrewMemberGroup["eOther.05"] = valObj;
+    eOther.EMSCrewMemberGroup = EMSCrewMemberGroup;
 
-                    _other = getValue(_eSG, "eOther.12");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.12"] = valObj;
-                    delete valObj;
+    eOther.ErrorList = ErrorList;
+    CallObj.eOther = eOther;
+    return CallObj;
 
-                    //eOther.13
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
+};
+var seteDevice = function (TheCall) {
 
-                    _other = getValue(_eSG, "eOther.13");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.13"] = valObj;
-                    delete valObj;
-
-
-                    //ether.14/////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eSG, "eOther.14");
-                    if (_other.IsNull != true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.14"] = valObj;
-                    delete valObj;
-
-
-                    //eOther.15//////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eSG, "eOther.15");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.15"] = valObj;
-                    delete valObj;
-
-                    //eOther.16/////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eSG, "eOther.16");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.16"] = valObj;
-                    delete valObj;
-
-                    //eOther.17////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eSG, "eOther.17");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.17"] = valObj;
-                    delete valObj;
-
-                    //eOther.18///////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eSG, "eOther.18");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.18"] = valObj;
-                    delete valObj;
-
-                    //eOther.19//////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eSG, "eOther.19");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.19"] = valObj;
-                    delete valObj;
-
-                    //eOther.20///////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eSG, "eOther.20");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.20"] = valObj;
-                    delete valObj;
-
-                    //eOther.21/////////
-                    var _other = []
-                    var _val = [];
-                    var valObj = {};
-                    valObj.IsNull = true;
-
-                    _other = getValue(_eSG, "eOther.21");
-                    if (_other.IsNull == true) {
-                        _val = _other.ValueArray[0].val;
-                        valObj.IsNull = false;
-                    };
-                    valObj.vSet = _val.slice(0);
-                    eOther["eOther.21"] = valObj;
-                    delete valObj;
-                }
-            }
-        };
-       
-  return eOther
-  };
-var seteDevice = function (TheCall) 
-{
- 
     var eDevice = new Object();
     var pDevice = TheCall.pDevice
     var DeviceGroup = new Object();
-    
+
     eDevice.IsValid = false;
     eDevice["DeviceGroup"] = -1;
-    if (pDevice.HasDataSet == true) 
-    {
-        if (typeof pDevice.attributes.sections != 'undefined')
-        {
+
+    if (pDevice.HasDataSet == true) {
+        if (typeof pDevice.attributes.sections != 'undefined') {
             var _sI = [];
             _sI = getSectionIndex(pDevice, "eDevice.DeviceGroup")
-            
+
             if (_sectionIndex[0] != -1) {
                 eDevice["DeviceGroup"] = _sI.length;
                 eDevice.IsValid = true;
             }
         }
-    };
-    for (var xx = 0; xx < _sI.length; xx++)
-    {
-        DeviceGroup = new Object();
 
-        var _eL = pDevice.attributes.sections[_sectionIndex[xx]].attributes.elements;
+        for (var xx = 0; xx < _sI.length; xx++) {
+            DeviceGroup = new Object();
 
-        //edevice.01/////////////////////////////
-        var _device = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eDevice.IsValid == true) {
-            _device = getValue(_eL, "eDevice.01");
-            if ((_device.IsNull != true) && (typeof _device.ValueArray[0] != 'undefined'))
-                _val.push(_device.ValueArray[0].val);
-            valObj.vSet = _val.slice(0);
-            DeviceGroup["eDevice.01"] = valObj;
-            delete valObj;
-        }
+            var _eL = pDevice.attributes.sections[_sectionIndex[xx]].attributes.elements;
 
-
-        //edevice.02/////////////////////////////
-        var _device = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eDevice.IsValid == true) {
-            _device = getValue(_eL, "eDevice.02");
-            if ((_device.IsNull != true) && (typeof _device.ValueArray[0] != 'undefined'))
-                _val.push(_device.ValueArray[0].val);
-            valObj.IsNull = false;
-            valObj.vSet = _val.slice(0);
-            DeviceGroup["eDevice.02"] = valObj;
-            delete valObj;
-        };
-
-        //edevice.03/////////////////////////////
-        var _device = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eDevice.IsValid == true) {
-            _device = getValue(_eL, "eDevice.03");
-
-            if (_device.IsNull != true) {
-                for (var i = 0; i <= _device.Count - 1; i++) {
-                    if ((_device.ValueArray[i].HasValue == true) && (_val.indexOf(_device.ValueArray[i].val) == -1)) {
-                        _val.push(_device.ValueArray[i].val);
-                    }
-                };
-
-                valObj.IsNull = false;
+            //edevice.01/////////////////////////////
+            var _device = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eDevice.IsValid == true) {
+                _device = getValue(_eL, "eDevice.01");
+                if ((_device.IsNull != true) && (typeof _device.ValueArray[0] != 'undefined'))
+                    _val.push(_device.ValueArray[0].val);
                 valObj.vSet = _val.slice(0);
-                DeviceGroup["eDevice.03"] = valObj;
+                DeviceGroup["eDevice.01"] = valObj;
                 delete valObj;
             }
-        };        
-        eDevice["WaveformGroup"] = -1;
-        if ((typeof pDevice.attributes.sections != 'undefined') && (eDevice.IsValid == true)) {
-            var _wFG = []
-            _wFG = getSectionIndex(pDevice.attributes.sections[xx], "eDevice.WaveformGroup");
-            if (_wFG[0] != -1) {
-                eDevice["eDevice.WaveformGroup"] = 1;
-            }
-        };
 
-        ///////////////WaveForm
-        if (_wFG != -1) {
-                        
-            var _eRG = [];
-            var _eRG = pDevice.attributes.sections[_sectionIndex[xx]].attributes.sections[_wFG].attributes.elements;
-            //edevice.04/////////////////////////////
+
+            //edevice.02/////////////////////////////
             var _device = [];
             var _val = [];
             var valObj = {};
             valObj.IsNull = true;
-            if(eDevice.IsValid == true)
-            {
-                _device = getValue(_eRG, "eDevice.04");
-         
-                if (_device.IsNull != true) 
-                {
-                    if (typeof _device.ValueArray[0] != 'undefined') {
-                        _val.push(_device.ValueArray[0].val);
-                    }
-                    valObj.IsNull = false;                   
-                    valObj.vSet = _val.slice(0);
-                    DeviceGroup["eDevice.04"] = valObj;
-                    delete valObj;
-                }
+            if (eDevice.IsValid == true) {
+                _device = getValue(_eL, "eDevice.02");
+                if ((_device.IsNull != true) && (typeof _device.ValueArray[0] != 'undefined'))
+                    _val.push(_device.ValueArray[0].val);
+                valObj.IsNull = false;
+                valObj.vSet = _val.slice(0);
+                DeviceGroup["eDevice.02"] = valObj;
+                delete valObj;
             };
-         
-            //edevice.05/////////////////////////////
+
+            //edevice.03/////////////////////////////
             var _device = [];
             var _val = [];
             var valObj = {};
             valObj.IsNull = true;
-            if(eDevice.IsValid == true)
-            {
-                _device = getValue(_eRG, "eDevice.05");
-         
-                if (_device.IsNull != true) 
-                {
-                    if (typeof _device.ValueArray[0] != 'undefined') {
-                        _val.push(_device.ValueArray[0].val);
+            if (eDevice.IsValid == true) {
+                _device = getValue(_eL, "eDevice.03");
+
+                if (_device.IsNull != true) {
+                    for (var i = 0; i <= _device.Count - 1; i++) {
+                        if ((_device.ValueArray[i].HasValue == true) && (_val.indexOf(_device.ValueArray[i].val) == -1)) {
+                            _val.push(_device.ValueArray[i].val);
+                        }
                     };
-                    valObj.IsNull = false;                   
+
+                    valObj.IsNull = false;
                     valObj.vSet = _val.slice(0);
-                    DeviceGroup["eDevice.05"] = valObj;
+                    DeviceGroup["eDevice.03"] = valObj;
                     delete valObj;
                 }
             };
-         
-            //edevice.06/////////////////////////////
+            eDevice["WaveformGroup"] = -1;
+            if ((typeof pDevice.attributes.sections != 'undefined') && (eDevice.IsValid == true)) {
+                var _wFG = []
+                _wFG = getSectionIndex(pDevice.attributes.sections[xx], "eDevice.WaveformGroup");
+                if (_wFG[0] != -1) {
+                    eDevice["eDevice.WaveformGroup"] = 1;
+                }
+            };
+
+            ///////////////WaveForm
+            if (_wFG != -1) {
+
+                var _eRG = [];
+                var _eRG = pDevice.attributes.sections[_sectionIndex[xx]].attributes.sections[_wFG].attributes.elements;
+                //edevice.04/////////////////////////////
+                var _device = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                if (eDevice.IsValid == true) {
+                    _device = getValue(_eRG, "eDevice.04");
+
+                    if (_device.IsNull != true) {
+                        if (typeof _device.ValueArray[0] != 'undefined') {
+                            _val.push(_device.ValueArray[0].val);
+                        }
+                        valObj.IsNull = false;
+                        valObj.vSet = _val.slice(0);
+                        DeviceGroup["eDevice.04"] = valObj;
+                        delete valObj;
+                    }
+                };
+
+                //edevice.05/////////////////////////////
+                var _device = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                if (eDevice.IsValid == true) {
+                    _device = getValue(_eRG, "eDevice.05");
+
+                    if (_device.IsNull != true) {
+                        if (typeof _device.ValueArray[0] != 'undefined') {
+                            _val.push(_device.ValueArray[0].val);
+                        };
+                        valObj.IsNull = false;
+                        valObj.vSet = _val.slice(0);
+                        DeviceGroup["eDevice.05"] = valObj;
+                        delete valObj;
+                    }
+                };
+
+                //edevice.06/////////////////////////////
+                var _device = [];
+                var _val = [];
+                var valObj = {};
+                valObj.IsNull = true;
+                if (eDevice.IsValid == true) {
+                    _device = getValue(_eRG, "eDevice.06");
+
+                    if (_device.IsNull != true) {
+                        if (typeof _device.ValueArray[0] != 'undefined') {
+                            _val.push(_device.ValueArray[0].val);
+                        };
+                        valObj.IsNull = false;
+                        valObj.vSet = _val.slice(0);
+                        DeviceGroup["eDevice.06"] = valObj;
+                        delete valObj;
+                    }
+                }
+
+            };
+
+
+            //edevice.07/////////////////////////////
             var _device = [];
             var _val = [];
             var valObj = {};
             valObj.IsNull = true;
-            if(eDevice.IsValid == true)
-            {
-                _device = getValue(_eRG, "eDevice.06");
-         
-                if (_device.IsNull != true) 
-                {
-                    if (typeof _device.ValueArray[0] != 'undefined') {
-                        _val.push(_device.ValueArray[0].val);
+            if (eDevice.IsValid == true) {
+                _device = getValue(_eL, "eDevice.07");
+
+                if (_device.IsNull != true) {
+                    for (var i = 0; i <= _device.Count - 1; i++) {
+                        if ((_device.ValueArray[i].HasValue == true) && (_val.indexOf(_device.ValueArray[i].val) == -1)) {
+                            _val.push(_device.ValueArray[i].val);
+                        }
                     };
-                    valObj.IsNull = false;                   
+                    valObj.IsNull = false;
                     valObj.vSet = _val.slice(0);
-                    DeviceGroup["eDevice.06"] = valObj;
+                    DeviceGroup["eDevice.07"] = valObj;
                     delete valObj;
                 }
-            }
-                         
-        };
-    
-    
-        //edevice.07/////////////////////////////
-        var _device = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eDevice.IsValid == true) {
-            _device = getValue(_eL, "eDevice.07");
-    
-            if (_device.IsNull != true) {
-                for (var i = 0; i <= _device.Count - 1; i++) {
-                    if ((_device.ValueArray[i].HasValue == true) && (_val.indexOf(_device.ValueArray[i].val) == -1)) {
-                        _val.push(_device.ValueArray[i].val);
-                    }
-                };
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                DeviceGroup["eDevice.07"] = valObj;
-                delete valObj;
-            }
-        };
-    
-        //edevice.08/////////////////////////////
-        var _device = [];
-        var _val = [];
-        var valObj = {};
-        valObj.IsNull = true;
-        if (eDevice.IsValid == true) {
-            _device = getValue(_eL, "eDevice.08");
-            if (_device.IsNull != true) {
-                _val.push(_device.ValueArray[0].val);
-                valObj.IsNull = false;
-                valObj.vSet = _val.slice(0);
-                DeviceGroup["eDevice.08"] = valObj;
-                delete valObj;
-            }
-                        
-        };
-
-
-        ///////////////Shock
-        eDevice["eDevice.ShockGroup"] = -1;
-        if (typeof pDevice.attributes.sections[xx].attributes.sections != 'undefined') {
-            {
-                var _cSG = [];
-                _cSG = getSectionIndex(pDevice.attributes.sections[xx], "eDevice.ShockGroup")
             };
-            if (_cSG != -1)
-            {
-                eDevice["eDevice.ShockGroup"] = 1;
-                var _eSG = [];
-                var _eSG = pDevice.attributes.sections[_sectionIndex[xx]].attributes.sections[_cSG].attributes.elements;
 
-                var _device = [];
-                var _val = [];
-                var valObj = {};
-                valObj.IsNull = true;
-                if (eDevice.IsValid == true) {
-                    _device = getValue(_eSG, "eDevice.09");
+            //edevice.08/////////////////////////////
+            var _device = [];
+            var _val = [];
+            var valObj = {};
+            valObj.IsNull = true;
+            if (eDevice.IsValid == true) {
+                _device = getValue(_eL, "eDevice.08");
+                if (_device.IsNull != true) {
+                    _val.push(_device.ValueArray[0].val);
+                    valObj.IsNull = false;
+                    valObj.vSet = _val.slice(0);
+                    DeviceGroup["eDevice.08"] = valObj;
+                    delete valObj;
+                }
 
-                    if (_device.IsNull != true) {
-                        _val.push(_device.ValueArray[0].val);
-                        valObj.IsNull = false;
-                        valObj.vSet = _val.slice(0);
-                        DeviceGroup["eDevice.09"] = valObj;
-                        delete valObj;
-                    }
+            };
+
+
+            ///////////////Shock
+            eDevice["eDevice.ShockGroup"] = -1;
+            if (typeof pDevice.attributes.sections[xx].attributes.sections != 'undefined') {
+                {
+                    var _cSG = [];
+                    _cSG = getSectionIndex(pDevice.attributes.sections[xx], "eDevice.ShockGroup")
                 };
+                if (_cSG != -1) {
+                    eDevice["eDevice.ShockGroup"] = 1;
+                    var _eSG = [];
+                    var _eSG = pDevice.attributes.sections[_sectionIndex[xx]].attributes.sections[_cSG].attributes.elements;
 
-                var _device = [];
-                var _val = [];
-                var valObj = {};
-                valObj.IsNull = true;
-                if (eDevice.IsValid == true) {
-                    _device = getValue(_eSG, "eDevice.10");
+                    var _device = [];
+                    var _val = [];
+                    var valObj = {};
+                    valObj.IsNull = true;
+                    if (eDevice.IsValid == true) {
+                        _device = getValue(_eSG, "eDevice.09");
 
-                    if (_device.IsNull != true) {
-                        _val.push(_device.ValueArray[0].val);
-                        valObj.IsNull = false;
-                        valObj.vSet = _val.slice(0);
-                        DeviceGroup["eDevice.10"] = valObj;
-                        delete valObj;
-                    }
-                };
-                var _device = [];
-                var _val = [];
-                var valObj = {};
-                valObj.IsNull = true;
-                if (eDevice.IsValid == true) {
-                    _device = getValue(_eSG, "eDevice.11");
+                        if (_device.IsNull != true) {
+                            _val.push(_device.ValueArray[0].val);
+                            valObj.IsNull = false;
+                            valObj.vSet = _val.slice(0);
+                            DeviceGroup["eDevice.09"] = valObj;
+                            delete valObj;
+                        }
+                    };
 
-                    if (_device.IsNull != true) {
-                        _val.push(_device.ValueArray[0].val);
-                        valObj.IsNull = false;
-                        valObj.vSet = _val.slice(0);
-                        DeviceGroup["eDevice.11"] = valObj;
-                        delete valObj;
-                    }
-                };
+                    var _device = [];
+                    var _val = [];
+                    var valObj = {};
+                    valObj.IsNull = true;
+                    if (eDevice.IsValid == true) {
+                        _device = getValue(_eSG, "eDevice.10");
+
+                        if (_device.IsNull != true) {
+                            _val.push(_device.ValueArray[0].val);
+                            valObj.IsNull = false;
+                            valObj.vSet = _val.slice(0);
+                            DeviceGroup["eDevice.10"] = valObj;
+                            delete valObj;
+                        }
+                    };
+                    var _device = [];
+                    var _val = [];
+                    var valObj = {};
+                    valObj.IsNull = true;
+                    if (eDevice.IsValid == true) {
+                        _device = getValue(_eSG, "eDevice.11");
+
+                        if (_device.IsNull != true) {
+                            _val.push(_device.ValueArray[0].val);
+                            valObj.IsNull = false;
+                            valObj.vSet = _val.slice(0);
+                            DeviceGroup["eDevice.11"] = valObj;
+                            delete valObj;
+                        }
+                    };
 
 
-                var _device = [];
-                var _val = [];
-                var valObj = {};
-                valObj.IsNull = true;
-                if (eDevice.IsValid == true) {
-                    _device = getValue(_eSG, "eDevice.12");
+                    var _device = [];
+                    var _val = [];
+                    var valObj = {};
+                    valObj.IsNull = true;
+                    if (eDevice.IsValid == true) {
+                        _device = getValue(_eSG, "eDevice.12");
 
-                    if (_device.IsNull != true) {
-                        _val.push(_device.ValueArray[0].val);
-                        valObj.IsNull = false;
-                        valObj.vSet = _val.slice(0);
-                        DeviceGroup["eDevice.12"] = valObj;
-                        delete valObj;
+                        if (_device.IsNull != true) {
+                            _val.push(_device.ValueArray[0].val);
+                            valObj.IsNull = false;
+                            valObj.vSet = _val.slice(0);
+                            DeviceGroup["eDevice.12"] = valObj;
+                            delete valObj;
+                        }
+
                     }
 
                 }
-
-            }
+            };
+            dGroupArray.push(DeviceGroup)
         };
-        dGroupArray.push(DeviceGroup)   
+
+        eDevice.DeviceGroup = dGroupArray.slice(0)
     };
-            
-      eDevice.DeviceGroup=dGroupArray.slice(0)
-return eDevice;
+    return eDevice;
 
 };
 var setePayment = function (TheCall) 
 {
- 
+
     var ePayment = new Object();
     var pPayment = new Object();
     pPayment = TheCall.pPayment;
+    console.log(pPayment)
     var ErrorList = [];
-   
-    if (pPayment.HasDataSet == false) 
-    {
+
+    if (pPayment.HasDataSet == false) {
         ePayment["IsValid"] = false;
-        ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "Missing Mandatory.  ePayment.HasDataSet = false" })             
+        //ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "Missing Mandatory.  ePayment.HasDataSet = false" })
+        //    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "ePatient", Description: "Missing Mandatory.  ePatient.HasDataSet = false" })
+        var call = {};
+        call = setePaymentNull(TheCall)
+        ePayment = call.ePayment;
+        console.log(ePayment)
+        return ePayment;
     };
-             
+
     ///////////ONLY BILLING TRANSPORT CALLS
     ePayment["IsInsurance"] = false;
     ePayment["IsMedicaid"] = false;
@@ -2548,26 +2499,21 @@ var setePayment = function (TheCall)
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-     
-    if (ePayment["IsValid"] == true)
-    {
-        _payment = getValue(_eP, "ePayment.01");       
-        if (_payment.IsNull == true) 
-        {
+
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.01");
+        if (_payment.IsNull == true) {
             valObj.NV = true;
             _val.push("7701003")
             valObj.IsNull = true;
         }
-        else
-        {
+        else {
             _val.push(_payment.ValueArray[0].val);
-            if ((_val[0] == "2601001")&&(_val[0]== "2601013"))
-            {
+            if ((_val[0] == "2601001") && (_val[0] == "2601013")) {
                 PaymentType = "Insurance"
                 ePayment["IsInsurance"] = true;
             };
-            if (_val[0] == "2601003")
-            {
+            if (_val[0] == "2601003") {
                 ePayment.PaymentType = "Medicaid"
                 ePayment["IsMedicaid"] = true;
             };
@@ -2582,8 +2528,7 @@ var setePayment = function (TheCall)
             valObj.IsNull = false;
         }
     }
-    else
-    {
+    else {
         valObj.NV = true;
         _val.push("7701001")
         valObj.IsNull = true;
@@ -2591,7 +2536,7 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.01"] = valObj;
     delete valObj;
- 
+    
     ////////////////////////////////
     if (pPayment.HasDataSet == true) {
         ePayment["CertificateGroup"] = -1;
@@ -2607,8 +2552,8 @@ var setePayment = function (TheCall)
             }
         }
     };
- 
- 
+
+
     //////////////////ePayment.02
     var _payment = [];
     var _val = [];
@@ -2623,7 +2568,7 @@ var setePayment = function (TheCall)
             if (_val == "9922001") // If Phsysicans Certification is No, Check for Medicaide/air.
             {
                 if ((TheCall.IsEmergent == false && ePayment.isMedicaid == true && ePayment.isMedicare == true)) {
-                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "PCS required for Payment Type Medicare/Medicaid" })             
+                    ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "PCS required for Payment Type Medicare/Medicaid" })
                 }
             }
             else {
@@ -2635,14 +2580,13 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.02"] = valObj;
     delete valObj;
- 
+
     //////////////////ePayment.03
     var _payment = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePayment["CertificateGroup"] == 1) 
-    {
+    if (ePayment["CertificateGroup"] == 1) {
         _payment = getValue(_cel, "ePayment.03");
         if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
@@ -2659,25 +2603,21 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.03"] = valObj;
     delete valObj;;
-    
+
     //ePayment.04////////////
     var _payment = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePayment["CertificateGroup"] == 1) 
-    {
+    if (ePayment["CertificateGroup"] == 1) {
         _payment = getValue(_cel, "ePayment.04");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             if ((ePayment["ePayment.02"] == null && ePayment["ePayment.02"] == "9922001")) //if No PCS
             {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Certification Reason Provided with null Certification"}); 
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Certification Reason Provided with null Certification" });
             }
-            else 
-            {
-                for (var i = 0; i < _payment.ValueArray.length; i++) 
-                {
+            else {
+                for (var i = 0; i < _payment.ValueArray.length; i++) {
                     if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
                         _val.push(_payment.ValueArray[i].val);
                         valObj.IsNull = false;
@@ -2686,21 +2626,19 @@ var setePayment = function (TheCall)
             }
         }
     };
-    
+
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.04"] = valObj;
     delete valObj;
- 
+
     //////////////////ePayment.05
     var _payment = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePayment["CertificateGroup"] == 1) 
-    {
+    if (ePayment["CertificateGroup"] == 1) {
         _payment = getValue(_cel, "ePayment.05");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -2708,27 +2646,25 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.05"] = valObj;
     delete valObj;
-                
+
     //////////////////ePayment.06
     var _payment = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-                
-    if (ePayment["CertificateGroup"] == 1)
-    {
+
+    if (ePayment["CertificateGroup"] == 1) {
         _payment = getValue(_cel, "ePayment.06");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
-                
+
             if ((ePayment["ePayment.02"] == null && ePayment["ePayment.02"] == "9922001")) //if No PCS
             {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Certification Provider Type with null Certification"});
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Certification Provider Type with null Certification" });
             }
             else if ((ePayment["ePayment.02"] == null && ePayment["ePayment.02"] == "9922001")) //if No PCS
             {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Certification Provider Type with null Certification"});
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Certification Provider Type with null Certification" });
             }
             else {
                 _val.push(_payment.ValueArray[0].val);
@@ -2739,22 +2675,20 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.06"] = valObj;
     delete valObj;
-                                                                      
+
     //////////////////ePayment.07
     var _payment = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePayment["ePayment.CertificateGroup"] == 1) 
-    {
+    if (ePayment["ePayment.CertificateGroup"] == 1) {
         _payment = getValue(_cel, "ePayment.07");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             if ((ePayment["ePayment.02"] == null && ePayment["ePayment.02"] == "9922001")) //if No PCS
             {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Certification Provider Type with null Certification"});
-    
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Certification Provider Type with null Certification" });
+
             }
             else {
                 _val.push(_payment.ValueArray[0].val);
@@ -2765,18 +2699,16 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.07"] = valObj;
     delete valObj;
-     
-    
+
+
     //////////////////ePayment.08
     var _payment = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePayment["IsValid"] == true)
-    {
+    if (ePayment["IsValid"] == true) {
         _payment = getValue(_eP, "ePayment.08");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -2785,19 +2717,21 @@ var setePayment = function (TheCall)
     ePayment["ePayment.08"] = valObj;
     delete valObj;
     // IF NOT INSURED, SET TO NA!~
-        
+   
     ///////////////////////////////////////////////ePayment.InsuranceGroup
-    ePayment["Insurancegroup"] = -1;
-    if (pPayment.HasDataSet == true) 
-    {
-        if (typeof pPayment.attributes.sections != 'undefined') 
-        {
+    ePayment["InsuranceGroup"] = -1;
+    if (pPayment.HasDataSet == true) {
+        if (typeof pPayment.attributes.sections != 'undefined') {
+            var _sING = [];
             _sING = getSectionIndex(pPayment, "ePayment.InsuranceGroup");
+            console.log(_sING)
+            console.log(_sING.length)
             if (_sING[0] != -1) {
-                ePayment["Insurancegroup"] = _sING.length;
+                ePayment["InsuranceGroup"] = _sING.length;
             }
         }
     };
+    
     if ((ePayment.IsValid == true) && _sING.length > 0) 
     {
         InsGrpArray = [];
@@ -2824,6 +2758,7 @@ var setePayment = function (TheCall)
             InsuranceGroup["ePayment.09"] = valObj;
             delete valObj;
 
+            /*
             //////////////////ePayment.10
             var _payment = [];
             var _val = [];
@@ -3074,45 +3009,40 @@ var setePayment = function (TheCall)
             valObj.vSet = _val.slice(0);
             InsuranceGroup["ePayment.22"] = valObj;
             delete valObj;
-
+            */
             InsGrpArray.push(InsuranceGroup)
         };
-        if (InsGrpArray.length > 0) 
-        {
+        
+        if (InsGrpArray.length > 0) {
             ePayment.InsuranceGroup = InsGrpArray.slice(0);
-        }
-    };
-  
+        };
+
     
-    
+    /*
     ///////////////////////////////////////////////ePayment.ClosestRelativeGroup
     ePayment["ClosestRelativeGroup"] = -1;
-    if (pPayment.HasDataSet == true) 
-    {
-        if (typeof pPayment.attributes.sections != 'undefined') 
-        {
+    if (pPayment.HasDataSet == true) {
+        if (typeof pPayment.attributes.sections != 'undefined') {
             _cRG = getSectionIndex(pPayment, "ePayment.ClosestRelativeGroup");
-            if (_cRG[0] != -1)
-            {
+            if (_cRG[0] != -1) {
                 ePayment["ClosestRelativeGroup"] = 1;
             }
         }
     };
-           
-    if ((ePayment.IsValid == true) && (ePayment["ClosestRelativeGroup"] == 1))
-    {
-                
+    
+    if ((ePayment.IsValid == true) && (ePayment["ClosestRelativeGroup"] == 1)) {
+
         InsGrpArray = [];
         var _clrg = [];
         _clrg = pPayment.attributes.sections[_cRG[0]].attributes.elements
         ePayment["ClosestLivingRelative"] = 1;
-                
+
         //////////////////ePayment.23
         var _payment = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-                
+
         _payment = getValue(_clrg, "ePayment.23");
         if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
@@ -3121,13 +3051,13 @@ var setePayment = function (TheCall)
         valObj.vSet = _val.slice(0);
         ePayment["ePayment.23"] = valObj;
         delete valObj;
-                
+
         //////////////////ePayment.24
         var _payment = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-                
+
         _payment = getValue(_clrg, "ePayment.24");
         if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
@@ -3136,19 +3066,17 @@ var setePayment = function (TheCall)
         valObj.vSet = _val.slice(0);
         ePayment["ePayment.24"] = valObj;
         delete valObj;
-                
+
         //////////////////ePayment.25
         var _payment = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-                
+
         _payment = getValue(_clrg, "ePayment.25");
-        if (_payment.IsNull != true) 
-        {
-            if (ePayment["ClosestLivingRelative"] == false) 
-            {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name"});
+        if (_payment.IsNull != true) {
+            if (ePayment["ClosestLivingRelative"] == false) {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name" });
             }
             else {
                 _val.push(_payment.ValueArray[0].val);
@@ -3158,19 +3086,19 @@ var setePayment = function (TheCall)
         valObj.vSet = _val.slice(0);
         ePayment["ePayment.25"] = valObj;
         delete valObj;
-                
+
         //////////////////ePayment.26
         var _payment = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-                
-                
+
+
         _payment = getValue(_clrg, "ePayment.26");
         if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             if (ePayment["ClosestLivingRelative"] == false) {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name"});
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name" });
             }
             else {
                 _val.push(_payment.ValueArray[0].val);
@@ -3180,19 +3108,19 @@ var setePayment = function (TheCall)
         valObj.vSet = _val.slice(0);
         ePayment["ePayment.26"] = valObj;
         delete valObj;
-                
+
         //////////////////ePayment.27
         var _payment = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
-                
-                
+
+
         _payment = getValue(_clrg, "ePayment.27");
         if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             if (ePayment["ClosestLivingRelative"] == false) {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name"});
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name" });
             }
             else {
                 _val.push(_payment.ValueArray[0].val);
@@ -3202,18 +3130,17 @@ var setePayment = function (TheCall)
         valObj.vSet = _val.slice(0);
         ePayment["ePayment.27"] = valObj;
         delete valObj;
-                
+
         //////////////////ePayment.28
         var _payment = [];
         var _val = [];
         var valObj = {};
         valObj.IsNull = true;
         _payment = getValue(_clrg, "ePayment.28");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             if (ePayment["ClosestLivingRelative"] == false) {
-                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name"});
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name" });
             }
             else {
                 _val.push(_payment.ValueArray[0].val);
@@ -3223,106 +3150,103 @@ var setePayment = function (TheCall)
         valObj.vSet = _val.slice(0);
         ePayment["ePayment.28"] = valObj;
         delete valObj;
-        
-    //////////////////ePayment.29
-    var _payment = [];
-    var _val = [];
-    var valObj = {};
-    valObj.IsNull = true;
-                
-                
-    _payment = getValue(_clrg, "ePayment.29");
-    if (_payment.IsNull != true) {
-        _val.push(_payment.ValueArray[0].val);
-        if (ePayment["ClosestLivingRelative"] == false) {
-            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name"});
-        }
-        else {
+
+        //////////////////ePayment.29
+        var _payment = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+
+
+        _payment = getValue(_clrg, "ePayment.29");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            if (ePayment["ClosestLivingRelative"] == false) {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name" });
+            }
+            else {
+                _val.push(_payment.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        };
+        valObj.vSet = _val.slice(0);
+        ePayment["ePayment.29"] = valObj;
+        delete valObj;
+
+        //////////////////ePayment.30
+        var _payment = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        _payment = getValue(_clrg, "ePayment.30");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            if (ePayment["hasClosestLivingRelative"] == false) {
+                ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name" });
+            }
+            else {
+
+                _val.push(_payment.ValueArray[0].val);
+                valObj.IsNull = false;
+            }
+        };
+        valObj.vSet = _val.slice(0);
+        ePayment["ePayment.30"] = valObj;
+        delete valObj;
+
+        //////////////////ePayment.31
+        var _payment = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+        _payment = getValue(_clrg, "ePayment.31");
+        if (_payment.IsNull != true) {
+            //  if (ePayment["hasClosestLivingRelative"] == false) {
+            //ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: 
+            //      _Payment.Error = "Closest Living Relative Not Identified - No Name"
+            //  }
+            //  else {
+            for (var i = 0; i < _payment.ValueArray.length; i++) {
+                _phoneType = "";
+                if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
+                    var _pObj = new Object();
+                    _val.push(_payment.ValueArray[i].val);
+
+                };
+            }
+            //};
+
+            valObj.IsNull = false;
+        };
+        valObj.vSet = _val.slice(0);
+        ePayment["ePayment.37"] = valObj;
+        delete valObj;
+
+        //////////////////ePayment.32
+        var _payment = [];
+        var _val = [];
+        var valObj = {};
+        valObj.IsNull = true;
+
+        _payment = getValue(_clrg, "ePayment.32");
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
-        }
+        };
+        valObj.vSet = _val.slice(0);
+        ePayment["ePayment.32"] = valObj;
+        delete valObj;
+
     };
-    valObj.vSet = _val.slice(0);
-    ePayment["ePayment.29"] = valObj;
-    delete valObj;
-                
-    //////////////////ePayment.30
-    var _payment = [];
-    var _val = [];
-    var valObj = {};
-    valObj.IsNull = true;
-    _payment = getValue(_clrg, "ePayment.30");
-    if (_payment.IsNull != true) {
-        _val.push(_payment.ValueArray[0].val);
-        if (ePayment["hasClosestLivingRelative"] == false) {
-            ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: "Closest Living Relative Not Identified - No Name"});
-        }
-        else {
-                
-            _val.push(_payment.ValueArray[0].val);
-            valObj.IsNull = false;
-        }
-    };
-    valObj.vSet = _val.slice(0);
-    ePayment["ePayment.30"] = valObj;
-    delete valObj;
-                
-    //////////////////ePayment.31
-    var _payment = [];
-    var _val = [];
-    var valObj = {};
-    valObj.IsNull = true;
-    _payment = getValue(_clrg, "ePayment.31");
-    if (_payment.IsNull != true) {
-        //  if (ePayment["hasClosestLivingRelative"] == false) {
-        //ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: 
-        //      _Payment.Error = "Closest Living Relative Not Identified - No Name"
-        //  }
-        //  else {
-        for (var i = 0; i < _payment.ValueArray.length; i++) {
-            _phoneType = "";
-            if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
-                var _pObj = new Object();
-                _val.push(_payment.ValueArray[i].val);
-                
-            };
-        }
-        //};
-                
-        valObj.IsNull = false;
-    };
-    valObj.vSet = _val.slice(0);
-    ePayment["ePayment.37"] = valObj;
-    delete valObj;
-                
-    //////////////////ePayment.32
-    var _payment = [];
-    var _val = [];
-    var valObj = {};
-    valObj.IsNull = true;
-                
-    _payment = getValue(_clrg, "ePayment.32");
-    if (_payment.IsNull != true) {
-        _val.push(_payment.ValueArray[0].val);
-        valObj.IsNull = false;
-    };
-    valObj.vSet = _val.slice(0);
-    ePayment["ePayment.32"] = valObj;
-    delete valObj;
-    
-};
-   
+
     /////////////////////////////ePayment.EmployerGroup
-    ePayment["EmployerGroup"]=-1;
-    if(pPayment.HasDataSet ==true)
-    {
-        if(typeof pPayment.attributes.sections !='undefined')
-        {
-            _sectionIndex = getSectionIndex(pPayment, "ePayment.EmployerGroup"); 
-            if (_sectionIndex >= 0) 
-            {
-                ePayment["EmployerGroup"]=1;
-                var _eg =[];
+    ePayment["EmployerGroup"] = -1;
+    if (pPayment.HasDataSet == true) {
+        if (typeof pPayment.attributes.sections != 'undefined') {
+            _sectionIndex = getSectionIndex(pPayment, "ePayment.EmployerGroup");
+            if (_sectionIndex >= 0) {
+                ePayment["EmployerGroup"] = 1;
+                var _eg = [];
                 _eg = pPayment.attributes.sections[_sectionIndex].attributes.elements
             }
         }
@@ -3331,12 +3255,10 @@ var setePayment = function (TheCall)
     var _payment = [];
     var _val = [];
     var valObj = {};
-    valObj.IsNull = true; 
-    if(ePayment["EmployerGroup"]==1)
-    {
+    valObj.IsNull = true;
+    if (ePayment["EmployerGroup"] == 1) {
         _payment = getValue(_eg, "ePayment.33");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
         };
@@ -3344,17 +3266,15 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.33"] = valObj;
     delete valObj;
- 
+
     //////////////////ePayment.34
     var _payment = [];
     var _val = [];
     var valObj = {};
-    valObj.IsNull = true; 
-    if(ePayment["EmployerGroup"]==1)
-    {
+    valObj.IsNull = true;
+    if (ePayment["EmployerGroup"] == 1) {
         _payment = getValue(_eg, "ePayment.34");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -3362,17 +3282,15 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.34"] = valObj;
     delete valObj;
- 
+
     //////////////////ePayment.35
     var _payment = [];
     var _val = [];
     var valObj = {};
-    valObj.IsNull = true; 
-    if(ePayment["EmployerGroup"]==1)
-    {
+    valObj.IsNull = true;
+    if (ePayment["EmployerGroup"] == 1) {
         _payment = getValue(_eg, "ePayment.35");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -3380,17 +3298,15 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.35"] = valObj;
     delete valObj;
- 
+
     //////////////////ePayment.36
     var _payment = [];
     var _val = [];
     var valObj = {};
-    valObj.IsNull = true; 
-    if(ePayment["EmployerGroup"]==1)
-    {
+    valObj.IsNull = true;
+    if (ePayment["EmployerGroup"] == 1) {
         _payment = getValue(_eg, "ePayment.36");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -3398,17 +3314,15 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.36"] = valObj;
     delete valObj;
- 
+
     //////////////////ePayment.37
     var _payment = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if(ePayment["EmployerGroup"]==1)
-    {
+    if (ePayment["EmployerGroup"] == 1) {
         _payment = getValue(_eg, "ePayment.37");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
         }
@@ -3416,52 +3330,45 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.37"] = valObj;
     delete valObj;
- 
+
     //////////////////ePayment.38
     var _payment = [];
     var _val = [];
     var valObj = {};
-    valObj.IsNull = true; 
-    if(ePayment["EmployerGroup"]==1)
-    {
+    valObj.IsNull = true;
+    if (ePayment["EmployerGroup"] == 1) {
         _payment = getValue(_eg, "ePayment.38");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
             valObj.IsNull = false;
- 
+
         }
     };
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.38"] = valObj;
     delete valObj;
- 
- 
+
+
     //////////////////ePayment.39
     var _payment = [];
     var _val = [];
     var valObj = {};
-    valObj.IsNull = true; 
-    if(ePayment["EmployerGroup"]==1)
-    {
+    valObj.IsNull = true;
+    if (ePayment["EmployerGroup"] == 1) {
         _payment = getValue(_eg, "ePayment.39");
-        if (_payment.IsNull != true) 
-        {
+        if (_payment.IsNull != true) {
             //  if (ePayment["hasClosestLivingRelative"] == false) {
             //ErrorList.push({ Version: "3.3.4", Severity: "1", ElementID: "Payment", Description: "ePayment.02", Description: 
             //      _Payment.Error = "Closest Living Relative Not Identified - No Name"
             //  }
             //  else {
-            for (var i = 0; i < _payment.ValueArray.length; i++) 
-            {
+            for (var i = 0; i < _payment.ValueArray.length; i++) {
                 _phoneType = "";
-                if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) 
-                {
+                if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
                     var _pObj = new Object();
                     _val.push(_payment.ValueArray[i].val)
                     _phoneType = _payment.ValueArray[i].PhoneNumberType
-                    if (_payment.ValueArray[i].val != null) 
-                    { 
+                    if (_payment.ValueArray[i].val != null) {
                         valObj.IsNull = false;
                     };
                 };
@@ -3472,15 +3379,15 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.39"] = valObj;
     delete valObj;
-        
-    
-    
+
+
+
     //////////////////ePayment.40
     var _payment = [];
     var _val = [];
     var valObj = {};
     valObj.IsNull = true;
-    if (ePayment["IsValid"] == true)    {
+    if (ePayment["IsValid"] == true) {
         _payment = getValue(_eP, "ePayment.40");
         if (_payment.IsNull != true) {
             _val.push(_payment.ValueArray[0].val);
@@ -3490,316 +3397,312 @@ var setePayment = function (TheCall)
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.40"] = valObj;
     delete valObj;
- 
-     //////////////////ePayment.41
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.41"); 
-         if (_payment.IsNull != true) 
-         {        
-             for (var i = 0; i < _payment.ValueArray.length; i++) 
-             {
-                 if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) 
-                 {
-                     _val.push(_payment.ValueArray[i].val);
-                     valObj.IsNull = false;
-                 }
-             };
-         
-         }
-     };
+
+    //////////////////ePayment.41
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.41");
+        if (_payment.IsNull != true) {
+            for (var i = 0; i < _payment.ValueArray.length; i++) {
+                if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
+                    _val.push(_payment.ValueArray[i].val);
+                    valObj.IsNull = false;
+                }
+            };
+
+        }
+    };
     valObj.vSet = _val.slice(0);
     ePayment["ePayment.41"] = valObj;
     delete valObj;
- 
-     //////////////////ePayment.42
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.42");
-         if (_payment.IsNull != true) {                
-             for (var i = 0; i < _payment.ValueArray.length; i++) 
-             {
-                 if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) 
-                 {
-                     _val.push(_payment.ValueArray[i].val);
-                     valObj.IsNull = false;
-                 }
-             };
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.42"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.43
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.43");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false;
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.43"] = valObj;
-     delete valObj;
 
-     //////////////////ePayment.44
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.44");
-         if (_payment.IsNull != true) {
-             for (var i = 0; i < _payment.ValueArray.length; i++) {
-                 if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
-                     _val.push(_payment.ValueArray[i].val);
-                     valObj.IsNull = false;
-                 }
-             };
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.44"] = valObj;
-     delete valObj;
- 
- 
-     //////////////////ePayment.45
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.45");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false;
- 
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.45"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.46
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.46");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false;
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.46"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.47
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.47");
-         if (_payment.IsNull != true) {
-             for (var i = 0; i < _payment.ValueArray.length; i++) {
-                 if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
-                     if (_payment.ValueArray[i].val.length == 1) {
-                         _val.push("0" + _payment.ValueArray[i].val)
-                     }
-                     else {
-                         _val.push(_payment.ValueArray[i].val);
-                         valObj.IsNull = false;
-                     }
-                 };
-             }
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.47"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.48
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.48");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false;
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.48"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.49
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.49");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false; 
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.49"] = valObj;
-     delete valObj;
- 
-     // IF CANCELLED, NOT APPLICABLE
-     //////////////////ePayment.50
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    
-     {
-         _payment = getValue(_eP, "ePayment.50");      
-         if (_payment.IsNull == true) 
-         {
-             if (isRequiredStateElement("ePayment.50")) 
-             {
-                 _val.push("7701003")
-                 valObj.NV = true;                        
-             }
-         }
-         else 
-         {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false;
-         }
-     }     
-     else 
-     {
-         _val.push("7701001")
-         valObj.NV = true;
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.50"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.51
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    
-     {
-         _payment = getValue(_eP, "ePayment.51");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false;
- 
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.51"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.52
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true)    {
-         _payment = getValue(_eP, "ePayment.52");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false; 
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.52"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.53
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true){
-         payment = getValue(_eP, "ePayment.53");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false;
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.53"] = valObj;
-     delete valObj;
- 
-     //////////////////ePayment.54
-     var _payment = [];
-     var _val = [];
-     var valObj = {};
-     valObj.IsNull = true;
-     if (ePayment["IsValid"] == true){
-         _payment = getValue(_eP, "ePayment.54");
-         if (_payment.IsNull != true) {
-             _val.push(_payment.ValueArray[0].val);
-             valObj.IsNull = false;
-         }
-     };
-     valObj.vSet = _val.slice(0);
-     ePayment["ePayment.54"] = valObj;
-     delete valObj;
- 
+    //////////////////ePayment.42
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.42");
+        if (_payment.IsNull != true) {
+            for (var i = 0; i < _payment.ValueArray.length; i++) {
+                if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
+                    _val.push(_payment.ValueArray[i].val);
+                    valObj.IsNull = false;
+                }
+            };
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.42"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.43
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.43");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.43"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.44
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.44");
+        if (_payment.IsNull != true) {
+            for (var i = 0; i < _payment.ValueArray.length; i++) {
+                if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
+                    _val.push(_payment.ValueArray[i].val);
+                    valObj.IsNull = false;
+                }
+            };
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.44"] = valObj;
+    delete valObj;
+
+
+    //////////////////ePayment.45
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.45");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.45"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.46
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.46");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.46"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.47
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.47");
+        if (_payment.IsNull != true) {
+            for (var i = 0; i < _payment.ValueArray.length; i++) {
+                if ((_payment.ValueArray[i].HasValue == true) && (_val.indexOf(_payment.ValueArray[i].val) == -1)) {
+                    if (_payment.ValueArray[i].val.length == 1) {
+                        _val.push("0" + _payment.ValueArray[i].val)
+                    }
+                    else {
+                        _val.push(_payment.ValueArray[i].val);
+                        valObj.IsNull = false;
+                    }
+                };
+            }
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.47"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.48
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.48");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.48"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.49
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.49");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.49"] = valObj;
+    delete valObj;
+
+    // IF CANCELLED, NOT APPLICABLE
+    //////////////////ePayment.50
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.50");
+        if (_payment.IsNull == true) {
+            if (isRequiredStateElement("ePayment.50")) {
+                _val.push("7701003")
+                valObj.NV = true;
+            }
+        }
+        else {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    }
+    else {
+        _val.push("7701001")
+        valObj.NV = true;
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.50"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.51
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.51");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.51"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.52
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.52");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.52"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.53
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.53");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.53"] = valObj;
+    delete valObj;
+
+    //////////////////ePayment.54
+    var _payment = [];
+    var _val = [];
+    var valObj = {};
+    valObj.IsNull = true;
+    if (ePayment["IsValid"] == true) {
+        _payment = getValue(_eP, "ePayment.54");
+        if (_payment.IsNull != true) {
+            _val.push(_payment.ValueArray[0].val);
+            valObj.IsNull = false;
+        }
+    };
+    valObj.vSet = _val.slice(0);
+    ePayment["ePayment.54"] = valObj;
+    delete valObj;
+
     ///////////////////////////////////////////////ePayment.SupplyItemGroup
-     ePayment["SupplyItemGroup"] = -1;
-     if (pPayment.HasDataSet == true) {
-         if (typeof pPayment.attributes.sections != 'undefined') {
-             var _sIG = [];
-             _sIG = getSectionIndex(pPayment, "ePayment.SupplyItemGroup");
-             ePayment["SupplyItemGroup"] = _sIG.length;
-         }
-     };
-     if (ePayment["SupplyItemGroup"] > 0)
-    {
-        ePayment["SupplyItemGroup"]=_sIG.length;
- 
+    ePayment["SupplyItemGroup"] = -1;
+    if (pPayment.HasDataSet == true) {
+        if (typeof pPayment.attributes.sections != 'undefined') {
+            var _sIG = [];
+            _sIG = getSectionIndex(pPayment, "ePayment.SupplyItemGroup");
+            console.log(_sIG[0])
+            if (_sIG[0] == -1) {
+                ePayment["SupplyItemGroup"] = -1;
+            }
+            else {
+                ePayment["SupplyItemGroup"] = _sIG.length;
+            }
+        }
+    };
+    if (ePayment["SupplyItemGroup"] > 0) {
+        ePayment["SupplyItemGroup"] = _sIG.length;
+
         InsGrpArray = [];
-        for (var i = 0; i < _sIG.length; i++)
-        {
- 
+        for (var i = 0; i < _sIG.length; i++) {
+
             var SupplyGroup = new Object();
- 
+            console.log(_sIG.length)
+            console.log(_sIG)
+            console.log(_sIG[i])
+            console.log(pPayment)
+            console.log(pPayment.attributes)
             var _lsp = pPayment.attributes.sections[_sIG[i]].attributes.elements
- 
- 
+
+
             //////////////////ePayment.55
             var _payment = [];
             var _val = [];
             var valObj = {};
             valObj.IsNull = true;
- 
+
             sgArr = [];
             _payment = getValue(_lsp, "ePayment.55");
-            if (_payment.IsNull != true)
-            {
+            if (_payment.IsNull != true) {
                 _val.push(_payment.ValueArray[0].val);
                 valObj.IsNull = false;
             };
             valObj.vSet = _val.slice(0);
             SupplyGroup["ePayment.55"] = valObj;
             delete valObj;
- 
+
             //////////////////ePayment.56
             var _payment = [];
             var _val = [];
@@ -3812,12 +3715,36 @@ var setePayment = function (TheCall)
             };
             valObj.vSet = _val.slice(0);
             SupplyGroup["ePayment.56"] = valObj;
-            delete valObj;                     
+            delete valObj;
             InsGrpArray.push(SupplyGroup);
-        }                 
-        ePayment.SupplyItemGroup = InsGrpArray;            
-    };         
-    return ePayment;    
+        }
+        ePayment.SupplyItemGroup = InsGrpArray;
+    */
+    };
+    
+    ePayment.ErrorList = ErrorList;
+    console.log(ePayment)
+    return ePayment;
+};
+var setePaymentNull = function (TheCall) {
+
+    var CallObj = {};
+    var ePayment = {};
+    var ErrorList = [];
+
+    var _val = [];
+    var valObj = {};
+    _val.push("7701001")
+    valObj.vSet = _val.slice(0);
+    valObj.IsNull = true;
+    valObj.NV = true;
+
+    ePayment["ePayment.01"] = valObj;
+    ePayment["ePayment.50"] = valObj;
+
+    ePayment.ErrorList = ErrorList;
+    CallObj.ePayment = ePayment;
+    return CallObj;
 };
 var seteLabs = function (TheCall) {
 
@@ -3825,14 +3752,11 @@ var seteLabs = function (TheCall) {
     var pLabs = TheCall.pLabs;
     eLabs["IsValid"] = false;
     eLabs["LabGroup"] = -1;
-    if (pLabs.HasDataSet != true)
-    {
-        if (typeof pLabs.attributes.elements != 'undefined')
-        {
+    if (pLabs.HasDataSet != true) {
+        if (typeof pLabs.attributes.elements != 'undefined') {
             var _exArr = []
             _exArr = pLabs;
-            if (_exArr.length > 0)
-            {
+            if (_exArr.length > 0) {
                 eLabs["LabGroup"] = _exArr.length;
             }
         }

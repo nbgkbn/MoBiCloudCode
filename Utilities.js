@@ -1,17 +1,18 @@
 var ErrorList = [];
-var v3NOT_REPORTING =   "7701005";
-var v3NOT_RECORDED =    "7701003";
-var v3NOT_APPLICABLE=   "7701001";
-var v2NOT_AVAILABLE =   "-5";
-var v2NOT_KNOWN =       "-10";
-var v2NOT_REPORTING =   "-15";
-var v2NOT_RECORDED =    "-20";
-var v2NOT_APPLICABLE =  "-25"
+var v3NOT_REPORTING = "7701005";
+var v3NOT_RECORDED = "7701003";
+var v3NOT_APPLICABLE = "7701001";
+var v2NOT_AVAILABLE = "-5";
+var v2NOT_KNOWN = "-10";
+var v2NOT_REPORTING = "-15";
+var v2NOT_RECORDED = "-20";
+var v2NOT_APPLICABLE = "-25"
 var PCRElementsArray = new Array()
 var v2Array = new Array()
 var createTheCall = function (parseObject) {
     var Call = new Object();
-    var TheServiceType = new Object();
+
+
 
     console.log(parseObject)
     //Call.Inventory = setCallInventory(parseObject);
@@ -32,139 +33,179 @@ var createTheCall = function (parseObject) {
     var eRecordObject = new Object();
     var eTimesObject = new Object();
     var eScenebject = new Object();
+    var eCrewObject = new Object();
     var TheCall = new Object();
+    var CallErrors = [];
 
+    TheCall["IsValid"] = false;
+    
+    //// ///////////////eRecord
+    eRecordObject = getObjectFromOLTPExtract(parseObject, "eRecord");
+    eRecordObject.HasDataSet = false;
+    if (eRecordObject.IsUndefined != true) {
+        eRecordObject.HasDataSet = true;
+    }
+    else {
+    };
+    TheCall.pRecord = eRecordObject;
+    TheCall.eRecord = seteRecord(TheCall);
+    TheCall.PCRID = TheCall.eRecord["eRecord.01"];
+    TheCall.IsValid = TheCall.eRecord.IsValid;
 
-    var allOn = true;
-    if (allOn == true) {
-        TheCall["IsValid"] = false;
-        //// ///////////////eRecord
-        eRecordObject = getObjectFromOLTPExtract(parseObject, "eRecord");
-        eRecordObject.HasDataSet = false;
-        if (eRecordObject.IsUndefined != true) {
-            eRecordObject.HasDataSet = true;
-        }
-        else {
-        };
-        TheCall.pRecord = eRecordObject;
-        TheCall.eRecord = seteRecord(TheCall);
-        TheCall.PCRID = TheCall.eRecord["eRecord.01"];
-        TheCall.IsValid = TheCall.eRecord.IsValid;
-
-        if (TheCall.eRecord.HasErrors == true) {
-            if (TheCall.eRecord.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eRecord.Errors.length; i++) {
-                }
+    if (TheCall.eRecord.HasErrors == true) {
+        if (TheCall.eRecord.Errors.length > 0) {
+            for (var i = 0; i < TheCall.eRecord.Errors.length; i++) {
             }
-        };
-        
-        ////////////////////////Dispatch
-        //Manadotory:  Determins Call Priority, EMD
-        eDispatchObject = getObjectFromOLTPExtract(parseObject, "eDispatch");
-        eDispatchObject.HasDataSet = false;
-        if (eDispatchObject.IsUndefined != true) {
-            eDispatchObject.HasDataSet = true;
         }
-        else {
-        };
-        TheCall.pDispatch = eDispatchObject;
-        TheCall.eDispatch = seteDispatch(TheCall);
+    };
+    if (TheCall.eRecord.ErrorList.length > 0) {
+        CallErrors.push(eRecord.ErrorList);
+    };
+    /*
+    ////////////////////////Dispatch
+    //Manadotory:  Determins Call Priority, EMD
+    eDispatchObject = getObjectFromOLTPExtract(parseObject, "eDispatch");
+    eDispatchObject.HasDataSet = false;
+    if (eDispatchObject.IsUndefined != true) {
+        eDispatchObject.HasDataSet = true;
+    }
+    else {
+    };
+    TheCall.pDispatch = eDispatchObject;
+    TheCall.eDispatch = seteDispatch(TheCall);
+    TheCall.CallType = TheCall.eDispatch.CallType;
+    //        TheCall.StartAirwayTime = false;
+    //        TheCall.EndAirwayTime = false;
+    if (TheCall.eDispatch.HasErrors == true) {
+        if (TheCall.eDispatch.Errors.length > 0) {
+            for (var i = 0; i < TheCall.eDispatch.Errors.length; i++) {
+            }
+        }
+    };
+    if (typeof TheCall.eDispatch.CallType != 'undefined') {
         TheCall.CallType = TheCall.eDispatch.CallType;
-        //        TheCall.StartAirwayTime = false;
-        //        TheCall.EndAirwayTime = false;
-        if (TheCall.eDispatch.HasErrors == true) {
-            if (TheCall.eDispatch.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eDispatch.Errors.length; i++) {
-                }
+    }
+    else {
+        TheCall.IsValid = false;
+    };
+    if (TheCall.eDispatch.ErrorList.length > 0) {
+        CallErrors.push(TheCall.eDispatch.ErrorList);
+    };
+
+    TheCall.Errors = CallErrors.slice(0);
+    
+    ////////////////////////////////////////////////////////////////
+    ///////////////////////eDisposition    
+    eDispositionObject = getObjectFromOLTPExtract(parseObject, "eDisposition");
+    eDispositionObject.HasDataSet = false;
+    if (eDispositionObject.IsUndefined != true) {
+        eDispositionObject.HasDataSet = true;
+    }
+    else {
+    };
+
+    TheCall.pDisposition = eDispositionObject;
+    TheCall.eDisposition = seteDisposition(TheCall);
+
+    console.log(TheCall.pDisposition)
+    TheCall.CallDisposition = TheCall.eDisposition.CallDisposition;
+   // TheCall.TransportType = TheCall.eDispatch.TransportType;
+
+    if (TheCall.eDisposition.ErrorList.length > 0) {
+        CallErrors.push(TheCall.eDisposition.ErrorList);
+    };
+
+    TheCall.Errors = CallErrors.slice(0);
+    
+    ////////////////////////eResponse//////////////////////////////
+    eResponseObject = getObjectFromOLTPExtract(parseObject, "eResponse");
+    eResponseObject.HasDataSet = false;
+    if (eResponseObject.IsUndefined != true) {
+        eResponseObject.HasDataSet = true;
+    }
+    else { };
+    //MUST have eDisposition - contains a Mandatory Element
+    console.log(eResponseObject)
+    TheCall.pResponse = eResponseObject;
+    TheCall.eResponse = seteResponse(TheCall);
+
+    if (TheCall.eResponse.HasErrors == true) {
+        if (TheCall.eResponse.Errors.length > 0) {
+            for (var i = 0; i < TheCall.eResponse.Errors.length; i++)
+            { }
+        }
+    };
+
+    if (TheCall.eResponse.ErrorList.length > 0) {
+        CallErrors.push(TheCall.eResponse.ErrorList);
+    };
+    
+    TheCall.Errors = CallErrors.slice(0);
+
+    
+    ////////////////////////eTimes
+    eTimesObject = getObjectFromOLTPExtract(parseObject, "eTimes");
+    eTimesObject.HasDataSet = false;
+    if (eTimesObject.IsUndefined != true) {
+        eTimesObject.HasDataSet = true;
+    }
+    else { };
+
+    TheCall.pTimes = eTimesObject;
+    TheCall.eTimes = seteTimes(TheCall);
+
+    if (TheCall.eTimes.HasErrors == true) {
+        if (TheCall.eTimes.Errors.length > 0) {
+            for (var i = 0; i < TheCall.eTimes.Errors.length; i++) {
             }
-        };
-        if (typeof TheCall.eDispatch.CallType != 'undefined') {
-            TheCall.CallType = TheCall.eDispatch.CallType;
+        }
+    };
+
+    if (TheCall.eTimes.ErrorList.length > 0) {
+        CallErrors.push(TheCall.eTimes.ErrorList);
+    };
+
+    TheCall.Errors = CallErrors.slice(0);
+
+    
+
+    ////////////////////////eSituation
+    eSituationObject = getObjectFromOLTPExtract(parseObject, "eSituation");
+    eSituationObject.HasDataSet = false;
+    if (eSituationObject.IsUndefined != true) {
+        eSituationObject.HasDataSet = true;
+    }
+    else {
+    };
+
+    TheCall.pSituation = eSituationObject;
+    TheCall.eSituation = seteSituation(TheCall);
+
+    if (TheCall.eSituation.ErrorList.length > 0) {
+        CallErrors.push(TheCall.eSituation.ErrorList);
+    };
+
+    TheCall.Errors = CallErrors.slice(0);
+    
+    ////////////////////////eCrew
+        eCrewObject = getObjectFromOLTPExtract(parseObject, "eCrew");
+        eCrewObject.HasDataSet = false;
+        if (eCrewObject.IsUndefined != true) {
+            eCrewObject.HasDataSet = true;
         }
         else {
-            TheCall.IsValid = false;
         };
 
-        
-        ////////////////////////eResponse//////////////////////////////
-        eResponseObject = getObjectFromOLTPExtract(parseObject, "eResponse");
-        eResponseObject.HasDataSet = false;
-        if (eResponseObject.IsUndefined != true) {
-            eResponseObject.HasDataSet = true;
-        }
-        else { };
-        //MUST have eDisposition - contains a Mandatory Element
-        TheCall.pResponse = eResponseObject;
-        TheCall.eResponse = seteResponse(TheCall);
+        TheCall.pCrew = eCrewObject;
+        TheCall.eCrew = seteCrew(TheCall);
 
-        if (TheCall.eResponse.HasErrors == true) {
-            if (TheCall.eResponse.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eResponse.Errors.length; i++)
-                { }
-            }
-        };
-        
-        ////////////////////////////////////////////////////////////////
-        ///////////////////////eDisposition    
-        eDispositionObject = getObjectFromOLTPExtract(parseObject, "eDisposition");
-        eDispositionObject.HasDataSet = false;
-        if (eDispositionObject.IsUndefined != true) {
-            eDispositionObject.HasDataSet = true;
-        }
-        else {
+        if (TheCall.eCrew.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eCrew.ErrorList);
         };
 
-        TheCall.pDisposition = eDispositionObject;
-        TheCall.eDisposition = seteDisposition(TheCall);
-
-        if (TheCall.eDisposition.HasErrors == true) {
-            if (TheCall.eDisposition.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eDisposition.Errors.length; i++) {
-                }
-            }
-        };
-        TheCall.CallDisposition = TheCall.eDisposition.CallDisposition;
-        TheCall.TransportType = TheCall.eDispatch.TransportType;
-
-
-        
-        ////////////////////////eTimes
-        eTimesObject = getObjectFromOLTPExtract(parseObject, "eTimes");
-        eTimesObject.HasDataSet = false;
-        if (eTimesObject.IsUndefined != true) {
-            eTimesObject.HasDataSet = true;
-        }
-        else { };
-
-        TheCall.pTimes = eTimesObject;
-        TheCall.eTimes = seteTimes(TheCall);
-
-        if (TheCall.eTimes.HasErrors == true) {
-            if (TheCall.eTimes.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eTimes.Errors.length; i++) {
-                }
-            }
-        };
-        
-        ////////////////////////eSituation
-        eSituationObject = getObjectFromOLTPExtract(parseObject, "eSituation");
-        eSituationObject.HasDataSet = false;
-        if (eSituationObject.IsUndefined != true) {
-            eSituationObject.HasDataSet = true;
-        }
-        else {
-        };
-
-        TheCall.pSituation = eSituationObject;
-        TheCall.eSituation = seteSituation(TheCall);
-
-        if (TheCall.eSituation.HasErrors == true) {
-            if (TheCall.eSituation.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eSituation.Errors.length; i++) {
-                }
-            }
-        };
-        
+        TheCall.Errors = CallErrors.slice(0);
+    
+   
         ////////////////////////eScene
         eSceneObject = getObjectFromOLTPExtract(parseObject, "eScene");
         eSceneObject.HasDataSet = false;
@@ -176,14 +217,13 @@ var createTheCall = function (parseObject) {
 
         TheCall.pScene = eSceneObject;
         TheCall.eScene = seteScene(TheCall);
-
-        if (TheCall.eScene.HasErrors == true) {
-            if (TheCall.eScene.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eScene.Errors.length; i++) {
-                }
-            }
+        if (TheCall.eScene.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eScene.ErrorList);
         };
-        
+
+        TheCall.Errors = CallErrors.slice(0);
+    
+    
         ///////////////////////////////////eAirway
         eAirwayObject = getObjectFromOLTPExtract(parseObject, "eAirway");
         eAirwayObject.HasDataSet = false;
@@ -194,18 +234,18 @@ var createTheCall = function (parseObject) {
 
         TheCall.pAirway = eAirwayObject;
         TheCall.eAirway = seteAirway(TheCall);
-        if (TheCall.eAirway.HasErrors == true) {
-            if (TheCall.eAirway.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eAirway.Errors.length; i++) {
-                }
-            }
+        if (TheCall.eAirway.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eAirway.ErrorList);
         };
-        var Treatment = new Object;
-      //  Treatment[AirwayStartTime] = TheCall.eAirway.AirwayStartTime;
-      //  Treatment[AirwayEndTime] = TheCall.eAirway.AirwayEndTime;
-      //  TheCall.Treatment = Treatment;
-        
 
+        TheCall.Errors = CallErrors.slice(0);
+        var Treatment = new Object;
+    
+    
+        Treatment.AirwayStartTime = TheCall.eAirway.AirwayStartTime;
+        Treatment.AirwayEndTime = TheCall.eAirway.AirwayEndTime;
+        TheCall.Treatment = Treatment;
+    
         ///////////////////////////////////eArrest
         eArrestObject = getObjectFromOLTPExtract(parseObject, "eArrest");
         eArrestObject.HasDataSet = false;
@@ -216,16 +256,113 @@ var createTheCall = function (parseObject) {
 
         TheCall.pArrest = eArrestObject;
         TheCall.eArrest = seteArrest(TheCall);
-        if (TheCall.eArrest.HasErrors == true) {
-            if (TheCall.eArrest.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eArrest.Errors.length; i++) {
-                }
-            }
+        if (TheCall.eArrest.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eArrest.ErrorList);
+        };
+
+        TheCall.Errors = CallErrors.slice(0);
+          
+    
+    ///////////////////////////////////eInjury
+        eInjuryObject = getObjectFromOLTPExtract(parseObject, "eInjury");
+        eInjuryObject.HasDataSet = false;
+        if (eInjuryObject.IsUndefined != true) {
+            eInjuryObject.HasDataSet = true;
+        }
+        else {
+            //MUST have eDispatch - contains a Mandatory Element
         };
         
+        TheCall.pInjury = eInjuryObject;
+        TheCall.eInjury = seteInjury(TheCall);
+        if (TheCall.eInjury.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eInjury.ErrorList);
+        };
 
+        TheCall.Errors = CallErrors.slice(0);
+
+    
+    
+    ///////////////////////////////////eProcedures
+        eProceduresObject = getObjectFromOLTPExtract(parseObject, "eProcedures");
+        eProceduresObject.HasDataSet = false;
+        if (eProceduresObject.IsUndefined != true) {
+            eProceduresObject.HasDataSet = true;
+        }
+        else {
+            //MUST have eDispatch - contains a Mandatory Element
+        };
+        console.log(eProceduresObject)
+        TheCall.pProcedures = eProceduresObject;
+        TheCall.eProcedures = seteProcedures(TheCall);
+        if (TheCall.eProcedures.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eProcedures.ErrorList);
+        };
+
+        TheCall.Errors = CallErrors.slice(0);
         
-        ///////////////////////////////////ePatient
+    
+    ///////////////////////////////////eMedications
+        eMedicationsObject = getObjectFromOLTPExtract(parseObject, "eMedications");
+        eMedicationsObject.HasDataSet = false;
+        if (eMedicationsObject.IsUndefined != true) {
+            eMedicationsObject.HasDataSet = true;
+        }
+        else {
+            //MUST have eDispatch - contains a Mandatory Element
+        };
+
+        TheCall.pMedications = eMedicationsObject;
+        TheCall.eMedications = seteMedications(TheCall);
+        if (TheCall.eMedications.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eMedications.ErrorList);
+        };
+
+        TheCall.Errors = CallErrors.slice(0);
+
+       
+    
+    ///////////////////////////////////eProtocols
+        eProtocolsObject = getObjectFromOLTPExtract(parseObject, "eProtocols");
+        eProtocolsObject.HasDataSet = false;
+        if (eProtocolsObject.IsUndefined != true) {
+            eProtocolsObject.HasDataSet = true;
+        }
+        else {
+            //MUST have eDispatch - contains a Mandatory Element
+        };
+
+        TheCall.pProtocols = eProtocolsObject;
+        TheCall.eProtocols = seteProtocols(TheCall);
+
+        if (TheCall.eProtocols.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eProtocols.ErrorList);
+        };
+
+        TheCall.Errors = CallErrors.slice(0);
+         
+    
+    ///////////////////////////////////eVitals
+        eVitalsObject = getObjectFromOLTPExtract(parseObject, "eVitals");
+        eVitalsObject.HasDataSet = false;
+        if (eVitalsObject.IsUndefined != true) {
+            eVitalsObject.HasDataSet = true;
+        }
+        else {
+            //MUST have eDispatch - contains a Mandatory Element
+        };
+
+        TheCall.pVitals = eVitalsObject;
+        TheCall.eVitals = seteVitals(TheCall);
+
+        if (TheCall.eVitals.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eVitals.ErrorList);
+        };
+
+        TheCall.Errors = CallErrors.slice(0);
+    
+    
+    ///////////////////////////////////ePatient
         ePatientObject = getObjectFromOLTPExtract(parseObject, "ePatient");
         ePatientObject.HasDataSet = false;
         if (ePatientObject.IsUndefined != true) {
@@ -235,14 +372,14 @@ var createTheCall = function (parseObject) {
 
         TheCall.pPatient = ePatientObject;
         TheCall.ePatient = setePatient(TheCall);
-        if (TheCall.ePatient.HasErrors == true) {
-            if (TheCall.ePatient.Errors.length > 0) {
-                for (var i = 0; i < TheCall.ePatient.Errors.length; i++) {
-                }
-            }
+        if (TheCall.ePatient.ErrorList.length > 0) {
+            CallErrors.push(TheCall.ePatient.ErrorList);
         };
-        
-        ////////////////////////////////eHistory
+
+        TheCall.Errors = CallErrors.slice(0);
+
+    
+    ////////////////////////////////eHistory
         eHistoryObject = getObjectFromOLTPExtract(parseObject, "eHistory");
         eHistoryObject.HasDataSet = false;
         if (eHistoryObject.IsUndefined != true) {
@@ -254,15 +391,43 @@ var createTheCall = function (parseObject) {
 
         TheCall.pHistory = eHistoryObject;
         TheCall.eHistory = seteHistory(TheCall);
-        if (TheCall.eHistory.HasErrors == true) {
-            if (TheCall.eHistory.Errors.length > 0) {
-                for (var i = 0; i < TheCall.eHistory.Errors.length; i++) {
+        if (TheCall.eHistory.ErrorList.length > 0) {
+            for (var i = 0; i < TheCall.eHistory.ErrorList.length; i++) {
 
-                }
             }
         };
 
+    /*      
+        TheCall.pHistory = eHistoryObject;
+        TheCall.eHistory = seteHistory(TheCall);
+        if (TheCall.eHistory.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eHistory.ErrorList);
+        };
+
+        TheCall.Errors = CallErrors.slice(0);
+
         
+    
+    
+    ///////////////////////////////////eExam
+        eExamObject = getObjectFromOLTPExtract(parseObject, "eExam");
+        eExamObject.HasDataSet = false;
+        if (eExamObject.IsUndefined != true) {
+            eExamObject.HasDataSet = true;
+        }
+        else {
+            //MUST have eDispatch - contains a Mandatory Element
+        };
+
+        TheCall.pExam = eExamObject;
+        TheCall.eExam = seteExam(TheCall);
+        if (TheCall.eExam.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eExam.ErrorList);
+        };
+
+        TheCall.Errors = CallErrors.slice(0);
+      */
+    
         ///////////////////////////////////ePayment
         ePaymentObject = getObjectFromOLTPExtract(parseObject, "ePayment");
         ePaymentObject.HasDataSet = false;
@@ -276,8 +441,14 @@ var createTheCall = function (parseObject) {
         TheCall.pPayment = ePaymentObject;
         TheCall.ePayment = setePayment(TheCall);
 
-        
-        ///////////////////////////////////eOutcome
+        if (TheCall.ePayment.ErrorList.length > 0) {
+            CallErrors.push(TheCall.ePayment.ErrorList);
+        };
+
+        TheCall.Errors = CallErrors.slice(0);
+
+    /*    
+    ///////////////////////////////////eOutcome
         eOutcomeObject = getObjectFromOLTPExtract(parseObject, "eOutcome");
         eOutcomeObject.HasDataSet = false;
         if (eOutcomeObject.IsUndefined != true) {
@@ -290,96 +461,13 @@ var createTheCall = function (parseObject) {
         TheCall.pOutcome = eOutcomeObject;
         TheCall.eOutcome = seteOutcome(TheCall);
 
-        ///////////////////////////////////eInjury
-        eInjuryObject = getObjectFromOLTPExtract(parseObject, "eInjury");
-        eInjuryObject.HasDataSet = false;
-        if (eInjuryObject.IsUndefined != true) {
-            eInjuryObject.HasDataSet = true;
-        }
-        else {
-            //MUST have eDispatch - contains a Mandatory Element
+        if (TheCall.eOutcome.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eOutcome.ErrorList);
         };
 
-        TheCall.pInjury = eInjuryObject;
-        TheCall.eInjury = seteInjury(TheCall);
+        TheCall.Errors = CallErrors.slice(0);
 
-        ///////////////////////////////////eExam
-        eExamObject = getObjectFromOLTPExtract(parseObject, "eExam");
-        eExamObject.HasDataSet = false;
-        if (eExamObject.IsUndefined != true) {
-            eExamObject.HasDataSet = true;
-        }
-        else {
-            //MUST have eDispatch - contains a Mandatory Element
-        };
-
-        TheCall.pExam = eExamObject;
-        TheCall.eExam = seteExam(TheCall);
-
-
-        TheCall.pInjury = eInjuryObject;
-        TheCall.eInjury = seteInjury(TheCall);
-
-        ///////////////////////////////////eProcedures
-        eProceduresObject = getObjectFromOLTPExtract(parseObject, "eProcedures");
-        eProceduresObject.HasDataSet = false;
-        if (eProceduresObject.IsUndefined != true) {
-            eProceduresObject.HasDataSet = true;
-        }
-        else {
-            //MUST have eDispatch - contains a Mandatory Element
-        };
-
-        TheCall.pProcedures = eProceduresObject;
-        TheCall.eProcedures = seteProcedures(TheCall);
-
-
-        ///////////////////////////////////eMedications
-        eMedicationsObject = getObjectFromOLTPExtract(parseObject, "eMedications");
-        eMedicationsObject.HasDataSet = false;
-        if (eMedicationsObject.IsUndefined != true) {
-            eMedicationsObject.HasDataSet = true;
-        }
-        else {
-            //MUST have eDispatch - contains a Mandatory Element
-        };
-
-        TheCall.pMedications = eMedicationsObject;
-        TheCall.eMedications = seteMedications(TheCall);
-
-
-        ///////////////////////////////////eProtocols
-        eProtocolsObject = getObjectFromOLTPExtract(parseObject, "eProtocols");
-        eProtocolsObject.HasDataSet = false;
-        if (eProtocolsObject.IsUndefined != true) {
-            eProtocolsObject.HasDataSet = true;
-        }
-        else {
-            //MUST have eDispatch - contains a Mandatory Element
-        };
-
-        TheCall.pProtocols = eProtocolsObject;
-        TheCall.eProtocols = seteProtocols(TheCall);
-
-
-        ///////////////////////////////////eVitals
-        eVitalsObject = getObjectFromOLTPExtract(parseObject, "eVitals");
-        eVitalsObject.HasDataSet = false;
-        if (eVitalsObject.IsUndefined != true) {
-            eVitalsObject.HasDataSet = true;
-        }
-        else {
-            //MUST have eDispatch - contains a Mandatory Element
-        };
-
-        TheCall.pVitals = eVitalsObject;
-        TheCall.eVitals = seteVitals(TheCall);
-
-
-
-        /*
-        /*
-        ///////////////////////////////////eOther
+       ///////////////////////////////////eOther
         eOtherObject = getObjectFromOLTPExtract(parseObject, "eOther");
         eOutcomeObject.HasDataSet = false;
         if (eOtherObject.IsUndefined != true) {
@@ -392,13 +480,13 @@ var createTheCall = function (parseObject) {
         TheCall.pOther = eOtherObject;
         TheCall.eOther = seteOther(TheCall);
 
+        if (TheCall.eOther.ErrorList.length > 0) {
+            CallErrors.push(TheCall.eOther.ErrorList);
+        };
 
-        console.log(TheCall.eOther);
+        TheCall.Errors = CallErrors.slice(0);
 
-
-         
-         
-      };//allon
+  
       //
       /////////////////////////////////eDevice       
       eDeviceObject = getObjectFromOLTPExtract(parseObject, "eDevice");
@@ -412,12 +500,24 @@ var createTheCall = function (parseObject) {
   
       TheCall.pDevice = eDeviceObject;
       TheCall.eDevice = seteDevice(TheCall);
-  
-     //
-     */
+  */
+    //
+    /* 
     };
+    */
     b = setV3XML(TheCall);
-       c=setV2XML(TheCall)
+    //  console.log(TheCall)
+    c = setV2OM(TheCall);
+    d = setV2XML(c)
+    //console.log(c)
+    //console.log(d)
+    // d = genBill(TheCall);
+    //TheCall.Version2XML = c;
+    //TheCall.Version3XML = b;
+    // d = genBill(TheCall)
+    // TheCall.BillFIle = d;
+
+    //console.log(TheCall)
 };
 var getObjectFromOLTPExtract = function (businessObject, sectionName) {
     //Returns an array of index values for a given sectionName within a sectionObject
@@ -441,75 +541,96 @@ var getSectionIndex = function (sectionObject, sectionName) {
     //Returns an array of index values for a given sectionName within a sectionObject
     // if sectionName does not exist within the sectionObject, return -1
     var _retValue = [];
-    for (var d = 0; d < sectionObject.attributes.sections.length; d++) {
 
-        if (sectionObject.attributes.sections[d].attributes.name == sectionName) {
-            _retValue.push(d);
+    if (typeof sectionObject.attributes.sections != 'undefined') {
+        for (var d = 0; d < sectionObject.attributes.sections.length; d++) {
+
+            if (sectionObject.attributes.sections[d].attributes.name == sectionName) {
+                _retValue.push(d);
+            }
         }
-    }
+    };
     if (_retValue.length == 0) {
         _retValue.push(-1);
-    };
+    }
+
     return _retValue;
 };
-var getValue = function (elementList, valueElement)
-{
+var getValue = function (elementList, valueElement) {
+    //Gets NEMSIS values from list of NEMSIS elements
+    //Sets ReturnObject as Array of valueElement value objects.
+    //elementList: Entire corpus of valueObjects for a given section - eHistory.01, eHistory.02, eHistory.01
+    //valueElement:  The NEMSIS value sought
     var _arr = [];
     var returnObject = new Object();
     var valueObject = new Object();
+    returnObject.val = null;
+    if (elementList != 'undefined') {
+        for (var i = 0; i < elementList.length; i++) //Run through entire array of valueObjects
+        {
 
-    for (var i = 0; i < elementList.length; i++) {
- 
-        if (elementList[i].attributes.title == valueElement) {
-
-            if ((typeof elementList[i].attributes.value == 'undefined') || (elementList[i].attributes.value == ""))
-            {                
+            if (elementList[i].attributes.title == valueElement) //when elementList.item equals valueElement sought, process
+            {
+                var returnObject = new Object(); //if valueElement in list, return an Object.
                 valueObject.Count = 0;
                 valueObject.IsNull = true;
-            }
-            else 
-            {
-                if (elementList[i].attributes.value.trim().length != 0)  //Can't trust data.  
+                returnObject.val = null;
+                //if ((typeof elementList[i].attributes.value == 'undefined')||(elementList[i].attributes.value ==null ))   //Determine if valueObject exists
+                if (elementList[i].attributes.value =="" )   //Determine if valueObject exists
                 {
-                    
-                    var returnObject = new Object();
-                    valueObject.IsNull = false;
-                    returnObject.val = elementList[i].attributes.value.trim();
+                    //If Not, retrun NullObject assertion
+                    valueObject.Count = 0;
+                    returnObject.HasValue = false;
+                    valueObject.IsNull = true;
+                    returnObject.val = null;
+                    _arr.push(returnObject);
+                    valueObject.Count = _arr.length;
+                    valueObject.ValueArray = _arr;
+                    return valueObject;
                 }
-            };
-            if (elementList[i].attributes.pn != "") {
-                returnObject.pn = elementList[i].attributes.pn;
-                valueObject.HasPN = true;
-            };
-            if (typeof elementList[i].attributes.params != 'undefined')
-            {
-                if (typeof elementList[i].attributes.params.PhoneNumberType != 'undefined') {
-                    returnObject.PhoneNumberType = elementList[i].attributes.params.PhoneNumberType.value;
-                };
-                if (typeof elementList[i].attributes.params.EmailType != 'undefined') {
-                    returnObject.EmailType = elementList[i].attributes.params.EmailAddressType.value;
-                }
-            }
+                else
+                {
 
-//            if (valueObject.IsNull == false) {
-                if (_arr.indexOf(returnObject.val) == -1)
-                {
+                    if (elementList[i].attributes.value.trim().length != 0)  //Can't trust data in this world.  
+                    {
+                        valueObject.IsNull = false;                                 // The Object has valid Value, so set IsNull 
+                        returnObject.val = elementList[i].attributes.value.trim();  // Good data, assign it to return object
+                    }
+                };
+                //PN values, find the Pertinent Negatives
+                if ((elementList[i].attributes.pn != "") && (elementList[i].attributes.pn != 'undefined')) {
+
+                    returnObject.pn = elementList[i].attributes.pn;
+                    valueObject.HasPN = true;
+                };
+                //Exceptional Values, PhoneNumber, eMail Address, DrugCode Type
+                if (typeof elementList[i].attributes.params != 'undefined') {
+                    if (typeof elementList[i].attributes.params.PhoneNumberType != 'undefined') {
+                        returnObject.PhoneNumberType = elementList[i].attributes.params.PhoneNumberType.value;
+                    } else if (typeof elementList[i].attributes.params.EmailType != 'undefined') {
+                        returnObject.EmailType = elementList[i].attributes.params.EmailAddressType.value;
+                    }
+                    else {
+                        returnObject.Params = elementList[i].attributes.params;
+                    }
+                }
+
+
+                if (_arr.indexOf(returnObject.val) == -1) {
                     returnObject.HasValue = true;
                     _arr.push(returnObject);
-                }
-            //};
-            returnObject = null;
-            //}
-        }
+                };
+
+                returnObject = null;
+            }
+        };
+        valueObject.Count = _arr.length;
+        valueObject.ValueArray = _arr;
+        return valueObject;
     };
-
-    valueObject.Count = _arr.length;
-    //valueObject.IsNull = false;
-    valueObject.ValueArray = _arr;
-
-    return valueObject;
 };
 function setV2(NEMSISElementNumber, v3Val, compValue) {
+    alert()
     var _retv = "";
     switch (NEMSISElementNumber) {
         case "eArrest.01":
@@ -1268,6 +1389,14 @@ function setV2(NEMSISElementNumber, v3Val, compValue) {
                 _retv = ePayment52[v3Val];
             }
             break;
+        case "eProcedures.02":
+            if (eProcedures02[v3Val] == 'undefined') {
+                _retv = v3Val + " 'undefined'";
+            }
+            else {
+                _retv = eProcedures02[v3Val];
+            }
+            break;
         case "eProcedures.07":
             if (eProcedures07[v3Val] == 'undefined') {
                 _retv = v3Val + " 'undefined'";
@@ -1501,6 +1630,7 @@ function XMLWriter(encoding, version) {
     if (version)
         this.version = version;
 };
+
 (function () {
 
     XMLWriter.prototype = {
@@ -1602,16 +1732,17 @@ function XMLWriter(encoding, version) {
                 clean(this.root);
             this.active = this.root = this.stack = null;
         },
-        getDocument: window.ActiveXObject
-            ? function () { //MSIE
-                var doc = new ActiveXObject('Microsoft.XMLDOM');
-                doc.async = false;
-                doc.loadXML(this.flush());
-                return doc;
-            }
-            : function () {// Mozilla, Firefox, Opera, etc.
-                return (new DOMParser()).parseFromString(this.flush(), 'text/xml');
-            }
+        /*  getDocument: window.ActiveXObject
+              ? function () { //MSIE
+                  var doc = new ActiveXObject('Microsoft.XMLDOM');
+                  doc.async = false;
+                  doc.loadXML(this.flush());
+                  return doc;
+              }
+              : function () {// Mozilla, Firefox, Opera, etc.
+                  return (new DOMParser()).parseFromString(this.flush(), 'text/xml');
+              }
+              */
     };
 
     //utility, you don't need it
@@ -1654,7 +1785,7 @@ function XMLWriter(encoding, version) {
     };
 
 })();
-
+/*
 var getVersion221Values = function (AllVersion221ObjectArray, valueElement) {
     var _arr = [];
     var returnObject = new Object();
@@ -1765,7 +1896,7 @@ var eArrest13 = {
         }
         return _arrest14;
     }
-    */
+    
 var eCrew03 = {
     "2403001": "580",
     "2403003": "580",
@@ -3751,4 +3882,858 @@ eProcedures14  ={
     "4004015":"-10",
     "4004017":"4765",
     "4004019":"4770"
-    };
+};
+*/
+var genBill = function (ThePCR) {
+
+    //https://d1tpfj3hind0fx.cloudfront.net/Media/Documents/5010/5010_837P_Professional.pdf?_sm_au_=iVVN0sjtSRvstnt5
+    //http://emrpms.blogspot.in/2012/09/edi-5010-documentation837-gs-functional.html
+    //////////////////////////////
+    /*   Interchange Control Header
+    //   The interchange control header is the only fixed-length field in the transaction. 
+    //ISA01 - Authorization Information Qualifier
+    ISA02 - Authorization Information
+    ISA03 - Security Information Qualifier
+    ISA04 - Security Information (Password)
+    ISA05 - Interchange ID Qualifier
+    ISA06 - Interchange Sender ID
+    ISA07 - Interchange ID Qualifier
+    ISA08 - Interchange Receiver ID
+    ISA09 - Submission Date
+    ISA10 - Submission Time
+    ISA11 - Interchange Control Standards Identifier (4010); Repetition Separator (5010)
+    ISA12 - Interchange Control Version Number
+    ISA13 - Interchange Control Number
+    ISA14 - Acknowledgement Requested
+    ISA15 - Usage Indicator (Test/Prod)
+    ISA16 - Component Element Separator
+    */
+    //ISA Segment
+    var InterchangeSenderID = "CHBU01619"
+    var InterchangeReceiverID = "431420764000000"
+    var InterchangeDate = "YYMMDD"
+    var InterchangeTime = "HHMM"
+    var InterchangeControlNumber = 0; //++ with each file
+
+    var ISA01 = "ISA*00*";              //REQUIRED  00= No Auth present, 03 = Additional
+    var ISA02 = "          ";           //REQUIRED  Additional Info - 10 spaces
+    var ISA03 = "*00*";                 //REQUIRED  Security Info.  00=None, 01= PW
+    var ISA04 = "          ";           //REQUIRED  Secutiry info - 10 spaces
+    var ISA05 = "*ZZ*";                 //REQUIRED  Interchange ID
+    var ISA06 = InterchangeSenderID;    //REQUIRED  
+    var ISA07 = "*ZZ*";                 //REQUIRED  Interchange ID Qualifier
+    var ISA08 = InterchangeReceiverID;  //REQUIRED  
+    var ISA09 = InterchangeDate;        //REQUIRED  
+    var ISA10 = InterchangeTime;        //REQUIRED  
+    var ISA11 = "*^";                   //REQUIRED  Repetition Separator
+    var ISA12 = "00501*";               //REQUIRED  Interchange Control Version
+    var ISA13 = InterchangeControlNumber;   //REQUIRED  
+    var ISA14 = "*1*;"                  //REQUIRED  Acknowledgment Request
+    var ISA15 = "P*";                   //REQUIRED  Usage indicator.  P=Productions, T-Test
+    var ISA16 = ":"                     //REQUIRED  Component Element Separator
+
+    var ISASegment = '';
+    ISASegment = ISA01 + ISA02 + ISA03 + ISA04 + ISA05 + ISA06 + ISA05 + ISA08 + ISA09 + ISA10 + ISA11 + ISA12 + ISA13 + ISA14 + ISA15 + ISA16 + "~";
+
+    /*
+    GS Segment - FUNCTION GROUP HEADER
+    GS01 - Functional Identifier Code
+    GS02 - Application Sender's Code
+    GS03 - Application Receiver's Code
+    GS04 - Date
+    GS05 - Time
+    GS06 - Group Control Number
+    GS07 - Responsible Agency Code
+    GS08 - Version / Release / Industry Identifier Code
+     */
+    var AppSenderCode = "CHBU01619"
+    var AppReceiverCode = "431420764";
+    var CreateDate = "CCYYMMDD";
+    var CreateTime = "HHMM";
+    var GroupControlNumber = 0; //++
+
+
+    var GS = "GS";                              //GS Separator
+    var GS01 = "*HC*";                          //REQUIRED  Function ID Code
+    var GS02 = AppSenderCode;                   //REQUIRED  
+    var GS03 = "*" + AppReceiverCode + "*";     //REQUIRED  Application Receiver Code
+    var GS04 = CreateDate;                      //REQUIRED  
+    var GS05 = "*" + CreateTime + "*";          //REQUIRED  
+    var GS06 = GroupControlNumber;              //REQUIRED  
+    var GS07 = "*X*";                           //REQUIRED  Responsible Agency Code
+    var GS08 = "005010X222A1";                  //REQUIRED  Version/Release/IndustyID
+    var GSSegment = "";
+    var GSSegment = GS + GS01 + GS02 + GS03 + GS04 + GS05 + GS06 + GS07 + GS08 + "~";
+
+
+    //ST Segment - Transaction Set GROUP HEADER - MANDATORY
+
+    var TransactionControlNumber = 0;  //++
+    var ST = "ST"
+    var ST01 = "*837*";                 //REQUIRED  Transaction ID Code
+    var ST02 = GS06                     //REQUIRED  Transaction Control Number  WE NEED TO GEN THIS
+    var ST03 = "*" + GS08;             //REQUIRED  Implementation Convention Reference
+
+    var STSegment = '';
+    var STSegment = ST + ST01 + ST02 + ST03 + "~";
+
+    //BHT Segment - BEGINNING HIERARCHICAL TRANSACTION - MANDATORY
+    var BHT = "BHT";
+    var BHT01 = "*0019*";                   //REQUIRED  Hierarchical Structure Code
+    var BHT02 = "00";                       //REQUIRED  Trans Set Purpose Code, 00=Original.  18 = Reisuue
+    var BHT03 = InterchangeControlNumber;   //REQUIRED  Reference ID
+    var BHT04 = "*" + CreateDate + "*";     //REQUIRED  
+    var BHT05 = CreateTime;                 //REQUIRED  
+    var BHT06 = "*CH";                      //REQUIRED  Trans Type Code.  31=Subrogation Demand, CH=Chargeable, RP=Reporting;
+    var BHTSegment = "";
+    BHTSegment = BHT + BHT01 + BHT02 + BHT03 + BHT04 + BHT05 + BHT06 + "~";
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    ////////////////////////    1000A SUBMITTER Loop///////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //1000A SUBMITTER Loop
+    //NM1 Segment - OPTIONAL
+    var submOrgName = "Med Stat Revenue Recorvery"
+    var submNM1 = "NM1";
+    var submNM101 = "*41*"                  //REQUIRED  Entity ID Code.  41=Submitter
+    var submNM102 = "2"                     //REQUIRED  Entity Type.  1=Person, 2=NonPerson
+    var submNM103 = "*" + submOrgName;      //REQUIRED  
+    var submNM104 = "*"                     //SITUATIONAL Organization First Name (blank)
+    var submNM105 = "*";                    //SITUATIONAL Organization Middle Name (blank)
+    var submNM106 = "*";                    //Prefix (blank)
+    var submNM107 = "*";                    //Suffix (blank)
+    var submNM108 = "46*";                  //ID Code Qualifier 46=Electronic Transmitter
+    var submNM109 = InterchangeSenderID;    //REQUIRED  ID Code
+
+    submNMSegment = submNM1 + submNM101 + submNM102 + submNM103 + submNM104 + submNM105 + submNM106 + submNM107 + submNM108 + submNM109 + "~";
+
+    //PER EDI Contact Info MAX 2.  OPTIONAL
+    var ContactName = "Christoper Alvaro"           //REQUIRED
+    var Comm1 = "TE";                               //SITUATIONAL
+    var Comm2 = "";                                 //REQUIRED
+    var Comm3 = "";
+    var ContactPhone1 = "5182357670"
+    var ContactPhone2 = ""
+    var ContactPhone3 = ""
+    var SubmitterContact = "";
+
+    var PER = "PER"
+    var PER01 = "*IC*"                      //REQUIRED  Information Contact
+    var PER02 = ContactName;                //SITUATIONAL:   Required when the contact name is different than the name contained in the Submitter 
+    //Name (NM1) segment of this loop AND
+    //it is the first iteration of the Submitter EDI Contact Information (PER) segment. If not required by this 
+    //implementation guide, do not send. 
+    var PER03 = "*" + Comm1 + "*";              //REQUIRED  Communication Number Qualifer ED=Electronic, EM=Email, FX=Fax, TE=Phone
+    var PER04 = ContactPhone1;              //REQUIRED  Communication Number
+    var PER05 = "*+Comm2+*";                //SITUATIONAL
+    var PER06 = ContactPhone2;              //SITUATIONAL
+    var PER07 = "*+Comm3+*";                //SITUATIONAL
+    var PER08 = ContactPhone3;              //SITUATIONAL
+
+
+
+    var ContactPer = "";
+    ContactPer = PER + PER01 + PER02 + PER03 + PER04 + PER05 + PER06 + PER07 + PER08 + "~"
+    //END SUBMITTER 1000A Loop
+    ///////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////
+    //                              1000B:  RECEIVER NAME LOOP  
+    //NM1 Segment OPTIONTAL MAX:1
+    var rcvrOrgName = "Gateway EDI"
+    var rcvrIDCode = "431420764";
+
+    var rcvrNM1 = "~NM1";
+    var rcvrNM101 = "*40*"                      //REQUIRED  Entity ID Code.  41=rcvritter
+    var rcvrNM102 = "2"                         //REQUIRED Entity Type.  1=Person, 2=NonPerson
+    var rcvrNM103 = "*" + rcvrOrgName;          //REQUIRED 
+    var rcvrNM104 = "*"                         //First Name (blank)
+    var rcvrNM105 = "*";                        //Middle Name (blank)
+    var rcvrNM106 = "*";                        //Prefix (blank)
+    var rcvrNM107 = "*";                        //Suffix (blank)
+    var rcvrNM108 = "46*";                      //REQUIRED ID Code Qualifier 46=Electronic Transmitter
+    var rcvrNM109 = rcvrIDCode;                //REQUIRED ID Code
+
+    var rcvrNM = ""
+    rcvrNM = rcvrNM1 + rcvrNM101 + rcvrNM102 + rcvrNM103 + rcvrNM104 + rcvrNM105 + rcvrNM106 + rcvrNM107 + rcvrNM108 + rcvrNM109 + "~";
+    //                                  END 1000B:  RECEIVER NAME LOOP  
+    /////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////
+    //                                          2000A loop   
+    /////////////////////////////////////////////////////////////////
+    //A unique number assigned by the sender to identify a particular data segment in a hierarchical structure.
+    //HL01 shall contain a unique alphanumeric number for each occurrence  of the HL segment in the transaction 
+    //set. For example, HL01 could be used to indicate the number of occurrences of the HL segment, in which 
+    //case the value of HL01 would be “1" for the initial HL segment and would be incremented by one in each 
+    //subsequent HL segment within the transaction. HL01 must begin with “1" and be incremented by one each time an HL 
+    //is used in the transaction. Only numeric values are allowed in HL01.
+
+
+    //For Examp;e, For the first Claim, Start the counter as 1. For the subsequent claims, increase the 
+    //counter and print that value.
+    //HL  Billy/Pay-To Provider  MANDATORY Max:1
+    var HLIDNumber = 1;
+    var HL = "HL*"
+    var HL01 = HLIDNumber;                      //REQUIRED ++ for each service provider
+    var HL02 //(not used)
+    var HL03 = "20";                            //REQUIRED  Hierarchical Level Code.  20=Information Source
+    var HL04 = "*1*~";                          //REQUIRED  Addition Subordinate HL data segment in this structure
+    var BillToHL = "";
+
+    BillToHL = HL + HL01 + HL02 + HL03 + HL04 + "~";
+
+    //PRV Billing-to Provider Specialty Information OPTIONAL Max:1
+    var providerTaxonomyCode = "341600000X";
+    var PRV = "PRV*";
+    var PRV01 = "BI*";                      //REQUIRED Provider Code
+    var PRV02 = "PXC*";                     //REQUIRED Reference Identification Qualifier
+    var PRV03 = providerTaxonomyCode;        //REQUIRED 
+    var BillingtoProviderSpecialtyInformation = PRV + PRV01 + PRV02 + PRV03 + "~";
+    //                      END 2000A loop   HL  Billy/Pay-To Provider 
+    /////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////
+    //                      2010AA loop     
+    /////////////////////////////////////////////////////////////////
+    // NM1 Billing Pay-To Provider 
+    var billprOrgName = "Johnstown Area Volunteer Ambulance Corps"
+    var billprIDCode = "1235129628";
+
+    var billprNM1 = "~NM1";
+    var billprNM101 = "*85*"                    //REQUIRED Entity ID Code.  41=Billing Provider
+    var billprNM102 = "2"                       //REQUIRED Entity Type.  1=Person, 2=NonPerson
+    var billprNM103 = "*" + billprOrgName;      //REQUIRED 
+    var billprNM104 = "*"                       //REQUIRED First Name (blank)
+    var billprNM105 = "*";                      //SITUATIONAL Middle Name (blank)
+    var billprNM106 = "*";                      //SITUATIONAL Prefix (blank)
+    var billprNM107 = "*";                      //SITUATIONAL Suffix (blank)
+    var billprNM108 = "XX*";                    //SITUATIONAL ID Code Qualifier XX=NPI  
+    //HIPAA National Provider Identifier (NPI) implementation date when the provider 
+    //is eligible to receive an    NPI. 
+    //OR   Required for providers not in the United States or its territories on or after the mandated HIPAA National 
+    //Provider Identifier (NPI) implementation date when the provider has received an NPI. 
+    //OR     Required for providers prior to the mandated NPI implementation date when the provider has received an 
+    //NPI and the submitter has the capability to send it. 
+    //If not required by this implementation guide, do not send. 
+    var billprNM109 = billprIDCode;             //SITUATIONALMeidcaire/Medaide ID Code    
+
+
+    var BillingProviderNM = ""
+    BillingProviderNM = billprNM1 + billprNM101 + billprNM102 + billprNM103 + billprNM104 + billprNM105 + billprNM106 + billprNM107 + billprNM108
+
+    //N3  Billing Provider Address    OPTIONAL  Max:1
+
+    //According to HIPAA 5010, a Loop 2010AA Billing Provider Address must not contain the following exact 
+    //phrases: “Post Office Box”, “P.O. BOX”, “PO BOX”, “LOCK BOX”, “LOCK BIN” or “P O BOX”. The Loop 2010AA 
+    //Billing Provider Address must be a physical address. This rule applies to dental, professional, and 
+    //institutional claims. But the paper 1500 form is not subject to HIPAA compliance restrictions.
+
+    var billprAddress1 = "231 NORTH PERRY STREET"
+    var billprAddress2 = "";
+    var billprN3 = "N3*";
+    var billprN301 = billprAddress1;                //REQUIRED
+    var billprN302 = billprAddress2;
+
+    var billPayerAddress = "";
+    billPayerAddress = billprN3 + billprN301 + billprN302 + "~"
+
+    //N4  Billing Provider Address, CSV  OPTIONAL, MAX:1
+
+    var billprCity = "JohnsTown"
+    var billprState = "NY"
+    var billprZip = "120951216"
+
+    var billprN4 = "N4*";
+    var billprN401 = billprCity;                        //REQUIRED
+    var billprN402 = "*" + billprState + "*";               //REQUIRED
+    var billprN403 = billprZip;                         //REQUIRED
+    var billPayerCSZ = "";
+    billPayerCSZ = billprN4 + billprN401 + billprN402 + billprN403 + "~";
+
+    //REF  Billing Provier Tax ID  OPTIONAL Max:1
+
+    var BillingProvierTaxID = "237133151";
+    var REF = "REF*"
+    var REF01 = "EI*";               //Reference ID.  no idea what "EI" refers to
+    var REF02 = BillingProvierTaxID;
+    var BillingProvierTaxInfo = REF + REF01 + REF02 + "~";
+    ////////////////////////////    END 2000A       ////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////      LOOP 2000B      ////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    //HL  Subscriber Hierarchical Level     MANDATORY Max:1
+    var HLHigherId = 1;  //++
+
+    var sbscHL = "HL*";
+    var sbscHL01 = HLIDNumber;                      //REQUIRED
+    var sbscHL02 = HLHigherId;                      //REQUIRED
+    var sbscHL03 = "*22*";                          //REQUIRED  22=Subscriber
+    var sbscHL04 = "0";                             //REQUIRED Hierachical Child Code
+    var SubscriberHierarchicalLevel = "";
+    SubscriberHierarchicalLevel = sbscHL + sbscHL01 + sbscHL02 + sbscHL03 + sbscHL04 + "~";
+
+    //Subscriber Info               OPTIONAL Max:1
+    var sbrPayerResponsibilityCode = "P";
+    var sbrPatientID = 1;                           //++
+    var ClaimFileIndicator = "MB";                  //Insurance Type
+
+    var SBR = "SBR*";
+    var SBR01 = sbrPayerResponsibilityCode;          //SITUATIONAL //P=Primary, S=Secondary, T=Tertiary
+    var SBR02 = "*" + sbrPatientID + "*";               //SITUATIONAL 
+    var SBR03 = "18";                               //SITUATIONAL relatioship code.  18=self
+    var SBR04 = "*";                               //SITUATIONAL - required when SBR03 Not used
+    var SBR05 = "*"                                 //SITUATIONAL  2000B SBR05 is required when Medicare is the destination payer but not the primary payer i.e Medicare would be the second or third payer. We should capture this field either in the Patient Insurance Policy information or at the claim level.
+    var SBR06 = "*"                                 //SITUATIONAL 
+    var SBR07 = "*"                                  //SITUATIONAL 
+    var SBR08 = "*"                                  //SITUATIONAL 
+    var SBR09 = ClaimFileIndicator;                 //SITUATIONAL 
+
+    var Subscriber = "";
+    Subscriber = SBR01 + SBR02 + SBR03 + SBR04 + SBR05 + SBR06 + SBR07 + SBR08 + SBR09 + "~"
+
+    //////////////////////////////////END LOOP 2000B
+    ////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////      LOOP 2000BA      ///////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    //NM1 Segment - RECEIVER LOOP
+    var subscriberLastName = "Last"
+    var subscriberFirstName = "First"
+    var subscriberMiddleName = "Middle"
+    var subscriberIDCode = "431420764";
+    var InsuranceID = "MedicareID"
+
+
+    var subscriberNM1 = "NM1";
+    var subscriberNM101 = "*IL*"                        //REQUIRED  Entity ID Code.  IL= Insured orsubscriber
+    var subscriberNM102 = "1"                           //REQUIRED Entity Type.  1=Person, 2=NonPerson
+    var subscriberNM103 = "*" + subscriberLastName;     //REQUIRED 
+    var subscriberNM104 = "*" + subscriberFirstName;    //SITUATIONAL
+    var subscriberNM105 = "*" + subscriberMiddleName;   //SITUATIONAL Middle Name (blank)
+    var subscriberNM106 = "*";                          //SITUATIONAL Prefix (blank)
+    var subscriberNM107 = "*";                          //SITUATIONAL Suffix (blank)
+    var subscriberNM108 = "MI*";                        //SITUATIONAL ID Code Qualifier MI= Member ID Number
+    var subscriberNM109 = InsuranceID;                  //SITUATIONALID Code  REQUIRED wht NB102=1    
+    var SubscriberName = "";
+    SubscriberName = subscriberNM1 + subscriberNM101 + subscriberNM102 + subscriberNM103 + subscriberNM104 + subscriberNM105 + subscriberNM105 + subscriberNM107 + subscriberNM108 + subscriberNM109 + "~";
+
+    //N3 Subscriber Address    
+    var subscriberAddress1 = "Patient Address1";
+    var subscriberAddress2 = "Patient Address2"
+
+    var subscriberN3 = "N3*";
+    var subscriberN301 = subscriberAddress1;            //REQUIRED
+    var subscriberN302 = subscriberAddress2;            //SITUATIONAL    
+    var subscriberAddress = ""
+    subscriberAddress = subscriberN3 + subscriberN301 + subscriberN302 + "~";
+
+    //N3subscriber CSZ    
+    var subscriberCity = "City"
+    var subscriberState = "State"
+    var subscriberZip = "Zip"
+    var subscriberN4 = "N4*";
+    var subscriberN401 = subscriberCity + "*";          //REQUIRED When address in US
+    var subscriberN402 = subscriberState + "*";         //REQUIRED When address in US
+    var subscriberN403 = subscriberZip;                 //REQUIRED When address in US
+    var subscriberCSZ = ""
+    subscriberCSZ = subscriberN4 + subscriberN401 + subscriberN402 + subscriberN403 + "~";
+
+    //DMG SUBSCIBER DEMOGRAPHICS
+    var subscriberDOB = "CCYYMMDD";
+    var subscriberGender = "M"; //F, U
+    var DMG = "DMG*";
+    var DMG01 = "D8*";                                  //REQUIRED  Datetime qualifier
+    var DMG02 = subscriberDOB;                          //REQUIRED  
+    var DMG03 = subscriberGender;                       //REQUIRED  
+    var subscriberDEM = ""
+    subscriberDEM = DMG + DMG01 + DMG02 + DMG03 + "~";
+
+    //Subscriber Secondary info
+    var subscriberID = "SSN";
+    var subscriberRef = "REF*";
+    var subscriberREF01 = "SY*";
+    var subscriberREF02 = subscriberID;
+    var subscriberSecondary = "";
+    subscriberSecondary = subscriberRef + subscriberREF01 + subscriberREF02 + "~";
+
+    //////////////////////////////////////////////////////////////////////////
+    //////////                      END LOOP
+    ////////////////////////////    2010BB  PAYER LOOP  ///////////////////////
+    //NM1 Segment -                                    
+    var payerLastName = "Medicare Upstate NY"
+    var payerFirstName = "First"
+    var payerMiddleName = "Middle"
+    var PayerID = "13282"
+
+    var payerNM1 = "NM1";
+    var payerNM101 = "*PR*"                         //REQUIRED Entity ID Code.  PR= Payer
+    var payerNM102 = "2"                            //REQUIREDEntity Type.  1=Person, 2=NonPerson
+    var payerNM103 = "*" + payerLastName;           //REQUIRED
+    var payerNM104 = "*";
+    var payerNM105 = "*";                           //Middle Name (blank)
+    var payerNM106 = "*";                           //Prefix (blank)
+    var payerNM107 = "*";                           //Suffix (blank)
+    var payerNM108 = "PI*";                         //REQUIRED ID Code Qualifier 46=Electronic Transmitter
+    var payerNM109 = PayerID;                       //REQUIRED ID Code
+    var PayerName = ""
+    PayerName = payerNM1 + payerNM101 + payerNM102 + payerNM103 + payerNM104
+        + payerNM105 + payerNM106 + payerNM107 + payerNM108 + payerNM109 + "~";
+
+
+    //N3PayerAddress
+
+    var payerAddress1 = "Payer Address1"
+    var payerAddress2 = "Payer Address1"
+    var payerN3 = "N3*";
+    var payerN301 = payerAddress1;                  //REQUIRED
+    var payerN302 = payerAddress2;                  //SITUATIONAL
+    var payerAddress = payerN3 + payerN301 + payerN302 + "~";
+    ///////
+    //N3payer CSZ
+
+    var payerCity = "City"
+    var payerState = "State"
+    var payerZip = "Zip"
+    var payerN4 = "N4*";
+    var payerN401 = payerCity + "*";                //REQUIRED
+    var payerN402 = payerState + "*";               //REQUIRED
+    var payerN403 = payerZip;                       //REQUIRED
+    var payerCSZ = payerN4 + payerN401 + payerN402 + payerN403 + "~";
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //                               2000C      //////////////////////////////////////
+    //Required when the patient is a dependent of the subscriber identified in
+    //Loop ID-2000B and cannot be uniquely identified to the payer using the
+    //subscriber’s identifier in the Subscriber Level.
+    //Add Data can be taken from previous Patient Demographics
+    var CHLIDNumber = 1;
+    var CHL = "HL*"
+    var CHL01 = HLIDNumber;                      //REQUIRED ++ for each service provider
+    var CHL02 //(not used)
+    var CHL03 = "23";                            //REQUIRED  Hierarchical Level Code.  20=Information Source
+    var CHL04 = "*0*~";                          //REQUIRED  Addition Subordinate HL data segment in this structure
+    var CBillToHL = "";
+
+    CBillToHL = CHL + CHL01 + CHL02 + CHL03 + CHL04 + "~";
+    var RelationShipCode = "01"             //SPOUSE
+    var DateTimePeriod = "CC/MM/DD"        //D8 if deceased
+    var UnitorBasisforMeasurementCode = "21"
+    var Weight = "210";
+    var YesNoCondition = "Y";
+
+    var CPAT = "PAT*"
+    var CPAT01 = "PAT*"
+    var CPAT02 = RelationShipCode + "*";             //REQUIRED
+    var CPAT05 = DateTimePeriod + "*";                //SITUATIONAL
+    var CPAT06 = DateTimePeriod + "*";                //SITUATIONAL Death date if patient deceased
+    var CPAT07 = UnitorBasisforMeasurementCode + "*";   //SITUATIONAL GR – Required when the patient’ age is less than 29 days old.     
+    var CPAT08 = Weight + "*";                        //SITUATIONAL Required when patient’s age is less than 29 days old.
+    var CPAT09 = YesNoCondition;                    //OPTIONAL Y if pregnant
+
+    //NM1 Segment -                                    
+    var CLastName = "Medicare Upstate NY"
+    var CFirstName = "First"
+    var CMiddleName = "Middle"
+    var CID = "13282"
+
+    var CNM1 = "NM1";
+    var CNM101 = "*PR*"                         //REQUIRED Entity ID Code.  PR= C
+    var CNM102 = "2"                            //REQUIREDEntity Type.  1=Person, 2=NonPerson
+    var CNM103 = "*" + CLastName;           //REQUIRED
+    var CNM104 = "*";
+    var CNM105 = "*";                           //Middle Name (blank)
+    var CNM106 = "*";                           //Prefix (blank)
+    var CNM107 = "*";                           //Suffix (blank)
+    var CNM108 = "PI*";                         //REQUIRED ID Code Qualifier 46=Electronic Transmitter
+    var CNM109 = CID;                       //REQUIRED ID Code
+    var CName = ""
+    CName = CNM1 + CNM101 + CNM102 + CNM103 + CNM104
+        + CNM105 + CNM106 + CNM107 + CNM108 + CNM109 + "~";
+
+
+    //N3PayerAddress
+
+    var CAddress1 = "C Address1"
+    var CAddress2 = "C Address1"
+    var CN3 = "N3*";
+    var CN301 = CAddress1;                  //REQUIRED
+    var CN302 = CAddress2;                  //SITUATIONAL
+    var CAddress = CN3 + CN301 + CN302 + "~";
+    //N3C CSZ
+
+    var CCity = "City"
+    var CState = "State"
+    var CZip = "Zip"
+    var CN4 = "N4*";
+    var CN401 = CCity + "*";                //REQUIRED
+    var CN402 = CState + "*";               //REQUIRED
+    var CN403 = CZip;                       //REQUIRED
+    var CCSZ = CN4 + CN401 + CN402 + CN403 + "~";
+
+    //DMG Patient DEMOGRAPHICS
+    var patientDOB = "CCYYMMDD";
+    var patientGender = "M"; //F, U
+    var DMG = "DMG*";
+    var DMG01 = "D8*";              //Datetime qualifier
+    var DMG02 = patientDOB;
+    var DMG03 = patientGender;
+    var patientDem = "";
+    patientDem = DMG + DMG01 + DMG02 + DMG03 + "~";
+
+    ////////////////////////////////////////////////////////////////////////
+    /////////////////////////2300 Claim Loop////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
+    var patientAccountNumber = "1413964";
+    var claimAmount = 672.05
+    var providerSignatureOnFile = "Y";
+    var providerAcceptedAssignment = "A"; //A=Accepted.  L=Lab Services. C=Not Assigned
+    var ReleaseofInformationCode = "Y";
+
+    var CLM = "CLM*";
+    var CLM01 = patientAccountNumber;
+    var CLM02 = "*" + claimAmount + "*";
+    var CLM03 = "*";
+    var CLM04 = "*";
+    var CLM0501 = "41:";            //Facility Code Value
+    var CLM0502 = "B:"              //Facility Code Qualifier
+    var CLM0503 = "1*"              //Frequency Code
+    var CLM06 = providerSignatureOnFile + "*";
+    var CLM07 = providerAcceptedAssignment + "*";
+    var CLM08 = "Y*";
+    var CLM09 = ReleaseofInformationCode + "*";
+
+    var Claim = "";
+    Claim = CLM + CLM01 + CLM02 + CLM03 + CLM04 + CLM0501 +
+        CLM0502 + CLM0503 + CLM06 + CLM07 + CLM08 + CLM09 + "~";
+
+    //Date Onset
+    var dateTimeQualifier = "431";
+    var dateOnset = "CC/MM/DD";
+    var dateFormatQualifier = "D8"
+
+    var DTP = "DTP*";
+    var DTP01 = dateOnset + "*"
+    var DTP02 = dateFormatQualifier + "*"
+    var DTP03 = dateOnset + "*"
+
+    //Prior Authorization or Certification
+    //Repriced Line Item Control Numbers
+    var PriorRefNumber = "1001"
+
+    var PriorREF = "REF*"
+    var PriorREF01 = "9F*"
+    var PriorREF02 = PriorRefNumber
+    var PriorAuthorization = PriorREF + PriorREF01 + PriorREF02 + "~";
+
+    ///////////////////////////////////////////////////////////////
+
+    //CR1 Ambulance Transport Informations
+    var ReasonForTransport = "A"
+    var TransportQuantity = "5"
+    var medicalReasonForTransport = "Medical Reason for transport"
+
+    var CR1 = "CR1*"
+    var CR101 = "*"
+    var CR102 = "*"
+    var CR103 = "*"
+    var CR104 = ReasonForTransport + "*"
+    var CR105 = "DH*"                           //Miles
+    var CR106 = TransportQuantity + "*";              //Transport Distance
+    var CR107 = "*"
+    var CR108 = "*"
+    var CR109 = medicalReasonForTransport;
+
+    var AmbulanceTransportInformation = "";
+    AmbulanceTransportInformations = CR1 + CR101 + CR102 + CR103 + CR104 + CR105 + CR106 + CR107 + CR108 + CR109 + "~";
+
+    ////////////////////////////////////
+    //Ambulance Certification
+
+    var ConditionIndicator1 = "04"
+    var ConditionIndicator2 = "06"
+    var ConditionIndicator3 = "09"
+    var CRC = "CRC*"
+    var CRC01 = "07*";              //patient condition
+    var CRC02 = "Y*";                //Resonse Code
+    var CRC03 = ConditionIndicator1 + "*";
+    var CRC04 = ConditionIndicator2 + "*";
+    var CRC06 = ConditionIndicator3
+    var AmbulanceCertification = "";
+    AmbulanceCertification = CRC + CRC01 + CRC02 + CRC03 + CRC04 + CRC06 + "~";
+    ////////////////////////////////////
+    //Patient Condition
+
+    var pcResponseCode = "N";
+    var pcConditionIndicator = "12"
+
+    var pcCRC = "CRC*"
+    var pcCRC01 = "07*"
+    var pcCRC02 = pcResponseCode + "*";
+    var pcConditionIndicator = "12"
+    var PatientCondition = "";
+    PatientCondition = pcCRC + pcCRC01 + pcCRC02 + "~";
+    ////////////////////////////////
+    //HealthCare Designation Code
+
+    var DiagnosisQualifier = "BK"  // ICD9=BK, ICD11= ABK
+    var DiagnosisCode = "8730"
+
+    var HI = "HI*"
+    var HI0101 = DiagnosisQualifier + ":"
+    var HI0102 = DiagnosisCode;
+    var HealthCareDesignationCode = "";
+    HealthCareDesignationCode = HI + HI0101 + HI0102 + "~";
+    ////////////////////////////////
+    //Ambulance Picup Location
+
+    var puNM1 = "NM1*"
+    var puNM01 = "PW*"
+    var puNM02 = "2"
+    var AmbulancePickupLocation = "";
+    AmbulancePickupLocation = puNM1 + puNM01 + puNM02 + "~";
+    //////////////////
+    //Pickup Address
+
+    var puAddress = "Pickup Address"
+    var puN3 = "N3*"
+    var puN301 = puAddress
+    var PickupAddress = ""
+    PickupAddress = puN3 + puN301 + "~";
+    //////////
+    //Pickup CSZ
+
+    var puCity = "City"
+    var puState = "ST"
+    var puZip = "ZIPCODE"
+
+    var puN4 = "N4*"
+    var puN401 = puCity + "*";
+    var puN402 = puState + "*";
+    var puN403 = puZip + "*";
+    var PickupCSZ = "";
+    PickupCSZ = puN4 + puN401 + puN402 + puN403 + "~";
+    ///////////////////////
+    //Dropoff
+
+    ////////////////////////////////////////
+    //NM1 Segment - RECEIVER LOOP                                   2310F
+    var dropoffName = "Nathan Littauer Hospital"
+
+    var dropoffIDCode = "431420764";
+    var InsuranceID = "MedicareID"
+
+    var dropoffNM1 = "NM1";
+    var dropoffNM101 = "*45*"                  //Entity ID Code.  IL= Insured ordropoff
+    var dropoffNM102 = "2"                     //Entity Type.  1=Person, 2=NonPerson
+    var dropoffNM103 = "*" + dropoffName;
+    var DropoffName = dropoffNM1 + dropoffNM101 + dropoffNM102 + dropoffNM103 + "~";
+    ///////
+    //N3dropoff Address
+
+    var dropoffAddress1 = "dropoff Address1"
+    var dropoffAddress2 = "dropoff Address1"
+    var dropoffNM3 = "N3*";
+    var dropoffNM301 = dropoffAddress1;
+    var dropoffNM302 = dropoffAddress2;
+    var DropoffAddress = dropoffNM3 + dropoffNM301 + dropoffNM302 + "~";
+    ///////
+    //N3dropoff CSZ
+
+    var dropoffCity = "City"
+    var dropoffState = "State"
+    var dropoffZip = "Zip"
+    var dropoffNM4 = "~N4*";
+    var dropoffNM401 = dropoffCity + "*";
+    var dropoffNM402 = dropoffState + "*";
+    var dropoffNM403 = dropoffZip;
+    var DroppoffCSZ = dropoffNM3 + dropoffNM401 + dropoffNM402 + dropoffNM403 + "~";
+    ///////////////////////
+    // Other Subscriber Information
+
+    var otherResponsibitySequenceCode = "S"
+    var otherIndividualRelationshipCode
+    var otherReferenceID
+    var otherInsuredName
+    var otherInsuranceTypeCode
+    var otherClaimFilingIndicator = "MC"
+
+    var otherSubSBR = "SBR*";
+    var otherSubSBR01 = otherResponsibitySequenceCode + "S";
+    var otherSubSBR02 = otherIndividualRelationshipCode + "*";
+    var otherSubSBR03 = otherReferenceID + "*";
+    var otherSubSBR04 = otherInsuredName + "*";
+    var otherSubSBR05 = otherInsuranceTypeCode + "*";
+    var otherSubSBR06 = otherClaimFilingIndicator;
+    var OtherSubscriberInformation = "";
+    OtherSubscriberInformation = otherSubSBR + otherSubSBR01 + otherSubSBR02 + otherSubSBR03 + otherSubSBR04 + otherSubSBR05 + otherSubSBR06 + "~";
+    /////////
+    //Other Insurance Information
+
+    var oiClaimFilingIndicator
+    var oiClaimSubmissionCode
+    var oiYesNoCondition = "Y"
+    var oiPatientSigSourceCode
+    var oiProviderAgreementCode
+    var oiReleaseofInformationCode = "Y"
+
+    var OI = "OI*";
+    var OI01 = oiClaimFilingIndicator + "*";
+    var OI02 = oiClaimSubmissionCode + "*";
+    var OI03 = oiYesNoCondition + "*";
+    var OI04 = oiPatientSigSourceCode + "*";
+    var OI05 = oiProviderAgreementCode + "*";
+    var OI06 = oiReleaseofInformationCode;
+    var OtherInsuranceInformation = OI + OI01 + OI02 + OI03 + OI04 + OI05 + OI06 + "~"
+
+    ////////////////////////////////////////
+    //NM1 Segment - Other Subscriber LOOP                                   2010BB
+    var otherSubscriberLastName = "Medicare Upstate NY"
+    var otherSubscriberFirstName = "First"
+    var otherSubscriberMiddleName = "Middle"
+    var otherSubscriberCodeQualifier = "MI";
+    var otherSubscriberID = "AE68699D"
+
+    var otherSubscriberNM1 = "NM1";
+    var otherSubscriberNM101 = "*IL*"                  //Entity ID Code.  IL= Insured orotherSubscriber
+    var otherSubscriberNM102 = "1*"                     //Entity Type.  1=Person, 2=NonPerson
+    var otherSubscriberNM103 = otherSubscriberLastName + "*";
+    var otherSubscriberNM104 = otherSubscriberFirstName + "*";
+    var otherSubscriberNM105 = otherSubscriberMiddleName + "*";                    //Middle Name (blank)
+    var otherSubscriberNM106 = "*";                    //Prefix (blank)
+    var otherSubscriberNM107 = "*";                    //Suffix (blank)
+    var otherSubscriberNM108 = otherSubscriberCodeQualifier + "*";                  //ID Code Qualifier 46=Electronic Transmitter
+    var otherSubscriberNM109 = otherSubscriberID;    //ID Code
+    var otherSubscribername = otherSubscriberNM1 + otherSubscriberNM102 + otherSubscriberNM103 + otherSubscriberNM104 +
+        otherSubscriberNM105 + otherSubscriberNM106 + otherSubscriberNM107 + otherSubscriberNM108 + otherSubscriberNM108 + "~"
+
+
+    //N3otherSubscriberAddress
+
+    var otherSubscriberAddress1 = "Patient Address1"
+    var otherSubscriberAddress2 = "Patient Address1"
+    var otherSubscriberN3 = "N3*";
+    var otherSubscriberN301 = otherSubscriberAddress1;
+    var otherSubscriberN302 = otherSubscriberAddress2;
+    var otherSubscriberAddress = otherSubscriberN3 + otherSubscriberN301 + otherSubscriberN302 + "~"
+    ///////
+    //N3otherSubscriber CSZ
+
+    var otherSubscriberCity = "City"
+    var otherSubscriberState = "State"
+    var otherSubscriberZip = "Zip"
+    var otherSubscriberN4 = "N4*";
+    var otherSubscriberN401 = otherSubscriberCity + "*";
+    var otherSubscriberN402 = otherSubscriberState + "*";
+    var otherSubscriberN403 = otherSubscriberZip;
+    var otherSubscriberCSZ = otherSubscriberN4 + otherSubscriberN401 + otherSubscriberN402 + otherSubscriberN403 + "~";
+
+
+    ////////////////////////////////////////
+    //NM1 Segment - Other Payer Secondary LOOP                                   2010BB
+    var secPayerLastName = "NYSDOH"
+    var secPayerFirstName = "First"
+    var secPayerMiddleName = "Middle"
+    var secPayerCodeQualifier = "PI";
+    var secPayerID = "00812"
+
+    var secPayerNM1 = "NM1";
+    var secPayerNM101 = "*IL*"                  //Entity ID Code.  IL= Insured orsecPayer
+    var secPayerNM102 = "2*"                     //Entity Type.  1=Person, 2=NonPerson
+    var secPayerNM103 = secPayerLastName + "*";
+    var secPayerNM104 = secPayerFirstName + "*";
+    var secPayerNM105 = secPayerMiddleName + "*";                    //Middle Name (blank)
+    var secPayerNM106 = "*";                    //Prefix (blank)
+    var secPayerNM107 = "*";                    //Suffix (blank)
+    var secPayerNM108 = secPayerCodeQualifier + "*";                  //ID Code Qualifier 46=Electronic Transmitter
+    var secPayerNM109 = secPayerID;    //ID Code
+    var OtherPayerSecondary = secPayerNM1 + secPayerNM101 + secPayerNM102 + secPayerNM103 + secPayerNM104
+    + secPayerNM105 + secPayerNM106 + secPayerNM107 + secPayerNM108 + secPayerNM109 + "~";
+
+
+    //N3secPayerAddress
+
+    var secPayerAddress1 = "ATTN MEDICAL TRANSPORTATION"
+    var secPayerAddress2 = "PO BOX 549"
+    var secPayerN3 = "N3*";
+    var secPayerN301 = secPayerAddress1;
+    var secPayerN302 = secPayerAddress2;
+    var OtherPayerSecondaryAddress = secPayerN3 + secPayerN301 + secPayerN302 + "~";
+    ///////
+    //N3secPayer CSZ
+
+    var secPayerCity = "JOHNSTOWN"
+    var secPayerState = "NY"
+    var secPayerZip = "32156"
+    var secPayerN4 = "N4*";
+    var secPayerN401 = secPayerCity + "*";
+    var secPayerN402 = secPayerState + "*";
+    var secPayerN403 = secPayerZip;
+    var OtherPayerSecondaryCSZ = secPayerN4 + secPayerN401 + secPayerN402 + secPayerN403 + "~";
+
+    ////////////////////////////////
+    //Service Line
+
+    var LX1 = "LX*"
+    var LX01 = "1"
+    var ServiceLine = LX1 + LX01 + "~";
+    ////////////////////////
+    //Professional Service
+    var profSVServiceId = "A0429";
+    var profSVProcModifier = "RH";
+    var profSVLineItemChargeAmount = "600";
+
+
+    var profSV = "SV1*"
+    var profSV10101 = "HC:";
+    var profSV10102 = "profSVServiceId" + ":";
+    var profSV10103 = "profSVProcModifier" + "*";
+    var profSV102 = profSVLineItemChargeAmount + "*";
+    var profSV103 = "UN*";
+    var profSV104 = "1*";
+    var profSV105 = "*";
+    var profSV106 = "*";
+    var profSV107 = "1*";
+    var profSV108 = "*";
+    var profSV109 = "Y";
+    var ProfessionalService = profSV + profSV10101 + profSV10102 + profSV10103 + profSV102 + profSV103 + profSV104 + profSV105 + profSV106 + profSV107
+    + profSV108 + profSV109 + "~";
+    ////////////////////////////////
+    //Service Date
+
+    var DTPServiceDate = "CCYYMMDD"
+    var DTP = "DTP*"
+    var DTP01 = "472*"
+    var DTP02 = "D8*"
+    var DTP03 = DTPServiceDate
+    var ServiceDate = DTP + DTP01 + DTP02 + DTP03 + "~";
+    /////////////////
+    //Repriced Line Item Control Numbers
+    var LineItemControlNumber = "1001"
+    var licREF = "REF*"
+    var licREF01 = "6R*"
+    var licREF02 = LineItemControlNumber
+    var RepricedLineItemControlNumbers = licREF + licREF01 + licREF02 + "~";
+
+
+    /////////////////////
+    //Line Notes
+    var NTEREfCode = "ADD"
+    var NTEDescription = "Medical Reason for Transport"
+
+    var lineNoteNTE = NTEREfCode + "*"
+    var lineNTE01 = "~NTE*"
+    var lineNTE02 = NTEDescription;
+    //  Line Notes
+
+
+    // ~LX*2~
+    // SV1*HC:A0425:RH*72.5*UN*5.0***1;	**Y~
+    // DTP*472*D8*20140812~
+    // REF*6R*1002~SE*49*33563~
+    // GE*1*33563~
+    // IEA*1*000033563~
+
+
+    var BillFile = ISASegment + GSSegment + STSegment + BHTSegment + submNMSegment + ContactPer
+    + rcvrNM + BillToHL;
+    return BillFile;
+};
