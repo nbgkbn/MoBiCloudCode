@@ -1,5 +1,6 @@
-﻿
-setV2XML = function (EMSDataSet)
+﻿var Utils = require('cloud/UtilitiesCC.js');
+var jsXML = require('cloud/JSXMLWriter.js');
+exports.setV2XML = function (EMSDataSet)
 {
     var eDS = EMSDataSet;
     
@@ -20,7 +21,8 @@ setV2XML = function (EMSDataSet)
     };
     var specVal = ["7701001", "7701003", "7701005", "8801005", "8801013", "8801015", "8801017", "8801019", "8801021", "8801023"];
 
-    var v2XML = new XMLWriter('UTF-8', '1.0');
+    //var v2XML = new XMLWriter('UTF-8', '1.0');
+    var v2XML = new jsXML.XMLWriter('UTF-8', '1.0');
     v2XML.writeStartDocument();
     v2XML.writeStartElement('EMSDataSet');
     v2XML.writeAttributeString('xmlns', "http://www.nemsis.org")
@@ -940,7 +942,6 @@ setV2XML = function (EMSDataSet)
         
     };
     
-    
     if (typeof eDS.E08 != 'undefined') {
         v2XML.writeStartElement("E08");
         
@@ -1386,30 +1387,30 @@ setV2XML = function (EMSDataSet)
             
             if (typeof eDS.E12.E12_4_0 != 'undefined')
             {
-                v2XML.writeStartElement("E12_4_0");
-                if (typeof eDS.E12.E12_4_0.E12_04 != 'undefined')
-                {
-                    if (IsOk(eDS.E12.E12_4_0.E12_04) == true)
+                    v2XML.writeStartElement("E12_4_0");
+                    if (typeof eDS.E12.E12_4_0.E12_04 != 'undefined')
                     {
-                        v2XML.writeElementString("E12_04", this.escapeXml(eDS.E12.E12_4_0.E12_04))
-                    }
-                };
+                        if (IsOk(eDS.E12.E12_4_0.E12_04) == true)
+                        {
+                            v2XML.writeElementString("E12_04", this.escapeXml(eDS.E12.E12_4_0.E12_04))
+                        }
+                    };
 
-                if (typeof eDS.E12.E12_4_0.E12_05 != 'undefined')
-                {
-                    if (IsOk(eDS.E12.E12_4_0.E12_05) == true)
+                    if (typeof eDS.E12.E12_4_0.E12_05 != 'undefined')
                     {
-                        v2XML.writeElementString("E12_05", this.escapeXml(eDS.E12.E12_4_0.E12_05));
-                    }
-                };
-                if (typeof eDS.E12.E12_4_0.E12_06 != 'undefined')
-                {
-                    if (IsOk(eDS.E12.E12_4_0.E12_06) == true)
+                        if (IsOk(eDS.E12.E12_4_0.E12_05) == true)
+                        {
+                            v2XML.writeElementString("E12_05", this.escapeXml(eDS.E12.E12_4_0.E12_05));
+                        }
+                    };
+                    if (typeof eDS.E12.E12_4_0.E12_06 != 'undefined')
                     {
-                        v2XML.writeElementString("E12_06", this.escapeXml(eDS.E12.E12_4_0.E12_06));
-                    }
-                };
-                v2XML.writeEndElement("E12_4_0");
+                        if (IsOk(eDS.E12.E12_4_0.E12_06) == true)
+                        {
+                            v2XML.writeElementString("E12_06", this.escapeXml(eDS.E12.E12_4_0.E12_06));
+                        }
+                    };
+                    v2XML.writeEndElement("E12_4_0");
 
             };
             
@@ -1470,7 +1471,20 @@ setV2XML = function (EMSDataSet)
                 }
             };
             
-          
+            if (typeof eDS.E13 != 'undefined')
+            {
+                v2XML.writeStartElement("E13");
+
+                if (typeof eDS.E13.E13_01 != 'undefined') {
+
+                    if (IsOk(eDS.E13.E13_01) == true) {
+                        v2XML.writeElementString("E13_01", this.escapeXml(eDS.E13.E13_01));
+                    }
+
+                };
+
+                v2XML.writeEndElement("E13");
+            }
             if (typeof eDS.E12.E12_14_0 != 'undefined')
             {
                 if (eDS.E12.E12_14_0.length > 0)
@@ -1486,56 +1500,57 @@ setV2XML = function (EMSDataSet)
                         };
                         if (typeof eDS.E12.E12_14_0[x].E12_15_0 != 'undefined') {
 
-                            v2XML.writeStartElement("E12_15_0");
-                            if (typeof eDS.E12.E12_14_0[x].E12_15_0.E12_15 != 'undefined') {
-                                if (IsOk(eDS.E12.E12_14_0[x].E12_15_0.E12_15) == true) {
-                                    v2XML.writeElementString("E12_15", eDS.E12.E12_14_0[x].E12_15_0.E12_15)
+                                v2XML.writeStartElement("E12_15_0");
+                                if (typeof eDS.E12.E12_14_0[x].E12_15_0.E12_15 != 'undefined') {
+                                    if (IsOk(eDS.E12.E12_14_0[x].E12_15_0.E12_15) == true) {
+                                        v2XML.writeElementString("E12_15", eDS.E12.E12_14_0[x].E12_15_0.E12_15)
+                                    }
+                                };
+
+                                if (typeof eDS.E12.E12_14_0[x].E12_15_0.E12_16 != 'undefined') {
+                                    if (IsOk(eDS.E12.E12_14_0[x].E12_15_0.E12_16) == true) {
+                                        v2XML.writeElementString("E12_16", eDS.E12.E12_14_0[x].E12_15_0.E12_16)
+                                    }
                                 }
+                                v2XML.writeEndElement("E12_15_0");
+
                             };
-
-                            if (typeof eDS.E12.E12_14_0[x].E12_15_0.E12_16 != 'undefined') {
-                                if (IsOk(eDS.E12.E12_14_0[x].E12_15_0.E12_16) == true) {
-                                    v2XML.writeElementString("E12_16", eDS.E12.E12_14_0[x].E12_15_0.E12_16)
+                            if (typeof eDS.E12.E12_14_0[x].E12_17 != 'undefined') {
+                                if (IsOk(eDS.E12.E12_14_0[x].E12_17) == true) {
+                                    v2XML.writeElementString("E12_17", eDS.E12.E12_14_0[x].E12_17)
                                 }
-                            }
-                            v2XML.writeEndElement("E12_15_0");
-
-                        };
-                        if (typeof eDS.E12.E12_14_0[x].E12_17 != 'undefined') {
-                            if (IsOk(eDS.E12.E12_14_0[x].E12_17) == true) {
-                                v2XML.writeElementString("E12_17", eDS.E12.E12_14_0[x].E12_17)
-                            }
-                        };                        
-                        v2XML.writeEndElement("E12_14_0");
+                            };                        
+                            v2XML.writeEndElement("E12_14_0");
 
                     }
                 }
             }
-            //};
+        //};
             
-            if (typeof eDS.E12.E12_18 != 'undefined') {
-                if (IsOk(eDS.E12.E12_18)==true) {
-                    v2XML.writeElementString("E12_18", eDS.E12.E12_18)
-                }
-            };
-
-            if (typeof eDS.E12.E12_19 != 'undefined') {
-                for (var i = 0; i < eDS.E12.E12_19.length; i++) {
-                    if (IsOk(eDS.E12.E12_19[i])==true) {
-                        v2XML.writeElementString("E12_19", eDS.E12.E12_19[i]);
-                    }
-                }
-            };
-            if (typeof eDS.E12.E12_20 != 'undefined') {
-                if (IsOk(eDS.E12.E12_20)==true) {
-                    v2XML.writeElementString("E12_20", eDS.E12.E12_20)
-                }
-            };      
-        
-            v2XML.writeEndElement("E12");
-        
+        if (typeof eDS.E12.E12_18 != 'undefined') {
+            if (IsOk(eDS.E12.E12_18)==true) {
+                v2XML.writeElementString("E12_18", eDS.E12.E12_18)
+            }
         };
+
+        if (typeof eDS.E12.E12_19 != 'undefined') {
+            for (var i = 0; i < eDS.E12.E12_19.length; i++) {
+                if (IsOk(eDS.E12.E12_19[i])==true) {
+                    v2XML.writeElementString("E12_19", eDS.E12.E12_19[i]);
+                }
+            }
+        };
+        if (typeof eDS.E12.E12_20 != 'undefined') {
+            if (IsOk(eDS.E12.E12_20)==true) {
+                v2XML.writeElementString("E12_20", eDS.E12.E12_20)
+            }
+        };      
+        
+        v2XML.writeEndElement("E12");
+        
+    };
     
+/*
     
     if (typeof eDS.E13 != 'undefined') {
         v2XML.writeStartElement("E13");
@@ -1548,8 +1563,8 @@ setV2XML = function (EMSDataSet)
 
         v2XML.writeEndElement("E13");
     };
+    */
 
-    
     if (typeof eDS.E14 != 'undefined') {
         for (var x = 0; x < eDS.E14.length; x++) {
             v2XML.writeStartElement("E14");
@@ -1978,7 +1993,7 @@ setV2XML = function (EMSDataSet)
         v2XML.writeEndElement("E16");
     };    
     
-    
+        
     if (typeof eDS.E17 != 'undefined')
     {
         if (typeof eDS.E17.E17_01 != 'undefined')
@@ -2077,7 +2092,7 @@ setV2XML = function (EMSDataSet)
         
     };
 
-    
+
     if (typeof eDS.E19 != 'undefined')
     {
         v2XML.writeStartElement("E19");
@@ -2590,24 +2605,29 @@ setV2XML = function (EMSDataSet)
     
 var IsOk = function (valObject)
 {
-        if (typeof valObject == 'undefined') {
-
+    
+    if (typeof valObject == 'undefined')
+    {
+        
+        return false;
+    }
+    else
+    {
+        if (valObject.length === 0)
+        { //empty object
+            
             return false;
         }
-        else {
-            if (valObject=== null) { //empty object
+    };
+    if (valObject == null)
+    {       
+        return false;
+    }
 
-                return false;
-            }
-        };
-        if (valObject.length === 0) {
-            return false;
-        }
-
-        else {
-            return true;
-        }
-
+    else
+    {
+        return true;
+    }
 };
 
 function escapeXml(unsafe) {

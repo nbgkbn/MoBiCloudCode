@@ -1,8 +1,6 @@
 var Utils = require('cloud/Utilities.js');
 var jsXML = require('cloud/JSXMLWriter.js');
 exports.setV3XML = function (TheCall) {
-
-
     //   if (TheCall.CanWriteXML == false) 
     //   {
     //       return null;
@@ -23,6 +21,7 @@ exports.setV3XML = function (TheCall) {
     XML.writeStartElement("PatientCareReport");
 
     if (typeof TheCall.eRecord != 'undefined') {
+
         var obj = {};
         var obj = TheCall.eRecord;
         XML.writeStartElement("eRecord");
@@ -53,9 +52,6 @@ exports.setV3XML = function (TheCall) {
         XML.writeEndElement("eRecord.SoftwareApplicationGroup");
         XML.writeEndElement("eRecord");
     };
-    //Dispatch
-
-
     if (typeof TheCall.eDispatch != 'undefined') {
         XML.writeStartElement("eDispatch");
         var obj = {};
@@ -65,16 +61,6 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eDispatch.01", escapeXml(obj["eDispatch.01"].vSet[0]));
 
             }
-            else {
-                if (typeof obj["eDispatch.01"].NV != 'undefined') {
-                    if (obj["eDispatch.01"].NV == true) {
-                        XML.writeStartElement('eDispatch.01');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString("NV", obj["eDispatch.01"].vSet[0]);
-                        XML.writeEndElement();
-                    }
-                }
-            }
         };
 
         if (typeof obj["eDispatch.02"] != 'undefined') {
@@ -82,7 +68,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eDispatch.02", obj["eDispatch.02"].vSet[0]);
             }
             else {
-                if (typeof obj["eDispatch.02"].NV !='undefined') {
+                if (typeof obj["eDispatch.02"].NV != 'undefined') {
                     if (obj["eDispatch.02"].NV == true) {
                         XML.writeStartElement('eDispatch.02');
                         XML.writeAttributeString("NV", obj["eDispatch.02"].vSet[0]);
@@ -98,6 +84,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eDispatch.03", escapeXml(obj["eDispatch.03"].vSet[0]));
             }
         };
+
         if (typeof obj["eDispatch.04"] != 'undefined') {
             if (obj["eDispatch.04"].IsNull == false) {
                 XML.writeElementString("eDispatch.04", escapeXml(obj["eDispatch.04"].vSet[0]));
@@ -112,8 +99,6 @@ exports.setV3XML = function (TheCall) {
 
         XML.writeEndElement("eDispatch");
     };
-    //Disposition
-
 
     if (typeof TheCall.eDisposition != 'undefined') {
         var obj = {};
@@ -125,12 +110,11 @@ exports.setV3XML = function (TheCall) {
 
             if (typeof objD["eDisposition.01"] != 'undefined') {
                 if (["eDisposition.01"].IsNull == false) {
-
                     XML.writeElementString("eDisposition.01", escapeXml(objD["eDisposition.01"].vSet[0]));
                 }
 
                 else {
-                    if (typeof obj["eDisposition.01"].NV !='undefined') {
+                    if (typeof objD["eDisposition.01"].NV != 'undefined') {
                         if (objD["eDisposition.01"].NV == true) {
                             XML.writeStartElement('eDisposition.01');
                             XML.writeAttributeString('xsi:nil', 'true');
@@ -148,7 +132,7 @@ exports.setV3XML = function (TheCall) {
                 }
 
                 else {
-                    if (typeof obj["eDisposition.02"].NV !='undefined') {
+                    if (typeof objD["eDisposition.02"].NV != 'undefined') {
                         if (objD["eDisposition.02"].NV == true) {
                             XML.writeStartElement('eDisposition.02');
                             XML.writeAttributeString('xsi:nil', 'true');
@@ -158,6 +142,7 @@ exports.setV3XML = function (TheCall) {
                     }
                 }
             };
+
             if (typeof objD["eDisposition.03"] != 'undefined') {
                 if (objD["eDisposition.03"].IsNull == false) {
 
@@ -165,7 +150,7 @@ exports.setV3XML = function (TheCall) {
                 }
 
                 else {
-                    if (typeof obj["eDisposition.03"].NV !='undefined') {
+                    if (typeof objD["eDisposition.03"].NV != 'undefined') {
                         if (objD["eDisposition.03"].NV == true) {
                             XML.writeStartElement('eDisposition.03');
                             XML.writeAttributeString('xsi:nil', 'true');
@@ -178,35 +163,24 @@ exports.setV3XML = function (TheCall) {
 
             if (typeof objD["eDisposition.04"] != 'undefined') {
                 if (objD["eDisposition.04"].IsNull == false) {
-
                     XML.writeElementString("eDisposition.04", objD["eDisposition.04"].vSet[0]);
-                }
-
-                else {
-                    if (typeof obj["eDisposition.04"].NV !='undefined') {
-                        if (objD["eDisposition.04"].NV == true) {
-                            XML.writeStartElement('eDisposition.04');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeString(objD["eDisposition.04"].vSet[0]);
-                            XML.writeEndElement();
-                        }
-                    }
                 }
             };
 
             if (typeof objD["eDisposition.05"] != 'undefined') {
                 if (objD["eDisposition.05"].IsNull == false) {
-
                     XML.writeElementString("eDisposition.05", objD["eDisposition.05"].vSet[0]);
                 }
 
                 else {
-                    if (typeof obj["eDisposition.51"].NV !='undefined') {
-                        if (objD["eDisposition.05"].NV == true) {
-                            XML.writeStartElement('eDisposition.05');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeString(objD["eDisposition.05"].vSet[0]);
-                            XML.writeEndElement();
+                    if (typeof objD["eDisposition.05"].NV != 'undefined') {
+                        if (typeof objD["eDisposition.05"].NV != 'undefined') {
+                            if (objD["eDisposition.05"].NV == true) {
+                                XML.writeStartElement('eDisposition.05');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeString(objD["eDisposition.05"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 }
@@ -219,7 +193,7 @@ exports.setV3XML = function (TheCall) {
                 }
 
                 else {
-                    if (typeof obj["eDisposition.06"].NV !='undefined') {
+                    if (typeof objD["eDisposition.06"].NV != 'undefined') {
                         if (objD["eDisposition.06"].NV == true) {
                             XML.writeStartElement('eDisposition.06');
                             XML.writeAttributeString('xsi:nil', 'true');
@@ -237,7 +211,7 @@ exports.setV3XML = function (TheCall) {
                 }
 
                 else {
-                    if (typeof obj["eDisposition.07"].NV !='undefined') {
+                    if (typeof objD["eDisposition.07"].NV != 'undefined') {
                         if (objD["eDisposition.07"].NV == true) {
                             XML.writeStartElement('eDisposition.07');
                             XML.writeAttributeString('xsi:nil', 'true');
@@ -276,7 +250,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eDisposition.11", obj["eDisposition.11"].vSet[0]);
             }
             else {
-                if (typeof obj["eDisposition.11"].NV !='undefined') {
+                if (typeof obj["eDisposition.11"].NV != 'undefined') {
                     if (obj["eDisposition.11"].NV == true) {
                         XML.writeStartElement('eDisposition.11');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -292,7 +266,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eDisposition.12", obj["eDisposition.12"].vSet[0]);
             }
             else {
-                if (typeof obj["eDisposition.12"].NV !='undefined') {
+                if (typeof objD["eDisposition.12"].NV != 'undefined') {
                     if (obj["eDisposition.12"].NV == true) {
                         XML.writeStartElement('eDisposition.12');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -302,6 +276,7 @@ exports.setV3XML = function (TheCall) {
                 }
             }
         };
+
         if (typeof obj["eDisposition.13"] != 'undefined') {
             if (obj["eDisposition.13"].IsNull == false) {
                 for (var d = 0; d < obj["eDisposition.13"].vSet.length; d++) {
@@ -309,19 +284,16 @@ exports.setV3XML = function (TheCall) {
                 }
             }
         };
+
         if (typeof obj["eDisposition.14"] != 'undefined') {
             if (obj["eDisposition.14"].IsNull == false) {
                 for (var d = 0; d < obj["eDisposition.14"].vSet.length; d++) {
                     XML.writeElementString("eDisposition.14", obj["eDisposition.14"].vSet[d]);
                 }
             }
-            else {
-                XML.writeElementString("eDisposition.14", "");
-            }
         };
 
         if (typeof obj["eDisposition.15"] != 'undefined') {
-
             if (obj["eDisposition.15"].IsNull == false) {
                 XML.writeElementString("eDisposition.15", obj["eDisposition.15"].vSet[0]);
             }
@@ -330,10 +302,10 @@ exports.setV3XML = function (TheCall) {
         if (typeof obj["eDisposition.16"] != 'undefined') {
             XML.writeElementString("eDisposition.16", obj["eDisposition.16"].vSet[0]);
             if (obj["eDisposition.16"].IsNull == false) {
+                XML.writeElementString("eDisposition.16", obj["eDisposition.16"].vSet[0]);
             }
-
             else {
-                if (typeof obj["eDisposition.16"].NV !='undefined') {
+                if (typeof obj["eDisposition.16"].NV != 'undefined') {
                     if (obj["eDisposition.16"].NV == true) {
                         XML.writeStartElement('eDisposition.16');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -344,13 +316,11 @@ exports.setV3XML = function (TheCall) {
             }
         };
         if (typeof obj["eDisposition.17"] != 'undefined') {
-
             if (obj["eDisposition.17"].IsNull == false) {
                 XML.writeElementString("eDisposition.17", obj["eDisposition.17"].vSet[0]);
             }
-
             else {
-                if (typeof obj["eDisposition.17"].NV !='undefined') {
+                if (typeof obj["eDisposition.17"].NV != 'undefined') {
                     if (obj["eDisposition.17"].NV == true) {
                         XML.writeStartElement('eDisposition.17');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -362,14 +332,13 @@ exports.setV3XML = function (TheCall) {
         };
 
         if (typeof obj["eDisposition.18"] != 'undefined') {
-
             if (obj["eDisposition.18"].IsNull == false) {
                 for (var d = 0; d < obj["eDisposition.18"].vSet.length; d++) {
                     XML.writeElementString("eDisposition.18", obj["eDisposition.18"].vSet[d]);
                 }
             }
             else {
-                if (typeof obj["eDisposition.18"].NV !='undefined') {
+                if (typeof obj["eDisposition.18"].NV != 'undefined') {
                     if (obj["eDisposition.18"].NV == true) {
                         XML.writeStartElement('eDisposition.18');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -379,14 +348,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
         };
+
         if (typeof obj["eDisposition.19"] != 'undefined') {
             if (obj["eDisposition.19"].IsNull == false) {
-
                 XML.writeElementString("eDisposition.19", obj["eDisposition.19"].vSet[0]);
             }
-
             else {
-                if (typeof obj["eDisposition.19"].NV !='undefined') {
+                if (typeof obj["eDisposition.19"].NV != 'undefined') {
                     if (obj["eDisposition.19"].NV == true) {
                         XML.writeStartElement('eDisposition.19');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -401,11 +369,9 @@ exports.setV3XML = function (TheCall) {
                 for (var d = 0; d < obj["eDisposition.20"].vSet.length; d++) {
                     XML.writeElementString("eDisposition.20", obj["eDisposition.20"].vSet[d]);
                 }
-
             }
-
             else {
-                if (typeof obj["eDisposition.20"].NV !='undefined') {
+                if (typeof obj["eDisposition.20"].NV != 'undefined') {
                     if (obj["eDisposition.20"].NV == true) {
                         XML.writeStartElement('eDisposition.20');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -415,13 +381,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
         };
+
         if (typeof obj["eDisposition.21"] != 'undefined') {
             if (obj["eDisposition.21"].IsNull == false) {
-
                 XML.writeElementString("eDisposition.21", obj["eDisposition.21"].vSet[0]);
             }
             else {
-                if (typeof obj["eDisposition.21"].NV !='undefined') {
+                if (typeof obj["eDisposition.21"].NV != 'undefined') {
                     if (obj["eDisposition.21"].NV == true) {
                         XML.writeStartElement('eDisposition.21');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -438,7 +404,7 @@ exports.setV3XML = function (TheCall) {
             }
 
             else {
-                if (typeof obj["eDisposition.22"].NV !='undefined') {
+                if (typeof obj["eDisposition.22"].NV != 'undefined') {
                     if (obj["eDisposition.22"].NV == true) {
                         XML.writeStartElement('eDisposition.22');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -448,14 +414,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
         };
+
         if (typeof obj["eDisposition.23"] != 'undefined') {
             if (obj["eDisposition.23"].IsNull == false) {
-
                 XML.writeElementString("eDisposition.23", obj["eDisposition.23"].vSet[0]);
             }
-
             else {
-                if (typeof obj["eDisposition.23"].NV !='undefined') {
+                if (typeof obj["eDisposition.23"].NV != 'undefined') {
                     if (obj["eDisposition.23"].NV == true) {
                         XML.writeStartElement('eDisposition.23');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -478,7 +443,7 @@ exports.setV3XML = function (TheCall) {
                         }
 
                         else {
-                            if (typeof obj.HospitalTeamActivationGroup[i]["eDisposition.24"].NV !='undefined') {
+                            if (typeof obj.HospitalTeamActivationGroup[i]["eDisposition.24"].NV != 'undefined') {
                                 if (obj.HospitalTeamActivationGroup[i]["eDisposition.24"].NV == true) {
                                     XML.writeStartElement('eDisposition.24');
                                     XML.writeAttributeString('xsi:nil', 'true');
@@ -506,23 +471,18 @@ exports.setV3XML = function (TheCall) {
                     };
                     XML.writeEndElement();
                 };
-            };
-            if (typeof obj["eDisposition.26"] != 'undefined') {
-                if (obj["eDisposition.26"].IsNull == false) {
-                    for (var d = 0; d < obj["eDisposition.26"].vSet.length; d++) {
-                        XML.writeElementString("eDisposition.26", obj["eDisposition.26"].vSet[d]);
-                    }
+            }
+        };
+        if (typeof obj["eDisposition.26"] != 'undefined') {
+            if (obj["eDisposition.26"].IsNull == false) {
+                for (var d = 0; d < obj["eDisposition.26"].vSet.length; d++) {
+                    XML.writeElementString("eDisposition.26", obj["eDisposition.26"].vSet[d]);
                 }
             }
-            else {
-                XML.writeElementString("eDisposition.26", "");
-            };
-            XML.writeEndElement();
-        }
-        //XML.writeEndElement();
+        };
+        XML.writeEndElement();
     };
 
-    //eTimes
     if (typeof TheCall.eTimes != 'undefined') {
         var obj = {};
         obj = TheCall.eTimes;
@@ -532,7 +492,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.01", obj["eTimes.01"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.01"].NV !='undefined') {
+                if (typeof obj["eTimes.01"].NV != 'undefined') {
                     if (obj["eTimes.01"].NV == true) {
                         XML.writeStartElement('eTimes.01');
                         XML.writeAttributeString("NV", obj["eTimes.01"].vSet[0]);
@@ -546,9 +506,6 @@ exports.setV3XML = function (TheCall) {
         if (typeof obj["eTimes.02"] != 'undefined') {
             if (obj["eTimes.02"].IsNull == false) {
                 XML.writeElementString("eTimes.02", obj["eTimes.02"].vSet[0]);
-            }
-            else {
-                XML.writeElementString("eTimes.02", "");
             }
         };
 
@@ -569,7 +526,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.05", obj["eTimes.05"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.05"].NV !='undefined') {
+                if (typeof obj["eTimes.05"].NV != 'undefined') {
                     if (obj["eTimes.05"].NV == true) {
                         XML.writeStartElement('eTimes.05');
                         XML.writeAttributeString("NV", obj["eTimes.05"].vSet[0]);
@@ -585,7 +542,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.06", obj["eTimes.06"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.06"].NV != 'undefined') {
+                if (typeof obj["eTimes.05"].NV != 'undefined') {
                     if (obj["eTimes.06"].NV == true) {
                         XML.writeStartElement('eTimes.06');
                         XML.writeAttributeString("NV", obj["eTimes.06"].vSet[0]);
@@ -601,7 +558,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.07", obj["eTimes.07"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.07"].NV !='undefined') {
+                if (typeof obj["eTimes.07"].NV != 'undefined') {
                     if (obj["eTimes.07"].NV == true) {
                         XML.writeStartElement('eTimes.07');
                         XML.writeAttributeString("NV", obj["eTimes.07"].vSet[0]);
@@ -617,7 +574,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.08", obj["eTimes.08"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.08"].NV !='undefined') {
+                if (typeof obj["eTimes.08"].NV != 'undefined') {
                     if (obj["eTimes.08"].NV == true) {
                         XML.writeStartElement('eTimes.08');
                         XML.writeAttributeString("NV", obj["eTimes.08"].vSet[0]);
@@ -632,7 +589,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.09", obj["eTimes.09"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.09"].NV !='undefined') {
+                if (typeof obj["eTimes.09"].NV != 'undefined') {
                     if (obj["eTimes.09"].NV == true) {
                         XML.writeStartElement('eTimes.09');
                         XML.writeAttributeString("NV", obj["eTimes.09"].vSet[0]);
@@ -654,7 +611,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.11", obj["eTimes.11"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.11"].NV !='undefined') {
+                if (typeof obj["eTimes.11"].NV != 'undefined') {
                     if (obj["eTimes.11"].NV == true) {
                         XML.writeStartElement('eTimes.11');
                         XML.writeAttributeString("NV", obj["eTimes.11"].vSet[0]);
@@ -670,7 +627,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.12", obj["eTimes.12"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.12"].NV !='undefined') {
+                if (typeof obj["eTimes.12"].NV != 'undefined') {
                     if (obj["eTimes.12"].NV == true) {
                         XML.writeStartElement('eTimes.12');
                         XML.writeAttributeString("NV", obj["eTimes.12"].vSet[0]);
@@ -686,16 +643,17 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eTimes.13", obj["eTimes.13"].vSet[0]);
             }
             else {
-                if (typeof obj["eTimes.11"].NV !='undefined') {
-                    if (obj["eTimes.11"].NV == true) {
+                if (typeof obj["eTimes.13"].NV != 'undefined') {
+                    if (obj["eTimes.13"].NV == true) {
                         XML.writeStartElement('eTimes.11');
-                        XML.writeAttributeString("NV", obj["eTimes.11"].vSet[0]);
+                        XML.writeAttributeString("NV", obj["eTimes.13"].vSet[0]);
                         XML.writeAttributeString('xsi:nil', 'true');
                         XML.writeEndElement();
                     }
                 }
             }
         };
+
         if (typeof obj["eTimes.14"] != 'undefined') {
             if (obj["eTimes.14"].IsNull == false) {
                 XML.writeElementString("eTimes.14", obj["eTimes.14"].vSet[0]);
@@ -717,7 +675,6 @@ exports.setV3XML = function (TheCall) {
 
     };
 
-    //Response    
     if (typeof TheCall.eResponse != 'undefined') {
         var obj = {};
         obj = TheCall.eResponse;
@@ -754,7 +711,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eResponse.03", obj["eResponse.03"].vSet[0]);
             }
             else {
-                if (typeof objA["eResponse.03"].NV !='undefined') {
+                if (typeof objA["eResponse.03"].NV != 'undefined') {
                     if (obj["eResponse.03"].NV == true) {
                         XML.writeStartElement('eResponse.03');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -771,7 +728,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eResponse.04", escapeXml(obj["eResponse.04"].vSet[0]));
             }
             else {
-                if (typeof objA["eResponse.04"].NV !='undefined') {
+                if (typeof obj["eResponse.04"].NV != 'undefined') {
                     if (obj["eResponse.04"].NV == true) {
                         XML.writeStartElement('eResponse.04');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -784,7 +741,7 @@ exports.setV3XML = function (TheCall) {
 
         if (typeof obj["AgencyServiceGroup"] != 'undefined') {
             XML.writeStartElement("eResponse.AgencyServiceGroup");
-            var objS = new Object();
+            var objS = obj["AgencyServiceGroup"];
             if (typeof objS["eResponse.05"] != 'undefined') {
                 if (objS["eResponse.05"].IsNull == false) {
                     XML.writeElementString("eResponse.05", objS["eResponse.05"].vSet[0]);
@@ -813,8 +770,9 @@ exports.setV3XML = function (TheCall) {
                 }
 
             }
+
             else {
-                if (typeof objA["eResponse.08"].NV !='undefined') {
+                if (typeof obj["eResponse.08"].NV != 'undefined') {
                     if (obj["eResponse.08"].NV == true) {
                         XML.writeStartElement('eResponse.08');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -832,7 +790,7 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (typeof objA["eResponse.09"].NV !='undefined') {
+                if (typeof obj["eResponse.09"].NV != 'undefined') {
                     if (obj["eResponse.09"].NV == true) {
                         XML.writeStartElement('eResponse.09');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -850,8 +808,9 @@ exports.setV3XML = function (TheCall) {
                 }
 
             }
+
             else {
-                if (typeof objA["eResponse.10"].NV !='undefined') {
+                if (typeof obj["eResponse.10"].NV != 'undefined') {
                     if (obj["eResponse.10"].NV == true) {
                         XML.writeStartElement('eResponse.10');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -861,6 +820,7 @@ exports.setV3XML = function (TheCall) {
                 }
             }
         };
+
         if (typeof obj["eResponse.11"] != 'undefined') {
             if (obj["eResponse.11"].IsNull == false) {
                 for (var d = 0; d < obj["eResponse.11"].vSet.length; d++) {
@@ -868,7 +828,7 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (typeof objA["eResponse.11"].NV !='undefined') {
+                if (typeof obj["eResponse.11"].NV != 'undefined') {
                     if (obj["eResponse.11"].NV == true) {
                         XML.writeStartElement('eResponse.11');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -886,7 +846,7 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (typeof objA["eResponse.12"].NV !='undefined') {
+                if (typeof obj["eResponse.12"].NV != 'undefined') {
                     if (obj["eResponse.12"].NV == true) {
                         XML.writeStartElement('eResponse.12');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -902,7 +862,7 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eResponse.13", escapeXml(obj["eResponse.13"].vSet[0]));
             }
             else {
-                if (typeof objA["eResponse.13"].NV !='undefined') {
+                if (typeof obj["eResponse.13"].NV != 'undefined') {
                     if (obj["eResponse.13"].NV == true) {
                         XML.writeStartElement('eResponse.13');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -919,7 +879,7 @@ exports.setV3XML = function (TheCall) {
             }
 
             else {
-                if (typeof objA["eResponse.14"].NV !='undefined') {
+                if (typeof obj["eResponse.14"].NV != 'undefined') {
                     if (obj["eResponse.14"].NV == true) {
                         XML.writeStartElement('eResponse.14');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -991,11 +951,9 @@ exports.setV3XML = function (TheCall) {
                 for (var d = 0; d < obj["eResponse.24"].vSet.length; d++) {
                     XML.writeElementString("eResponse.24", obj["eResponse.24"].vSet[d]);
                 }
-
             }
-
             else {
-                if (typeof objA["eResponse.24"].NV !='undefined') {
+                if (typeof obj["eResponse.24"].NV != 'undefined') {
                     if (obj["eResponse.24"].NV == true) {
                         XML.writeStartElement('eResponse.24');
                         XML.writeAttributeString('xsi:nil', 'true');
@@ -1008,7 +966,6 @@ exports.setV3XML = function (TheCall) {
         XML.writeEndElement();
     };
 
-    //Patient  
     if (typeof TheCall.ePatient != 'undefined') {
         XML.writeStartElement("ePatient")
         var obj = {};
@@ -1031,27 +988,32 @@ exports.setV3XML = function (TheCall) {
                         XML.writeElementString("ePatient.02", escapeXml(objN["ePatient.02"].vSet[0]));
                     }
                     else {
-                        if (typeof objN["ePatient.02"].HasPN == 'undefined') {
-                        XML.writeStartElement('ePatient.02');
-                        XML.writeAttributeString('PN', objN["ePatient.02"].PN);
-                        XML.writeString(escapeXml(objN["ePatient.02"].vSet[0]));
-                        XML.writeEndElement();
+                        if (objN["ePatient.02"].PN == true) {
+                            XML.writeStartElement('ePatient.02');
+                            XML.writeAttributeString('PN', objN["ePatient.02"].PN);
+                            XML.writeString(escapeXml(objN["ePatient.02"].vSet[0]));
+                            XML.writeEndElement();
+                        }
                     }
                 }
                 else {
 
                     if (typeof objN["ePatient.02"].PN != 'undefined') {
-                        XML.writeStartElement('ePatient.02');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('PN', objN["ePatient.02"].PN);
-                        XML.writeEndElement();
-                    }
-                    else {
-                        if (objN["ePatient.02"].NV == true) {
+                        if (objN["ePatient.02"].PN == true) {
                             XML.writeStartElement('ePatient.02');
                             XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', objN["ePatient.02"].vSet[0]);
+                            XML.writeAttributeString('PN', objN["ePatient.02"].PN);
                             XML.writeEndElement();
+                        }
+                    }
+                    else {
+                        if (typeof objN["ePatient.03"].NV != 'undefined') {
+                            if (objN["ePatient.02"].NV == true) {
+                                XML.writeStartElement('ePatient.02');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', objN["ePatient.02"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 }
@@ -1072,17 +1034,21 @@ exports.setV3XML = function (TheCall) {
                 else {
 
                     if (typeof objN["ePatient.03"].PN != 'undefined') {
-                        XML.writeStartElement('ePatient.03');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('PN', objN["ePatient.03"].PN);
-                        XML.writeEndElement();
-                    }
-                    else {
-                        if (objN["ePatient.03"].NV == true) {
+                        if (objN["ePatient.03"].PN == true) {
                             XML.writeStartElement('ePatient.03');
                             XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', objN["ePatient.03"].vSet[0]);
+                            XML.writeAttributeString('PN', objN["ePatient.03"].PN);
                             XML.writeEndElement();
+                        }
+                    }
+                    else {
+                        if (typeof obj["ePatient.03"].NV != 'undefined') {
+                            if (objN["ePatient.03"].NV == true) {
+                                XML.writeStartElement('ePatient.03');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', objN["ePatient.03"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 }
@@ -1114,11 +1080,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("ePatient.07", obj["ePatient.07"].vSet[0]);
             }
             else {
-                if (obj["ePatient.07"].NV == true) {
-                    XML.writeStartElement('ePatient.07');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["ePatient.07"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["ePatient.07"].NV != 'undefined') {
+                    if (obj["ePatient.07"].NV == true) {
+                        XML.writeStartElement('ePatient.07');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["ePatient.07"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1129,11 +1097,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("ePatient.08", obj["ePatient.08"].vSet[0]);
             }
             else {
-                if (obj["ePatient.08"].NV == true) {
-                    XML.writeStartElement('ePatient.08');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["ePatient.08"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["ePatient.08"].NV != 'undefined') {
+                    if (obj["ePatient.08"].NV == true) {
+                        XML.writeStartElement('ePatient.08');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["ePatient.08"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1143,11 +1113,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("ePatient.09", obj["ePatient.09"].vSet[0]);
             }
             else {
-                if (obj["ePatient.09"].NV == true) {
-                    XML.writeStartElement('ePatient.09');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["ePatient.09"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["ePatient.09"].NV != 'undefined') {
+                    if (obj["ePatient.09"].NV == true) {
+                        XML.writeStartElement('ePatient.09');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["ePatient.09"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1175,11 +1147,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("ePatient.13", obj["ePatient.13"].vSet[0]);
             }
             else {
-                if (obj["ePatient.13"].NV == true) {
-                    XML.writeStartElement('ePatient.13');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["ePatient.13"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["ePatient.13"].NV != 'undefined') {
+                    if (obj["ePatient.13"].NV == true) {
+                        XML.writeStartElement('ePatient.13');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["ePatient.13"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1192,11 +1166,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["ePatient.14"].NV == true) {
-                    XML.writeStartElement('ePatient.14');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["ePatient.14"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["ePatient.14"].NV != 'undefined') {
+                    if (obj["ePatient.14"].NV == true) {
+                        XML.writeStartElement('ePatient.14');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["ePatient.14"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1209,11 +1185,13 @@ exports.setV3XML = function (TheCall) {
                     XML.writeElementString("ePatient.15", obj.AgeGroup["ePatient.15"].vSet[0]);
                 }
                 else {
-                    if (obj.AgeGroup["ePatient.15"].NV == true) {
-                        XML.writeStartElement('ePatient.15');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj.AgeGroup["ePatient.15"].vSet[0]);
-                        XML.writeEndElement();
+                    if (typeof obj.AgeGroup["ePatient.15"].NV != 'undefined') {
+                        if (obj.AgeGroup["ePatient.15"].NV == true) {
+                            XML.writeStartElement('ePatient.15');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj.AgeGroup["ePatient.15"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -1224,11 +1202,13 @@ exports.setV3XML = function (TheCall) {
                     XML.writeElementString("ePatient.16", obj.AgeGroup["ePatient.16"].vSet[0]);
                 }
                 else {
-                    if (obj.AgeGroup["ePatient.16"].NV == true) {
-                        XML.writeStartElement('ePatient.16');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj.AgeGroup["ePatient.16"].vSet[0]);
-                        XML.writeEndElement();
+                    if (typeof obj.AgeGroup["ePatient.16"].NV != 'undefined') {
+                        if (obj.AgeGroup["ePatient.16"].NV == true) {
+                            XML.writeStartElement('ePatient.16');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj.AgeGroup["ePatient.16"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -1241,19 +1221,21 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("ePatient.17", obj["ePatient.17"].vSet[0]);
             }
             else {
-                if (obj["ePatient.17"].NV == true) {
-                    XML.writeStartElement('ePatient.17');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["ePatient.17"].vSet[0]);
-                    XML.writeEndElement();
+                if (obj["ePatient.17"].NV != 'undefined') {
+                    if (obj["ePatient.17"].NV == true) {
+                        XML.writeStartElement('ePatient.17');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["ePatient.17"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
 
         if (typeof obj["ePatient.18"] != 'undefined') {
             if (obj["ePatient.18"].IsNull == false) {
-                for (var i = 0; i <= obj["ePatient.18"].vSet.length ; i++) {
-                    if (typeof obj["ePatient.18"].vSet[i].PhoneNumberType != 'undefined') {
+                for (var i = 0; i <= obj["ePatient.18"].vSet.length - 1; i++) {
+                    if (typeof obj["ePatient.18"].vSet[i].PhoneType != 'undefined') {
                         XML.writeStartElement('ePatient.18');
                         XML.writeAttributeString('PhoneNumberType', obj["ePatient.18"].vSet[i].PhoneType);
                         XML.writeString(escapeXml(obj["ePatient.18"].vSet[i].val));
@@ -1272,7 +1254,7 @@ exports.setV3XML = function (TheCall) {
             if (obj["ePatient.19"].IsNull == false) {
                 for (var i = 0; i <= obj["ePatient.19"].vSet.length - 1; i++) {
                     if (typeof obj["ePatient.19"].vSet[i].EMailType != 'undefined') {
-                        if (obj["ePatient.19"].vSet[i].PhoneNumberType != "") {
+                        if (obj["ePatient.19"].vSet[i].EMailType != "") {
                             XML.writeStartElement('EMailType');
                             XML.writeAttributeString('EmailType', obj["ePatient.19"].vSet[i].EMailType);
                             XML.writeString(escapeXml(obj["ePatient.19"].vSet[i].val));
@@ -1307,9 +1289,6 @@ exports.setV3XML = function (TheCall) {
 
     };
 
-
-    //History   
-
     if (typeof TheCall.eHistory != 'undefined') {
         var obj = {};
         var obj = TheCall.eHistory;
@@ -1322,18 +1301,20 @@ exports.setV3XML = function (TheCall) {
             }
 
             else {
-                if (obj["eHistory.01"].NV == true) {
-                    XML.writeStartElement('eHistory.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eHistory.01"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eHistory.01"].NV != 'undefined') {
+                    if (obj["eHistory.01"].NV == true) {
+                        XML.writeStartElement('eHistory.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eHistory.01"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
 
 
         if (typeof obj["PractitionerGroup"] != 'undefined') {
-            for (var d = 0; d < obj["PractitionerGroup"].vSet.length ; d++) {
+            for (var d = 0; d < obj["PractitionerGroup"].length ; d++) {
                 XML.writeStartElement("eHistory.PractitionerGroup")
 
                 if (typeof obj["PractitionerGroup"][d]["eHistory.02"] != 'undefined') {
@@ -1349,7 +1330,7 @@ exports.setV3XML = function (TheCall) {
                 };
                 if (typeof obj["PractitionerGroup"][d]["eHistory.04"] != 'undefined') {
                     if (obj["PractitionerGroup"][d]["eHistory.04"].IsNull == false) {
-                        h["eHistory.04"] = obj["PractitionerGroup"][d]["eHistory.04"].vSet[0];
+                        //h["eHistory.04"] = obj["PractitionerGroup"][d]["eHistory.04"].vSet[0];
                         XML.writeElementString("eHistory.04", escapeXml(obj["PractitionerGroup"][d]["eHistory.04"].vSet[0]));
                     }
                 };
@@ -1369,11 +1350,14 @@ exports.setV3XML = function (TheCall) {
             }
 
             else {
-                if (obj["eHistory.05"].NV == true) {
-                    XML.writeStartElement('eHistory.05');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eHistory.05"].vSet[0]);
-                    XML.writeEndElement();
+
+                if (typeof obj["eHistory.05"].NV != 'undefined') {
+                    if (obj["eHistory.05"].NV == true) {
+                        XML.writeStartElement('eHistory.05');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eHistory.05"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1384,17 +1368,21 @@ exports.setV3XML = function (TheCall) {
             }
 
             else {
-                if (obj["eHistory.06"].NV == true) {
-                    XML.writeStartElement('eHistory.06');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eHistory.06"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eHistory.06"].NV != 'undefined') {
+                    if (obj["eHistory.06"].NV == true) {
+                        XML.writeStartElement('eHistory.06');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eHistory.06"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
                 else if (typeof obj["eHistory.06"].PN != 'undefined') {
-                    XML.writeStartElement('eHistory.06');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('PN', obj["eHistory.06"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eHistory.06"].PN == true) {
+                        XML.writeStartElement('eHistory.06');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('PN', obj["eHistory.06"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1415,17 +1403,21 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eHistory.08"].NV == true) {
-                    XML.writeStartElement('eHistory.08');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eHistory.08"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eHistory.08"].NV != 'undefined') {
+                    if (obj["eHistory.08"].NV == true) {
+                        XML.writeStartElement('eHistory.08');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eHistory.08"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
-                else if (obj["eHistory.08"].PN == true) {
-                    XML.writeStartElement('eHistory.08');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('PN', obj["eHistory.08"].vSet[0]);
-                    XML.writeEndElement();
+                else if (typeof obj["eHistory.08"].PN != 'undefined') {
+                    if (obj["eHistory.08"].PN == true) {
+                        XML.writeStartElement('eHistory.08');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('PN', obj["eHistory.08"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1437,8 +1429,6 @@ exports.setV3XML = function (TheCall) {
                 }
             }
         };
-
-
 
         if (obj["ImmunizationsGroup"] > 0) {
 
@@ -1468,17 +1458,21 @@ exports.setV3XML = function (TheCall) {
                         XML.writeElementString("eHistory.12", escapeXml(obj["CurrentMedsGroup"][d]["eHistory.12"].vSet[0]));
                     }
                     else {
-                        if (obj["CurrentMedsGroup"][d]["eHistory.12"].NV == true) {
-                            XML.writeStartElement('eHistory.12');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["CurrentMedsGroup"][d]["eHistory.12"].vSet[0]);
-                            XML.writeEndElement();
+                        if (typeof obj["CurrentMedsGroup"][d]["eHistory.12"].NV != 'undefined') {
+                            if (obj["CurrentMedsGroup"][d]["eHistory.12"].NV == true) {
+                                XML.writeStartElement('eHistory.12');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["CurrentMedsGroup"][d]["eHistory.12"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
-                        else if (obj["CurrentMedsGroup"][d]["eHistory.12"].PN == true) {
-                            XML.writeStartElement('eHistory.12');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('PN', obj["CurrentMedsGroup"][d]["eHistory.12"].vSet[0]);
-                            XML.writeEndElement();
+                        else if (typeof obj["CurrentMedsGroup"][d]["eHistory.12"].PN != 'undefined') {
+                            if (obj["CurrentMedsGroup"][d]["eHistory.12"].PN == true) {
+                                XML.writeStartElement('eHistory.12');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('PN', obj["CurrentMedsGroup"][d]["eHistory.12"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -1514,18 +1508,21 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eHistory.17", obj["eHistory.17"].vSet[0]);
             }
             else {
-                if (obj["eHistory.17"].PN == true) {
-                    XML.writeStartElement('eHistory.17');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('PN', obj["eHistory.17"].vSet[0]);
-                    XML.writeEndElement();
-
+                if (typeof obj["eHistory.17"].PN != 'undefined') {
+                    if (obj["eHistory.17"].PN == true) {
+                        XML.writeStartElement('eHistory.17');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('PN', obj["eHistory.17"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
-                else if (obj["eHistory.17"].NV == true) {
-                    XML.writeStartElement('eHistory.17');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eHistory.17"].vSet[0]);
-                    XML.writeEndElement();
+                else if (typeof obj["eHistory.17"].NV != 'undefined') {
+                    if (obj["eHistory.17"].NV == true) {
+                        XML.writeStartElement('eHistory.17');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eHistory.17"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1536,11 +1533,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eHistory.18", obj["eHistory.18"].vSet[0]);
             }
             else {
-                if (obj["eHistory.18"].PN == true) {
-                    XML.writeStartElement('eHistory.18');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('PN', obj["eHistory.18"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eHistory.18"].PN != 'undefined') {
+                    if (obj["eHistory.18"].PN == true) {
+                        XML.writeStartElement('eHistory.18');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('PN', obj["eHistory.18"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1553,8 +1552,6 @@ exports.setV3XML = function (TheCall) {
     };
 
 
-    //Payment
-
     if (typeof TheCall.ePayment != 'undefined') {
         var obj = {};
 
@@ -1565,11 +1562,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("ePayment.01", obj["ePayment.01"].vSet[0]);
             }
             else {
-                if (obj["ePayment.01"].NV == true) {
-                    XML.writeStartElement('ePayment.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["ePayment.01"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["ePayment.01"].NV != 'undefined') {
+                    if (obj["ePayment.01"].NV == true) {
+                        XML.writeStartElement('ePayment.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["ePayment.01"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1882,66 +1881,67 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("ePayment.50", obj["ePayment.50"].vSet[0]);
             }
             else {
-                if (obj["ePayment.50"].NV == true) {
-                    XML.writeStartElement('ePayment.50');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["ePayment.50"].vSet[0]);
-                    XML.writeEndElement();
-
-                };
-                if (typeof obj["ePayment.51"] != 'undefined') {
-                    if (obj["ePayment.51"].IsNull == false) {
-                        for (var d = 0; d < obj["ePayment.51"].vSet.length; d++) {
-                            XML.writeElementString("ePayment.51", obj["ePayment.51"].vSet[d]);
-                        }
-                    }
-                }
-
-                if (typeof obj["ePayment.52"] != 'undefined') {
-                    if (obj["ePayment.52"].IsNull == false) {
-                        for (var d = 0; d < obj["ePayment.52"].vSet.length; d++) {
-                            XML.writeElementString("ePayment.52", obj["ePayment.52"].vSet[d]);
-                        }
-                    }
-                };
-
-                if (typeof obj["ePayment.53"] != 'undefined') {
-                    if (obj["ePayment.53"].IsNull == false) {
-                        XML.writeElementString("ePayment.53", escapeXml(obj["ePayment.53"].vSet[0]));
-                    }
-                };
-
-                if (typeof obj["ePayment.54"] != 'undefined') {
-                    if (obj["ePayment.54"].IsNull == false) {
-                        XML.writeElementString("ePayment.54", escapeXml(obj["ePayment.54"].vSet[0]));
-                    }
-                };
-
-                if (obj["SupplyItemGroup"] > 0) {
-                    for (var d = 0; d < obj["SupplyItemGroup"].vSet.length ; d++) {
-                        var obj2 = {}
-                        obj2 = obj["SupplyItemGroup"][d]
-                        XML.writeStartElement("ePayment.SupplyItemGroup")
-                        if (typeof obj2["ePayment.55"] != 'undefined') {
-                            if (obj2["ePayment.55"].IsNull == false) {
-                                XML.writeElementString("ePayment.55", escapeXml(obj2["ePayment.55"].vSet[0]));
-                            }
-                        };
-
-                        if (typeof obj2["ePayment.56"] != 'undefined') {
-                            if (obj2["ePayment.56"].IsNull == false) {
-                                XML.writeElementString("ePayment.56", obj2["ePayment.56"].vSet[0]);
-                            }
-                        };
+                if (typeof obj["ePayment.50"].NV != 'undefined') {
+                    if (obj["ePayment.50"].NV == true) {
+                        XML.writeStartElement('ePayment.50');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["ePayment.50"].vSet[0]);
                         XML.writeEndElement();
-                    };
+                    }
                 }
-            };
-            XML.writeEndElement();
+            }
+        };
+        if (typeof obj["ePayment.51"] != 'undefined') {
+            if (obj["ePayment.51"].IsNull == false) {
+                for (var d = 0; d < obj["ePayment.51"].vSet.length; d++) {
+                    XML.writeElementString("ePayment.51", obj["ePayment.51"].vSet[d]);
+                }
+            }
         }
+
+        if (typeof obj["ePayment.52"] != 'undefined') {
+            if (obj["ePayment.52"].IsNull == false) {
+                for (var d = 0; d < obj["ePayment.52"].vSet.length; d++) {
+                    XML.writeElementString("ePayment.52", obj["ePayment.52"].vSet[d]);
+                }
+            }
+        };
+
+        if (typeof obj["ePayment.53"] != 'undefined') {
+            if (obj["ePayment.53"].IsNull == false) {
+                XML.writeElementString("ePayment.53", escapeXml(obj["ePayment.53"].vSet[0]));
+            }
+        };
+
+        if (typeof obj["ePayment.54"] != 'undefined') {
+            if (obj["ePayment.54"].IsNull == false) {
+                XML.writeElementString("ePayment.54", escapeXml(obj["ePayment.54"].vSet[0]));
+            }
+        };
+
+        if (typeof obj["SupplyItemGroup"] != 'undefined') {
+            for (var d = 0; d < obj["SupplyItemGroup"].vSet.length ; d++) {
+                var obj2 = {}
+                obj2 = obj["SupplyItemGroup"][d]
+                XML.writeStartElement("ePayment.SupplyItemGroup")
+                if (typeof obj2["ePayment.55"] != 'undefined') {
+                    if (obj2["ePayment.55"].IsNull == false) {
+                        XML.writeElementString("ePayment.55", escapeXml(obj2["ePayment.55"].vSet[0]));
+                    }
+                };
+
+                if (typeof obj2["ePayment.56"] != 'undefined') {
+                    if (obj2["ePayment.56"].IsNull == false) {
+                        XML.writeElementString("ePayment.56", obj2["ePayment.56"].vSet[0]);
+                    }
+                };
+                XML.writeEndElement();
+            };
+        };
+        XML.writeEndElement();
     };
 
-    //Situation
+
     if (typeof TheCall.eSituation != 'undefined') {
         XML.writeStartElement("eSituation")
         var obj = {};
@@ -1951,11 +1951,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eSituation.01", obj["eSituation.01"].vSet[0]);
             }
             else {
-                if (obj["eSituation.01"].NV == true) {
-                    XML.writeStartElement('eSituation.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eSituation.01"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eSituation.01"].NV != 'undefined') {
+                    if (obj["eSituation.01"].NV == true) {
+                        XML.writeStartElement('eSituation.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eSituation.01"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1964,11 +1966,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eSituation.02", obj["eSituation.02"].vSet[0]);
             }
             else {
-                if (obj["eSituation.02"].NV == true) {
-                    XML.writeStartElement('eSituation.02');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eSituation.02"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eSituation.02"].NV != 'undefined') {
+                    if (obj["eSituation.02"].NV == true) {
+                        XML.writeStartElement('eSituation.02');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eSituation.02"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -1982,11 +1986,13 @@ exports.setV3XML = function (TheCall) {
                         XML.writeElementString("eSituation.03", obj1["eSituation.03"].vSet[0]);
                     }
                     else {
-                        if (obj1["eSituation.03"].NV == true) {
-                            XML.writeStartElement('eSituation.03');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj1["eSituation.03"].vSet[0]);
-                            XML.writeEndElement();
+                        if (typeof obj1["eSituation.03"].NV != 'undefined') {
+                            if (obj1["eSituation.03"].NV == true) {
+                                XML.writeStartElement('eSituation.03');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj1["eSituation.03"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -1996,11 +2002,13 @@ exports.setV3XML = function (TheCall) {
                         XML.writeElementString("eSituation.04", escapeXml(obj1["eSituation.04"].vSet[0]));
                     }
                     else {
-                        if (obj1["eSituation.04"].NV == true) {
-                            XML.writeStartElement('eSituation.04');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj1["eSituation.04"].vSet[0]);
-                            XML.writeEndElement();
+                        if (typeof obj1["eSituation.04"].NV != 'undefined') {
+                            if (obj1["eSituation.04"].NV == true) {
+                                XML.writeStartElement('eSituation.04');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj1["eSituation.04"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -2010,11 +2018,13 @@ exports.setV3XML = function (TheCall) {
                         XML.writeElementString("eSituation.05", obj1["eSituation.05"].vSet[0]);
                     }
                     else {
-                        if (obj1["eSituation.05"].NV == true) {
-                            XML.writeStartElement('eSituation.05');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj1["eSituation.05"].vSet[0]);
-                            XML.writeEndElement();
+                        if (typeof obj1["eSituation.05"].NV != 'undefined') {
+                            if (obj1["eSituation.05"].NV == true) {
+                                XML.writeStartElement('eSituation.05');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj1["eSituation.05"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -2024,11 +2034,13 @@ exports.setV3XML = function (TheCall) {
                         XML.writeElementString("eSituation.06", obj1["eSituation.06"].vSet[0]);
                     }
                     else {
-                        if (obj1["eSituation.06"].NV == true) {
-                            XML.writeStartElement('eSituation.06');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj1["eSituation.06"].vSet[0]);
-                            XML.writeEndElement();
+                        if (typeof obj1["eSituation.06"].NV != 'undefined') {
+                            if (obj1["eSituation.06"].NV == true) {
+                                XML.writeStartElement('eSituation.06');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj1["eSituation.06"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -2040,13 +2052,14 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eSituation.07", obj["eSituation.07"].vSet[0]);
             }
             else {
-                if (obj["eSituation.07"].NV == true) {
-                    XML.writeStartElement('eSituation.07');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eSituation.07"].vSet[0]);
-                    XML.writeEndElement();
-
-                };
+                if (typeof obj["eSituation.07"].NV != 'undefined') {
+                    if (obj["eSituation.07"].NV == true) {
+                        XML.writeStartElement('eSituation.07');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eSituation.07"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                }
             }
         };
         if (typeof obj["eSituation.08"] != 'undefined') {
@@ -2054,13 +2067,14 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eSituation.08", obj["eSituation.08"].vSet[0]);
             }
             else {
-                if (obj["eSituation.08"].NV == true) {
-                    XML.writeStartElement('eSituation.08');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eSituation.08"].vSet[0]);
-                    XML.writeEndElement();
-
-                };
+                if (typeof obj["eSituation.08"].NV != 'undefined') {
+                    if (obj["eSituation.08"].NV == true) {
+                        XML.writeStartElement('eSituation.08');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eSituation.08"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                }
             }
         };
         if (typeof obj["eSituation.09"] != 'undefined') {
@@ -2068,13 +2082,14 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eSituation.09", escapeXml(obj["eSituation.09"].vSet[0]));
             }
             else {
-                if (obj["eSituation.09"].NV == true) {
-                    XML.writeStartElement('eSituation.09');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eSituation.09"].vSet[0]);
-                    XML.writeEndElement();
-
-                };
+                if (typeof obj["eSituation.09"].NV != 'undefined') {
+                    if (obj["eSituation.09"].NV == true) {
+                        XML.writeStartElement('eSituation.09');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eSituation.09"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                }
             }
         };
         if (typeof obj["eSituation.10"] != 'undefined') {
@@ -2084,13 +2099,14 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eSituation.10"].NV == true) {
-                    XML.writeStartElement('eSituation.10');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eSituation.10"].vSet[0]);
-                    XML.writeEndElement();
-
-                };
+                if (typeof obj["eSituation.10"].NV != 'undefined') {
+                    if (obj["eSituation.10"].NV == true) {
+                        XML.writeStartElement('eSituation.10');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eSituation.10"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                }
             }
         };
         if (typeof obj["eSituation.11"] != 'undefined') {
@@ -2106,12 +2122,14 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eSituation.12"].NV == true) {
-                    XML.writeStartElement('eSituation.12');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eSituation.12"].vSet[0]);
-                    XML.writeEndElement();
-                };
+                if (typeof obj["eSituation.12"].NV != 'undefined') {
+                    if (obj["eSituation.12"].NV == true) {
+                        XML.writeStartElement('eSituation.12');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eSituation.12"].vSet[0]);
+                        XML.writeEndElement();
+                    }
+                }
             }
         };
 
@@ -2132,11 +2150,13 @@ exports.setV3XML = function (TheCall) {
                 }
 
                 else {
-                    if (objW["eSituation.14"].NV == true) {
-                        XML.writeStartElement('eSituation.14');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', objW["eSituation.14"].vSet[0]);
-                        XML.writeEndElement();
+                    if (typeof objW["eSituation.14"].NV != 'undefined') {
+                        if (objW["eSituation.14"].NV == true) {
+                            XML.writeStartElement('eSituation.14');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', objW["eSituation.14"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -2161,18 +2181,20 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eSituation.17"].NV == true) {
-                    XML.writeStartElement('eSituation.17');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eSituation.17"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eSituation.17"].NV != 'undefined') {
+                    if (obj["eSituation.17"].NV == true) {
+                        XML.writeStartElement('eSituation.17');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eSituation.17"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             };
         };
         XML.writeEndElement();
     };
 
-    //eScene
+
     if (typeof TheCall.eScene != 'undefined') {
         var obj = {};
         var obj = TheCall.eScene
@@ -2182,11 +2204,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.01", obj["eScene.01"].vSet[0]);
             }
             else {
-                if (obj["eScene.01"].NV == true) {
-                    XML.writeStartElement('eScene.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.01"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.01"].NV != 'undefined') {
+                    if (obj["eScene.01"].NV == true) {
+                        XML.writeStartElement('eScene.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.01"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2229,11 +2253,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.06", obj["eScene.06"].vSet[0]);
             }
             else {
-                if (obj["eScene.06"].NV == true) {
-                    XML.writeStartElement('eScene.06');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.06"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.06"].NV != 'undefined') {
+                    if (obj["eScene.06"].NV == true) {
+                        XML.writeStartElement('eScene.06');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.06"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2243,11 +2269,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.07", obj["eScene.07"].vSet[0]);
             }
             else {
-                if (obj["eScene.07"].NV == true) {
-                    XML.writeStartElement('eScene.07');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.07"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.07"].NV != 'undefined') {
+                    if (obj["eScene.07"].NV == true) {
+                        XML.writeStartElement('eScene.07');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.07"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2257,11 +2285,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.08", obj["eScene.08"].vSet[0]);
             }
             else {
-                if (obj["eScene.08"].NV == true) {
-                    XML.writeStartElement('eScene.08');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.08"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.08"].NV != 'undefined') {
+                    if (obj["eScene.08"].NV == true) {
+                        XML.writeStartElement('eScene.08');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.08"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2271,11 +2301,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.09", escapeXml(obj["eScene.09"].vSet[0]));
             }
             else {
-                if (obj["eScene.09"].NV == true) {
-                    XML.writeStartElement('eScene.09');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.09"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.09"].NV != 'undefined') {
+                    if (obj["eScene.09"].NV == true) {
+                        XML.writeStartElement('eScene.09');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.09"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2285,11 +2317,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.10", obj["eScene.10"].vSet[0]);
             }
             else {
-                if (obj["eScene.10"].NV == true) {
-                    XML.writeStartElement('eScene.10');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.10"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.10"].NV != 'undefined') {
+                    if (obj["eScene.10"].NV == true) {
+                        XML.writeStartElement('eScene.10');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.10"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2312,16 +2346,19 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.13", escapeXml(obj["eScene.13"].vSet[0]));
             }
         };
+
         if (typeof obj["eScene.14"] != 'undefined') {
             if (obj["eScene.14"].IsNull == false) {
                 XML.writeElementString("eScene.14", escapeXml(obj["eScene.14"].vSet[0]));
             }
             else {
-                if (obj["eScene.14"].NV == true) {
-                    XML.writeStartElement('eScene.14');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.14"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.14"].NV != 'undefined') {
+                    if (obj["eScene.14"].NV == true) {
+                        XML.writeStartElement('eScene.14');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.14"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2331,11 +2368,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.15", escapeXml(obj["eScene.15"].vSet[0]));
             }
             else {
-                if (obj["eScene.15"].NV == true) {
-                    XML.writeStartElement('eScene.15');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.15"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.15"].NV != 'undefined') {
+                    if (obj["eScene.15"].NV == true) {
+                        XML.writeStartElement('eScene.15');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.15"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2345,63 +2384,77 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.16", escapeXml(obj["eScene.16"].vSet[0]));
             }
             else {
-                if (obj["eScene.16"].NV == true) {
-                    XML.writeStartElement('eScene.16');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.16"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.16"].NV != 'undefined') {
+                    if (obj["eScene.16"].NV == true) {
+                        XML.writeStartElement('eScene.16');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.16"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
+
         if (typeof obj["eScene.17"] != 'undefined') {
             if (obj["eScene.17"].IsNull == false) {
                 XML.writeElementString("eScene.17", obj["eScene.17"].vSet[0]);
             }
             else {
-                if (obj["eScene.17"].NV == true) {
-                    XML.writeStartElement('eScene.17');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.17"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.17"].NV != 'undefined') {
+                    if (obj["eScene.17"].NV == true) {
+                        XML.writeStartElement('eScene.17');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.17"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
+
         if (typeof obj["eScene.18"] != 'undefined') {
             if (obj["eScene.18"].IsNull == false) {
                 XML.writeElementString("eScene.18", obj["eScene.18"].vSet[0]);
             }
             else {
-                if (obj["eScene.18"].NV == true) {
-                    XML.writeStartElement('eScene.18');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.18"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.18"].NV != 'undefined') {
+                    if (obj["eScene.18"].NV == true) {
+                        XML.writeStartElement('eScene.18');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.18"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
+
         if (typeof obj["eScene.19"] != 'undefined') {
             if (obj["eScene.19"].IsNull == false) {
                 XML.writeElementString("eScene.19", obj["eScene.19"].vSet[0]);
             }
             else {
-                if (obj["eScene.19"].NV == true) {
-                    XML.writeStartElement('eScene.19');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.19"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.19"].NV != 'undefined') {
+                    if (obj["eScene.19"].NV == true) {
+                        XML.writeStartElement('eScene.19');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.19"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
+
         if (typeof obj["eScene.20"] != 'undefined') {
             if (obj["eScene.20"].IsNull == false) {
                 XML.writeElementString("eScene.20", escapeXml(obj["eScene.20"].vSet[0]));
             }
             else {
-                if (obj["eScene.20"].NV == true) {
-                    XML.writeStartElement('eScene.20');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.20"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.20"].NV != 'undefined') {
+                    if (obj["eScene.20"].NV == true) {
+                        XML.writeStartElement('eScene.20');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.20"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2411,11 +2464,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eScene.21", obj["eScene.21"].vSet[0]);
             }
             else {
-                if (obj["eScene.21"].NV == true) {
-                    XML.writeStartElement('eScene.21');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eScene.21"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eScene.21"].NV != 'undefined') {
+                    if (obj["eScene.21"].NV == true) {
+                        XML.writeStartElement('eScene.21');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eScene.21"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2434,7 +2489,7 @@ exports.setV3XML = function (TheCall) {
         XML.writeEndElement();
     };
 
-    //eAirway   
+
     if (typeof TheCall.eAirway != 'undefined') {
         var obj = {};
         var obj = TheCall.eAirway
@@ -2448,11 +2503,13 @@ exports.setV3XML = function (TheCall) {
                     }
                 }
                 else {
-                    if (obj.AirwayGroup["eAirway.01"].NV == true) {
-                        XML.writeStartElement('eAirway.01');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj.AirwayGroup["eAirway.01"].vSet[0]);
-                        XML.writeEndElement();
+                    if (typeof obj.AirwayGroup["eAirway.01"].NV != 'undefined') {
+                        if (obj.AirwayGroup["eAirway.01"].NV == true) {
+                            XML.writeStartElement('eAirway.01');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj.AirwayGroup["eAirway.01"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -2468,12 +2525,14 @@ exports.setV3XML = function (TheCall) {
                             XML.writeElementString("eAirway.02", obj1["eAirway.02"].vSet[0]);
                         }
                         else {
-                            if (obj1["eAirway.02"].NV == true) {
-                                XML.writeStartElement("eAirway.02");
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj1["eAirway.02"].vSet[0]);
-                                XML.writeEndElement();
-                            };
+                            if (typeof obj1["eAirway.02"].NV != 'undefined') {
+                                if (obj1["eAirway.02"].NV == true) {
+                                    XML.writeStartElement("eAirway.02");
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj1["eAirway.02"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
+                            }
                         }
                     };
 
@@ -2482,12 +2541,14 @@ exports.setV3XML = function (TheCall) {
                             XML.writeElementString("eAirway.03", obj1["eAirway.03"].vSet[0]);
                         }
                         else {
-                            if (obj1["eAirway.03"].NV == true) {
-                                XML.writeStartElement("eAirway.03");
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj1["eAirway.03"].vSet[0]);
-                                XML.writeEndElement();
-                            };
+                            if (typeof obj1["eAirway.03"].NV != 'undefined') {
+                                if (obj1["eAirway.03"].NV == true) {
+                                    XML.writeStartElement("eAirway.03");
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj1["eAirway.03"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
+                            }
                         }
                     };
 
@@ -2500,12 +2561,14 @@ exports.setV3XML = function (TheCall) {
                             }
                         }
                         else {
-                            if (obj1["eAirway.04"].NV == true) {
-                                XML.writeStartElement("eAirway.04");
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj1["eAirway.04"].vSet[0]);
-                                XML.writeEndElement();
-                            };
+                            if (typeof obj1["eAirway.04"].NV != 'undefined') {
+                                if (obj1["eAirway.04"].NV == true) {
+                                    XML.writeStartElement("eAirway.04");
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj1["eAirway.04"].vSet[0]);
+                                    XML.writeEndElement();
+                                };
+                            }
                         }
                     };
 
@@ -2515,12 +2578,14 @@ exports.setV3XML = function (TheCall) {
                             XML.writeElementString("eAirway.05", obj1["eAirway.05"].vSet[0]);
                         }
                         else {
-                            if (obj1["eAirway.05"].NV == true) {
-                                XML.writeStartElement("eAirway.05");
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj1["eAirway.05"].vSet[0]);
-                                XML.writeEndElement();
-                            };
+                            if (typeof obj1["eAirway.05"].NV != 'undefined') {
+                                if (obj1["eAirway.05"].NV == true) {
+                                    XML.writeStartElement("eAirway.05");
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj1["eAirway.05"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
+                            }
                         }
                     };
 
@@ -2529,12 +2594,14 @@ exports.setV3XML = function (TheCall) {
                             XML.writeElementString("eAirway.06", obj1["eAirway.06"].vSet[0]);
                         }
                         else {
-                            if (obj1["eAirway.06"].NV == true) {
-                                XML.writeStartElement("eAirway.06");
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj1["eAirway.06"].vSet[0]);
-                                XML.writeEndElement();
-                            };
+                            if (typeof obj1["eAirway.06"].NV != 'undefined') {
+                                if (obj1["eAirway.06"].NV == true) {
+                                    XML.writeStartElement("eAirway.06");
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj1["eAirway.06"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
+                            }
                         }
                     };
 
@@ -2544,13 +2611,15 @@ exports.setV3XML = function (TheCall) {
                             XML.writeElementString("eAirway.07", obj1["eAirway.07"].vSet[0]);
                         }
                         else {
-                            if (obj1["eAirway.07"].NV == true) {
+                            if (typeof obj1["eAirway.07"].NV != 'undefined') {
+                                if (obj1["eAirway.07"].NV == true) {
 
-                                XML.writeStartElement("eAirway.07");
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj1["eAirway.07"].vSet[0]);
-                                XML.writeEndElement();
-                            };
+                                    XML.writeStartElement("eAirway.07");
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj1["eAirway.07"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
+                            }
                         }
                     };
 
@@ -2563,12 +2632,14 @@ exports.setV3XML = function (TheCall) {
                             }
                         }
                         else {
-                            if (obj1["eAirway.08"].NV == true) {
-                                XML.writeStartElement("eAirway.08");
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj1["eAirway.08"].vSet[0]);
-                                XML.writeEndElement();
-                            };
+                            if (typeof obj1["eAirway.08"].NV != 'undefined') {
+                                if (obj1["eAirway.08"].NV == true) {
+                                    XML.writeStartElement("eAirway.08");
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj1["eAirway.08"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
+                            }
                         }
                     };
 
@@ -2582,12 +2653,14 @@ exports.setV3XML = function (TheCall) {
                             }
                         }
                         else {
-                            if (obj1["eAirway.09"].NV == true) {
-                                XML.writeStartElement("eAirway.09");
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj1["eAirway.09"].vSet[0]);
-                                XML.writeEndElement();
-                            };
+                            if (typeof obj1["eAirway.09"].NV != 'undefined') {
+                                if (obj1["eAirway.09"].NV == true) {
+                                    XML.writeStartElement("eAirway.09");
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj1["eAirway.09"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
+                            }
                         }
                     };
                     XML.writeEndElement();
@@ -2609,7 +2682,6 @@ exports.setV3XML = function (TheCall) {
         }
     };
 
-    //eArrest   
     if (typeof TheCall.eArrest != 'undefined') {
         var obj = {};
         var obj = TheCall.eArrest
@@ -2619,11 +2691,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.01", obj["eArrest.01"].vSet[0]);
             }
             else {
-                if (obj["eArrest.01"].NV == true) {
-                    XML.writeStartElement('eArrest.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.01"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.01"].NV != 'undefined') {
+                    if (obj["eArrest.01"].NV == true) {
+                        XML.writeStartElement('eArrest.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.01"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2633,11 +2707,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.02", obj["eArrest.02"].vSet[0]);
             }
             else {
-                if (obj["eArrest.02"].NV == true) {
-                    XML.writeStartElement('eArrest.02');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.02"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.02"].NV != 'undefined') {
+                    if (obj["eArrest.02"].NV == true) {
+                        XML.writeStartElement('eArrest.02');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.02"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2649,11 +2725,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eArrest.03"].NV == true) {
-                    XML.writeStartElement('eArrest.03');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.03"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.03"].NV != 'undefined') {
+                    if (obj["eArrest.03"].NV == true) {
+                        XML.writeStartElement('eArrest.03');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.03"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2665,11 +2743,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eArrest.04"].NV == true) {
-                    XML.writeStartElement('eArrest.04');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.04"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.04"].NV != 'undefined') {
+                    if (obj["eArrest.04"].NV == true) {
+                        XML.writeStartElement('eArrest.04');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.04"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2679,11 +2759,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.05", obj["eArrest.05"].vSet[0]);
             }
             else {
-                if (obj["eArrest.05"].NV == true) {
-                    XML.writeStartElement('eArrest.05');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.05"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.05"].NV != 'undefined') {
+                    if (obj["eArrest.05"].NV == true) {
+                        XML.writeStartElement('eArrest.05');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.05"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2701,11 +2783,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.07", obj["eArrest.07"].vSet[0]);
             }
             else {
-                if (obj["eArrest.07"].NV == true) {
-                    XML.writeStartElement('eArrest.07');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.07"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.07"].NV != 'undefined') {
+                    if (obj["eArrest.07"].NV == true) {
+                        XML.writeStartElement('eArrest.07');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.07"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2724,11 +2808,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eArrest.09"].NV == true) {
-                    XML.writeStartElement('eArrest.09');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.09"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.09"].NV != 'undefined') {
+                    if (obj["eArrest.09"].NV == true) {
+                        XML.writeStartElement('eArrest.09');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.09"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2738,11 +2824,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.10", obj["eArrest.10"].vSet[0]);
             }
             else {
-                if (obj["eArrest.10"].NV == true) {
-                    XML.writeStartElement('eArrest.10');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.10"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.10"].NV != 'undefined') {
+                    if (obj["eArrest.10"].NV == true) {
+                        XML.writeStartElement('eArrest.10');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.10"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2752,11 +2840,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.11", obj["eArrest.11"].vSet[0]);
             }
             else {
-                if (obj["eArrest.11"].NV == true) {
-                    XML.writeStartElement('eArrest.11');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.11"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.11"].NV != 'undefined') {
+                    if (obj["eArrest.11"].NV == true) {
+                        XML.writeStartElement('eArrest.11');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.11"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2768,11 +2858,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eArrest.12"].NV == true) {
-                    XML.writeStartElement('eArrest.12');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.12"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.12"].NV != 'undefined') {
+                    if (obj["eArrest.12"].NV == true) {
+                        XML.writeStartElement('eArrest.12');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.12"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2788,11 +2880,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.14", obj["eArrest.14"].vSet[0]);
             }
             else {
-                if (obj["eArrest.14"].NV == true) {
-                    XML.writeStartElement('eArrest.14');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.14"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.14"].NV != 'undefined') {
+                    if (obj["eArrest.14"].NV == true) {
+                        XML.writeStartElement('eArrest.14');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.14"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2802,11 +2896,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.15", obj["eArrest.15"].vSet[0]);
             }
             else {
-                if (obj["eArrest.15"].NV == true) {
-                    XML.writeStartElement('eArrest.15');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.15"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.15"].NV != 'undefined') {
+                    if (obj["eArrest.15"].NV == true) {
+                        XML.writeStartElement('eArrest.15');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.15"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2816,11 +2912,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.16", obj["eArrest.16"].vSet[0]);
             }
             else {
-                if (obj["eArrest.16"].NV == true) {
-                    XML.writeStartElement('eArrest.16');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.16"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.16"].NV != 'undefined') {
+                    if (obj["eArrest.16"].NV == true) {
+                        XML.writeStartElement('eArrest.16');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.16"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2832,11 +2930,13 @@ exports.setV3XML = function (TheCall) {
                 }
             }
             else {
-                if (obj["eArrest.17"].NV == true) {
-                    XML.writeStartElement('eArrest.17');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.17"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.17"].NV != 'undefined') {
+                    if (obj["eArrest.17"].NV == true) {
+                        XML.writeStartElement('eArrest.17');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.17"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2846,17 +2946,20 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eArrest.18", obj["eArrest.18"].vSet[0]);
             }
             else {
-                if (obj["eArrest.18"].NV == true) {
-                    XML.writeStartElement('eArrest.18');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eArrest.18"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eArrest.18"].NV != 'undefined') {
+                    if (obj["eArrest.18"].NV == true) {
+                        XML.writeStartElement('eArrest.18');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eArrest.18"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
         XML.writeEndElement();
     };
-    //eOutcome   
+
+
     if (typeof TheCall.eOutcome != 'undefined') {
         var obj = {};
         var obj = TheCall.eOutcome
@@ -2866,11 +2969,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eOutcome.01", obj["eOutcome.01"].vSet[0]);
             }
             else {
-                if (obj["eOutcome.01"].NV == true) {
-                    XML.writeStartElement('eOutcome.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eOutcome.01"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eOutcome.01"].NV != 'undefined') {
+                    if (obj["eOutcome.01"].NV == true) {
+                        XML.writeStartElement('eOutcome.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eOutcome.01"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2880,11 +2985,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eOutcome.02", obj["eOutcome.02"].vSet[0]);
             }
             else {
-                if (obj["eOutcome.02"].NV == true) {
-                    XML.writeStartElement('eOutcome.02');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eOutcome.02"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof obj["eOutcome.02"].NV != 'undefined') {
+                    if (obj["eOutcome.02"].NV == true) {
+                        XML.writeStartElement('eOutcome.02');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eOutcome.02"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -2993,8 +3100,6 @@ exports.setV3XML = function (TheCall) {
         };
         XML.writeEndElement();
     };
-    //eOther
-
     if (typeof TheCall.eDevice != 'undefined') {
         if (typeof TheCall.eDevice.DeviceGroup != 'undefined') {
             XML.writeStartElement("eDevice")
@@ -3128,15 +3233,16 @@ exports.setV3XML = function (TheCall) {
                             XML.writeElementString("eOther.05", cmObj["eOther.05"].vSet[0]);
                         }
                         else {
-                            if (cmObj["eOther.05"].NV == true) {
-                                XML.writeStartElement('eOther.05');
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', cmObj["eOther.05"].vSet[0]);
-                                XML.writeEndElement();
+                            if (typeof cmObj["eOther.05"].NV != 'undefined') {
+                                if (cmObj["eOther.05"].NV == true) {
+                                    XML.writeStartElement('eOther.05');
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', cmObj["eOther.05"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
                             }
                         }
-                    }
-
+                    };
 
 
                     if (typeof cmObj["eOther.06"] != 'undefined') {
@@ -3144,11 +3250,13 @@ exports.setV3XML = function (TheCall) {
                             XML.writeElementString("eOther.06", cmObj["eOther.06"].vSet[0]);
                         }
                         else {
-                            if (cmObj["eOther.06"].NV == true) {
-                                XML.writeStartElement('eOther.06');
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', cmObj["eOther.06"].vSet[0]);
-                                XML.writeEndElement();
+                            if (typeof cmObj["eOther.06"].NV != 'undefined') {
+                                if (cmObj["eOther.06"].NV == true) {
+                                    XML.writeStartElement('eOther.06');
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', cmObj["eOther.06"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
                             }
                         }
                     };
@@ -3167,14 +3275,16 @@ exports.setV3XML = function (TheCall) {
 
         if (typeof obj["eOther.08"] != 'undefined') {
             if (obj["eOther.08"].IsNull == false) {
-                XML.writeElementString("eOther.08", eOther["eOther.08"].vSet[0]);
+                XML.writeElementString("eOther.08", obj["eOther.08"].vSet[0]);
             }
             else {
-                if (obj["eOther.08"].NV == true) {
-                    XML.writeStartElement('eOther.08');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eOther.08"].vSet[0]);
-                    XML.writeEndElement();
+                if (typeof cmObj["eOther.08"].NV != 'undefined') {
+                    if (obj["eOther.08"].NV == true) {
+                        XML.writeStartElement('eOther.08');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eOther.08"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -3208,7 +3318,7 @@ exports.setV3XML = function (TheCall) {
             }
         };
         if (typeof obj["SignatureGroup"] != 'undefined') {
-            for (var i = 0; i <= obj["SignatureGroup"].vSet.length - 1; i++) {
+            for (var i = 0; i <= obj["SignatureGroup"].length - 1; i++) {
                 var obj3 = {};
                 obj3 = obj["SignatureGroup"][i];
                 XML.writeStartElement("eOther.SignatureGroup");
@@ -3270,7 +3380,6 @@ exports.setV3XML = function (TheCall) {
         XML.writeEndElement();
     };
 
-
     if (typeof TheCall.eInjury != 'undefined') {
         var obj = {};
         var obj = TheCall.eInjury;
@@ -3283,10 +3392,12 @@ exports.setV3XML = function (TheCall) {
             }
             else {
                 if (typeof obj["eInjury.01"].NV != 'undefined') {
-                    XML.writeStartElement('eInjury.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eInjury.01"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eInjury.01"].NV == true) {
+                        XML.writeStartElement('eInjury.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eInjury.01"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -3299,10 +3410,12 @@ exports.setV3XML = function (TheCall) {
             }
             else {
                 if (typeof obj["eInjury.02"].NV != 'undefined') {
-                    XML.writeStartElement('eInjury.02');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eInjury.02"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eInjury.02"].NV == true) {
+                        XML.writeStartElement('eInjury.02');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eInjury.02"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -3315,10 +3428,12 @@ exports.setV3XML = function (TheCall) {
             }
             else {
                 if (typeof obj["eInjury.03"].NV != 'undefined') {
-                    XML.writeStartElement('eInjury.03');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eInjury.03"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eInjury.03"].NV == true) {
+                        XML.writeStartElement('eInjury.03');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eInjury.03"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -3331,10 +3446,12 @@ exports.setV3XML = function (TheCall) {
             }
             else {
                 if (typeof obj["eInjury.04"].NV != 'undefined') {
-                    XML.writeStartElement('eInjury.04');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eInjury.04"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eInjury.04"].NV == true) {
+                        XML.writeStartElement('eInjury.04');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eInjury.04"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -3344,11 +3461,13 @@ exports.setV3XML = function (TheCall) {
                 XML.writeElementString("eInjury.05", obj["eInjury.05"].vSet[0]);
             }
         };
+
         if (typeof obj["eInjury.06"] != 'undefined') {
             if (obj["eInjury.06"].IsNull == false) {
                 XML.writeElementString("eInjury.06", obj["eInjury.06"].vSet[0]);
             }
         };
+
         if (typeof obj["eInjury.07"] != 'undefined') {
             if (obj["eInjury.07"].IsNull == false) {
                 for (var i = 0; i < obj["eInjury.07"].vSet.length; i++) {
@@ -3357,10 +3476,12 @@ exports.setV3XML = function (TheCall) {
             }
             else {
                 if (typeof obj["eInjury.07"].NV != 'undefined') {
-                    XML.writeStartElement('eInjury.07');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eInjury.07"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eInjury.07"].NV == true) {
+                        XML.writeStartElement('eInjury.07');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eInjury.07"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -3372,6 +3493,7 @@ exports.setV3XML = function (TheCall) {
                 }
             }
         };
+
         if (typeof obj["eInjury.09"] != 'undefined') {
             if (obj["eInjury.09"].IsNull == false) {
                 XML.writeElementString("eInjury.09", obj["eInjury.09"].vSet[0]);
@@ -3385,14 +3507,17 @@ exports.setV3XML = function (TheCall) {
             }
             else {
                 if (typeof obj["eInjury.10"].NV != 'undefined') {
-                    XML.writeStartElement('eInjury.10');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eInjury.10"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eInjury.10"].NV == true) {
+                        XML.writeStartElement('eInjury.10');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eInjury.10"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
-        if (obj["CollisionGroup"] == 1) {
+
+        if (typeof obj["CollisionGroup"] != 'undefined') {
             XML.writeStartElement("eInjury.CollisionGroup");
             if (typeof obj["eInjury.11"] != 'undefined') {
                 if (obj["eInjury.11"].IsNull == false) {
@@ -3418,10 +3543,12 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eInjury.13"].NV != 'undefined') {
-                        XML.writeStartElement('eInjury.13');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eInjury.13"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eInjury.13"].NV == true) {
+                            XML.writeStartElement('eInjury.13');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eInjury.13"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -3503,10 +3630,12 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eInjury.22"].NV != 'undefined') {
-                        XML.writeStartElement('eInjury.22');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eInjury.22"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eInjury.22"].NV == true) {
+                            XML.writeStartElement('eInjury.22');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eInjury.22"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -3555,7 +3684,7 @@ exports.setV3XML = function (TheCall) {
 
     };
 
-    //eExam
+    //eNarrative
     if (typeof TheCall.eNarrative != 'undefined') {
 
         if (typeof TheCall.eNarrative["eNarrative.01"] != 'undefined') {
@@ -3567,12 +3696,15 @@ exports.setV3XML = function (TheCall) {
             }
             else {
                 if (typeof TheCall.eNarrative["eNarrative.01"].NV != 'undefined') {
-                    XML.writeStartElement("eNarrative");
-                    XML.writeStartElement('eNarrative.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', TheCall.eNarrative["eNarrative.01"].vSet[0]);
-                    XML.writeEndElement();
-                    XML.writeEndElement();
+                    if (TheCall.eNarrative["eNarrative.01"].NV == true) {
+
+                        XML.writeStartElement("eNarrative");
+                        XML.writeStartElement('eNarrative.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', TheCall.eNarrative["eNarrative.01"].vSet[0]);
+                        XML.writeEndElement();
+                        XML.writeEndElement();
+                    }
                 }
             }
         }
@@ -3584,29 +3716,36 @@ exports.setV3XML = function (TheCall) {
         XML.writeStartElement("eExam");
         if (typeof obj["eExam.01"] != 'undefined') {
             if (obj["eExam.01"].IsNull == false) {
-                XML.writeElementString("eExam.01", obj["eExam.01"].vSet[0]);
-
+                if (obj["eExam.01"].vSet[0] !== null) {
+                    XML.writeElementString("eExam.01", obj["eExam.01"].vSet[0]);
+                }
             }
             else {
                 if (typeof obj["eExam.01"].NV != 'undefined') {
-                    XML.writeStartElement('eExam.01');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eExam.01"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eExam.01"].NV == true) {
+                        XML.writeStartElement('eExam.01');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eExam.01"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
 
         if (typeof obj["eExam.02"] != 'undefined') {
             if (obj["eExam.02"].IsNull == false) {
-                XML.writeElementString("eExam.02", obj["eExam.02"].vSet[0]);
+                if (obj["eExam.02"].vSet[0] !== null) {
+                    XML.writeElementString("eExam.02", obj["eExam.02"].vSet[0]);
+                }
             }
             else {
                 if (typeof obj["eExam.02"].NV != 'undefined') {
-                    XML.writeStartElement('eExam.02');
-                    XML.writeAttributeString('xsi:nil', 'true');
-                    XML.writeAttributeString('NV', obj["eExam.02"].vSet[0]);
-                    XML.writeEndElement();
+                    if (obj["eExam.02"].NV == true) {
+                        XML.writeStartElement('eExam.02');
+                        XML.writeAttributeString('xsi:nil', 'true');
+                        XML.writeAttributeString('NV', obj["eExam.02"].vSet[0]);
+                        XML.writeEndElement();
+                    }
                 }
             }
         };
@@ -3619,55 +3758,73 @@ exports.setV3XML = function (TheCall) {
                     XML.writeStartElement("eExam.AssessmentGroup");
                     if (typeof aObj["eExam.03"] != 'undefined') {
                         if (aObj["eExam.03"].IsNull == false) {
-                            XML.writeElementString("eExam.03", aObj["eExam.03"].vSet[0]);
+                            if (aObj["eExam.03"].vSet[0] !== null) {
+                                XML.writeElementString("eExam.03", aObj["eExam.03"].vSet[0]);
+                            }
                         }
                     };
 
                     if (typeof aObj["eExam.04"] != 'undefined') {
                         if (aObj["eExam.04"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.04"].vSet.length; i++) {
-                                XML.writeElementString("eExam.04", aObj["eExam.04"].vSet[i]);
+                                if (aObj["eExam.04"].vSet[i] !== null) {
+                                    XML.writeElementString("eExam.04", aObj["eExam.04"].vSet[i]);
+                                }
                             }
                         };
                     };
                     if (typeof aObj["eExam.05"] != 'undefined') {
                         if (aObj["eExam.05"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.05"].vSet.length; i++) {
-                                XML.writeElementString("eExam.05", aObj["eExam.05"].vSet[i]);
+                                if (aObj["eExam.05"].vSet[i] !== null) {
+                                    if (aObj["eExam.05"].vSet[i] !== null) {
+                                        XML.writeElementString("eExam.05", aObj["eExam.05"].vSet[i]);
+                                    }
+                                }
                             }
-                        };
+                        }
                     };
+
 
                     if (typeof aObj["eExam.06"] != 'undefined') {
                         if (aObj["eExam.06"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.06"].vSet.length; i++) {
-                                XML.writeElementString("eExam.06", aObj["eExam.06"].vSet[i]);
+                                if (aObj["eExam.06"].vSet[i] !== null) {
+                                    XML.writeElementString("eExam.06", aObj["eExam.06"].vSet[i]);
+                                }
                             }
-                        };
+                        }
                     };
 
                     if (typeof aObj["eExam.07"] != 'undefined') {
                         if (aObj["eExam.07"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.07"].vSet.length; i++) {
-                                XML.writeElementString("eExam.07", aObj["eExam.07"].vSet[i]);
+                                if (aObj["eExam.07"].vSet[i] !== null) {
+                                    XML.writeElementString("eExam.07", aObj["eExam.07"].vSet[i]);
+                                }
                             }
-                        };
+                        }
                     };
 
 
                     if (typeof aObj["eExam.08"] != 'undefined') {
                         if (aObj["eExam.08"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.08"].vSet.length; i++) {
-                                XML.writeElementString("eExam.08", aObj["eExam.08"].vSet[i]);
+                                if (aObj["eExam.08"].vSet[i] !== null) {
+                                    XML.writeElementString("eExam.08", aObj["eExam.08"].vSet[i]);
+                                }
                             }
-                        };
+                        }
                     };
+
                     if (typeof aObj["eExam.09"] != 'undefined') {
                         if (aObj["eExam.09"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.09"].vSet.length; i++) {
-                                XML.writeElementString("eExam.09", aObj["eExam.09"].vSet[i]);
+                                if (aObj["eExam.09"].vSet[i] !== null) {
+                                    XML.writeElementString("eExam.09", aObj["eExam.09"].vSet[i]);
+                                }
                             }
-                        };
+                        }
                     };
 
                     /////////////////////AbdomenGroup
@@ -3679,16 +3836,20 @@ exports.setV3XML = function (TheCall) {
                             XML.writeStartElement("eExam.AbdomenGroup");
                             if (typeof obj1["eExam.10"] != 'undefined') {
                                 if (obj1["eExam.10"].IsNull == false) {
-                                    XML.writeElementString("eExam.10", obj1["eExam.10"].vSet[0]);
+                                    if (obj1["eExam.10"].vSet[0] !== null) {
+                                        XML.writeElementString("eExam.10", obj1["eExam.10"].vSet[0]);
+                                    }
                                 }
                             };
 
                             if (typeof obj1["eExam.11"] != 'undefined') {
                                 if (obj1["eExam.11"].IsNull == false) {
                                     for (var i = 0; i < obj1["eExam.11"].vSet.length; i++) {
-                                        XML.writeElementString("eExam.11", obj1["eExam.11"].vSet[i]);
+                                        if (obj1["eExam.11"].vSet[0] !== null) {
+                                            XML.writeElementString("eExam.11", obj1["eExam.11"].vSet[i]);
+                                        }
                                     }
-                                };
+                                }
                             };
                             XML.writeEndElement();
                         };
@@ -3697,9 +3858,11 @@ exports.setV3XML = function (TheCall) {
                     if (typeof aObj["eExam.12"] != 'undefined') {
                         if (aObj["eExam.12"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.12"].vSet.length; i++) {
-                                XML.writeElementString("eExam.12", aObj["eExam.12"].vSet[i]);
+                                if (aObj["eExam.12"].vSet[i] !== null) {
+                                    XML.writeElementString("eExam.12", aObj["eExam.12"].vSet[i]);
+                                }
                             }
-                        };
+                        }
                     };
                     /////////////////////SpineGroup
                     if (typeof aObj["SpineGroup"] != 'undefined') {
@@ -3709,16 +3872,20 @@ exports.setV3XML = function (TheCall) {
                             XML.writeStartElement("eExam.SpineGroup");
                             if (typeof obj2["eExam.13"] != 'undefined') {
                                 if (obj2["eExam.13"].IsNull == false) {
-                                    XML.writeElementString("eExam.13", obj2["eExam.13"].vSet[0]);
+                                    if (obj2["eExam.13"].vSet[0] !== null) {
+                                        XML.writeElementString("eExam.13", obj2["eExam.13"].vSet[0]);
+                                    }
                                 }
                             };
 
                             if (typeof obj2["eExam.14"] != 'undefined') {
                                 if (obj2["eExam.14"].IsNull == false) {
                                     for (var i = 0; i < obj2["eExam.14"].vSet.length; i++) {
-                                        XML.writeElementString("eExam.14", obj2["eExam.14"].vSet[i]);
+                                        if (obj2["eExam.14"].vSet[0] !== null) {
+                                            XML.writeElementString("eExam.14", obj2["eExam.14"].vSet[i]);
+                                        }
                                     }
-                                };
+                                }
                             };
                             XML.writeEndElement();
                         };
@@ -3739,9 +3906,11 @@ exports.setV3XML = function (TheCall) {
                             if (typeof obj3["eExam.16"] != 'undefined') {
                                 if (obj3["eExam.16"].IsNull == false) {
                                     for (var i = 0; i < obj3["eExam.16"].vSet.length; i++) {
-                                        XML.writeElementString("eExam.16", obj3["eExam.16"].vSet[i]);
+                                        if (obj3["eExam.16"].vSet[i] !== null) {
+                                            XML.writeElementString("eExam.16", obj3["eExam.16"].vSet[i]);
+                                        }
                                     }
-                                };
+                                }
                             };
                             XML.writeEndElement();
                         }
@@ -3755,16 +3924,20 @@ exports.setV3XML = function (TheCall) {
                             XML.writeStartElement("eExam.EyeGroup");
                             if (typeof obj4["eExam.17"] != 'undefined') {
                                 if (obj4["eExam.17"].IsNull == false) {
-                                    XML.writeElementString("eExam.17", obj4["eExam.17"].vSet[0]);
+                                    if (obj4["eExam.17"].vSet[0] !== null) {
+                                        XML.writeElementString("eExam.17", obj4["eExam.17"].vSet[0]);
+                                    }
                                 }
                             };
 
                             if (typeof obj4["eExam.18"] != 'undefined') {
                                 if (obj4["eExam.18"].IsNull == false) {
                                     for (var i = 0; i < obj4["eExam.18"].vSet.length; i++) {
-                                        XML.writeElementString("eExam.18", obj4["eExam.18"].vSet[i]);
+                                        if (obj4["eExam.18"].vSet[i] !== null) {
+                                            XML.writeElementString("eExam.18", obj4["eExam.18"].vSet[i]);
+                                        }
                                     }
-                                };
+                                }
                             };
                             XML.writeEndElement();
                         }
@@ -3773,17 +3946,21 @@ exports.setV3XML = function (TheCall) {
                     if (typeof aObj["eExam.19"] != 'undefined') {
                         if (aObj["eExam.19"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.19"].vSet.length; i++) {
-                                XML.writeElementString("eExam.19", aObj["eExam.19"].vSet[i]);
+                                if (aObj["eExam.19"].vSet[i] !== null) {
+                                    XML.writeElementString("eExam.19", aObj["eExam.19"].vSet[i]);
+                                }
                             }
-                        };
+                        }
                     };
 
                     if (typeof aObj["eExam.20"] != 'undefined') {
                         if (aObj["eExam.20"].IsNull == false) {
                             for (var i = 0; i < aObj["eExam.20"].vSet.length; i++) {
-                                XML.writeElementString("eExam.20", aObj["eExam.20"].vSet[i]);
+                                if (aObj["eExam.20"].vSet[i] !== null) {
+                                    XML.writeElementString("eExam.20", aObj["eExam.20"].vSet[i]);
+                                }
                             }
-                        };
+                        }
                     };
 
                 };
@@ -3994,7 +4171,6 @@ exports.setV3XML = function (TheCall) {
 
 
     //eMedications
-    console.log(TheCall.eMedications)
     if (typeof TheCall.eMedications != 'undefined') {
         if (typeof TheCall.eMedications.MedicationGroup != 'undefined') {
             XML.writeStartElement("eMedications");
@@ -4010,10 +4186,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eMedications.01"].NV != 'undefined') {
-                            XML.writeStartElement('eMedications.01');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eMedications.01"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eMedications.01"].NV == true) {
+                                XML.writeStartElement('eMedications.01');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eMedications.01"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4024,20 +4202,24 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eMedications.02"].NV != 'undefined') {
-                            XML.writeStartElement('eMedications.02');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eMedications.02"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eMedications.02"].NV == true) {
+                                XML.writeStartElement('eMedications.02');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eMedications.02"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
                 if (typeof obj["eMedications.03"] != 'undefined') {
                     if (obj["eMedications.03"].IsNull == false) {
                         if (typeof obj["eMedications.03"].PN != 'undefined') {
-                            XML.writeStartElement('eMedications.03');
-                            XML.writeAttributeString("PN", obj["eMedications.03"].PN);
-                            XML.writeString(obj["eMedications.03"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eMedications.03"].PN == true) {
+                                XML.writeStartElement('eMedications.03');
+                                XML.writeAttributeString("PN", obj["eMedications.03"].PN);
+                                XML.writeString(obj["eMedications.03"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else {
                             XML.writeElementString("eMedications.03", escapeXml(obj["eMedications.03"].vSet[0]));
@@ -4045,18 +4227,22 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eMedications.03"].PN != 'undefined') {
-                            XML.writeStartElement('eMedications.03');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eMedications.03"].vSet[0]);
-                            XML.writeEndElement();
-
-                        }
-                        else {
-                            if (typeof obj["eMedications.03"].NV != 'undefined') {
+                            if (obj["eMedications.01"].PN == true) {
                                 XML.writeStartElement('eMedications.03');
                                 XML.writeAttributeString('xsi:nil', 'true');
                                 XML.writeAttributeString('NV', obj["eMedications.03"].vSet[0]);
                                 XML.writeEndElement();
+                            }
+
+                        }
+                        else {
+                            if (typeof obj["eMedications.03"].NV != 'undefined') {
+                                if (obj["eMedications.03"].NV == true) {
+                                    XML.writeStartElement('eMedications.03');
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj["eMedications.03"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
                             }
                         }
                     }
@@ -4078,10 +4264,12 @@ exports.setV3XML = function (TheCall) {
                         }
                         else {
                             if (typeof obj["eMedications.05"].NV != 'undefined') {
-                                XML.writeStartElement('eMedications.05');
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj["eMedications.05"].vSet[0]);
-                                XML.writeEndElement();
+                                if (obj["eMedications.05"].NV == true) {
+                                    XML.writeStartElement('eMedications.05');
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj["eMedications.05"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
                             }
                         }
                     };
@@ -4093,10 +4281,12 @@ exports.setV3XML = function (TheCall) {
                         }
                         else {
                             if (typeof obj["eMedications.06"].NV != 'undefined') {
-                                XML.writeStartElement('eMedications.06');
-                                XML.writeAttributeString('xsi:nil', 'true');
-                                XML.writeAttributeString('NV', obj["eMedications.06"].vSet[0]);
-                                XML.writeEndElement();
+                                if (obj["eMedications.06"].NV == true) {
+                                    XML.writeStartElement('eMedications.06');
+                                    XML.writeAttributeString('xsi:nil', 'true');
+                                    XML.writeAttributeString('NV', obj["eMedications.06"].vSet[0]);
+                                    XML.writeEndElement();
+                                }
                             }
                         }
                     };
@@ -4109,10 +4299,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eMedications.07"].NV != 'undefined') {
-                            XML.writeStartElement('eMedications.07');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eMedications.07"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eMedications.07"].NV == true) {
+                                XML.writeStartElement('eMedications.07');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eMedications.07"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4123,10 +4315,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eMedications.08"].NV != 'undefined') {
-                            XML.writeStartElement('eMedications.08');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eMedications.08"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eMedications.08"].NV == true) {
+                                XML.writeStartElement('eMedications.08');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eMedications.08"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4136,10 +4330,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eMedications.09"].NV != 'undefined') {
-                            XML.writeStartElement('eMedications.09');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eMedications.09"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eMedications.09"].NV == true) {
+                                XML.writeStartElement('eMedications.09');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eMedications.09"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4151,10 +4347,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eMedications.10"].NV != 'undefined') {
-                            XML.writeStartElement('eMedications.10');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eMedications.10"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eMedications.10"].NV == true) {
+                                XML.writeStartElement('eMedications.10');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eMedications.10"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4232,10 +4430,12 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.01"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.01');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.01"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.01"].NV == true) {
+                            XML.writeStartElement('eVitals.01');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.01"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -4246,10 +4446,12 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.02"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.02');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.02"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.02"].NV == true) {
+                            XML.writeStartElement('eVitals.02');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.02"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -4265,16 +4467,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.CardiacRhythmGroup["eVitals.03"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.03');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.CardiacRhythmGroup["eVitals.03"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.CardiacRhythmGroup["eVitals.03"].PN == true) {
+                                XML.writeStartElement('eVitals.03');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.CardiacRhythmGroup["eVitals.03"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.CardiacRhythmGroup["eVitals.03"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.03');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.CardiacRhythmGroup["eVitals.03"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.CardiacRhythmGroup["eVitals.03"].NV == true) {
+                                XML.writeStartElement('eVitals.03');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.CardiacRhythmGroup["eVitals.03"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4285,13 +4491,16 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.CardiacRhythmGroup["eVitals.04"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.04');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.CardiacRhythmGroup["eVitals.04"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.CardiacRhythmGroup["eVitals.04"].NV == true) {
+                                XML.writeStartElement('eVitals.04');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.CardiacRhythmGroup["eVitals.04"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
+
                 if (typeof obj.CardiacRhythmGroup["eVitals.05"] != 'undefined') {
                     if (obj.CardiacRhythmGroup["eVitals.05"].IsNull == false) {
                         for (var i = 0; i < obj.CardiacRhythmGroup["eVitals.05"].vSet.length; i++) {
@@ -4300,10 +4509,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.CardiacRhythmGroup["eVitals.05"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.05');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.CardiacRhythmGroup["eVitals.05"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.CardiacRhythmGroup["eVitals.05"].NV == true) {
+                                XML.writeStartElement('eVitals.05');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.CardiacRhythmGroup["eVitals.05"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4318,16 +4529,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.BloodPressureGroup["eVitals.06"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.06');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.06"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.BloodPressureGroup["eVitals.06"].PN == true) {
+                                XML.writeStartElement('eVitals.06');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.06"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.BloodPressureGroup["eVitals.06"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.06');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.06"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.BloodPressureGroup["eVitals.06"].NV == true) {
+                                XML.writeStartElement('eVitals.06');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.06"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4338,16 +4553,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.BloodPressureGroup["eVitals.07"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.07');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.07"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.BloodPressureGroup["eVitals.07"].PN == true) {
+                                XML.writeStartElement('eVitals.07');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.07"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.BloodPressureGroup["eVitals.07"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.07');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.07"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.BloodPressureGroup["eVitals.07"].NV == true) {
+                                XML.writeStartElement('eVitals.07');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.07"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4358,10 +4577,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.BloodPressureGroup["eVitals.08"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.08');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.08"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.BloodPressureGroup["eVitals.08"].NV == true) {
+                                XML.writeStartElement('eVitals.08');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.BloodPressureGroup["eVitals.08"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4383,16 +4604,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.HeartRateGroup["eVitals.10"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.10');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.HeartRateGroup["eVitals.10"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.HeartRateGroup["eVitals.10"].PN == true) {
+                                XML.writeStartElement('eVitals.10');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.HeartRateGroup["eVitals.10"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.HeartRateGroup["eVitals.10"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.10');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.HeartRateGroup["eVitals.10"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.HeartRateGroup["eVitals.10"].NV == true) {
+                                XML.writeStartElement('eVitals.10');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.HeartRateGroup["eVitals.10"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4412,16 +4637,20 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.12"].PN != 'undefined') {
-                        XML.writeStartElement('eVitals.12');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.12"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.12"].PN == true) {
+                            XML.writeStartElement('eVitals.12');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.12"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                     else if (typeof obj["eVitals.12"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.12');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.12"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.12"].NV == true) {
+                            XML.writeStartElement('eVitals.12');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.12"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -4438,16 +4667,20 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.14"].PN != 'undefined') {
-                        XML.writeStartElement('eVitals.14');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.14"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.14"].PN == true) {
+                            XML.writeStartElement('eVitals.14');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.14"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                     else if (typeof obj["eVitals.14"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.14');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.14"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.14"].NV == true) {
+                            XML.writeStartElement('eVitals.14');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.14"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -4464,19 +4697,24 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.16"].PN != 'undefined') {
-                        XML.writeStartElement('eVitals.16');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.16"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.16"].PN == true) {
+                            XML.writeStartElement('eVitals.16');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.16"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                     else if (typeof obj["eVitals.16"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.16');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.16"].vSet[0]);
-                        XML.writeEndElement();
+                        if (typeof obj["eVitals.16"].NV == true) {
+                            XML.writeStartElement('eVitals.16');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.16"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
+
 
             if (typeof obj["eVitals.17"] != 'undefined') {
                 if (obj["eVitals.17"].IsNull == false) {
@@ -4484,16 +4722,20 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.17"].PN != 'undefined') {
-                        XML.writeStartElement('eVitals.17');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.17"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.17"].PN == true) {
+                            XML.writeStartElement('eVitals.17');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.17"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                     else if (typeof obj["eVitals.17"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.17');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.17"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.17"].NV == true) {
+                            XML.writeStartElement('eVitals.17');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.17"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -4504,19 +4746,24 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.18"].PN != 'undefined') {
-                        XML.writeStartElement('eVitals.18');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.18"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.18"].PN == true) {
+                            XML.writeStartElement('eVitals.18');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.18"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                     else if (typeof obj["eVitals.18"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.18');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.18"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.18"].NV == true) {
+                            XML.writeStartElement('eVitals.18');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.18"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
+
             if (typeof obj.GlascowScoreGroup != 'undefined') {
                 XML.writeStartElement("eVitals.GlascowScoreGroup");
                 if (typeof obj.GlascowScoreGroup["eVitals.19"] != 'undefined') {
@@ -4525,16 +4772,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.GlascowScoreGroup["eVitals.19"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.19');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.19"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.19"].PN == true) {
+                                XML.writeStartElement('eVitals.19');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.19"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.GlascowScoreGroup["eVitals.19"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.19');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.19"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.19"].NV == true) {
+                                XML.writeStartElement('eVitals.19');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.19"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4545,16 +4796,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.GlascowScoreGroup["eVitals.20"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.20');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.20"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.20"].PN == true) {
+                                XML.writeStartElement('eVitals.20');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.20"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.GlascowScoreGroup["eVitals.20"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.20');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.20"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.20"].NV == true) {
+                                XML.writeStartElement('eVitals.20');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.20"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4565,16 +4820,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.GlascowScoreGroup["eVitals.21"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.21');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.21"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.21"].PN == true) {
+                                XML.writeStartElement('eVitals.21');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.21"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.GlascowScoreGroup["eVitals.21"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.21');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.21"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.21"].NV == true) {
+                                XML.writeStartElement('eVitals.21');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.21"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4585,16 +4844,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.GlascowScoreGroup["eVitals.22"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.22');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.22"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.22"].PN == true) {
+                                XML.writeStartElement('eVitals.22');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.22"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.GlascowScoreGroup["eVitals.22"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.22');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.22"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.22"].NV == true) {
+                                XML.writeStartElement('eVitals.22');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.22"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4605,16 +4868,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.GlascowScoreGroup["eVitals.23"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.23');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.23"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.23"].PN == true) {
+                                XML.writeStartElement('eVitals.23');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.23"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.GlascowScoreGroup["eVitals.23"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.23');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.23"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.GlascowScoreGroup["eVitals.23"].NV == true) {
+                                XML.writeStartElement('eVitals.23');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.GlascowScoreGroup["eVitals.23"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4631,16 +4898,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.TemperatureGroup["eVitals.24"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.24');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.TemperatureGroup["eVitals.24"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.TemperatureGroup["eVitals.24"].PN == true) {
+                                XML.writeStartElement('eVitals.24');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.TemperatureGroup["eVitals.24"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.TemperatureGroup["eVitals.24"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.24');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.TemperatureGroup["eVitals.24"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.TemperatureGroup["eVitals.24"].NV == true) {
+                                XML.writeStartElement('eVitals.24');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.TemperatureGroup["eVitals.24"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4659,10 +4930,12 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.26"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.26');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.26"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.26"].NV == null) {
+                            XML.writeStartElement('eVitals.26');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.26"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -4674,16 +4947,20 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.PainScaleGroup["eVitals.27"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.27');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.PainScaleGroup["eVitals.27"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.PainScaleGroup["eVitals.27"].PN == true) {
+                                XML.writeStartElement('eVitals.27');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.PainScaleGroup["eVitals.27"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.PainScaleGroup["eVitals.27"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.27');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.PainScaleGroup["eVitals.27"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.PainScaleGroup["eVitals.27"].NV == true) {
+                                XML.writeStartElement('eVitals.27');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.PainScaleGroup["eVitals.27"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4694,10 +4971,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.PainScaleGroup["eVitals.28"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.28');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.PainScaleGroup["eVitals.28"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.PainScaleGroup["eVitals.28"].NV == true) {
+                                XML.writeStartElement('eVitals.28');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.PainScaleGroup["eVitals.28"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4708,21 +4987,25 @@ exports.setV3XML = function (TheCall) {
                 XML.writeStartElement("eVitals.StrokeScaleGroup");
 
                 if (typeof obj.StrokeScaleGroup["eVitals.29"] != 'undefined') {
-                    if (obj["eVitals.29"].IsNull == false) {
+                    if (obj.StrokeScaleGroup["eVitals.29"].IsNull == false) {
                         XML.writeElementString("eVitals.29", obj.StrokeScaleGroup["eVitals.29"].vSet[0]);
                     }
                     else {
                         if (typeof obj.StrokeScaleGroup["eVitals.29"].PN != 'undefined') {
-                            XML.writeStartElement('eVitals.29');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.StrokeScaleGroup["eVitals.29"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.StrokeScaleGroup["eVitals.29"].PN == true) {
+                                XML.writeStartElement('eVitals.29');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.StrokeScaleGroup["eVitals.29"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                         else if (typeof obj.StrokeScaleGroup["eVitals.29"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.29');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.StrokeScaleGroup["eVitals.29"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.StrokeScaleGroup["eVitals.29"].NV == true) {
+                                XML.writeStartElement('eVitals.29');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.StrokeScaleGroup["eVitals.29"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4733,10 +5016,12 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj.StrokeScaleGroup["eVitals.30"].NV != 'undefined') {
-                            XML.writeStartElement('eVitals.30');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj.StrokeScaleGroup["eVitals.30"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj.StrokeScaleGroup["eVitals.30"].NV == true) {
+                                XML.writeStartElement('eVitals.30');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj.StrokeScaleGroup["eVitals.30"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4749,17 +5034,21 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.31"].NV != 'undefined') {
-                        XML.writeStartElement('eVitals.31');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('NV', obj["eVitals.31"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.31"].NV == true) {
+                            XML.writeStartElement('eVitals.31');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('NV', obj["eVitals.31"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                     else if (typeof obj["eVitals.31"].PN != 'undefined') {
+                        if (obj["eVitals.31"].PN == true) {
 
-                        XML.writeStartElement('eVitals.31');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('PN', obj["eVitals.31"].vSet[0]);
-                        XML.writeEndElement();
+                            XML.writeStartElement('eVitals.31');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('PN', obj["eVitals.31"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -4771,10 +5060,12 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.32"].PN != 'undefined') {
-                        XML.writeStartElement('eVitals.32');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('PN', obj["eVitals.32"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.32"].PN == true) {
+                            XML.writeStartElement('eVitals.32');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('PN', obj["eVitals.32"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
             };
@@ -4784,12 +5075,15 @@ exports.setV3XML = function (TheCall) {
                 }
                 else {
                     if (typeof obj["eVitals.33"].PN != 'undefined') {
-                        XML.writeStartElement('eVitals.33');
-                        XML.writeAttributeString('xsi:nil', 'true');
-                        XML.writeAttributeString('PN', obj["eVitals.33"].vSet[0]);
-                        XML.writeEndElement();
+                        if (obj["eVitals.33"].PN == true) {
+                            XML.writeStartElement('eVitals.33');
+                            XML.writeAttributeString('xsi:nil', 'true');
+                            XML.writeAttributeString('PN', obj["eVitals.33"].vSet[0]);
+                            XML.writeEndElement();
+                        }
                     }
                 }
+
             };
             XML.writeEndElement();
             XML.writeEndElement();
@@ -4813,23 +5107,28 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eCrew.01"].NV != 'undefined') {
-                            XML.writeStartElement('eCrew.01');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eCrew.01"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eCrew.01"].NV == true) {
+                                XML.writeStartElement('eCrew.01');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eCrew.01"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
+
                 if (typeof obj["eCrew.02"] != 'undefined') {
                     if (obj["eCrew.02"].IsNull == false) {
                         XML.writeElementString("eCrew.02", obj["eCrew.02"].vSet[0]);
                     }
                     else {
                         if (typeof obj["eCrew.02"].NV != 'undefined') {
-                            XML.writeStartElement('eCrew.02');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eCrew.02"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eCrew.02"].NV == true) {
+                                XML.writeStartElement('eCrew.02');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eCrew.02"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
                 };
@@ -4841,18 +5140,19 @@ exports.setV3XML = function (TheCall) {
                     }
                     else {
                         if (typeof obj["eCrew.03"].NV != 'undefined') {
-                            XML.writeStartElement('eCrew.03');
-                            XML.writeAttributeString('xsi:nil', 'true');
-                            XML.writeAttributeString('NV', obj["eCrew.03"].vSet[0]);
-                            XML.writeEndElement();
+                            if (obj["eCrew.03"].NV == true) {
+                                XML.writeStartElement('eCrew.03');
+                                XML.writeAttributeString('xsi:nil', 'true');
+                                XML.writeAttributeString('NV', obj["eCrew.03"].vSet[0]);
+                                XML.writeEndElement();
+                            }
                         }
                     }
-                }
+                };
+                XML.writeEndElement();
             }
         }
-        XML.writeEndElement();
     };
-
 
     XML.writeEndElement();
     var XMLDoc = XML.flush()
@@ -4860,19 +5160,20 @@ exports.setV3XML = function (TheCall) {
 
 };
 
-function escapeXml(unsafe) {
-    if (typeof unsafe != 'undefined') {
-        if (unsafe != null) {
-            return unsafe.replace(/[<>&'"]/g, function (c) {
-                switch (c) {
-                    case '<': return '&lt;';
-                    case '>': return '&gt;';
-                    case '&': return '&amp;';
-                    case '\'': return '&apos;';
-                    case '"': return '&quot;';
-                }
-            });
+    function escapeXml(unsafe) {
+        if (typeof unsafe != 'undefined') {
+            if (unsafe != null) {
+                return unsafe.replace(/[<>&'"]/g, function (c) {
+                    switch (c) {
+                        case '<': return '&lt;';
+                        case '>': return '&gt;';
+                        case '&': return '&amp;';
+                        case '\'': return '&apos;';
+                        case '"': return '&quot;';
+                    }
+                });
+            }
         }
-    }
 
-};
+    };
+
